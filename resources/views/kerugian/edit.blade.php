@@ -16,14 +16,14 @@
                         <table class="table mb-0">
                             <thead>
                                 <tr>
-                                    <th>Bencana Ref</th>
+                                    <th>Bencana ID</th>
                                     <th>Bencana</th>
                                     <th>Lokasi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ $bencana->Ref }}</td>
+                                    <td>{{ $bencana->id }}</td>
                                     <td>{{ $bencana->kategori_bencana->nama }}</td>
                                     <td>
                                         @foreach ($bencana->desa as $desa)

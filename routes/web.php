@@ -29,7 +29,7 @@ Route::prefix('/bencana')->middleware(['auth', 'verified'])->name('bencana.')->g
     Route::get('edit/{id}', [BencanaController::class, 'edit'])->name('edit');
     Route::patch('update/{id}', [BencanaController::class, 'update'])->name('update');
     Route::get('destroy/{id}', [BencanaController::class, 'destroy'])->name('destroy');
-    // Route::get('/get-desa/{id}', [BencanaController::class, 'getDesa'])->name('getDesa');
+    Route::get('form-lanjutan/{id}', [BencanaController::class, 'formLanjutan'])->name('form-lanjutan');
 });
 Route::get('/bencana/get-desa/{kecamatan_id}', [BencanaController::class, 'getDesaByKecamatan'])->middleware(['auth', 'verified']);
 

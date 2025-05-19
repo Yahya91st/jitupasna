@@ -252,6 +252,12 @@ class BencanaController extends Controller
         // }
     }
 
+    public function formLanjutan($id)
+    {
+        $bencana = Bencana::findOrFail($id);
+        return view('form.form-list', compact('bencana'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */

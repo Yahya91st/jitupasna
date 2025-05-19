@@ -14,23 +14,6 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i data-feather="triangle" width="20"></i>
-                        <span>Jitupasna</span>
-                    </a>
-                    <ul class="submenu ">
-                        <li>
-                            <a href="{{ route('bencana.index') }}">Bencana</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('kerusakan.index') }}">Kerusakan</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('kerugian.index') }}">Kerugian</a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="layers" width="20"></i>
@@ -51,23 +34,23 @@
                         </li>
                     </ul>
                 </li>
-                {{-- <li class="sidebar-item  has-sub">
+                <li class="sidebar-item has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i data-feather="file" width="20"></i>
-                        <span>Harga Satuan Dasar</span>
+                        <i data-feather="triangle" width="20"></i>
+                        <span>Jitupasna</span>
                     </a>
                     <ul class="submenu ">
                         <li>
-                            <a href="{{ route('kategori-bangunan.index') }}">Bahan</a>
+                            <a href="{{ route('bencana.index') }}">Bencana</a>
                         </li>
                         <li>
-                            <a href="{{ route('kategori-bencana.index') }}">Upah</a>
+                            <a href="{{ route('kerusakan.index') }}">Kerusakan</a>
                         </li>
                         <li>
-                            <a href="{{ route('satuan.index') }}">Alat</a>
+                            <a href="{{ route('kerugian.index') }}">Kerugian</a>
                         </li>
                     </ul>
-                </li> --}}
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
