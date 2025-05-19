@@ -1,0 +1,13 @@
+name: Simple Test Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello
+        run: echo "CI/CD berjalan dengan benar!"
