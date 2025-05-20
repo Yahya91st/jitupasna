@@ -49,6 +49,12 @@
                         <li>
                             <a href="{{ route('kerugian.index') }}">Kerugian</a>
                         </li>
+                        <li>
+                            <a href="#">Kebutuhan</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('forms.index') }}">Formulir</a>
+                        </li>
                     </ul>
                 </li>
             </ul>

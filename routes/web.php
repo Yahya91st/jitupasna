@@ -76,6 +76,24 @@ Route::get('/get-nama-by-tipe/{tipe}', function ($tipe) {
     return response()->json($namaList);
 })->middleware(['auth', 'verified']);
 Route::post('/upload-cropped-image', 'ImageController@uploadCroppedImage')->middleware(['auth', 'verified']);
+
+// Forms Routes
+Route::prefix('/forms')->middleware(['auth', 'verified'])->name('forms.')->group(function () {
+    Route::get('/', function() {
+        return view('forms.form-list');
+    })->name('index');
+    
+    // Form 4 (Sektor Perumahan)
+    Route::prefix('form4')->name('form4.')->group(function() {
+        Route::get('/', function() {
+            return view('forms.form4');
+        })->name('index');
+        Route::get('/perumahan', function() {
+            return view('forms.form4.index');
+        })->name('perumahan');
+    });
+});
+
 require __DIR__ . '/auth.php';
 
 // Route::middleware('guest')->group(function () {

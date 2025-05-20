@@ -51,9 +51,9 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <h5 class="card-title">Form Distribusi Bantuan</h5>
+                        <h5 class="card-title">Form Pengumpulan Data Sektor</h5>
                         <p class="card-text">Formulir untuk mencatat distribusi bantuan kepada korban bencana.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <a href="{{ route('forms.form4.index') }}" class="btn btn-primary">Buka Form</a>
                     </div>
                 </div>
             </div>
