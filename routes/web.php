@@ -10,6 +10,7 @@ use App\Http\Controllers\SatuanController;
 use App\Models\HSD;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EnvironmentalDamageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -91,6 +92,12 @@ Route::prefix('/forms')->middleware(['auth', 'verified'])->name('forms.')->group
         Route::get('/perumahan', function() {
             return view('forms.form4.index');
         })->name('perumahan');
+    });
+
+    // Form 17 (Sektor Lingkungan Hidup)
+    Route::prefix('format17')->name('format17.')->group(function() {
+        Route::get('/', [EnvironmentalDamageController::class, 'index'])->name('index');
+        Route::post('/store', [EnvironmentalDamageController::class, 'store'])->name('store');
     });
 });
 

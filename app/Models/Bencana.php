@@ -32,4 +32,14 @@ class Bencana extends Model
     {
         return $this->belongsToMany(Desa::class, 'wilayah_bencana', 'bencana_id', 'desa_id');
     }
+
+    public function environmentalDamages()
+    {
+        return $this->hasMany(EnvironmentalDamage::class);
+    }
+
+    public function environmentalLosses()
+    {
+        return $this->hasMany(EnvironmentalLoss::class);
+    }
 }
