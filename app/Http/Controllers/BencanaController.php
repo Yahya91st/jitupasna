@@ -254,8 +254,7 @@ class BencanaController extends Controller
 
     public function formLanjutan($id)
     {
-        $bencana = Bencana::findOrFail($id);
-        return view('form.form-list', compact('bencana'));
+        return redirect()->route('forms.index', ['bencana_id' => $id]);
     }
 
     /**

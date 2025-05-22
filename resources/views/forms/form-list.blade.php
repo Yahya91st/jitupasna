@@ -53,7 +53,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Form Pengumpulan Data Sektor</h5>
                         <p class="card-text">Formulir untuk mencatat distribusi bantuan kepada korban bencana.</p>
-                        <a href="{{ route('forms.form4.index') }}" class="btn btn-primary">Buka Form</a>
+                        <a href="{{ route('forms.form4.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,8 @@ use App\Http\Controllers\SatuanController;
 use App\Models\HSD;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\EnvironmentalDamageController;
+use App\Http\Controllers\FormsController;
+use App\Http\Controllers\Form4Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -76,28 +77,18 @@ Route::get('/get-nama-by-tipe/{tipe}', function ($tipe) {
     });
     return response()->json($namaList);
 })->middleware(['auth', 'verified']);
-Route::post('/upload-cropped-image', 'ImageController@uploadCroppedImage')->middleware(['auth', 'verified']);
+// Route::post('/upload-cropped-image', 'ImageController@uploadCroppedImage')->middleware(['auth', 'verified']);
 
 // Forms Routes
 Route::prefix('/forms')->middleware(['auth', 'verified'])->name('forms.')->group(function () {
-    Route::get('/', function() {
-        return view('forms.form-list');
-    })->name('index');
+    Route::get('/', [FormsController::class, 'index'])->name('index');
     
     // Form 4 (Sektor Perumahan)
     Route::prefix('form4')->name('form4.')->group(function() {
-        Route::get('/', function() {
-            return view('forms.form4');
-        })->name('index');
-        Route::get('/perumahan', function() {
-            return view('forms.form4.index');
-        })->name('perumahan');
-    });
-
-    // Form 17 (Sektor Lingkungan Hidup)
-    Route::prefix('format17')->name('format17.')->group(function() {
-        Route::get('/', [EnvironmentalDamageController::class, 'index'])->name('index');
-        Route::post('/store', [EnvironmentalDamageController::class, 'store'])->name('store');
+        Route::get('/', [Form4Controller::class, 'index'])->name('index');
+        Route::get('/perumahan', [Form4Controller::class, 'perumahan'])->name('perumahan');
+        Route::get('/format1form4', [Form4Controller::class, 'format1form4'])->name('format1form4');
+        Route::post('/store', [Form4Controller::class, 'store'])->name('store');
     });
 });
 

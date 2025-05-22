@@ -4,16 +4,28 @@
 <div class="page-heading">
     <div class="page-title mb-4">
         <h3>Form Pengumpulan Data Sektor</h3>
+        @if($bencana)
+            <div class="alert alert-light-primary color-primary mt-2">
+                <p>Bencana: {{ $bencana->kategori_bencana->nama }}</p>
+                <p>Tanggal: {{ $bencana->tanggal }}</p>
+                <p>Lokasi: 
+                    @foreach($bencana->desa as $desa)
+                        {{ $desa->nama }}@if(!$loop->last), @endif
+                    @endforeach
+                </p>
+            </div>
+        @endif
         <p class="text-subtitle text-muted">Pilih sektor yang akan didata</p>
     </div>
-    <div class="row">        <!-- Format 1 -->
+    <div class="row">        
+        <!-- Format 1 -->
         <div class="col-xl-3 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
                         <h5 class="card-title">Format 1 - Sektor Perumahan</h5>
                         <p class="card-text">Format pengumpulan data sektor perumahan.</p>
-                        <a href="{{ route('forms.form4.index') }}" class="btn btn-primary">Buka Form</a>
+                        <a href="{{ route('forms.form4.format1form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                     </div>
                 </div>
             </div>
@@ -221,7 +233,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 17 - Lingkungan Hidup</h5>
                         <p class="card-text">Format pengumpulan data sektor lingkungan hidup.</p>
-                        <a href="{{ route('forms.format17.index') }}" class="btn btn-primary">Buka Form</a>
+                        <a href="{{ route('forms.form4.format1form4', ['bencana_id' => $bencana->id ?? null]) }}" class="btn btn-primary">Buka Form</a>
                     </div>
                 </div>
             </div>
