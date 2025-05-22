@@ -222,7 +222,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 17 - Lingkungan Hidup</h5>
                         <p class="card-text">Format pengumpulan data sektor lingkungan hidup.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <a href="{{ route('forms.form4.format1form4') }}" class="btn btn-primary">Buka Form</a>
                     </div>
                 </div>
             </div>
