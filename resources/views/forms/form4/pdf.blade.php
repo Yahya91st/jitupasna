@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Sektor Perumahan - {{ $formPerumahan->nama_kampung }}</title>
     <style>
+        @page {
+            size: landscape;
+        }
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
@@ -30,12 +33,13 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
+            font-size: 11px; /* Ukuran font sedikit lebih kecil untuk landscape */
         }
-        table, th, td {
+        table, th, td { 
             border: 1px solid #ddd;
         }
         th, td {
-            padding: 8px;
+            padding: 6px 10px;
             text-align: left;
         }
         th {

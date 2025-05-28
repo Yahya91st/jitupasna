@@ -49,8 +49,11 @@
                             <a href="{{ route('forms.form4.show', $data->id) }}" class="btn btn-sm btn-info">
                                 <i class="fa fa-eye"></i> Detail
                             </a>
+                            <a href="{{ route('forms.form4.preview-pdf', $data->id) }}" class="btn btn-sm btn-secondary" target="_blank">
+                                <i class="fa fa-search"></i> Lihat PDF
+                            </a>
                             <a href="{{ route('forms.form4.pdf', $data->id) }}" class="btn btn-sm btn-primary" target="_blank">
-                                <i class="fa fa-download"></i> PDF
+                                <i class="fa fa-download"></i> Unduh PDF
                             </a>
                         </div>
                     </td>

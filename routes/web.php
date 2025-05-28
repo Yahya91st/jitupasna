@@ -91,6 +91,7 @@ Route::prefix('/forms')->middleware(['auth', 'verified'])->name('forms.')->group
         Route::post('/store', [Form4Controller::class, 'store'])->name('store');
         Route::get('/show/{id}', [Form4Controller::class, 'show'])->name('show');
         Route::get('/pdf/{id}', [Form4Controller::class, 'generatePdf'])->name('pdf');
+        Route::get('/preview-pdf/{id}', [Form4Controller::class, 'previewPdf'])->name('preview-pdf');
         Route::get('/list', [Form4Controller::class, 'listData'])->name('list');
     });
 });

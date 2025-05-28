@@ -14,9 +14,14 @@
         <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
             Kembali
         </a>
-        <a href="{{ route('forms.form4.pdf', $formPerumahan->id) }}" class="btn btn-primary" target="_blank">
-            <i class="fa fa-download mr-2"></i> Unduh PDF
-        </a>
+        <div class="flex gap-2">
+            <a href="{{ route('forms.form4.preview-pdf', $formPerumahan->id) }}" class="btn btn-info" target="_blank">
+                <i class="fa fa-eye mr-2"></i> Lihat PDF
+            </a>
+            <a href="{{ route('forms.form4.pdf', $formPerumahan->id) }}" class="btn btn-primary" target="_blank">
+                <i class="fa fa-download mr-2"></i> Unduh PDF
+            </a>
+        </div>
     </div>
     
     @if($bencana)

@@ -7,6 +7,7 @@ use App\Models\Bencana;
 use App\Models\FormPerumahan;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\PDF as DomPdf;
 
 class Form4Controller extends Controller
 {
@@ -114,7 +115,7 @@ class Form4Controller extends Controller
 
     /**
      * Generate PDF for form data
-     */
+     */ 
     public function generatePdf($id)
     {
         $formPerumahan = FormPerumahan::with('bencana.kategori_bencana', 'bencana.desa')->findOrFail($id);
@@ -183,7 +184,10 @@ class Form4Controller extends Controller
             'tanggal' => date('d-m-Y'),
         ];
         
-        $pdf = PDF::loadView('forms.form4.pdf', $data);
+        // Load view dengan DomPdf dan atur landscape
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('forms.form4.pdf', $data)
+            ->setPaper('a4', 'landscape');
         return $pdf->download('FormPerumahan_' . $formPerumahan->id . '.pdf');
     }
 
@@ -202,5 +206,83 @@ class Form4Controller extends Controller
         $formData = FormPerumahan::where('bencana_id', $bencana_id)->latest()->get();
         
         return view('forms.form4.list', compact('bencana', 'formData'));
+    }
+
+    /**
+     * Preview PDF tanpa download
+     */
+    public function previewPdf($id)
+    {
+        $formPerumahan = FormPerumahan::with('bencana.kategori_bencana', 'bencana.desa')->findOrFail($id);
+        $bencana = $formPerumahan->bencana;
+        
+        // Calculate totals
+        $totalRumahPermanen = (int)$formPerumahan->rumah_hancur_total_permanen + 
+                             (int)$formPerumahan->rumah_rusak_berat_permanen + 
+                             (int)$formPerumahan->rumah_rusak_sedang_permanen + 
+                             (int)$formPerumahan->rumah_rusak_ringan_permanen;
+        
+        $totalRumahNonPermanen = (int)$formPerumahan->rumah_hancur_total_non_permanen + 
+                                (int)$formPerumahan->rumah_rusak_berat_non_permanen + 
+                                (int)$formPerumahan->rumah_rusak_sedang_non_permanen + 
+                                (int)$formPerumahan->rumah_rusak_ringan_non_permanen;
+        
+        $totalJalanRusak = (float)$formPerumahan->jalan_rusak_berat + 
+                          (float)$formPerumahan->jalan_rusak_sedang + 
+                          (float)$formPerumahan->jalan_rusak_ringan;
+        
+        $totalSaluranRusak = (float)$formPerumahan->saluran_rusak_berat + 
+                            (float)$formPerumahan->saluran_rusak_sedang + 
+                            (float)$formPerumahan->saluran_rusak_ringan;
+        
+        $totalBalaiRusak = (int)$formPerumahan->balai_rusak_berat + 
+                          (int)$formPerumahan->balai_rusak_sedang;
+        
+        // Calculate estimated costs
+        $biayaRumahPermanen = $totalRumahPermanen * (float)$formPerumahan->harga_satuan_permanen;
+        $biayaRumahNonPermanen = $totalRumahNonPermanen * (float)$formPerumahan->harga_satuan_non_permanen;
+        $biayaJalan = $totalJalanRusak * (float)$formPerumahan->harga_satuan_jalan;
+        $biayaSaluran = $totalSaluranRusak * (float)$formPerumahan->harga_satuan_saluran;
+        $biayaBalai = $totalBalaiRusak * (float)$formPerumahan->harga_satuan_balai;
+        
+        $biayaHOK = (int)$formPerumahan->tenaga_kerja_hok * (float)$formPerumahan->upah_harian;
+        $biayaAlatBerat = (int)$formPerumahan->alat_berat_hari * (float)$formPerumahan->biaya_per_hari;
+        $biayaTenda = (int)$formPerumahan->jumlah_tenda * (float)$formPerumahan->harga_tenda;
+        $biayaBarak = (int)$formPerumahan->jumlah_barak * (float)$formPerumahan->harga_barak;
+        $biayaRumahSementara = (int)$formPerumahan->jumlah_rumah_sementara * (float)$formPerumahan->harga_rumah_sementara;
+        
+        $totalBiayaKerusakan = $biayaRumahPermanen + $biayaRumahNonPermanen + $biayaJalan + $biayaSaluran + $biayaBalai;
+        $totalBiayaKerugian = $biayaHOK + $biayaAlatBerat + (float)$formPerumahan->harga_sewa_per_bulan + $biayaTenda + $biayaBarak + $biayaRumahSementara;
+        $totalKeseluruhanBiaya = $totalBiayaKerusakan + $totalBiayaKerugian;
+        
+        $data = [
+            'formPerumahan' => $formPerumahan,
+            'bencana' => $bencana,
+            'totalRumahPermanen' => $totalRumahPermanen,
+            'totalRumahNonPermanen' => $totalRumahNonPermanen,
+            'totalJalanRusak' => $totalJalanRusak,
+            'totalSaluranRusak' => $totalSaluranRusak,
+            'totalBalaiRusak' => $totalBalaiRusak,
+            'biayaRumahPermanen' => $biayaRumahPermanen,
+            'biayaRumahNonPermanen' => $biayaRumahNonPermanen,
+            'biayaJalan' => $biayaJalan,
+            'biayaSaluran' => $biayaSaluran,
+            'biayaBalai' => $biayaBalai,
+            'biayaHOK' => $biayaHOK,
+            'biayaAlatBerat' => $biayaAlatBerat,
+            'biayaTenda' => $biayaTenda,
+            'biayaBarak' => $biayaBarak,
+            'biayaRumahSementara' => $biayaRumahSementara,
+            'totalBiayaKerusakan' => $totalBiayaKerusakan,
+            'totalBiayaKerugian' => $totalBiayaKerugian,
+            'totalKeseluruhanBiaya' => $totalKeseluruhanBiaya,
+            'tanggal' => date('d-m-Y'),
+        ];
+        
+        // Load view dengan DomPdf dan atur landscape
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('forms.form4.pdf', $data)
+            ->setPaper('a4', 'landscape');
+        return $pdf->stream('FormPerumahan_' . $formPerumahan->id . '.pdf');
     }
 }
