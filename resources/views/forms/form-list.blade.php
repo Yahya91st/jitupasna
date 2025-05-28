@@ -4,7 +4,16 @@
 <div class="page-heading">
     <div class="page-title mb-4">
         <h3>Daftar Form Lanjutan</h3>
-        <p class="text-subtitle text-muted">Pilih form yang ingin diisi</p>
+        @if($bencana)
+            <p class="text-subtitle text-muted">
+                Bencana: {{ $bencana->kategori_bencana->nama }} - Ref: {{ $bencana->Ref }} - Tanggal: {{ $bencana->tanggal }}
+                <a href="{{ route('bencana.index', ['source' => 'forms']) }}" class="btn btn-sm btn-outline-primary">
+                    Ganti Bencana
+                </a>
+            </p>
+        @else
+            <p class="text-subtitle text-muted">Pilih form yang ingin diisi</p>
+        @endif
     </div>
     <div class="row">
         <!-- Form 1 -->

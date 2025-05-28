@@ -16,6 +16,10 @@
             </div>
         @endif
         <p class="text-subtitle text-muted">Pilih sektor yang akan didata</p>
+        
+        <a href="{{ route('forms.form4.list', ['bencana_id' => $bencana->id]) }}" class="btn btn-info mb-4">
+            <i class="fa fa-list mr-2"></i> Lihat Data Form Perumahan yang Sudah Diisi
+        </a>
     </div>
     <div class="row">        
         <!-- Format 1 -->

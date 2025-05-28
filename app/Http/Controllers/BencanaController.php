@@ -23,6 +23,16 @@ class BencanaController extends Controller
             $bencanaQuery->where('kategori_bencana_id', '=', $request->input('kategori_bencana_id'));
         }
         $bencana = $bencanaQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+        
+        // Check if the request is from the forms module
+        $isFromForms = $request->has('source') && $request->input('source') === 'forms';
+        
+        if ($isFromForms) {
+            return view('bencana.form-select', [
+                'bencana' => $bencana,
+                'kategoribencana' => $kategoriBencana,
+            ]);
+        }
 
         return view('bencana.index', [
             'bencana' => $bencana,

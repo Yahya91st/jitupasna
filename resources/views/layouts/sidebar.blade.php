@@ -53,7 +53,7 @@
                             <a href="#">Kebutuhan</a>
                         </li>
                         <li>
-                            <a href="{{ route('forms.index') }}">Formulir</a>
+                            <a href="{{ route('bencana.index', ['source' => 'forms']) }}">Formulir</a>
                         </li>
                     </ul>
                 </li>

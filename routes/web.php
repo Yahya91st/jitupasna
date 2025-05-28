@@ -89,6 +89,9 @@ Route::prefix('/forms')->middleware(['auth', 'verified'])->name('forms.')->group
         Route::get('/perumahan', [Form4Controller::class, 'perumahan'])->name('perumahan');
         Route::get('/format1form4', [Form4Controller::class, 'format1form4'])->name('format1form4');
         Route::post('/store', [Form4Controller::class, 'store'])->name('store');
+        Route::get('/show/{id}', [Form4Controller::class, 'show'])->name('show');
+        Route::get('/pdf/{id}', [Form4Controller::class, 'generatePdf'])->name('pdf');
+        Route::get('/list', [Form4Controller::class, 'listData'])->name('list');
     });
 });
 

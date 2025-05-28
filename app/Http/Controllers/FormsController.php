@@ -12,9 +12,13 @@ class FormsController extends Controller
         $bencana_id = $request->input('bencana_id');
         $bencana = null;
         
-        if ($bencana_id) {
-            $bencana = Bencana::findOrFail($bencana_id);
+        // Redirect to bencana selection page if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
         }
+        
+        // Get bencana details if ID is provided
+        $bencana = Bencana::findOrFail($bencana_id);
 
         $forms = [
             [
@@ -39,7 +43,7 @@ class FormsController extends Controller
                 'id' => 4,
                 'nama' => 'Form Pengumpulan Data Sektor',
                 'deskripsi' => 'Formulir untuk mengumpulkan data per sektor.',
-                'route' => $bencana_id ? route('forms.form4.index', ['bencana_id' => $bencana_id]) : route('forms.form4.index')
+                'route' => route('forms.form4.index', ['bencana_id' => $bencana_id])
             ]
         ];
 
