@@ -43,6 +43,7 @@ return new class extends Migration
             // Balai Pertemuan
             $table->integer('balai_rusak_berat')->nullable();
             $table->integer('balai_rusak_sedang')->nullable();
+            $table->integer('balai_rusak_ringan')->nullable();
             $table->decimal('harga_satuan_balai', 15, 2)->nullable();
             
             // Pembersihan Puing

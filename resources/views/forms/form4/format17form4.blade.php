@@ -3,8 +3,10 @@
 @section('content')
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-6">Format 17 - Sektor Lingkungan Hidup</h1>
-    <form action="{{ route('forms.format17.store') }}" method="POST" class="space-y-8">
+    <form action="{{ route('forms.form4.store-format17') }}" method="POST" class="space-y-8">
         @csrf
+        <!-- Hidden field to pass bencana_id -->
+        <input type="hidden" name="bencana_id" value="{{ $bencana->id }}">
         
         <!-- Perkiraan Kerusakan -->
         <div class="bg-white p-6 rounded-lg shadow">
@@ -196,6 +198,20 @@
                                 <input type="number" name="jasa_rr[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             </div>
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RB</label>
+                                <input type="number" step="0.01" name="jasa_harga_rb[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RS</label>
+                                <input type="number" step="0.01" name="jasa_harga_rs[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RR</label>
+                                <input type="number" step="0.01" name="jasa_harga_rr[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button type="button" class="mt-2 px-4 py-2 bg-blue-500 text-black rounded hover:bg-blue-600" onclick="addJasaLingkungan()">
@@ -237,6 +253,20 @@
                                 <input type="number" name="air_rr[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             </div>
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RB</label>
+                                <input type="number" step="0.01" name="air_harga_rb[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RS</label>
+                                <input type="number" step="0.01" name="air_harga_rs[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RR</label>
+                                <input type="number" step="0.01" name="air_harga_rr[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button type="button" class="mt-2 px-4 py-2 bg-blue-500 text-black rounded hover:bg-blue-600" onclick="addPencemaranAir()">
@@ -276,6 +306,20 @@
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700">Rusak Ringan (RR)</label>
                                 <input type="number" name="udara_rr[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RB</label>
+                                <input type="number" step="0.01" name="udara_harga_rb[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RS</label>
+                                <input type="number" step="0.01" name="udara_harga_rs[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Harga Satuan RR</label>
+                                <input type="number" step="0.01" name="udara_harga_rr[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             </div>
                         </div>
                     </div>

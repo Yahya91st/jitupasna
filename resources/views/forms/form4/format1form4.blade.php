@@ -162,6 +162,10 @@
                             <label class="block text-sm font-medium text-gray-700">Rusak Sedang (unit)</label>
                             <input type="number" name="balai_rusak_sedang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Rusak Ringan (unit)</label>
+                            <input type="number" name="balai_rusak_ringan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
                     </div>
                     <div class="mt-2">
                         <label class="block text-sm font-medium text-gray-700">Harga Satuan per Unit</label>

@@ -88,12 +88,38 @@ Route::prefix('/forms')->middleware(['auth', 'verified'])->name('forms.')->group
         Route::get('/', [Form4Controller::class, 'index'])->name('index');
         Route::get('/perumahan', [Form4Controller::class, 'perumahan'])->name('perumahan');
         Route::get('/format1form4', [Form4Controller::class, 'format1form4'])->name('format1form4');
+        Route::get('/format7form4', [Form4Controller::class, 'format7form4'])->name('format7form4');
+        Route::get('/format17form4', [Form4Controller::class, 'format17form4'])->name('format17form4');
+        Route::get('/format16form4', [Form4Controller::class, 'format16form4'])->name('format16form4');
         Route::post('/store', [Form4Controller::class, 'store'])->name('store');
+        Route::post('/store-format7', [Form4Controller::class, 'storeFormat7'])->name('store-format7');
+        Route::post('/store-format17', [Form4Controller::class, 'storeFormat17'])->name('store-format17');
+        Route::post('/store-format16', [Form4Controller::class, 'storeFormat16'])->name('store-format16');
         Route::get('/show/{id}', [Form4Controller::class, 'show'])->name('show');
+        Route::get('/show-format17/{bencana_id}', [Form4Controller::class, 'showFormat17'])->name('show-format17');
+        Route::get('/show-format7/{bencana_id}', [Form4Controller::class, 'showFormat7'])->name('show-format7');
+        Route::get('/show-format16/{bencana_id}', [Form4Controller::class, 'showFormat16'])->name('show-format16');
+        Route::get('/show-format3/{bencana_id}', [Form4Controller::class, 'showFormat3'])->name('show-format3');
+        Route::get('/show-format2/{bencana_id}', [Form4Controller::class, 'showFormat2'])->name('show-format2');
+        Route::get('/list-format17', [Form4Controller::class, 'listFormat17'])->name('list-format17');
+        Route::get('/list-format7', [Form4Controller::class, 'listFormat7'])->name('list-format7');
+        Route::get('/list-format16', [Form4Controller::class, 'listFormat16'])->name('list-format16');
+        Route::get('/list-format3', [Form4Controller::class, 'listFormat3'])->name('list-format3');
+        Route::get('/list-format2', [Form4Controller::class, 'listFormat2'])->name('list-format2');
         Route::get('/pdf/{id}', [Form4Controller::class, 'generatePdf'])->name('pdf');
         Route::get('/preview-pdf/{id}', [Form4Controller::class, 'previewPdf'])->name('preview-pdf');
+        Route::get('/format17-pdf/{bencana_id}', [Form4Controller::class, 'generateFormat17Pdf'])->name('format17-pdf');
+        Route::get('/format17-preview-pdf/{bencana_id}', [Form4Controller::class, 'previewFormat17Pdf'])->name('format17-preview-pdf');
+        Route::get('/format16-pdf/{bencana_id}', [Form4Controller::class, 'generateFormat16Pdf'])->name('format16-pdf');
+        Route::get('/format16-preview-pdf/{bencana_id}', [Form4Controller::class, 'previewFormat16Pdf'])->name('format16-preview-pdf');
         Route::get('/list', [Form4Controller::class, 'listData'])->name('list');
     });
+    
+    // Format 17 (Lingkungan Hidup)
+    // Note: This group is redundant since we're using the route from forms.form4 namespace
+    // Route::prefix('format17')->name('format17.')->group(function() {
+    //     Route::post('/store', [Form4Controller::class, 'storeFormat17'])->name('store');
+    // });
 });
 
 require __DIR__ . '/auth.php';

@@ -1,6 +1,35 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+.d-flex {
+    display: flex;
+}
+.gap-2 {
+    gap: 0.5rem;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+.btn-outline-info {
+    color: #17a2b8;
+    border-color: #17a2b8;
+}
+.btn-outline-info:hover {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+.btn-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+}
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+</style>
 <div class="page-heading">
     <div class="page-title mb-4">
         <h3>Form Pengumpulan Data Sektor</h3>
@@ -17,9 +46,7 @@
         @endif
         <p class="text-subtitle text-muted">Pilih sektor yang akan didata</p>
         
-        <a href="{{ route('forms.form4.list', ['bencana_id' => $bencana->id]) }}" class="btn btn-info mb-4">
-            <i class="fa fa-list mr-2"></i> Lihat Data Form Perumahan yang Sudah Diisi
-        </a>
+        <!-- Redundant "Lihat Data" buttons removed as each format card already has its own button -->
     </div>
     <div class="row">        
         <!-- Format 1 -->
@@ -29,7 +56,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 1 - Sektor Perumahan</h5>
                         <p class="card-text">Format pengumpulan data sektor perumahan.</p>
-                        <a href="{{ route('forms.form4.format1form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('forms.form4.format1form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,7 +74,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 2 - Sektor Pendidikan</h5>
                         <p class="card-text">Format pengumpulan data sektor pendidikan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.show-format2', $bencana->id) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -55,7 +92,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 3 - Sektor Kesehatan</h5>
                         <p class="card-text">Format pengumpulan data sektor kesehatan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.show-format3', $bencana->id) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,7 +110,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 4 - Perlindungan Sosial</h5>
                         <p class="card-text">Format pengumpulan data sektor perlindungan sosial.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 4 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,7 +128,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 5 - Sektor Keagamaan</h5>
                         <p class="card-text">Format pengumpulan data sektor keagamaan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 5 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,7 +146,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 6 - Air Minum</h5>
                         <p class="card-text">Format pengumpulan data sektor sarana dan prasarana air minum.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 6 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,7 +164,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 7 - Transportasi</h5>
                         <p class="card-text">Format pengumpulan data sektor transportasi.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('forms.form4.format7form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.show-format7', $bencana->id) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,7 +182,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 8 - Sektor Listrik</h5>
                         <p class="card-text">Format laporan sektor listrik.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 8 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,7 +200,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 9 - Sektor Telkom</h5>
                         <p class="card-text">Format pengumpulan data sektor Telkom.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 9 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,7 +218,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 10 - Pertanian</h5>
                         <p class="card-text">Format pengumpulan data sektor pertanian/perkebunan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 10 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -159,7 +236,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 11 - Peternakan</h5>
                         <p class="card-text">Format pengumpulan data sektor peternakan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 11 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -172,7 +254,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 12 - Perikanan</h5>
                         <p class="card-text">Format pengumpulan data sektor perikanan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 12 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,7 +272,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 13 - Industri/UMKM</h5>
                         <p class="card-text">Format pengumpulan data sektor industri dan UMKM.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 13 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,7 +290,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 14 - Perdagangan</h5>
                         <p class="card-text">Format pengumpulan data sektor perdagangan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 14 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -211,7 +308,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 15 - Pariwisata</h5>
                         <p class="card-text">Format pengumpulan data sektor pariwisata.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 15 - Fitur Lihat Data belum tersedia')">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,7 +326,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 16 - Pemerintahan</h5>
                         <p class="card-text">Format pengumpulan data sektor pemerintahan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('forms.form4.format16form4', ['bencana_id' => $bencana->id ?? null]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.show-format16', $bencana->id) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -237,7 +344,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Format 17 - Lingkungan Hidup</h5>
                         <p class="card-text">Format pengumpulan data sektor lingkungan hidup.</p>
-                        <a href="{{ route('forms.form4.format1form4', ['bencana_id' => $bencana->id ?? null]) }}" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('forms.form4.format17form4', ['bencana_id' => $bencana->id ?? null]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.show-format17', $bencana->id) }}" class="btn btn-outline-success">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

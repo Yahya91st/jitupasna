@@ -232,6 +232,7 @@
             <tr>
                 <th>Rusak Berat</th>
                 <th>Rusak Sedang</th>
+                <th>Rusak Ringan</th>
                 <th>Total</th>
             </tr>
         </thead>
@@ -239,6 +240,7 @@
             <tr>
                 <td>{{ $formPerumahan->balai_rusak_berat ?? 0 }}</td>
                 <td>{{ $formPerumahan->balai_rusak_sedang ?? 0 }}</td>
+                <td>{{ $formPerumahan->balai_rusak_ringan ?? 0 }}</td>
                 <td>{{ $totalBalaiRusak }}</td>
             </tr>
             <tr class="total-row">

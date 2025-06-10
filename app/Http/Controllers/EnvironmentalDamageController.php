@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EnvironmentalDamage;
-use App\Models\EnvironmentalLoss;
+use App\Models\EnvironmentalReport;
 use Illuminate\Http\Request;
 
 class EnvironmentalDamageController extends Controller
@@ -46,18 +45,27 @@ class EnvironmentalDamageController extends Controller
             'jasa_rb.*' => 'nullable|integer',
             'jasa_rs.*' => 'nullable|integer',
             'jasa_rr.*' => 'nullable|integer',
+            'jasa_harga_rb.*' => 'nullable|numeric',
+            'jasa_harga_rs.*' => 'nullable|numeric',
+            'jasa_harga_rr.*' => 'nullable|numeric',
             
             'air_jenis_kerugian.*' => 'required|string',
             'air_dasar_perhitungan.*' => 'nullable|string',
             'air_rb.*' => 'nullable|integer',
             'air_rs.*' => 'nullable|integer',
             'air_rr.*' => 'nullable|integer',
+            'air_harga_rb.*' => 'nullable|numeric',
+            'air_harga_rs.*' => 'nullable|numeric',
+            'air_harga_rr.*' => 'nullable|numeric',
             
             'udara_jenis_kerugian.*' => 'required|string',
             'udara_dasar_perhitungan.*' => 'nullable|string',
             'udara_rb.*' => 'nullable|integer',
             'udara_rs.*' => 'nullable|integer',
             'udara_rr.*' => 'nullable|integer',
+            'udara_harga_rb.*' => 'nullable|numeric',
+            'udara_harga_rs.*' => 'nullable|numeric', 
+            'udara_harga_rr.*' => 'nullable|numeric'
         ]);
 
         // Store Environmental Damages
@@ -79,8 +87,9 @@ class EnvironmentalDamageController extends Controller
         $count = count($request->input("{$type}_jenis_kerusakan", []));
         
         for ($i = 0; $i < $count; $i++) {
-            EnvironmentalDamage::create([
+            EnvironmentalReport::create([
                 'bencana_id' => session('bencana_id'), // Make sure to set this in your session
+                'report_type' => 'damage',
                 'ekosistem' => $type,
                 'jenis_kerusakan' => $request->input("{$type}_jenis_kerusakan.{$i}"),
                 'rb' => $request->input("{$type}_rb.{$i}"),
@@ -98,15 +107,20 @@ class EnvironmentalDamageController extends Controller
         $count = count($request->input("{$type}_jenis_kerugian", []));
         
         for ($i = 0; $i < $count; $i++) {
-            EnvironmentalLoss::create([
+            $data = [
                 'bencana_id' => session('bencana_id'), // Make sure to set this in your session
+                'report_type' => 'loss',
                 'jenis_kerugian' => $jenis_kerugian,
                 'jenis' => $request->input("{$type}_jenis_kerugian.{$i}"),
                 'dasar_perhitungan' => $request->input("{$type}_dasar_perhitungan.{$i}"),
                 'rb' => $request->input("{$type}_rb.{$i}"),
                 'rs' => $request->input("{$type}_rs.{$i}"),
                 'rr' => $request->input("{$type}_rr.{$i}"),
-            ]);
+                'harga_rb' => $request->input("{$type}_harga_rb.{$i}") ? $request->input("{$type}_harga_rb.{$i}") : 0,
+                'harga_rs' => $request->input("{$type}_harga_rs.{$i}") ? $request->input("{$type}_harga_rs.{$i}") : 0,
+                'harga_rr' => $request->input("{$type}_harga_rr.{$i}") ? $request->input("{$type}_harga_rr.{$i}") : 0,
+            ];
+            EnvironmentalReport::create($data);
         }
     }
 }
