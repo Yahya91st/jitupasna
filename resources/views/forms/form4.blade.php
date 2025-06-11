@@ -58,7 +58,7 @@
                         <p class="card-text">Format pengumpulan data sektor perumahan.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format1form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="{{ route('forms.form4.list', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
+                            <a href="{{ route('forms.form4.list-format1', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>

@@ -141,7 +141,7 @@ class Form4Controller extends Controller
             DB::commit();
 
             // Redirect to show page where user can see data and download PDF
-            return redirect()->route('forms.form4.show', $formPerumahan->id)
+            return redirect()->route('forms.form4.show-format1', $formPerumahan->id)
                 ->with('success', 'Data berhasil disimpan. Anda dapat mengunduh PDF data ini.');
 
         } catch (\Exception $e) {
@@ -669,7 +669,7 @@ class Form4Controller extends Controller
     /**
      * Show a specific form data
      */
-    public function show($id)
+    public function showFormat1($id)
     {
         $formPerumahan = FormPerumahan::with('bencana')->findOrFail($id);
         $bencana = $formPerumahan->bencana;
@@ -758,7 +758,7 @@ class Form4Controller extends Controller
     /**
      * List all form data for a bencana
      */
-    public function listData(Request $request)
+    public function listFormat1(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -769,7 +769,7 @@ class Form4Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
         $formData = FormPerumahan::where('bencana_id', $bencana_id)->latest()->get();
         
-        return view('forms.form4.list', compact('bencana', 'formData'));
+        return view('forms.form4.format1list', compact('bencana', 'formData'));
     }
 
     /**

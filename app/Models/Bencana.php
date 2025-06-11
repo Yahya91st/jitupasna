@@ -12,6 +12,13 @@ class Bencana extends Model
     protected $table = 'bencana';
 
     protected $fillable = ['kategori_bencana_id', 'tanggal', 'kecamatan_id', 'latitude', 'longitude', 'Ref','deskripsi','gambar'];
+    
+    protected $appends = ['nama_bencana'];
+    
+    public function getNamaBencanaAttribute()
+    {
+        return $this->Ref;
+    }
 
     public function kategori_bencana()
     {
@@ -26,6 +33,11 @@ class Bencana extends Model
     public function kerugian()
     {
         return $this->hasMany(Kerugian::class, 'bencana_id', 'id');
+    }
+
+    public function rumahtangga()
+    {
+        return $this->hasMany(Rumahtangga::class, 'bencana_id', 'id');
     }
 
     public function desa()

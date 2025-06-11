@@ -19,7 +19,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register-custom');
     }
 
     /**
@@ -40,6 +40,9 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        
+        // Assign default 'user' role
+        $user->assignRole('user');
 
         event(new Registered($user));
 

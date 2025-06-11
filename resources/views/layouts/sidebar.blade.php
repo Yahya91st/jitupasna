@@ -14,10 +14,12 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                
+                @role('admin')
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="layers" width="20"></i>
-                        <span>Kategori</span>
+                        <span>Kategori (Admin)</span>
                     </a>
                     <ul class="submenu ">
                         <li>
@@ -34,12 +36,15 @@
                         </li>
                     </ul>
                 </li>
+                @endrole
+                
                 <li class="sidebar-item has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="triangle" width="20"></i>
                         <span>Jitupasna</span>
                     </a>
                     <ul class="submenu ">
+                        @role('admin')
                         <li>
                             <a href="{{ route('bencana.index') }}">Bencana</a>
                         </li>
@@ -52,11 +57,21 @@
                         <li>
                             <a href="#">Kebutuhan</a>
                         </li>
+                        @endrole
                         <li>
                             <a href="{{ route('bencana.index', ['source' => 'forms']) }}">Formulir</a>
                         </li>
                     </ul>
                 </li>
+
+                @role('admin')
+                <li class="sidebar-item">
+                    <a href="{{ route('users.index') }}" class='sidebar-link'>
+                        <i data-feather="users" width="20"></i>
+                        <span>Manajemen Pengguna</span>
+                    </a>
+                </li>
+                @endrole
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

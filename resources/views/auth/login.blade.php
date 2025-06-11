@@ -67,11 +67,12 @@
                                     <input type="checkbox" id="remember_me" class='form-check-input' name="remember">
                                     <label for="checkbox1">Remember me</label>
                                 </div>
-                                {{-- <div class="float-right">
-                                    <a href="auth-register.html">Don't have an account?</a>
-                                </div> --}}
+                                <div class="float-right">
+                                    <a href="{{ route('register') }}">Don't have an account?</a>
+                                </div>
                             </div>
                             <div class="clearfix">
+                                <a href="{{ route('register') }}" class="btn btn-secondary float-left">Register</a>
                                 <button class="btn btn-primary float-right">Submit</button>
                             </div>
                         </form>

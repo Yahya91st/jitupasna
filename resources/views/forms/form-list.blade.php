@@ -1,5 +1,26 @@
 @extends('layouts.main')
 
+@push('style')
+<style>
+    .card {
+        height: 100%;
+    }
+    .card-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    .card-text {
+        flex: 1;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="page-heading">
     <div class="page-title mb-4">
@@ -14,161 +35,128 @@
         @else
             <p class="text-subtitle text-muted">Pilih form yang ingin diisi</p>
         @endif
+        <div class="mt-2">
+            <span class="badge bg-info">Pengguna JITUPASNA</span>
+        </div>
     </div>
     <div class="row">
-        <!-- Form 1 -->
+        
+        <!-- Form 1 - Available to both admin and regular users -->
         <div class="col-xl-3 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <h5 class="card-title">Form Analisis Kebutuhan Darurat</h5>
-                        <p class="card-text">Formulir untuk menganalisis kebutuhan tanggap darurat bencana.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <h5 class="card-title">Form Surat Permohonan Keterlibatan PDNA</h5>
+                        <p class="card-text">Formulir untuk memohon keterlibatan kementerian/lembaga dalam Pengkajian Kebutuhan Pascabencana.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form1.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form1.list-form1', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Form 2 -->
+        
+        <!-- Form 2 - Available to both admin and regular users -->
         <div class="col-xl-3 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
                         <h5 class="card-title">Form Penilaian Kerusakan</h5>
                         <p class="card-text">Formulir untuk menilai tingkat kerusakan infrastruktur pasca bencana.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form2.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form2.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Form 3 -->
+        
+        <!-- Form 3 - Available to all users -->
         <div class="col-xl-3 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <h5 class="card-title">Form Evakuasi dan Pengungsian</h5>
-                        <p class="card-text">Formulir untuk mencatat data evakuasi dan kondisi pengungsian.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <h5 class="card-title">Form Pendataan ke OPD</h5>
+                        <p class="card-text">Formulir untuk pendataan dan pengumpulan data sebelum dan sesudah bencana.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form3.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form3.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Form 4 -->
+        
+        <!-- Form 4 - Available to both admin and regular users -->
         <div class="col-xl-3 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
                         <h5 class="card-title">Form Pengumpulan Data Sektor</h5>
-                        <p class="card-text">Formulir untuk mencatat distribusi bantuan kepada korban bencana.</p>
-                        <a href="{{ route('forms.form4.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                        <p class="card-text">Formulir untuk mengumpulkan data per sektor.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form4.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Form 5 -->
+        <!-- Form 6 - Available to both admin and regular users -->
         <div class="col-xl-3 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <h5 class="card-title">Form Kesehatan dan Medis</h5>
-                        <p class="card-text">Formulir untuk mencatat kondisi kesehatan dan kebutuhan medis.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
+                        <h5 class="card-title">Form Pendataan Tingkat Rumahtangga</h5>
+                        <p class="card-text">Formulir untuk pendataan kerusakan dan kebutuhan tingkat rumahtangga pasca bencana.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form6.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form6.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form 7 - Available to both admin and regular users -->
+        <div class="col-xl-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <h5 class="card-title">Form Diskusi Kelompok Terfokus (FGD)</h5>
+                        <p class="card-text">Formulir untuk pencatatan hasil Focus Group Discussion (FGD) pascabencana.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form7.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form7.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Form 6 -->
-        <div class="col-xl-3 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-body">
-                        <h5 class="card-title">Form Logistik dan Persediaan</h5>
-                        <p class="card-text">Formulir untuk manajemen logistik dan persediaan bantuan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form 7 -->
-        <div class="col-xl-3 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-body">
-                        <h5 class="card-title">Form Koordinasi Relawan</h5>
-                        <p class="card-text">Formulir untuk koordinasi dan penugasan relawan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form 8 -->
-        <div class="col-xl-3 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-body">
-                        <h5 class="card-title">Form Pemulihan Infrastruktur</h5>
-                        <p class="card-text">Formulir untuk perencanaan pemulihan infrastruktur.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form 9 -->
-        <div class="col-xl-3 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-body">
-                        <h5 class="card-title">Form Dampak Lingkungan</h5>
-                        <p class="card-text">Formulir untuk menilai dampak bencana terhadap lingkungan.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form 10 -->
-        <div class="col-xl-3 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-body">
-                        <h5 class="card-title">Form Pendataan Korban</h5>
-                        <p class="card-text">Formulir untuk pendataan korban dan pengungsi bencana.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form 11 -->
-        <div class="col-xl-3 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-body">
-                        <h5 class="card-title">Form Evaluasi Program</h5>
-                        <p class="card-text">Formulir untuk evaluasi program penanganan bencana.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Form 12 -->
-        <div class="col-xl-3 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-body">
-                        <h5 class="card-title">Form Pelaporan Akhir</h5>
-                        <p class="card-text">Formulir untuk pelaporan akhir penanganan bencana.</p>
-                        <a href="#" class="btn btn-primary">Buka Form</a>
-                    </div>
-                </div>
+        <!-- Additional forms can be added here in the future as needed -->
+        <div class="col-xl-12 col-md-12 col-sm-12 mt-4">
+            <div class="alert alert-info">
+                <h4 class="alert-heading">Informasi</h4>
+                <p>
+                    Formulir tambahan akan tersedia di masa mendatang.
+                    Untuk saat ini, silahkan gunakan formulir yang telah tersedia di atas.
+                </p>
             </div>
         </div>
     </div>
