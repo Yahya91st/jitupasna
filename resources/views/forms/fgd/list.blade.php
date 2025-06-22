@@ -7,9 +7,11 @@
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Daftar Diskusi Kelompok Terfokus (FGD)</h3>
                 <p class="text-subtitle text-muted">Daftar seluruh pencatatan Diskusi Kelompok Terfokus (FGD)</p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
+            </div>            <div class="col-12 col-md-6 order-md-2 order-first">
                 <div class="float-end">
+                    <a href="{{ route('forms.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-secondary me-2">
+                        <i class="bi bi-arrow-left"></i> Kembali
+                    </a>
                     <a href="{{ route('forms.form7.index') }}" class="btn btn-primary">
                         <i class="bi bi-plus"></i> Tambah FGD Baru
                     </a>
@@ -55,20 +57,19 @@
                             <td>{{ \Carbon\Carbon::parse($fgd->tanggal)->format('d F Y') }}</td>
                             <td>{{ $fgd->desa_kelurahan }}, {{ $fgd->kecamatan }}</td>
                             <td>{{ $fgd->jumlah_peserta }} orang</td>
-                            <td>{{ $fgd->fasilitator }}</td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a href="{{ route('forms.form7.show', $fgd->id) }}" class="btn btn-sm btn-primary" title="Detail">
-                                        <i class="bi bi-eye"></i>
+                            <td>{{ $fgd->fasilitator }}</td>                            <td>
+                                <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
+                                    <a href="{{ route('forms.form7.show', $fgd->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
+                                        <i class="bi bi-eye"></i> Detail
                                     </a>
                                     <a href="{{ route('forms.form7.edit', $fgd->id) }}" class="btn btn-sm btn-warning" title="Edit">
-                                        <i class="bi bi-pencil-square"></i>
+                                        <i class="bi bi-pencil-square"></i> Edit
                                     </a>
-                                    <a href="{{ route('forms.form7.preview-pdf', $fgd->id) }}" class="btn btn-sm btn-info" target="_blank" title="Pratinjau PDF">
-                                        <i class="bi bi-file-earmark-pdf"></i>
+                                    <a href="{{ route('forms.form7.preview-pdf', $fgd->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
+                                        <i class="bi bi-file-earmark-pdf"></i> Lihat PDF
                                     </a>
-                                    <a href="{{ route('forms.form7.pdf', $fgd->id) }}" class="btn btn-sm btn-success" title="Unduh PDF">
-                                        <i class="bi bi-download"></i>
+                                    <a href="{{ route('forms.form7.pdf', $fgd->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
+                                        <i class="bi bi-download"></i> Unduh PDF
                                     </a>
                                 </div>
                             </td>

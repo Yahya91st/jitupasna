@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Bencana;
 use App\Models\KategoriBangunan;
+use App\Models\KategoriBencana;
 use App\Models\Kerugian;
 use App\Models\Satuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class KerugianController extends Controller
 {
@@ -22,6 +24,72 @@ class KerugianController extends Controller
 
         return view('kerugian.index', [
             'kerugian' => $kerugian,
+        ]);
+    }
+    
+    /**
+     * Display a list of disasters for kerugian view
+     */
+    public function list(Request $request)
+    {
+        $kategoriBencana = KategoriBencana::query()->get();
+        $bencanaQuery = Bencana::query()->with('desa')->with('kategori_bencana')->latest();
+        
+        if ($request->filled('kategori_bencana_id')) {
+            $bencanaQuery->where('kategori_bencana_id', '=', $request->input('kategori_bencana_id'));
+        }
+        
+        $bencana = $bencanaQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+
+        return view('kerugian.list', [
+            'bencana' => $bencana,
+            'kategoribencana' => $kategoriBencana,
+        ]);
+    }
+    
+    /**
+     * Display details of kerugian for a specific bencana
+     */
+    public function detail($id)
+    {
+        // Get bencana information
+        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($id);
+        
+        // Get all kerugian data for this bencana
+        $kerugianData = Kerugian::where('bencana_id', $id)
+            ->with(['satuan'])
+            ->get();
+            
+        // Calculate total kerugian
+        $totalKerugian = $kerugianData->sum('BiayaKeseluruhan');
+        
+        // Count number of sectors
+        $jumlahSektor = $kerugianData->groupBy('tipe')->count();
+        
+        // Group by sector
+        $sektorMapping = [
+            1 => 'Pariwisata',
+            2 => 'Pertanian',
+            3 => 'Transportasi',
+            0 => 'Lainnya'
+        ];
+        
+        $kerugianBySektor = $kerugianData->groupBy('tipe')
+            ->map(function($group, $key) use ($sektorMapping) {
+                $sektorName = $sektorMapping[$key] ?? 'Lainnya';
+                return [
+                    'name' => $sektorName,
+                    'value' => $group->sum('BiayaKeseluruhan')
+                ];
+            })
+            ->pluck('value', 'name');
+        
+        return view('kerugian.detail', [
+            'bencana' => $bencana,
+            'kerugianData' => $kerugianData,
+            'totalKerugian' => $totalKerugian,
+            'jumlahSektor' => $jumlahSektor,
+            'kerugianBySektor' => $kerugianBySektor
         ]);
     }
 
@@ -116,7 +184,17 @@ class KerugianController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $kerugian = Kerugian::with(['bencana', 'satuan'])
+            ->findOrFail($id);
+            
+        // Calculate totals
+        $totalBiaya = $kerugian->BiayaKeseluruhan ?? 0;
+        
+        return view('kerugian.show', [
+            'kerugian' => $kerugian,
+            'totalBiaya' => $totalBiaya,
+            'bencana' => $kerugian->bencana
+        ]);
     }
 
     /**

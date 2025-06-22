@@ -16,6 +16,7 @@ class EnvironmentalDamageController extends Controller
     {
         // Validate request
         $request->validate([
+            // Damage validators
             'darat_jenis_kerusakan.*' => 'required|string',
             'darat_rb.*' => 'nullable|integer',
             'darat_rs.*' => 'nullable|integer',
@@ -33,13 +34,14 @@ class EnvironmentalDamageController extends Controller
             'laut_harga_rr.*' => 'nullable|numeric',
             
             'udara_jenis_kerusakan.*' => 'required|string',
-            'udara_rb.*' => 'nullable|integer',
-            'udara_rs.*' => 'nullable|integer',
-            'udara_rr.*' => 'nullable|integer',
-            'udara_harga_rb.*' => 'nullable|numeric',
-            'udara_harga_rs.*' => 'nullable|numeric',
-            'udara_harga_rr.*' => 'nullable|numeric',
+            'udara_damage_rb.*' => 'nullable|integer',
+            'udara_damage_rs.*' => 'nullable|integer',
+            'udara_damage_rr.*' => 'nullable|integer',
+            'udara_damage_harga_rb.*' => 'nullable|numeric',
+            'udara_damage_harga_rs.*' => 'nullable|numeric',
+            'udara_damage_harga_rr.*' => 'nullable|numeric',
             
+            // Loss validators
             'jasa_jenis_kerugian.*' => 'required|string',
             'jasa_dasar_perhitungan.*' => 'nullable|string',
             'jasa_rb.*' => 'nullable|integer',
@@ -60,12 +62,12 @@ class EnvironmentalDamageController extends Controller
             
             'udara_jenis_kerugian.*' => 'required|string',
             'udara_dasar_perhitungan.*' => 'nullable|string',
-            'udara_rb.*' => 'nullable|integer',
-            'udara_rs.*' => 'nullable|integer',
-            'udara_rr.*' => 'nullable|integer',
-            'udara_harga_rb.*' => 'nullable|numeric',
-            'udara_harga_rs.*' => 'nullable|numeric', 
-            'udara_harga_rr.*' => 'nullable|numeric'
+            'udara_loss_rb.*' => 'nullable|integer',
+            'udara_loss_rs.*' => 'nullable|integer',
+            'udara_loss_rr.*' => 'nullable|integer',
+            'udara_loss_harga_rb.*' => 'nullable|numeric',
+            'udara_loss_harga_rs.*' => 'nullable|numeric', 
+            'udara_loss_harga_rr.*' => 'nullable|numeric'
         ]);
 
         // Store Environmental Damages
@@ -87,17 +89,19 @@ class EnvironmentalDamageController extends Controller
         $count = count($request->input("{$type}_jenis_kerusakan", []));
         
         for ($i = 0; $i < $count; $i++) {
+            $prefix = ($type === 'udara') ? "{$type}_damage" : $type;
+            
             EnvironmentalReport::create([
                 'bencana_id' => session('bencana_id'), // Make sure to set this in your session
                 'report_type' => 'damage',
                 'ekosistem' => $type,
                 'jenis_kerusakan' => $request->input("{$type}_jenis_kerusakan.{$i}"),
-                'rb' => $request->input("{$type}_rb.{$i}"),
-                'rs' => $request->input("{$type}_rs.{$i}"),
-                'rr' => $request->input("{$type}_rr.{$i}"),
-                'harga_rb' => $request->input("{$type}_harga_rb.{$i}"),
-                'harga_rs' => $request->input("{$type}_harga_rs.{$i}"),
-                'harga_rr' => $request->input("{$type}_harga_rr.{$i}"),
+                'rb' => $request->input("{$prefix}_rb.{$i}"),
+                'rs' => $request->input("{$prefix}_rs.{$i}"),
+                'rr' => $request->input("{$prefix}_rr.{$i}"),
+                'harga_rb' => $request->input("{$prefix}_harga_rb.{$i}"),
+                'harga_rs' => $request->input("{$prefix}_harga_rs.{$i}"),
+                'harga_rr' => $request->input("{$prefix}_harga_rr.{$i}"),
             ]);
         }
     }
@@ -107,18 +111,20 @@ class EnvironmentalDamageController extends Controller
         $count = count($request->input("{$type}_jenis_kerugian", []));
         
         for ($i = 0; $i < $count; $i++) {
+            $prefix = ($type === 'udara') ? "{$type}_loss" : $type;
+            
             $data = [
                 'bencana_id' => session('bencana_id'), // Make sure to set this in your session
                 'report_type' => 'loss',
                 'jenis_kerugian' => $jenis_kerugian,
                 'jenis' => $request->input("{$type}_jenis_kerugian.{$i}"),
                 'dasar_perhitungan' => $request->input("{$type}_dasar_perhitungan.{$i}"),
-                'rb' => $request->input("{$type}_rb.{$i}"),
-                'rs' => $request->input("{$type}_rs.{$i}"),
-                'rr' => $request->input("{$type}_rr.{$i}"),
-                'harga_rb' => $request->input("{$type}_harga_rb.{$i}") ? $request->input("{$type}_harga_rb.{$i}") : 0,
-                'harga_rs' => $request->input("{$type}_harga_rs.{$i}") ? $request->input("{$type}_harga_rs.{$i}") : 0,
-                'harga_rr' => $request->input("{$type}_harga_rr.{$i}") ? $request->input("{$type}_harga_rr.{$i}") : 0,
+                'rb' => $request->input("{$prefix}_rb.{$i}"),
+                'rs' => $request->input("{$prefix}_rs.{$i}"),
+                'rr' => $request->input("{$prefix}_rr.{$i}"),
+                'harga_rb' => $request->input("{$prefix}_harga_rb.{$i}") ? $request->input("{$prefix}_harga_rb.{$i}") : 0,
+                'harga_rs' => $request->input("{$prefix}_harga_rs.{$i}") ? $request->input("{$prefix}_harga_rs.{$i}") : 0,
+                'harga_rr' => $request->input("{$prefix}_harga_rr.{$i}") ? $request->input("{$prefix}_harga_rr.{$i}") : 0,
             ];
             EnvironmentalReport::create($data);
         }

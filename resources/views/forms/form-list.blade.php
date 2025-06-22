@@ -149,13 +149,103 @@
             </div>
         </div>
 
-        <!-- Additional forms can be added here in the future as needed -->
+        <!-- Form 8 - Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian -->
+        <div class="col-xl-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <h5 class="card-title">Form Pengolahan dan Analisis Data</h5>
+                        <p class="card-text">Formulir pengolahan dan analisis data penilaian kerusakan dan kerugian pascabencana.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form8.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form8.listPenilaian', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form 9 - Pengolahan Data dan Kuesioner -->
+        <div class="col-xl-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <h5 class="card-title">Form Pengolahan Data dan Kuesioner</h5>
+                        <p class="card-text">Formulir kuesioner untuk pendataan dampak bencana terhadap masyarakat.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form9.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form9.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form 10 - Analisa Data Akibat terhadap Akses, Fungsi, dan Resiko -->
+        <div class="col-xl-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <h5 class="card-title">Form Analisa Data Akibat</h5>
+                        <p class="card-text">Formulir untuk analisa data akibat terhadap akses, fungsi, dan risiko pascabencana.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form10.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form10.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form 11 - Rekapitulasi Kebutuhan Pascabencana (PDNA) -->
+        <div class="col-xl-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <h5 class="card-title">Form Rekapitulasi Kebutuhan</h5>
+                        <p class="card-text">Formulir untuk rekapitulasi kebutuhan pascabencana dengan prioritas dan penanggung jawab.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form11.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form11.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form 12 - Standar Penyusunan Kegiatan dan Anggaran untuk PKPB -->
+        <div class="col-xl-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <h5 class="card-title">Form Standar Anggaran PKPB</h5>
+                        <p class="card-text">Formulir untuk penyusunan kegiatan dan anggaran pemulihan kebutuhan pascabencana dengan indeks biaya.</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('forms.form12.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form12.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-outline-info">
+                                <i class="fa fa-eye"></i> Lihat Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional forms would be added here if needed -->
         <div class="col-xl-12 col-md-12 col-sm-12 mt-4">
             <div class="alert alert-info">
                 <h4 class="alert-heading">Informasi</h4>
                 <p>
-                    Formulir tambahan akan tersedia di masa mendatang.
-                    Untuk saat ini, silahkan gunakan formulir yang telah tersedia di atas.
+                    Seluruh formulir untuk pengkajian dan penilaian kebutuhan pascabencana telah tersedia.
+                    Silahkan gunakan formulir sesuai dengan kebutuhan pengkajian Anda.
                 </p>
             </div>
         </div>

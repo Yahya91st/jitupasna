@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class Form2Controller extends Controller
-{
-    /**
+{    /**
      * Display the form for creating a new Surat Keputusan.
      */
     public function index(Request $request)
@@ -24,7 +23,7 @@ class Form2Controller extends Controller
             $bencana = Bencana::find($bencana_id);
         }
         
-        return view('forms.form2', compact('bencana'));
+        return view('forms.form2.form2', compact('bencana'));
     }
     
     /**
@@ -81,15 +80,14 @@ class Form2Controller extends Controller
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-    
-    /**
+      /**
      * Display the specified Surat Keputusan.
      */
     public function show($id)
     {
         try {
             $keputusan = Keputusan::findOrFail($id);
-            return view('forms.form2-show', compact('keputusan'));
+            return view('forms.form2.form2-show', compact('keputusan'));
         } catch (\Exception $e) {
             return back()->with('error', 'Surat Keputusan tidak ditemukan.');
         }
@@ -108,7 +106,7 @@ class Form2Controller extends Controller
             $menimbang = trim(str_replace("Menimbang:", "", $dasar_hukum_parts[0]));
             $mengingat = isset($dasar_hukum_parts[1]) ? trim($dasar_hukum_parts[1]) : "";
             
-            return view('forms.form2-edit', compact('keputusan', 'menimbang', 'mengingat'));
+            return view('forms.form2.form2-edit', compact('keputusan', 'menimbang', 'mengingat'));
         } catch (\Exception $e) {
             return back()->with('error', 'Surat Keputusan tidak ditemukan.');
         }
@@ -178,7 +176,7 @@ class Form2Controller extends Controller
             ->orderBy('keputusan.created_at', 'desc')
             ->get();
             
-        return view('forms.form2-list', compact('keputusan'));
+        return view('forms.form2.form2-list', compact('keputusan'));
     }
     
     /**

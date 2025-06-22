@@ -84,11 +84,10 @@
     <!-- Informasi Surat -->
     <div class="info-surat">
         <table>
-            <tr>
-                <td width="80">Nomor</td>
+            <tr>                <td width="80">Nomor</td>
                 <td width="10">:</td>
                 <td>{{ $form->nomor_surat }}</td>
-                <td style="text-align: right;">{{ $form->tanggal_surat->format('d F Y') }}</td>
+                <td style="text-align: right;">{{ $form->tanggal_surat instanceof \Carbon\Carbon ? $form->tanggal_surat->format('d F Y') : \Carbon\Carbon::parse($form->tanggal_surat)->format('d F Y') }}</td>
             </tr>
             <tr>
                 <td>Sifat</td>
@@ -118,20 +117,18 @@
     </div>
     
     <!-- Isi Surat -->
-    <div class="isi-surat">
-        <p>Dengan hormat,</p>
+    <div class="isi-surat">        <p>Dengan hormat,</p>
         
-        <p>Berdasarkan kejadian bencana {{ $form->bencana->kategori_bencana->nama }} yang terjadi pada tanggal {{ $form->bencana->tanggal->format('d F Y') }} di 
+        <p>Berdasarkan kejadian bencana {{ $form->bencana->kategori_bencana->nama }} yang terjadi pada tanggal {{ $form->bencana->tanggal instanceof \Carbon\Carbon ? $form->bencana->tanggal->format('d F Y') : \Carbon\Carbon::parse($form->bencana->tanggal)->format('d F Y') }} di 
         @foreach($form->bencana->desa as $index => $desa)
             {{ $desa->nama }}{{ $index < count($form->bencana->desa) - 1 ? ', ' : '' }}
         @endforeach, serta dalam rangka melaksanakan koordinasi pemulihan pasca bencana, bersama ini kami sampaikan hal-hal sebagai berikut:</p>
         
         <p>BNPB akan melaksanakan pengkajian kebutuhan pasca bencana (PDNA) di {{ $form->lokasi_pdna }}. Sehubungan dengan hal tersebut, kami mohon kesediaan Saudara untuk menugaskan perwakilan resmi dari {{ $form->kepada }} untuk hadir dalam kegiatan konsolidasi awal PDNA yang akan dilaksanakan pada:</p>
-        
-        <table class="table-konsolidasi">
+          <table class="table-konsolidasi">
             <tr>
                 <td>Hari/Tanggal</td>
-                <td>: {{ $form->hari_tanggal->format('l, d F Y') }}</td>
+                <td>: {{ $form->hari_tanggal instanceof \Carbon\Carbon ? $form->hari_tanggal->format('l, d F Y') : \Carbon\Carbon::parse($form->hari_tanggal)->format('l, d F Y') }}</td>
             </tr>
             <tr>
                 <td>Waktu</td>

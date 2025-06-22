@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `anggaran` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `bencana_id` bigint(20) UNSIGNED NOT NULL,
+  `sektor` varchar(255) NOT NULL,
+  `komponen_kebutuhan` varchar(255) NOT NULL,
+  `kegiatan` varchar(255) NOT NULL,
+  `lokasi` varchar(255) NOT NULL,
+  `volume` int(11) NOT NULL,
+  `satuan` varchar(255) NOT NULL,
+  `harga_satuan` decimal(15,2) NOT NULL,
+  `jumlah` decimal(15,2) NOT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `anggaran_bencana_id_foreign` (`bencana_id`),
+  CONSTRAINT `anggaran_bencana_id_foreign` FOREIGN KEY (`bencana_id`) REFERENCES `bencana` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

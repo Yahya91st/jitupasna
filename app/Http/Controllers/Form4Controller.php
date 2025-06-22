@@ -7,6 +7,7 @@ use App\Models\Bencana;
 use App\Models\FormPerumahan;
 use App\Models\EnvironmentalReport;
 use App\Models\GovernmentReport;
+use App\Models\FormData;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\DomPDF\PDF as DomPdf;
@@ -40,7 +41,7 @@ class Form4Controller extends Controller
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.format1form4', compact('bencana'));
+        return view('forms.form4.format1.format1form4', compact('bencana'));
     }
     
     public function format17form4(Request $request)
@@ -55,7 +56,7 @@ class Form4Controller extends Controller
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.format17form4', compact('bencana'));
+        return view('forms.form4.format17.format17form4', compact('bencana'));
     }
 
     public function format7form4(Request $request)
@@ -70,7 +71,22 @@ class Form4Controller extends Controller
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.format7form4', compact('bencana'));
+        return view('forms.form4.format7.format7form4', compact('bencana'));
+    }
+
+    public function format2form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format2.format2form4', compact('bencana'));
     }
 
     public function format16form4(Request $request)
@@ -88,7 +104,25 @@ class Form4Controller extends Controller
         // Get existing government reports for this bencana
         $governmentReports = \App\Models\GovernmentReport::where('bencana_id', $bencana_id)->get();
         
-        return view('forms.form4.format16form4', compact('bencana', 'governmentReports'));
+        return view('forms.form4.format16.format16form4', compact('bencana', 'governmentReports'));
+    }
+    
+    /**
+     * Display the Format 3 form for Health Sector data collection
+     */
+    public function format3form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format3.format3form3', compact('bencana'));
     }
 
     public function store(Request $request)
@@ -345,6 +379,100 @@ class Form4Controller extends Controller
             // Redirect to show page where user can see the submitted data
             return redirect()->route('forms.form4.show-format17', $request->bencana_id)
                 ->with('success', 'Data Format 17 Lingkungan Hidup berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Store format2 form data for Education sector
+     */
+    public function storeFormat2(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Data sekolah
+                'tk_berat_negeri' => 'nullable|integer',
+                'tk_berat_swasta' => 'nullable|integer',
+                'tk_sedang_negeri' => 'nullable|integer',
+                'tk_sedang_swasta' => 'nullable|integer',
+                'tk_ringan_negeri' => 'nullable|integer',
+                'tk_ringan_swasta' => 'nullable|integer',
+                'tk_ukuran' => 'nullable|integer',
+                'tk_harga_bangunan' => 'nullable|integer',
+                'tk_harga_peralatan' => 'nullable|integer',
+                'tk_harga_meubelair' => 'nullable|integer',
+                
+                'sd_berat_negeri' => 'nullable|integer',
+                'sd_berat_swasta' => 'nullable|integer',
+                'sd_sedang_negeri' => 'nullable|integer',
+                'sd_sedang_swasta' => 'nullable|integer',
+                'sd_ringan_negeri' => 'nullable|integer',
+                'sd_ringan_swasta' => 'nullable|integer',
+                'sd_ukuran' => 'nullable|integer',
+                'sd_harga_bangunan' => 'nullable|integer',
+                'sd_harga_peralatan' => 'nullable|integer',
+                'sd_harga_meubelair' => 'nullable|integer',
+                
+                'smp_berat_negeri' => 'nullable|integer',
+                'smp_berat_swasta' => 'nullable|integer',
+                'smp_sedang_negeri' => 'nullable|integer',
+                'smp_sedang_swasta' => 'nullable|integer',
+                'smp_ringan_negeri' => 'nullable|integer',
+                'smp_ringan_swasta' => 'nullable|integer',
+                'smp_ukuran' => 'nullable|integer',
+                'smp_harga_bangunan' => 'nullable|integer',
+                'smp_harga_peralatan' => 'nullable|integer',
+                'smp_harga_meubelair' => 'nullable|integer',
+                
+                'sma_berat_negeri' => 'nullable|integer',
+                'sma_berat_swasta' => 'nullable|integer',
+                'sma_sedang_negeri' => 'nullable|integer',
+                'sma_sedang_swasta' => 'nullable|integer',
+                'sma_ringan_negeri' => 'nullable|integer',
+                'sma_ringan_swasta' => 'nullable|integer',
+                'sma_ukuran' => 'nullable|integer',
+                'sma_harga_bangunan' => 'nullable|integer',
+                'sma_harga_peralatan' => 'nullable|integer',
+                'sma_harga_meubelair' => 'nullable|integer',
+                
+                // Data kerugian
+                'biaya_tenaga_kerja_hok' => 'nullable|integer',
+                'biaya_tenaga_kerja_upah' => 'nullable|integer',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|integer',
+                'sekolah_pengungsian' => 'nullable|integer',
+                'guru_korban' => 'nullable|integer',
+                'iuran_sekolah' => 'nullable|integer',
+                'jumlah_sekolah_sementara' => 'nullable|integer',
+                'harga_sekolah_sementara' => 'nullable|integer'
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a new education report record
+            $report = \App\Models\EducationReport::create([
+                'bencana_id' => $bencana_id,
+                'nama_kampung' => $request->nama_kampung,
+                'nama_distrik' => $request->nama_distrik,
+                'data' => json_encode($request->except(['_token', 'bencana_id', 'nama_kampung', 'nama_distrik'])),
+            ]);
+            
+            DB::commit();            
+            // Redirect to show page where user can see the submitted data
+            return redirect()->route('forms.form4.show-format2', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 2 Sektor Pendidikan berhasil disimpan.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -674,7 +802,7 @@ class Form4Controller extends Controller
         $formPerumahan = FormPerumahan::with('bencana')->findOrFail($id);
         $bencana = $formPerumahan->bencana;
         
-        return view('forms.form4.show', compact('formPerumahan', 'bencana'));
+        return view('forms.form4.format1.show-format1', compact('formPerumahan', 'bencana'));
     }
 
     /**
@@ -750,7 +878,7 @@ class Form4Controller extends Controller
         
         // Load view dengan DomPdf dan atur landscape
         $pdf = app('dompdf.wrapper');
-        $pdf->loadView('forms.form4.pdf', $data)
+        $pdf->loadView('forms.form4.format1.pdf', $data)
             ->setPaper('a4', 'landscape');
         return $pdf->download('FormPerumahan_' . $formPerumahan->id . '.pdf');
     }
@@ -769,7 +897,7 @@ class Form4Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
         $formData = FormPerumahan::where('bencana_id', $bencana_id)->latest()->get();
         
-        return view('forms.form4.format1list', compact('bencana', 'formData'));
+        return view('forms.form4.format1.format1list', compact('bencana', 'formData'));
     }
 
     /**
@@ -845,365 +973,1511 @@ class Form4Controller extends Controller
         
         // Load view dengan DomPdf dan atur landscape
         $pdf = app('dompdf.wrapper');
-        $pdf->loadView('forms.form4.pdf', $data)
+        $pdf->loadView('forms.form4.format1.pdf', $data)
             ->setPaper('a4', 'landscape');
         return $pdf->stream('FormPerumahan_' . $formPerumahan->id . '.pdf');
     }
 
     /**
-     * Display Format 17 environmental reports for a specific disaster
+     * Display the Format 4 form for Social Protection Sector data collection
      */
-    public function showFormat17($bencana_id)
-    {
-        // Get the disaster information
-        $bencana = \App\Models\Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        
-        // Get all environmental reports for this disaster
-        $environmentalReports = \App\Models\EnvironmentalReport::where('bencana_id', $bencana_id)->get();
-        
-        // Group the reports by type and category
-        $damageReports = $environmentalReports->where('report_type', 'damage')->groupBy('ekosistem');
-        $lossReports = $environmentalReports->where('report_type', 'loss')->groupBy('jenis_kerugian');
-        
-        return view('forms.form4.show-format17', compact('bencana', 'damageReports', 'lossReports'));
-    }
-
-    /**
-     * List all Format 17 environmental reports for a disaster
-     */
-    public function listFormat17(Request $request)
+    public function format4form4(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
+        // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
         
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        $environmentalReports = EnvironmentalReport::where('bencana_id', $bencana_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.list-format17', compact('bencana', 'environmentalReports'));
+        return view('forms.form4.format4.format4form4', compact('bencana'));
     }
 
     /**
-     * Generate PDF for Format 17 environmental reports
+     * Store Format 4 form data for Social Protection sector
      */
-    public function generateFormat17Pdf($bencana_id)
+    public function storeFormat4(Request $request)
     {
-        // Get the disaster information
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        
-        // Get all environmental reports for this disaster
-        $environmentalReports = EnvironmentalReport::where('bencana_id', $bencana_id)->get();
-        
-        // Group the reports by type and category
-        $damageReports = $environmentalReports->where('report_type', 'damage')->groupBy('ekosistem');
-        $lossReports = $environmentalReports->where('report_type', 'loss')->groupBy('jenis_kerugian');
-        
-        // Calculate totals for damage reports
-        $totalDamageValue = 0;
-        foreach ($damageReports as $ecosystem => $reports) {
-            foreach ($reports as $report) {
-                $totalDamageValue += ($report->rb * $report->harga_rb) + 
-                                   ($report->rs * $report->harga_rs) + 
-                                   ($report->rr * $report->harga_rr);
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Panti Sosial
+                'panti_sosial_rb' => 'nullable|integer',
+                'panti_sosial_rs' => 'nullable|integer',
+                'panti_sosial_rr' => 'nullable|integer',
+                'panti_sosial_luas' => 'nullable|numeric',
+                'panti_sosial_harga_bangunan' => 'nullable|numeric',
+                'panti_sosial_harga_peralatan' => 'nullable|numeric',
+                'panti_sosial_harga_meubelair' => 'nullable|numeric',
+                
+                // Panti Asuhan
+                'panti_asuhan_rb' => 'nullable|integer',
+                'panti_asuhan_rs' => 'nullable|integer',
+                'panti_asuhan_rr' => 'nullable|integer',
+                'panti_asuhan_luas' => 'nullable|numeric',
+                'panti_asuhan_harga_bangunan' => 'nullable|numeric',
+                'panti_asuhan_harga_peralatan' => 'nullable|numeric',
+                'panti_asuhan_harga_meubelair' => 'nullable|numeric',
+                
+                // Balai Pelayanan Sosial
+                'balai_pelayanan_rb' => 'nullable|integer',
+                'balai_pelayanan_rs' => 'nullable|integer',
+                'balai_pelayanan_rr' => 'nullable|integer',
+                'balai_pelayanan_luas' => 'nullable|numeric',
+                'balai_pelayanan_harga_bangunan' => 'nullable|numeric',
+                'balai_pelayanan_harga_peralatan' => 'nullable|numeric',
+                'balai_pelayanan_harga_meubelair' => 'nullable|numeric',
+                
+                // Balai Latihan Sosial
+                'balai_latihan_rb' => 'nullable|integer',
+                'balai_latihan_rs' => 'nullable|integer',
+                'balai_latihan_rr' => 'nullable|integer',
+                'balai_latihan_luas' => 'nullable|numeric',
+                'balai_latihan_harga_bangunan' => 'nullable|numeric',
+                'balai_latihan_harga_peralatan' => 'nullable|numeric',
+                'balai_latihan_harga_meubelair' => 'nullable|numeric',
+                
+                // Fasilitas lainnya
+                'lainnya_jenis' => 'nullable|string|max:255',
+                'lainnya_rb' => 'nullable|integer',
+                'lainnya_rs' => 'nullable|integer',
+                'lainnya_rr' => 'nullable|integer',
+                'lainnya_luas' => 'nullable|numeric',
+                'lainnya_harga_bangunan' => 'nullable|numeric',
+                'lainnya_harga_peralatan' => 'nullable|numeric',
+                'lainnya_harga_meubelair' => 'nullable|numeric',
+                
+                // Biaya Pembersihan Puing
+                'biaya_tenaga_kerja_hok' => 'nullable|integer',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                
+                // Kehilangan Pendapatan
+                'pendapatan_perhari' => 'nullable|numeric',
+                'lama_gangguan' => 'nullable|integer',
+                
+                // Tambahan Biaya Sosial
+                'biaya_penanganan_korban' => 'nullable|numeric',
+                'biaya_logistik' => 'nullable|numeric',
+                'jumlah_pos' => 'nullable|integer',
+                'biaya_operasional_perhari' => 'nullable|numeric',
+                'jangka_waktu' => 'nullable|integer'
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a SocialProtectionReport model if it doesn't exist
+            // For simplicity, we'll store the data in JSON format in the database
+            
+            // First, let's create an array of facility types to process
+            $facilityTypes = [
+                'panti_sosial' => 'Panti Sosial',
+                'panti_asuhan' => 'Panti Asuhan',
+                'balai_pelayanan' => 'Balai Pelayanan Sosial',
+                'balai_latihan' => 'Balai Latihan Sosial'
+            ];
+            
+            // Add the custom facility if provided
+            if (!empty($request->lainnya_jenis)) {
+                $facilityTypes['lainnya'] = $request->lainnya_jenis;
             }
-        }
-        
-        // Calculate totals for loss reports
-        $totalLossValue = 0;
-        foreach ($lossReports as $category => $reports) {
-            foreach ($reports as $report) {
-                $totalLossValue += ($report->rb * $report->harga_rb) + 
-                                 ($report->rs * $report->harga_rs) + 
-                                 ($report->rr * $report->harga_rr);
+            
+            // Create a record for all facilities that have damage data
+            foreach ($facilityTypes as $type => $name) {
+                $rb = $request->{$type.'_rb'} ?? 0;
+                $rs = $request->{$type.'_rs'} ?? 0;
+                $rr = $request->{$type.'_rr'} ?? 0;
+                
+                // Only create records for facilities with damage
+                if ($rb > 0 || $rs > 0 || $rr > 0) {
+                    // Calculate costs
+                    $harga_bangunan = $request->{$type.'_harga_bangunan'} ?? 0;
+                    $harga_peralatan = $request->{$type.'_harga_peralatan'} ?? 0;
+                    $harga_meubelair = $request->{$type.'_harga_meubelair'} ?? 0;
+                    $luas = $request->{$type.'_luas'} ?? 0;
+                    
+                    $biaya_rb = $rb * $harga_bangunan * $luas;
+                    $biaya_rs = $rs * $harga_bangunan * $luas * 0.7; // 70% of total cost for medium damage
+                    $biaya_rr = $rr * $harga_bangunan * $luas * 0.3; // 30% of total cost for light damage
+                    
+                    // Additional costs for equipment and furniture
+                    $biaya_peralatan = ($rb + $rs + $rr) * $harga_peralatan;
+                    $biaya_meubelair = ($rb + $rs + $rr) * $harga_meubelair;
+                    
+                    $total_biaya = $biaya_rb + $biaya_rs + $biaya_rr + $biaya_peralatan + $biaya_meubelair;
+                    
+                    // Create or update a record in the database
+                    \App\Models\FormData::create([
+                        'form_type' => 'social_protection',
+                        'bencana_id' => $bencana_id,
+                        'category' => 'facility',
+                        'name' => $name,
+                        'data' => json_encode([
+                            'facility_type' => $type,
+                            'rusak_berat' => $rb,
+                            'rusak_sedang' => $rs,
+                            'rusak_ringan' => $rr,
+                            'luas' => $luas,
+                            'harga_bangunan' => $harga_bangunan,
+                            'harga_peralatan' => $harga_peralatan,
+                            'harga_meubelair' => $harga_meubelair,
+                            'biaya_rb' => $biaya_rb,
+                            'biaya_rs' => $biaya_rs,
+                            'biaya_rr' => $biaya_rr,
+                            'biaya_peralatan' => $biaya_peralatan,
+                            'biaya_meubelair' => $biaya_meubelair,
+                            'total_biaya' => $total_biaya
+                        ])
+                    ]);
+                }
             }
+            
+            // Calculate loss costs
+            $biaya_tenaga_kerja = ($request->biaya_tenaga_kerja_hok ?? 0) * ($request->biaya_tenaga_kerja_upah ?? 0);
+            $biaya_alat_berat = ($request->biaya_alat_berat_hari ?? 0) * ($request->biaya_per_hari_alat_berat ?? 0);
+            $biaya_kehilangan_pendapatan = ($request->pendapatan_perhari ?? 0) * ($request->lama_gangguan ?? 0);
+            $biaya_pos_pelayanan = ($request->jumlah_pos ?? 0) * ($request->biaya_operasional_perhari ?? 0) * ($request->jangka_waktu ?? 0);
+            
+            $total_biaya_kerugian = $biaya_tenaga_kerja + 
+                                  $biaya_alat_berat + 
+                                  $biaya_kehilangan_pendapatan + 
+                                  ($request->biaya_penanganan_korban ?? 0) + 
+                                  ($request->biaya_logistik ?? 0) + 
+                                  $biaya_pos_pelayanan;
+            
+            // Store loss data
+            \App\Models\FormData::create([
+                'form_type' => 'social_protection',
+                'bencana_id' => $bencana_id,
+                'category' => 'loss',
+                'name' => 'Perkiraan Kerugian',
+                'data' => json_encode([
+                    'nama_kampung' => $request->nama_kampung,
+                    'nama_distrik' => $request->nama_distrik,
+                    'biaya_tenaga_kerja_hok' => $request->biaya_tenaga_kerja_hok,
+                    'biaya_tenaga_kerja_upah' => $request->biaya_tenaga_kerja_upah,
+                    'biaya_tenaga_kerja' => $biaya_tenaga_kerja,
+                    'biaya_alat_berat_hari' => $request->biaya_alat_berat_hari,
+                    'biaya_alat_berat_harga' => $request->biaya_alat_berat_harga,
+                    'biaya_alat_berat' => $biaya_alat_berat,
+                    'pendapatan_perhari' => $request->pendapatan_perhari,
+                    'lama_gangguan' => $request->lama_gangguan,
+                    'biaya_kehilangan_pendapatan' => $biaya_kehilangan_pendapatan,
+                    'biaya_penanganan_korban' => $request->biaya_penanganan_korban,
+                    'biaya_logistik' => $request->biaya_logistik,
+                    'jumlah_pos' => $request->jumlah_pos,
+                    'biaya_operasional_perhari' => $request->biaya_operasional_perhari,
+                    'jangka_waktu' => $request->jangka_waktu,
+                    'biaya_pos_pelayanan' => $biaya_pos_pelayanan,
+                    'total_biaya_kerugian' => $total_biaya_kerugian
+                ])
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 4 Sektor Perlindungan Sosial berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
-        
-        $totalOverall = $totalDamageValue + $totalLossValue;
-        
-        $data = [
-            'bencana' => $bencana,
-            'damageReports' => $damageReports,
-            'lossReports' => $lossReports,
-            'totalDamageValue' => $totalDamageValue,
-            'totalLossValue' => $totalLossValue,
-            'totalOverall' => $totalOverall,
-            'tanggal' => date('d-m-Y'),
-        ];
-        
-        // Load view dengan DomPdf dan atur landscape
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadView('forms.form4.pdf.format17form4', $data)
-            ->setPaper('a4', 'landscape');
-        return $pdf->download('Format17_LingkunganHidup_' . $bencana_id . '.pdf');
     }
 
     /**
-     * Preview PDF Format 17 tanpa download
+     * Store format5 form data (Religious Sector)
      */
-    public function previewFormat17Pdf($bencana_id)
+    public function storeFormat5(Request $request)
     {
-        // Get the disaster information
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        
-        // Get all environmental reports for this disaster
-        $environmentalReports = EnvironmentalReport::where('bencana_id', $bencana_id)->get();
-        
-        // Group the reports by type and category
-        $damageReports = $environmentalReports->where('report_type', 'damage')->groupBy('ekosistem');
-        $lossReports = $environmentalReports->where('report_type', 'loss')->groupBy('jenis_kerugian');
-        
-        // Calculate totals for damage reports
-        $totalDamageValue = 0;
-        foreach ($damageReports as $ecosystem => $reports) {
-            foreach ($reports as $report) {
-                $totalDamageValue += ($report->rb * $report->harga_rb) + 
-                                   ($report->rs * $report->harga_rs) + 
-                                   ($report->rr * $report->harga_rr);
-            }
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Religious facilities
+                'masjid_rb' => 'nullable|integer',
+                'masjid_rs' => 'nullable|integer',
+                'masjid_rr' => 'nullable|integer',
+                'masjid_luas' => 'nullable|numeric',
+                'masjid_harga_bangunan' => 'nullable|numeric',
+                'masjid_harga_peralatan' => 'nullable|numeric',
+                'masjid_harga_inventaris' => 'nullable|numeric',
+                
+                'gereja_rb' => 'nullable|integer',
+                'gereja_rs' => 'nullable|integer',
+                'gereja_rr' => 'nullable|integer',
+                'gereja_luas' => 'nullable|numeric',
+                'gereja_harga_bangunan' => 'nullable|numeric',
+                'gereja_harga_peralatan' => 'nullable|numeric',
+                'gereja_harga_inventaris' => 'nullable|numeric',
+                
+                'pura_rb' => 'nullable|integer',
+                'pura_rs' => 'nullable|integer',
+                'pura_rr' => 'nullable|integer',
+                'pura_luas' => 'nullable|numeric',
+                'pura_harga_bangunan' => 'nullable|numeric',
+                'pura_harga_peralatan' => 'nullable|numeric',
+                'pura_harga_inventaris' => 'nullable|numeric',
+                
+                'vihara_rb' => 'nullable|integer',
+                'vihara_rs' => 'nullable|integer',
+                'vihara_rr' => 'nullable|integer',
+                'vihara_luas' => 'nullable|numeric',
+                'vihara_harga_bangunan' => 'nullable|numeric',
+                'vihara_harga_peralatan' => 'nullable|numeric',
+                'vihara_harga_inventaris' => 'nullable|numeric',
+                
+                'klenteng_rb' => 'nullable|integer',
+                'klenteng_rs' => 'nullable|integer',
+                'klenteng_rr' => 'nullable|integer',
+                'klenteng_luas' => 'nullable|numeric',
+                'klenteng_harga_bangunan' => 'nullable|numeric',
+                'klenteng_harga_peralatan' => 'nullable|numeric',
+                'klenteng_harga_inventaris' => 'nullable|numeric',
+                
+                'lainnya_jenis' => 'nullable|string|max:255',
+                'lainnya_rb' => 'nullable|integer',
+                'lainnya_rs' => 'nullable|integer',
+                'lainnya_rr' => 'nullable|integer',
+                'lainnya_luas' => 'nullable|numeric',
+                'lainnya_harga_bangunan' => 'nullable|numeric',
+                'lainnya_harga_peralatan' => 'nullable|numeric',
+                'lainnya_harga_inventaris' => 'nullable|numeric',
+                
+                // Biaya Pembersihan Puing
+                'biaya_tenaga_kerja_hok' => 'nullable|integer',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for religious sector
+            \App\Models\FormData::create([
+                'form_type' => 'religious_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_data',
+                'name' => 'Data Kerusakan Sektor Keagamaan',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 5 Sektor Keagamaan berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
-        
-        // Calculate totals for loss reports
-        $totalLossValue = 0;
-        foreach ($lossReports as $category => $reports) {
-            foreach ($reports as $report) {
-                $totalLossValue += ($report->rb * $report->harga_rb) + 
-                                 ($report->rs * $report->harga_rs) + 
-                                 ($report->rr * $report->harga_rr);
-            }
-        }
-        
-        $totalOverall = $totalDamageValue + $totalLossValue;
-        
-        $data = [
-            'bencana' => $bencana,
-            'damageReports' => $damageReports,
-            'lossReports' => $lossReports,
-            'totalDamageValue' => $totalDamageValue,
-            'totalLossValue' => $totalLossValue,
-            'totalOverall' => $totalOverall,
-            'tanggal' => date('d-m-Y'),
-        ];
-        
-        // Load view dengan DomPdf dan atur landscape
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadView('forms.form4.pdf.format17form4', $data)
-            ->setPaper('a4', 'landscape');
-        return $pdf->stream('Format17_LingkunganHidup_' . $bencana_id . '.pdf');
     }
 
     /**
-     * Display Format 3 health reports for a specific disaster
+     * Store format6 form data (Drinking Water Sector)
      */
-    public function showFormat3($bencana_id)
+    public function storeFormat6(Request $request)
     {
-        // Get the disaster information
-        $bencana = \App\Models\Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        
-        // Get all health reports for this disaster
-        $healthReports = \App\Models\HealthReport::where('bencana_id', $bencana_id)->get();
-        
-        // Group the reports by facility type
-        $facilityReports = $healthReports->groupBy('jenis_fasilitas');
-        
-        return view('forms.form4.show-format3', compact('bencana', 'facilityReports', 'healthReports'));
-    }
+        try {
+            DB::beginTransaction();
 
-    /**
-     * List all Format 3 health reports for a disaster
-     */
-    public function listFormat3(Request $request)
-    {
-        $bencana_id = $request->input('bencana_id');
-        
-        if (!$bencana_id) {
-            return redirect()->route('bencana.index', ['source' => 'forms']);
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Kerusakan Sarana Air Minum
+                'struktur_air_jumlah' => 'nullable|integer',
+                'struktur_air_harga' => 'nullable|numeric',
+                'struktur_air_total' => 'nullable|numeric',
+                
+                'instalasi_pemurnian_jumlah' => 'nullable|integer',
+                'instalasi_pemurnian_harga' => 'nullable|numeric',
+                'instalasi_pemurnian_total' => 'nullable|numeric',
+                
+                'perpipaan_jumlah' => 'nullable|integer',
+                'perpipaan_harga' => 'nullable|numeric',
+                'perpipaan_total' => 'nullable|numeric',
+                
+                'penyimpanan_jumlah' => 'nullable|integer',
+                'penyimpanan_harga' => 'nullable|numeric',
+                'penyimpanan_total' => 'nullable|numeric',
+                
+                'sumur_jumlah' => 'nullable|integer',
+                'sumur_harga' => 'nullable|numeric',
+                'sumur_total' => 'nullable|numeric',
+                
+                'wc_umum_jumlah' => 'nullable|integer',
+                'wc_umum_harga' => 'nullable|numeric',
+                'wc_umum_total' => 'nullable|numeric',
+                
+                'lainnya_jenis_sarana' => 'nullable|string|max:255',
+                'lainnya_sarana_jumlah' => 'nullable|integer',
+                'lainnya_sarana_harga' => 'nullable|numeric',
+                'lainnya_sarana_total' => 'nullable|numeric',
+                
+                // Kerusakan Sistem Sanitasi
+                'jaringan_pembuangan_jumlah' => 'nullable|integer',
+                'jaringan_pembuangan_harga' => 'nullable|numeric',
+                'jaringan_pembuangan_total' => 'nullable|numeric',
+                
+                'septic_tank_jumlah' => 'nullable|integer',
+                'septic_tank_harga' => 'nullable|numeric',
+                'septic_tank_total' => 'nullable|numeric',
+                
+                'limbah_padat_jumlah' => 'nullable|integer',
+                'limbah_padat_harga' => 'nullable|numeric',
+                'limbah_padat_total' => 'nullable|numeric',
+                
+                // Perkiraan Dampak Ekonomi
+                'kehilangan_pendapatan' => 'nullable|numeric',
+                'biaya_pemurnian' => 'nullable|numeric',
+                'biaya_distribusi' => 'nullable|numeric',
+                'biaya_pembersihan_sumur' => 'nullable|numeric',
+                'biaya_bahan_kimia' => 'nullable|numeric',
+                'biaya_lainnya_keterangan' => 'nullable|string|max:255',
+                'biaya_lainnya' => 'nullable|numeric',
+                'rehabilitasi_bulan' => 'nullable|integer',
+                'rekonstruksi_bulan' => 'nullable|integer',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for water supply sector
+            \App\Models\FormData::create([
+                'form_type' => 'format6',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sarana Air Minum & Sanitasi',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 6 Sektor Air Minum & Sanitasi berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
-        
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        $healthReports = \App\Models\HealthReport::where('bencana_id', $bencana_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        return view('forms.form4.list-format3', compact('bencana', 'healthReports'));
     }
 
     /**
-     * Display Format 2 education reports for a specific disaster
+     * Store format8 form data (Electricity Sector)
      */
-    public function showFormat2($bencana_id)
+    public function storeFormat8(Request $request)
     {
-        // Get the disaster information
-        $bencana = \App\Models\Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        
-        // Get all education reports for this disaster
-        $educationReports = \App\Models\EducationReport::where('bencana_id', $bencana_id)->get();
-        
-        // Group the reports by facility type
-        $facilityReports = $educationReports->groupBy('jenis_fasilitas');
-        
-        return view('forms.form4.show-format2', compact('bencana', 'facilityReports', 'educationReports'));
-    }
+        try {
+            DB::beginTransaction();
 
-    /**
-     * List all Format 2 education reports for a disaster
-     */
-    public function listFormat2(Request $request)
-    {
-        $bencana_id = $request->input('bencana_id');
-        
-        if (!$bencana_id) {
-            return redirect()->route('bencana.index', ['source' => 'forms']);
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Electricity facilities
+                'pembangkit_rb' => 'nullable|integer',
+                                                                                                                                
+                'pembangkit_rs' => 'nullable|integer',
+                'pembangkit_rr' => 'nullable|integer',
+                'pembangkit_kapasitas' => 'nullable|numeric',
+                'pembangkit_harga_unit' => 'nullable|numeric',
+                
+                'gardu_rb' => 'nullable|integer',
+                'gardu_rs' => 'nullable|integer',
+                'gardu_rr' => 'nullable|integer',
+                'gardu_kapasitas' => 'nullable|numeric',
+                'gardu_harga_unit' => 'nullable|numeric',
+                
+                'trafo_rb' => 'nullable|integer',
+                'trafo_rs' => 'nullable|integer',
+                'trafo_rr' => 'nullable|integer',
+                'trafo_kapasitas' => 'nullable|numeric',
+                'trafo_harga_unit' => 'nullable|numeric',
+                
+                'tiang_rb' => 'nullable|integer',
+                'tiang_rs' => 'nullable|integer',
+                'tiang_rr' => 'nullable|integer',
+                'tiang_harga_unit' => 'nullable|numeric',
+                
+                'kabel_rb' => 'nullable|numeric',
+                'kabel_rs' => 'nullable|numeric',
+                'kabel_rr' => 'nullable|numeric',
+                'kabel_harga_meter' => 'nullable|numeric',
+                
+                'lainnya_jenis' => 'nullable|string|max:255',
+                'lainnya_rb' => 'nullable|integer',
+                'lainnya_rs' => 'nullable|integer',
+                'lainnya_rr' => 'nullable|integer',
+                'lainnya_harga_unit' => 'nullable|numeric',
+                
+                // Biaya Pembersihan dan Loss
+                'biaya_tenaga_kerja_hok' => 'nullable|integer',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                'lama_gangguan_layanan' => 'nullable|integer',
+                'pendapatan_perhari' => 'nullable|numeric',
+                'jumlah_pelanggan' => 'nullable|integer',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for electricity sector
+            \App\Models\FormData::create([
+                'form_type' => 'electricity_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Listrik',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 8 Sektor Listrik berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
-        
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        $educationReports = \App\Models\EducationReport::where('bencana_id', $bencana_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        return view('forms.form4.list-format2', compact('bencana', 'educationReports'));
     }
 
     /**
-     * Display Format 16 government reports for a specific disaster
+     * Store format9 form data (Telecom Sector)
      */
-    public function showFormat16($bencana_id)
+    public function storeFormat9(Request $request)
     {
-        // Get the disaster information
-        $bencana = \App\Models\Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        
-        // Get all government reports for this disaster
-        $governmentReports = \App\Models\GovernmentReport::where('bencana_id', $bencana_id)->get();
-        
-        // Group the reports by type
-        $facilityReports = $governmentReports->where('jenis_fasilitas', '!=', 'Kerugian Lainnya');
-        $lossReports = $governmentReports->where('jenis_fasilitas', 'Kerugian Lainnya'); // Get all loss reports
-        $lossReport = $lossReports->first(); // Keep for backward compatibility
-        
-        return view('forms.form4.show-format16', compact('bencana', 'facilityReports', 'lossReport', 'lossReports', 'governmentReports'));
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Telecom facilities
+                'bts_rb' => 'nullable|integer',
+                'bts_rs' => 'nullable|integer',
+                'bts_rr' => 'nullable|integer',
+                'bts_harga_unit' => 'nullable|numeric',
+                
+                'kantor_rb' => 'nullable|integer',
+                'kantor_rs' => 'nullable|integer',
+                'kantor_rr' => 'nullable|integer',
+                'kantor_luas' => 'nullable|numeric',
+                'kantor_harga_m2' => 'nullable|numeric',
+                
+                'pemancar_rb' => 'nullable|integer',
+                'pemancar_rs' => 'nullable|integer',
+                'pemancar_rr' => 'nullable|integer',
+                'pemancar_harga_unit' => 'nullable|numeric',
+                
+                'kabel_rb' => 'nullable|numeric',
+                'kabel_rs' => 'nullable|numeric',
+                'kabel_rr' => 'nullable|numeric',
+                'kabel_harga_meter' => 'nullable|numeric',
+                
+                'server_rb' => 'nullable|integer',
+                'server_rs' => 'nullable|integer',
+                'server_rr' => 'nullable|integer',
+                'server_harga_unit' => 'nullable|numeric',
+                
+                'lainnya_jenis' => 'nullable|string|max:255',
+                'lainnya_rb' => 'nullable|integer',
+                'lainnya_rs' => 'nullable|integer',
+                'lainnya_rr' => 'nullable|integer',
+                'lainnya_harga_unit' => 'nullable|numeric',
+                
+                // Biaya Pembersihan dan Loss
+                'biaya_tenaga_kerja_hok' => 'nullable|integer',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                'lama_gangguan_layanan' => 'nullable|integer',
+                'pendapatan_perhari' => 'nullable|numeric',
+                'jumlah_pelanggan' => 'nullable|integer',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for telecom sector
+            \App\Models\FormData::create([
+                'form_type' => 'telecom_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Telekomunikasi',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 9 Sektor Telekomunikasi berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
+        }
     }
 
     /**
-     * List all Format 16 government reports for a disaster
+     * Store format10 form data (Agriculture Sector)
      */
-    public function listFormat16(Request $request)
+    public function storeFormat10(Request $request)
     {
-        $bencana_id = $request->input('bencana_id');
-        
-        if (!$bencana_id) {
-            return redirect()->route('bencana.index', ['source' => 'forms']);
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Agriculture damages
+                'padi_luas_rusak' => 'nullable|numeric',
+                'padi_harga_per_ha' => 'nullable|numeric',
+                'padi_lama_tanam' => 'nullable|numeric',
+                
+                'jagung_luas_rusak' => 'nullable|numeric',
+                'jagung_harga_per_ha' => 'nullable|numeric',
+                'jagung_lama_tanam' => 'nullable|numeric',
+                
+                'kedelai_luas_rusak' => 'nullable|numeric',
+                'kedelai_harga_per_ha' => 'nullable|numeric',
+                'kedelai_lama_tanam' => 'nullable|numeric',
+                
+                'sayuran_luas_rusak' => 'nullable|numeric',
+                'sayuran_harga_per_ha' => 'nullable|numeric',
+                'sayuran_lama_tanam' => 'nullable|numeric',
+                
+                'buah_luas_rusak' => 'nullable|numeric',
+                'buah_harga_per_ha' => 'nullable|numeric',
+                'buah_lama_tanam' => 'nullable|numeric',
+                
+                'lainnya_jenis' => 'nullable|string|max:255',
+                'lainnya_luas_rusak' => 'nullable|numeric',
+                'lainnya_harga_per_ha' => 'nullable|numeric',
+                'lainnya_lama_tanam' => 'nullable|numeric',
+                
+                // Agricultural facilities
+                'irigasi_rb' => 'nullable|numeric',
+                'irigasi_rs' => 'nullable|numeric',
+                'irigasi_rr' => 'nullable|numeric',
+                'irigasi_harga_per_m' => 'nullable|numeric',
+                
+                'gudang_rb' => 'nullable|integer',
+                'gudang_rs' => 'nullable|integer',
+                'gudang_rr' => 'nullable|integer',
+                'gudang_luas' => 'nullable|numeric',
+                'gudang_harga_per_m2' => 'nullable|numeric',
+                
+                'peralatan_rb' => 'nullable|integer',
+                'peralatan_rs' => 'nullable|integer',
+                'peralatan_rr' => 'nullable|integer',
+                'peralatan_harga_unit' => 'nullable|numeric',
+                
+                // Biaya Pembersihan dan Loss
+                'biaya_tenaga_kerja_hok' => 'nullable|integer',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                'lama_gangguan_produksi' => 'nullable|integer',
+                'pendapatan_perhari' => 'nullable|numeric',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for agriculture sector
+            \App\Models\FormData::create([
+                'form_type' => 'agriculture_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Pertanian',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 10 Sektor Pertanian berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
-        
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        $governmentReports = \App\Models\GovernmentReport::where('bencana_id', $bencana_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        return view('forms.form4.list-format16', compact('bencana', 'governmentReports'));
     }
 
     /**
-     * Generate PDF for Format 16 government reports
+     * Store format11 form data (Animal Husbandry Sector)
      */
-    public function generateFormat16Pdf($bencana_id)
+    public function storeFormat11(Request $request)
     {
-        // Get the disaster information
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        
-        // Get all government reports for this disaster
-        $governmentReports = GovernmentReport::where('bencana_id', $bencana_id)->get();
-        
-        // Group the reports by type
-        $damageReports = $governmentReports->where('jenis_fasilitas', '!=', 'Kerugian Lainnya');
-        $lossReport = $governmentReports->where('jenis_fasilitas', 'Kerugian Lainnya')->first();
-        
-        // Calculate totals for damage reports
-        $totalDamageValue = 0;
-        foreach ($damageReports as $report) {
-            $totalDamageValue += ($report->jumlah_rb * $report->harga_rb) + 
-                               ($report->jumlah_rs * $report->harga_rs) + 
-                               ($report->jumlah_rr * $report->harga_rr);
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Building damages
+                'kandang_rb' => 'nullable|integer',
+                'kandang_rs' => 'nullable|integer',
+                'kandang_rr' => 'nullable|integer',
+                'kandang_luas' => 'nullable|numeric',
+                'kandang_harga_m2' => 'nullable|numeric',
+                
+                'gudang_pakan_rb' => 'nullable|integer',
+                'gudang_pakan_rs' => 'nullable|integer',
+                'gudang_pakan_rr' => 'nullable|integer',
+                'gudang_pakan_luas' => 'nullable|numeric',
+                'gudang_pakan_harga_m2' => 'nullable|numeric',
+                
+                'balai_inseminasi_rb' => 'nullable|integer',
+                'balai_inseminasi_rs' => 'nullable|integer',
+                'balai_inseminasi_rr' => 'nullable|integer',
+                'balai_inseminasi_luas' => 'nullable|numeric',
+                'balai_inseminasi_harga_m2' => 'nullable|numeric',
+                
+                'lainnya_jenis_bangunan' => 'nullable|string|max:255',
+                'lainnya_bangunan_rb' => 'nullable|integer',
+                'lainnya_bangunan_rs' => 'nullable|integer',
+                'lainnya_bangunan_rr' => 'nullable|integer',
+                'lainnya_bangunan_luas' => 'nullable|numeric',
+                'lainnya_bangunan_harga_m2' => 'nullable|numeric',
+                
+                // Equipment damages
+                'mesin_pencacah_jumlah' => 'nullable|integer',
+                'mesin_pencacah_harga' => 'nullable|numeric',
+                
+                'mesin_pakan_jumlah' => 'nullable|integer',
+                'mesin_pakan_harga' => 'nullable|numeric',
+                
+                'alat_penampung_susu_jumlah' => 'nullable|integer',
+                'alat_penampung_susu_harga' => 'nullable|numeric',
+                
+                'lainnya_jenis_peralatan' => 'nullable|string|max:255',
+                'lainnya_peralatan_jumlah' => 'nullable|integer',
+                'lainnya_peralatan_harga' => 'nullable|numeric',
+                
+                // Livestock loss
+                'sapi_jumlah' => 'nullable|integer',
+                'sapi_harga' => 'nullable|numeric',
+                
+                'kambing_jumlah' => 'nullable|integer',
+                'kambing_harga' => 'nullable|numeric',
+                
+                'ayam_jumlah' => 'nullable|integer',
+                'ayam_harga' => 'nullable|numeric',
+                
+                'babi_jumlah' => 'nullable|integer',
+                'babi_harga' => 'nullable|numeric',
+                
+                'lainnya_jenis_ternak' => 'nullable|string|max:255',
+                'lainnya_ternak_jumlah' => 'nullable|integer',
+                'lainnya_ternak_harga' => 'nullable|numeric',
+                
+                // Economic impact
+                'kehilangan_pendapatan' => 'nullable|numeric',
+                'penurunan_produksi' => 'nullable|numeric',
+                'kenaikan_harga_pakan' => 'nullable|numeric',
+                'biaya_kesehatan_ternak' => 'nullable|numeric',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for animal husbandry sector
+            \App\Models\FormData::create([
+                'form_type' => 'animal_husbandry_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Peternakan',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 11 Sektor Peternakan berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
-        
-        // Calculate total loss value
-        $totalLossValue = 0;
-        if ($lossReport) {
-            $totalLossValue = ($lossReport->tenaga_kerja_hok ?? 0) * ($lossReport->upah_harian ?? 0) +
-                            ($lossReport->alat_berat_hari ?? 0) * ($lossReport->biaya_per_hari_alat_berat ?? 0) +
-                            ($lossReport->jumlah_unit ?? 0) * ($lossReport->biaya_sewa_per_unit ?? 0) +
-                            ($lossReport->jumlah_arsip ?? 0) * ($lossReport->harga_satuan ?? 0);
+    }
+
+    /**
+     * Store format12 form data (Fisheries Sector)
+     */
+    public function storeFormat12(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Cultivation facilities damages
+                'kolam_ikan_jumlah' => 'nullable|integer',
+                'kolam_ikan_harga' => 'nullable|numeric',
+                'kolam_ikan_total' => 'nullable|numeric',
+                
+                'tambak_jumlah' => 'nullable|integer',
+                'tambak_harga' => 'nullable|numeric',
+                'tambak_total' => 'nullable|numeric',
+                
+                'keramba_jumlah' => 'nullable|integer',
+                'keramba_harga' => 'nullable|numeric',
+                'keramba_total' => 'nullable|numeric',
+                
+                'hatchery_jumlah' => 'nullable|integer',
+                'hatchery_harga' => 'nullable|numeric',
+                'hatchery_total' => 'nullable|numeric',
+                
+                'lainnya_jenis_sarana' => 'nullable|string|max:255',
+                'lainnya_sarana_jumlah' => 'nullable|integer',
+                'lainnya_sarana_harga' => 'nullable|numeric',
+                'lainnya_sarana_total' => 'nullable|numeric',
+                
+                // Fishing equipment damages
+                'perahu_motor_jumlah' => 'nullable|integer',
+                'perahu_motor_harga' => 'nullable|numeric',
+                'perahu_motor_total' => 'nullable|numeric',
+                
+                'perahu_dayung_jumlah' => 'nullable|integer',
+                'perahu_dayung_harga' => 'nullable|numeric',
+                'perahu_dayung_total' => 'nullable|numeric',
+                
+                'jaring_insang_jumlah' => 'nullable|integer',
+                'jaring_insang_harga' => 'nullable|numeric',
+                'jaring_insang_total' => 'nullable|numeric',
+                
+                'jaring_purse_seine_jumlah' => 'nullable|integer',
+                'jaring_purse_seine_harga' => 'nullable|numeric',
+                'jaring_purse_seine_total' => 'nullable|numeric',
+                
+                'alat_penangkap_lain_jumlah' => 'nullable|integer',
+                'alat_penangkap_lain_harga' => 'nullable|numeric',
+                'alat_penangkap_lain_total' => 'nullable|numeric',
+                
+                // Fish loss
+                'ikan_lele_jumlah' => 'nullable|numeric',
+                'ikan_lele_harga' => 'nullable|numeric',
+                'ikan_lele_total' => 'nullable|numeric',
+                
+                'ikan_nila_jumlah' => 'nullable|numeric',
+                'ikan_nila_harga' => 'nullable|numeric',
+                'ikan_nila_total' => 'nullable|numeric',
+                
+                'udang_jumlah' => 'nullable|numeric',
+                'udang_harga' => 'nullable|numeric',
+                'udang_total' => 'nullable|numeric',
+                
+                'bandeng_jumlah' => 'nullable|numeric',
+                'bandeng_harga' => 'nullable|numeric',
+                'bandeng_total' => 'nullable|numeric',
+                
+                'lainnya_jenis_ikan' => 'nullable|string|max:255',
+                'lainnya_ikan_jumlah' => 'nullable|numeric',
+                'lainnya_ikan_harga' => 'nullable|numeric',
+                'lainnya_ikan_total' => 'nullable|numeric',
+                
+                // Economic impact
+                'kehilangan_pendapatan_harian' => 'nullable|numeric',
+                'hari_tidak_melaut' => 'nullable|integer',
+                'biaya_sewa_alat' => 'nullable|numeric',
+                'kenaikan_harga_pakan' => 'nullable|numeric',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for fisheries sector
+            \App\Models\FormData::create([
+                'form_type' => 'fisheries_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Perikanan',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 12 Sektor Perikanan berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
+    }
+
+    /**
+     * Store format13 form data (Industry & SME Sector)
+     */
+    public function storeFormat13(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Building damages
+                'unit_produksi_jumlah' => 'nullable|integer',
+                'unit_produksi_luas' => 'nullable|numeric',
+                'unit_produksi_harga_m2' => 'nullable|numeric',
+                'unit_produksi_total' => 'nullable|numeric',
+                
+                'gudang_jumlah' => 'nullable|integer',
+                'gudang_luas' => 'nullable|numeric',
+                'gudang_harga_m2' => 'nullable|numeric',
+                'gudang_total' => 'nullable|numeric',
+                
+                'toko_jumlah' => 'nullable|integer',
+                'toko_luas' => 'nullable|numeric',
+                'toko_harga_m2' => 'nullable|numeric',
+                'toko_total' => 'nullable|numeric',
+                
+                'lainnya_jenis_bangunan' => 'nullable|string|max:255',
+                'lainnya_bangunan_jumlah' => 'nullable|integer',
+                'lainnya_bangunan_luas' => 'nullable|numeric',
+                'lainnya_bangunan_harga_m2' => 'nullable|numeric',
+                'lainnya_bangunan_total' => 'nullable|numeric',
+                
+                // Equipment damages
+                'mesin_jahit_jumlah' => 'nullable|integer',
+                'mesin_jahit_harga' => 'nullable|numeric',
+                'mesin_jahit_total' => 'nullable|numeric',
+                
+                'oven_jumlah' => 'nullable|integer',
+                'oven_harga' => 'nullable|numeric',
+                'oven_total' => 'nullable|numeric',
+                
+                'etalase_jumlah' => 'nullable|integer',
+                'etalase_harga' => 'nullable|numeric',
+                'etalase_total' => 'nullable|numeric',
+                
+                'lainnya_jenis_peralatan' => 'nullable|string|max:255',
+                'lainnya_peralatan_jumlah' => 'nullable|integer',
+                'lainnya_peralatan_harga' => 'nullable|numeric',
+                'lainnya_peralatan_total' => 'nullable|numeric',
+                
+                // Production loss
+                'roti_produksi_harian' => 'nullable|numeric',
+                'roti_harga_unit' => 'nullable|numeric',
+                'roti_hari_tidak_produksi' => 'nullable|integer',
+                'roti_total' => 'nullable|numeric',
+                
+                'pakaian_produksi_harian' => 'nullable|numeric',
+                'pakaian_harga_unit' => 'nullable|numeric',
+                'pakaian_hari_tidak_produksi' => 'nullable|integer',
+                'pakaian_total' => 'nullable|numeric',
+                
+                'mebel_produksi_harian' => 'nullable|numeric',
+                'mebel_harga_unit' => 'nullable|numeric',
+                'mebel_hari_tidak_produksi' => 'nullable|integer',
+                'mebel_total' => 'nullable|numeric',
+                
+                'lainnya_jenis_usaha' => 'nullable|string|max:255',
+                'lainnya_produksi_harian' => 'nullable|numeric',
+                'lainnya_harga_unit' => 'nullable|numeric',
+                'lainnya_hari_tidak_produksi' => 'nullable|integer',
+                'lainnya_total' => 'nullable|numeric',
+                
+                // Additional costs
+                'sewa_tempat' => 'nullable|numeric',
+                'transportasi_bahan_baku' => 'nullable|numeric',
+                'alat_bantu_darurat' => 'nullable|numeric',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for industry sector
+            \App\Models\FormData::create([
+                'form_type' => 'industry_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Industri & UMKM',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 13 Sektor Industri & UMKM berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Store format14 form data (Trade Sector)
+     */
+    public function storeFormat14(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Building damages
+                'toko_rb' => 'nullable|integer',
+                'toko_rs' => 'nullable|integer',
+                'toko_rr' => 'nullable|integer',
+                'toko_luas' => 'nullable|numeric',
+                'toko_harga_m2' => 'nullable|numeric',
+                
+                'kios_rb' => 'nullable|integer',
+                'kios_rs' => 'nullable|integer',
+                'kios_rr' => 'nullable|integer',
+                'kios_luas' => 'nullable|numeric',
+                'kios_harga_m2' => 'nullable|numeric',
+                
+                'pasar_rb' => 'nullable|integer',
+                'pasar_rs' => 'nullable|integer',
+                'pasar_rr' => 'nullable|integer',
+                'pasar_luas' => 'nullable|numeric',
+                'pasar_harga_m2' => 'nullable|numeric',
+                
+                'gudang_rb' => 'nullable|integer',
+                'gudang_rs' => 'nullable|integer',
+                'gudang_rr' => 'nullable|integer',
+                'gudang_luas' => 'nullable|numeric',
+                'gudang_harga_m2' => 'nullable|numeric',
+                
+                'lainnya_jenis_bangunan' => 'nullable|string|max:255',
+                'lainnya_rb' => 'nullable|integer',
+                'lainnya_rs' => 'nullable|integer',
+                'lainnya_rr' => 'nullable|integer',
+                'lainnya_luas' => 'nullable|numeric',
+                'lainnya_harga_m2' => 'nullable|numeric',
+                
+                // Inventory loss
+                'barang_dagangan_rusak' => 'nullable|numeric',
+                'stok_barang_rusak' => 'nullable|numeric',
+                'peralatan_dagangan_rusak' => 'nullable|numeric',
+                
+                // Business impact
+                'penurunan_omset' => 'nullable|numeric',
+                'hari_tidak_beroperasi' => 'nullable|integer',
+                'rata_rata_omset_harian' => 'nullable|numeric',
+                'biaya_operasional_tambahan' => 'nullable|numeric',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for trade sector
+            \App\Models\FormData::create([
+                'form_type' => 'trade_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Perdagangan',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 14 Sektor Perdagangan berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Store format15 form data (Tourism Sector)
+     */
+    public function storeFormat15(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Validate the request
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string|max:255',
+                'nama_distrik' => 'required|string|max:255',
+                
+                // Building damages
+                'hotel_rb' => 'nullable|integer',
+                'hotel_rs' => 'nullable|integer',
+                'hotel_rr' => 'nullable|integer',
+                'hotel_luas' => 'nullable|numeric',
+                'hotel_harga_m2' => 'nullable|numeric',
+                
+                'restoran_rb' => 'nullable|integer',
+                'restoran_rs' => 'nullable|integer',
+                'restoran_rr' => 'nullable|integer',
+                'restoran_luas' => 'nullable|numeric',
+                'restoran_harga_m2' => 'nullable|numeric',
+                
+                'objek_wisata_rb' => 'nullable|integer',
+                'objek_wisata_rs' => 'nullable|integer',
+                'objek_wisata_rr' => 'nullable|integer',
+                'objek_wisata_luas' => 'nullable|numeric',
+                'objek_wisata_harga_m2' => 'nullable|numeric',
+                
+                'lainnya_jenis_bangunan' => 'nullable|string|max:255',
+                'lainnya_rb' => 'nullable|integer',
+                'lainnya_rs' => 'nullable|integer',
+                'lainnya_rr' => 'nullable|integer',
+                'lainnya_luas' => 'nullable|numeric',
+                'lainnya_harga_m2' => 'nullable|numeric',
+                
+                // Equipment damages
+                'peralatan_hotel_rusak' => 'nullable|numeric',
+                'peralatan_restoran_rusak' => 'nullable|numeric',
+                'peralatan_objek_wisata_rusak' => 'nullable|numeric',
+                
+                // Tourism business impact
+                'penurunan_wisatawan' => 'nullable|integer',
+                'rata_rata_wisatawan_per_hari' => 'nullable|integer',
+                'rata_rata_pengeluaran_wisatawan' => 'nullable|numeric',
+                'hari_tutup_operasi' => 'nullable|integer',
+                'biaya_perbaikan_tambahan' => 'nullable|numeric',
+                'pembatalan_pemesanan' => 'nullable|integer',
+            ]);
+            
+            $bencana_id = $request->bencana_id;
+            
+            // Create a FormData record for tourism sector
+            \App\Models\FormData::create([
+                'form_type' => 'tourism_sector',
+                'bencana_id' => $bencana_id,
+                'category' => 'damage_loss_data',
+                'name' => 'Data Kerusakan & Kerugian Sektor Pariwisata',
+                'data' => json_encode($validated)
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form4.index', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Format 15 Sektor Pariwisata berhasil disimpan.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Show Format 11 data (Animal Husbandry Sector)
+     */
+    public function showFormat11($id)
+    {
+        $formData = \App\Models\FormData::findOrFail($id);
+        $bencana = \App\Models\Bencana::findOrFail($formData->bencana_id);
+        $data = json_decode($formData->data, true);
         
-        $totalOverall = $totalDamageValue + $totalLossValue;
-        
-        $data = [
-            'bencana' => $bencana,
-            'damageReports' => $damageReports,
-            'lossReport' => $lossReport,
-            'totalDamageValue' => $totalDamageValue,
-            'totalLossValue' => $totalLossValue,
-            'totalOverall' => $totalOverall,
-            'tanggal' => date('d-m-Y'),
-        ];
-        
-        // Load view with DomPdf and set to landscape
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadView('forms.form4.pdf.format16form4', $data)
-            ->setPaper('a4', 'landscape');
-        return $pdf->download('Format16_SektorPemerintahan_' . $bencana_id . '.pdf');
+        return view('forms.form4.format11.show-format11', compact('formData', 'bencana', 'data'));
     }
     
     /**
-     * Preview PDF for Format 16 government reports
+     * Show Format 12 data (Fisheries Sector)
      */
-    public function previewFormat16Pdf($bencana_id)
+    public function showFormat12($id)
     {
-        // Get the disaster information
-        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
+        $formData = \App\Models\FormData::findOrFail($id);
+        $bencana = \App\Models\Bencana::findOrFail($formData->bencana_id);
+        $data = json_decode($formData->data, true);
         
-        // Get all government reports for this disaster
-        $governmentReports = GovernmentReport::where('bencana_id', $bencana_id)->get();
+        return view('forms.form4.format12.show-format12', compact('formData', 'bencana', 'data'));
+    }
+    
+    /**
+     * Show Format 13 data (Industry & SME Sector)
+     */
+    public function showFormat13($id)
+    {
+        $formData = \App\Models\FormData::findOrFail($id);
+        $bencana = \App\Models\Bencana::findOrFail($formData->bencana_id);
+        $data = json_decode($formData->data, true);
         
-        // Group the reports by type
-        $damageReports = $governmentReports->where('jenis_fasilitas', '!=', 'Kerugian Lainnya');
-        $lossReport = $governmentReports->where('jenis_fasilitas', 'Kerugian Lainnya')->first();
+        return view('forms.form4.format13.show-format13', compact('formData', 'bencana', 'data'));
+    }
+    
+    /**
+     * Show Format 14 data (Trade Sector)
+     */
+    public function showFormat14($id)
+    {
+        $formData = \App\Models\FormData::findOrFail($id);
+        $bencana = \App\Models\Bencana::findOrFail($formData->bencana_id);
+        $data = json_decode($formData->data, true);
         
-        // Calculate totals for damage reports
-        $totalDamageValue = 0;
-        foreach ($damageReports as $report) {
-            $totalDamageValue += ($report->jumlah_rb * $report->harga_rb) + 
-                               ($report->jumlah_rs * $report->harga_rs) + 
-                               ($report->jumlah_rr * $report->harga_rr);
+        return view('forms.form4.format14.show-format14', compact('formData', 'bencana', 'data'));
+    }
+    
+    /**
+     * Show Format 15 data (Tourism Sector)
+     */
+    public function showFormat15($id)
+    {
+        $formData = \App\Models\FormData::findOrFail($id);
+        $bencana = \App\Models\Bencana::findOrFail($formData->bencana_id);
+        $data = json_decode($formData->data, true);
+        
+        return view('forms.form4.format15.show-format15', compact('formData', 'bencana', 'data'));
+    }
+
+    /**
+     * Show submitted data for Format 4
+     */
+    public function showFormat4($id)
+    {
+        $data = \App\Models\FormData::findOrFail($id);
+        $bencana = Bencana::findOrFail($data->bencana_id);
+        return view('forms.form4.format4.show-format4', compact('data', 'bencana'));
+    }
+
+    /**
+     * Show submitted data for Format 5
+     */
+    public function showFormat5($id)
+    {
+        $data = \App\Models\FormData::findOrFail($id);
+        $bencana = Bencana::findOrFail($data->bencana_id);
+        return view('forms.form4.format5.show-format5', compact('data', 'bencana'));
+    }
+
+    /**
+     * Show submitted data for Format 8
+     */
+    public function showFormat8($id)
+    {
+        $data = \App\Models\FormData::findOrFail($id);
+        $bencana = Bencana::findOrFail($data->bencana_id);
+        return view('forms.form4.format8.show-format8', compact('data', 'bencana'));
+    }
+
+    /**
+     * Show submitted data for Format 9
+     */
+    public function showFormat9($id)
+    {
+        $data = \App\Models\FormData::findOrFail($id);
+        $bencana = Bencana::findOrFail($data->bencana_id);
+        return view('forms.form4.format9.show-format9', compact('data', 'bencana'));
+    }
+
+    /**
+     * Show submitted data for Format 10
+     */
+    public function showFormat10($id)
+    {
+        $data = \App\Models\FormData::findOrFail($id);
+        $bencana = Bencana::findOrFail($data->bencana_id);
+        return view('forms.form4.format10.show-format10', compact('data', 'bencana'));
+    }
+
+    /**
+     * List data for Format 4
+     */
+    public function listFormat4(Request $request)
+    {
+        $search = $request->input('search', '');
+        $query = \App\Models\FormData::where('form_type', 'format4')
+            ->orderBy('created_at', 'desc');
+            
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('location', 'LIKE', "%{$search}%")
+                  ->orWhere('id', 'LIKE', "%{$search}%");
+            });
         }
         
-        // Calculate total loss value
-        $totalLossValue = 0;
-        if ($lossReport) {
-            $totalLossValue = ($lossReport->tenaga_kerja_hok ?? 0) * ($lossReport->upah_harian ?? 0) +
-                            ($lossReport->alat_berat_hari ?? 0) * ($lossReport->biaya_per_hari_alat_berat ?? 0) +
-                            ($lossReport->jumlah_unit ?? 0) * ($lossReport->biaya_sewa_per_unit ?? 0) +
-                            ($lossReport->jumlah_arsip ?? 0) * ($lossReport->harga_satuan ?? 0);
+        $data = $query->paginate(10);
+        return view('forms.form4.format4.list-format4', compact('data', 'search'));
+    }
+
+    /**
+     * List data for Format 5
+     */
+    public function listFormat5(Request $request)
+    {
+        $search = $request->input('search', '');
+        $query = \App\Models\FormData::where('form_type', 'format5')
+            ->orderBy('created_at', 'desc');
+            
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('location', 'LIKE', "%{$search}%")
+                  ->orWhere('id', 'LIKE', "%{$search}%");
+            });
         }
         
-        $totalOverall = $totalDamageValue + $totalLossValue;
+        $data = $query->paginate(10);
+        return view('forms.form4.format5.list-format5', compact('data', 'search'));
+    }
+
+    /**
+     * List data for Format 8
+     */
+    public function listFormat8(Request $request)
+    {
+        $search = $request->input('search', '');
+        $query = \App\Models\FormData::where('form_type', 'format8')
+            ->orderBy('created_at', 'desc');
+            
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('location', 'LIKE', "%{$search}%")
+                  ->orWhere('id', 'LIKE', "%{$search}%");
+            });
+        }
         
-        $data = [
-            'bencana' => $bencana,
-            'damageReports' => $damageReports,
-            'lossReport' => $lossReport,
-            'totalDamageValue' => $totalDamageValue,
-            'totalLossValue' => $totalLossValue,
-            'totalOverall' => $totalOverall,
-            'tanggal' => date('d-m-Y'),
-        ];
+        $data = $query->paginate(10);
+        return view('forms.form4.format8.list-format8', compact('data', 'search'));
+    }
+
+    /**
+     * List data for Format 9
+     */
+    public function listFormat9(Request $request)
+    {
+        $search = $request->input('search', '');
+        $query = \App\Models\FormData::where('form_type', 'format9')
+            ->orderBy('created_at', 'desc');
+            
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('location', 'LIKE', "%{$search}%")
+                  ->orWhere('id', 'LIKE', "%{$search}%");
+            });
+        }
         
-        // Load view with DomPdf and set to landscape
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadView('forms.form4.pdf.format16form4', $data)
-            ->setPaper('a4', 'landscape');
-        return $pdf->stream('Format16_SektorPemerintahan_' . $bencana_id . '.pdf');
+        $data = $query->paginate(10);
+        return view('forms.form4.format9.list-format9', compact('data', 'search'));
+    }
+
+    /**
+     * List data for Format 10
+     */
+    public function listFormat10(Request $request)
+    {
+        $search = $request->input('search', '');
+        $query = \App\Models\FormData::where('form_type', 'format10')
+            ->orderBy('created_at', 'desc');
+            
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('location', 'LIKE', "%{$search}%")
+                  ->orWhere('id', 'LIKE', "%{$search}%");
+            });
+        }
+        
+        $data = $query->paginate(10);
+        return view('forms.form4.format10.list-format10', compact('data', 'search'));
+    }
+
+    public function format6form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format6.format6form4', compact('bencana'));
+    }
+
+    public function format5form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format5.format5form4', compact('bencana'));
+    }
+
+    public function format8form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format8.format8form4', compact('bencana'));
+    }
+
+    public function format9form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format9.format9form4', compact('bencana'));
+    }
+
+    public function format10form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format10.format10form4', compact('bencana'));
+    }
+    public function format11form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format11.format11form4', compact('bencana'));
+    }
+
+    public function format12form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format12.format12form4', compact('bencana'));
+    }
+
+    public function format13form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format13.format13form4', compact('bencana'));
+    }
+
+    public function format14form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format14.format14form4', compact('bencana'));
+    }
+
+    public function format15form4(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
+        
+        return view('forms.form4.format15.format15form4', compact('bencana'));
     }
 }

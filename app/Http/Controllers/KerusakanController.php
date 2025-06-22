@@ -6,10 +6,12 @@ use App\Models\Bencana;
 use App\Models\DetailKerusakan;
 use App\Models\HSD;
 use App\Models\KategoriBangunan;
+use App\Models\KategoriBencana;
 use App\Models\Kerusakan;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class KerusakanController extends Controller
 {
@@ -20,9 +22,11 @@ class KerusakanController extends Controller
     {
         $kategoriBangunan = KategoriBangunan::query()->get();
         $kerusakanQuery = Kerusakan::query()->with(['bencana', 'kategori_bangunan', 'detail.satuan'])->latest();
+        
         if ($request->filled('kategori_bangunan_id')) {
             $kerusakanQuery->where('kategori_bangunan_id', '=', $request->input('kategori_bangunan_id'));
         }
+        
         $kerusakan = $kerusakanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
 
         return view('kerusakan.index', [
@@ -30,6 +34,63 @@ class KerusakanController extends Controller
             'kategoribangunan' => $kategoriBangunan,
         ]);
     }
+    
+    /**
+     * Display a list of disasters for kerusakan view
+     */
+    public function list(Request $request)
+    {
+        $kategoriBencana = KategoriBencana::query()->get();
+        $bencanaQuery = Bencana::query()->with('desa')->with('kategori_bencana')->latest();
+        
+        if ($request->filled('kategori_bencana_id')) {
+            $bencanaQuery->where('kategori_bencana_id', '=', $request->input('kategori_bencana_id'));
+        }
+        
+        $bencana = $bencanaQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+
+        return view('kerusakan.list', [
+            'bencana' => $bencana,
+            'kategoribencana' => $kategoriBencana,
+        ]);
+    }
+    
+    /**
+     * Display details of kerusakan for a specific bencana
+     */
+    public function detail($id)
+    {
+        // Get bencana information
+        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($id);
+        
+        // Get all kerusakan data for this bencana
+        $kerusakanData = Kerusakan::where('bencana_id', $id)
+            ->with(['kategori_bangunan', 'detail.hsd', 'detail.satuan'])
+            ->get();
+            
+        // Calculate total kerusakan
+        $totalKerusakan = $kerusakanData->sum('BiayaKeseluruhan');
+        
+        // Get number of items
+        $jumlahItem = $kerusakanData->count();
+        
+        // Group by kategori bangunan
+        $kerusakanByKategori = $kerusakanData->groupBy(function($item) {
+            return $item->kategori_bangunan->nama ?? 'Tidak Dikategorikan';
+        })->map(function($group) {
+            return $group->sum('BiayaKeseluruhan');
+        });
+        
+        return view('kerusakan.detail', [
+            'bencana' => $bencana,
+            'kerusakanData' => $kerusakanData,
+            'totalKerusakan' => $totalKerusakan,
+            'jumlahItem' => $jumlahItem,
+            'kerusakanByKategori' => $kerusakanByKategori
+        ]);
+    }
+    
+
 
     /**
      * Show the form for creating a new resource.
@@ -123,7 +184,27 @@ class KerusakanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $kerusakan = Kerusakan::with(['bencana', 'kategori_bangunan', 'detail.satuan', 'detail.hsd'])
+            ->findOrFail($id);
+            
+        // Calculate totals
+        $totalBiaya = $kerusakan->BiayaKeseluruhan ?? 0;
+        
+        // Get breakdown by category
+        $breakdownByCategory = $kerusakan->detail->groupBy(function($item) {
+            return $item->hsd->kategori ?? 'Lainnya';
+        })->map(function($group) {
+            return $group->sum(function($item) {
+                return $item->biaya_per_item ?? 0;
+            });
+        });
+        
+        return view('kerusakan.show', [
+            'kerusakan' => $kerusakan,
+            'totalBiaya' => $totalBiaya,
+            'breakdownByCategory' => $breakdownByCategory,
+            'bencana' => $kerusakan->bencana
+        ]);
     }
 
     /**

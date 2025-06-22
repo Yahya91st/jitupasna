@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         
-        // Register admin middleware
+        // Register middlewares
         Route::aliasMiddleware('admin', \App\Http\Middleware\AdminMiddleware::class);
+        Route::aliasMiddleware('role', \App\Http\Middleware\RoleAccess::class);
     }
 }

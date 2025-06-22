@@ -25,7 +25,7 @@ class Form7Controller extends Controller
             $bencana = Bencana::all();
         }
         
-        return view('forms.form7', compact('bencana'));
+        return view('forms.form7.form7', compact('bencana'));
     }
     
     /**
@@ -139,7 +139,7 @@ class Form7Controller extends Controller
     public function show($id)
     {
         $fgd = Fgd::with('bencana')->findOrFail($id);
-        return view('forms.fgd.show', compact('fgd'));
+        return view('forms.form7.show', compact('fgd'));
     }
     
     /**
@@ -149,7 +149,7 @@ class Form7Controller extends Controller
     {
         $fgd = Fgd::findOrFail($id);
         $bencana = Bencana::all();
-        return view('forms.fgd.edit', compact('fgd', 'bencana'));
+        return view('forms.form7.edit', compact('fgd', 'bencana'));
     }
     
     /**

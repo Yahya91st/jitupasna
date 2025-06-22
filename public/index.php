@@ -5,6 +5,21 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// Temporary debug code for controller resolution
+if (strpos($_SERVER['REQUEST_URI'], '/forms/form3') !== false) {
+    file_put_contents(__DIR__ . '/debug_form3.log', 
+        date('Y-m-d H:i:s') . ' - Request to Form3: ' . $_SERVER['REQUEST_URI'] . "\n", 
+        FILE_APPEND
+    );
+    
+    $controllerPath = __DIR__ . '/../app/Http/Controllers/Form3Controller.php';
+    $controllerExists = file_exists($controllerPath);
+    file_put_contents(__DIR__ . '/debug_form3.log', 
+        date('Y-m-d H:i:s') . ' - Form3Controller.php exists: ' . ($controllerExists ? 'Yes' : 'No') . "\n", 
+        FILE_APPEND
+    );
+}
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance

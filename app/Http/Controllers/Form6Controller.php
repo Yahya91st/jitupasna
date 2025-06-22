@@ -11,11 +11,10 @@ use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class Form6Controller extends Controller
-{
-    public function index()
+{    public function index()
     {
         $bencanas = Bencana::all();
-        return view('forms.form6', compact('bencanas'));
+        return view('forms.form6.form6', compact('bencanas'));
     }
 
     public function store(Request $request)
@@ -86,19 +85,15 @@ class Form6Controller extends Controller
         $rumahtangga->save();
 
         return redirect()->route('forms.form6.show', $rumahtangga->id)->with('success', 'Data rumahtangga berhasil disimpan.');
-    }
-
-    public function show($id)
+    }    public function show($id)
     {
-        $rumahtangga = Rumahtangga::findOrFail($id);
-        return view('forms.rumahtangga.show', compact('rumahtangga'));
-    }
-
-    public function edit($id)
+        $rumahtangga = Rumahtangga::with('bencana')->findOrFail($id);
+        return view('forms.form6.show', compact('rumahtangga'));
+    }public function edit($id)
     {
         $rumahtangga = Rumahtangga::findOrFail($id);
         $bencanas = Bencana::all();
-        return view('forms.rumahtangga.edit', compact('rumahtangga', 'bencanas'));
+        return view('forms.form6.edit', compact('rumahtangga', 'bencanas'));
     }
 
     public function update(Request $request, $id)
@@ -184,24 +179,44 @@ class Form6Controller extends Controller
         $rumahtangga->save();
 
         return redirect()->route('forms.form6.show', $rumahtangga->id)->with('success', 'Data rumahtangga berhasil diperbarui.');
-    }
-
-    public function listForm6()
+    }    public function listForm6()
     {
         $rumahtanggas = Rumahtangga::with('bencana')->orderBy('created_at', 'desc')->paginate(10);
-        return view('forms.rumahtangga.list', compact('rumahtanggas'));
-    }
-
-    public function generatePdf($id)
+        return view('forms.form6.list', compact('rumahtanggas'));
+    }    public function generatePdf($id)
     {
         $rumahtangga = Rumahtangga::with('bencana')->findOrFail($id);
-        $pdf = PDF::loadView('forms.rumahtangga.pdf', compact('rumahtangga'));
+        $pdf = PDF::loadView('forms.form6.pdf', compact('rumahtangga'));
         return $pdf->download('formulir-06-rumahtangga-' . $rumahtangga->id . '.pdf');
-    }
-
-    public function previewPdf($id)
+    }    public function previewPdf($id)
     {
         $rumahtangga = Rumahtangga::with('bencana')->findOrFail($id);
-        return view('forms.rumahtangga.pdf', compact('rumahtangga'));
+        $pdf = PDF::loadView('forms.form6.pdf', compact('rumahtangga'));
+        return $pdf->stream('formulir-06-rumahtangga-' . $rumahtangga->id . '.pdf');
+    }
+      /**
+     * Get rumahtangga data via AJAX
+     * 
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRumahtangga($id)
+    {
+        try {
+            $rumahtangga = Rumahtangga::with('bencana')->findOrFail($id);
+            
+            // Render the view to a string
+            $html = view('forms.form6.show', compact('rumahtangga'))->render();
+            
+            return response()->json([
+                'success' => true,
+                'html' => $html
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

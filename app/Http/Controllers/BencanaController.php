@@ -24,11 +24,18 @@ class BencanaController extends Controller
         }
         $bencana = $bencanaQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
         
-        // Check if the request is from the forms module
-        $isFromForms = $request->has('source') && $request->input('source') === 'forms';
+        // Check if the request is from the forms or kebutuhan module
+        $source = $request->input('source');
+        $isFromForms = $source === 'forms';
+        $isFromKebutuhan = $source === 'kebutuhan';
         
         if ($isFromForms) {
             return view('bencana.form-select', [
+                'bencana' => $bencana,
+                'kategoribencana' => $kategoriBencana,
+            ]);
+        } elseif ($isFromKebutuhan) {
+            return view('bencana.kebutuhan-select', [
                 'bencana' => $bencana,
                 'kategoribencana' => $kategoriBencana,
             ]);

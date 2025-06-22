@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EducationReport extends Model
 {
-    use HasFactory;
-
-    protected $fillable = [
+    use HasFactory;    protected $fillable = [
         'bencana_id',
         'jenis_fasilitas',
         'nama_fasilitas', 
@@ -20,7 +18,10 @@ class EducationReport extends Model
         'biaya_rs', 
         'biaya_rr',
         'total_biaya',
-        'keterangan'
+        'keterangan',
+        'nama_kampung',
+        'nama_distrik',
+        'data'
     ];
 
     protected $casts = [

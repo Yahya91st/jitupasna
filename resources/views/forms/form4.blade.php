@@ -75,8 +75,8 @@
                         <h5 class="card-title">Format 2 - Sektor Pendidikan</h5>
                         <p class="card-text">Format pengumpulan data sektor pendidikan.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="{{ route('forms.form4.show-format2', $bencana->id) }}" class="btn btn-outline-info">
+                            <a href="{{ route('forms.form4.format2form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format2', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -93,8 +93,8 @@
                         <h5 class="card-title">Format 3 - Sektor Kesehatan</h5>
                         <p class="card-text">Format pengumpulan data sektor kesehatan.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="{{ route('forms.form4.show-format3', $bencana->id) }}" class="btn btn-outline-info">
+                            <a href="{{ route('forms.form4.format3form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format3', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -111,7 +111,7 @@
                         <h5 class="card-title">Format 4 - Perlindungan Sosial</h5>
                         <p class="card-text">Format pengumpulan data sektor perlindungan sosial.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.format4form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                             <a href="#" class="btn btn-outline-info" onclick="alert('Format 4 - Fitur Lihat Data belum tersedia')">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
@@ -129,7 +129,7 @@
                         <h5 class="card-title">Format 5 - Sektor Keagamaan</h5>
                         <p class="card-text">Format pengumpulan data sektor keagamaan.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.format5form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                             <a href="#" class="btn btn-outline-info" onclick="alert('Format 5 - Fitur Lihat Data belum tersedia')">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
@@ -147,8 +147,8 @@
                         <h5 class="card-title">Format 6 - Air Minum</h5>
                         <p class="card-text">Format pengumpulan data sektor sarana dan prasarana air minum.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 6 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.format6form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format6', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -166,7 +166,7 @@
                         <p class="card-text">Format pengumpulan data sektor transportasi.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format7form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="{{ route('forms.form4.show-format7', $bencana->id) }}" class="btn btn-outline-info">
+                            <a href="{{ route('forms.form4.list-format7', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -183,7 +183,7 @@
                         <h5 class="card-title">Format 8 - Sektor Listrik</h5>
                         <p class="card-text">Format laporan sektor listrik.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.format8form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                             <a href="#" class="btn btn-outline-info" onclick="alert('Format 8 - Fitur Lihat Data belum tersedia')">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
@@ -201,7 +201,7 @@
                         <h5 class="card-title">Format 9 - Sektor Telkom</h5>
                         <p class="card-text">Format pengumpulan data sektor Telkom.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.format9form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                             <a href="#" class="btn btn-outline-info" onclick="alert('Format 9 - Fitur Lihat Data belum tersedia')">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
@@ -219,7 +219,7 @@
                         <h5 class="card-title">Format 10 - Pertanian</h5>
                         <p class="card-text">Format pengumpulan data sektor pertanian/perkebunan.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.format10form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                             <a href="#" class="btn btn-outline-info" onclick="alert('Format 10 - Fitur Lihat Data belum tersedia')">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
@@ -237,8 +237,8 @@
                         <h5 class="card-title">Format 11 - Peternakan</h5>
                         <p class="card-text">Format pengumpulan data sektor peternakan.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 11 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.format11form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format11', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -255,8 +255,8 @@
                         <h5 class="card-title">Format 12 - Perikanan</h5>
                         <p class="card-text">Format pengumpulan data sektor perikanan.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 12 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.format12form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format12', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -273,8 +273,8 @@
                         <h5 class="card-title">Format 13 - Industri/UMKM</h5>
                         <p class="card-text">Format pengumpulan data sektor industri dan UMKM.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 13 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.format13form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format13', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -291,8 +291,8 @@
                         <h5 class="card-title">Format 14 - Perdagangan</h5>
                         <p class="card-text">Format pengumpulan data sektor perdagangan.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 14 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.format14form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format14', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -309,8 +309,8 @@
                         <h5 class="card-title">Format 15 - Pariwisata</h5>
                         <p class="card-text">Format pengumpulan data sektor pariwisata.</p>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 15 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.format15form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.list-format15', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -328,7 +328,7 @@
                         <p class="card-text">Format pengumpulan data sektor pemerintahan.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format16form4', ['bencana_id' => $bencana->id ?? null]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="{{ route('forms.form4.show-format16', $bencana->id) }}" class="btn btn-outline-info">
+                            <a href="{{ route('forms.form4.list-format16', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -346,7 +346,7 @@
                         <p class="card-text">Format pengumpulan data sektor lingkungan hidup.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format17form4', ['bencana_id' => $bencana->id ?? null]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="{{ route('forms.form4.show-format17', $bencana->id) }}" class="btn btn-outline-success">
+                            <a href="{{ route('forms.form4.list-format17', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-success">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>

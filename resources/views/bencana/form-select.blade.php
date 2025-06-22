@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
-@section('content')
-    <div class="page-heading">
+@section('content')    <div class="page-heading">
     <div class="page-title mb-4">
         <h3>Pilih Kejadian Bencana</h3>
         <p class="text-subtitle text-muted">Silahkan pilih kejadian bencana untuk mengisi formulir</p>
@@ -17,8 +16,11 @@
                         <button class="btn btn-danger" type="button" data-toggle="modal"
                             data-target="#inlineForm">Filter</button>
                     </div>
-                </div>
-                <div class="card-content">
+                </div>                <div class="card-content">
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading"><i data-feather="info"></i> Informasi</h5>
+                        <p>Pilih bencana untuk melihat semua data kerusakan dan kerugian yang telah diinput pada formulir-formulir pendataan.</p>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>

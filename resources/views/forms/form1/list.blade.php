@@ -45,11 +45,13 @@
                     <td>{{ $data->nomor_surat }}</td>
                     <td>{{ $data->perihal }}</td>
                     <td>{{ $data->kepada }}</td>
-                    <td>{{ $data->created_at->format('d-m-Y H:i') }}</td>
-                    <td>
-                        <div class="btn-group">
+                    <td>{{ $data->created_at->format('d-m-Y H:i') }}</td>                    <td>
+                        <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
                             <a href="{{ route('forms.form1.show', $data->id) }}" class="btn btn-sm btn-info">
                                 <i class="fa fa-eye"></i> Detail
+                            </a>
+                            <a href="{{ route('forms.form1.edit', $data->id) }}" class="btn btn-sm btn-warning">
+                                <i class="fa fa-edit"></i> Edit
                             </a>
                             <a href="{{ route('forms.form1.preview-pdf', $data->id) }}" class="btn btn-sm btn-secondary" target="_blank">
                                 <i class="fa fa-search"></i> Lihat PDF

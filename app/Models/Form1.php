@@ -9,14 +9,14 @@ class Form1 extends Model
 {
     use HasFactory;
     
-    protected $table = 'form1';
-      protected $fillable = [
+    protected $table = 'form1';    protected $fillable = [
         'bencana_id',
         'nomor_surat',
         'sifat',
         'lampiran',
         'perihal',
         'kepada',
+        'kepada_jabatan',
         'lokasi_pdna',
         'hari_tanggal',
         'waktu',
