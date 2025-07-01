@@ -366,6 +366,30 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td class="text-center">4</td>
+                <td>
+                    <div class="mb-3">
+                        <strong>Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana .... unit.</strong><br>
+                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Sebutkan bentuk-bentuk organisasi/lembaga tersebut..........</strong><br>
+                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
+                    </div>
+                    
+                    <div>
+                        <strong>Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut.......</strong><br>
+                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
+                    </div>
+                    <div>
+                        <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut.......</strong><br>
+                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
+                    </div>
+                    
+                </td>
+            </tr>
         </tbody>
     </table>
     
@@ -407,7 +431,7 @@
                 <em>Lanjutan:</em><br>
                 Industri besar : …………………………………………<br>
                 Koperasi : …………………………………………<br>
-                Lainnya : …………………………………………
+                Lainnya ...... : …………………………………………
             </td>
         </tr>
         <tr>
@@ -419,7 +443,7 @@
                 Perdagangan besar : berupa …………………………………………………………………………<br>
                 Industri kecil-menengah : berupa …………………………………………………………………………<br>
                 Industri besar : berupa …………………………………………………………………………<br>
-                Lainnta : berupa ...........<br>
+                Lainnya : berupa ...........<br>
             </td>
         </tr>
         <tr>
@@ -484,7 +508,7 @@ Industri besar adalah ….
                 <tr><td class="text-center">1</td><td>Jumlah rumah tangga yang kehilangan akses terhadap naungan yang layak (rumah rusak berat dan rusak sedang)</td></tr>
                 <tr><td class="text-center">2</td><td>Jumlah penyandang cacat akibat bencana ....<br>
                      Kegiatan yang dibutuhkan untuk membantu rehabilitasi penyandang cacat akibat bencana.......</td></tr>
-                <tr><td class="text-center">3</td><td>Kegiatan keagamaan, sosial kemasyarakatan yang terkena dampak bencana : <br>
+                <tr><td class="text-center">3</td><td>Kegiatan agama, sosial kemasyarakatan yang terkena dampak bencana : <br>
                 jelaskan............</td></tr>
                 <tr><td class="text-center">4</td><td>Penggerak kegiatan masyarakat tersebut : <br>
                 ..............................</td></tr>
@@ -564,12 +588,12 @@ Kegiatan yang dibutuhkan untuk mengatasi permasalahan guru yang meninggal/berpin
     </thead>
     <tbody>
         <tr><td class="text-center">1</td><td>Jumlah Rukun Tetangga/Rukun Warga/Kelurahan,Kecamatan yang teranggu akibat bencana ..............<br>
-        Jenis gangguan<br>
+        Jenis gangguan..........<br>
         Kebutuhan dukungan untuk pemulihan .................</td></tr>
-        <tr><td class="text-center">2</td><td>Adakah komunitas yang desa yang memiliki sistem pemeliharaan dan sarana desa?: Bila ada jelaskan :<br>
+        <tr><td class="text-center">2</td><td>Adakah komunitas desa yang memiliki sistem pemeliharaan dan sarana desa?: Bila ada jelaskan :...........<br>
         Apakah sistem tersebut terganggu akibat bencana? <br>
-        Jelaskan.</td></tr>
-        <tr><td class="text-center">3</td><td>Adakah komunitas yang desa yang memiliki ketahanan pangan desa (lumbung dll) ?: Bila ada jelaskan :......<br>
+        Jelaskan..................................</td></tr>
+        <tr><td class="text-center">3</td><td>Adakah komunitas desa yang memiliki ketahanan pangan desa (lumbung dll) ?: Bila ada jelaskan :......<br>
 Apakah sistem tersebut terganggu akibat bencana? Jelaskan......</td></tr>
         <tr><td class="text-center">4</td><td>Jumlah penduduk/keluarga yang kehilangan surat-surat penting (sertifikat tanah, KTP dan lain sebagainya).....<br>
 Kegiatan yang dibutuhkan untuk mengatasi hal tersebut.........</td></tr>
@@ -603,25 +627,20 @@ Dukungan yang dibutuhkan untuk mengatasi permasalahan tersebut:.........</td></t
     <tbody>
         <tr><td class="text-center">1</td><td>Permasalahan umum yang menghambat pelaksanaan pelayanan kesehatan pada masa sebelum bencana. (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam).......</td></tr>
         <tr><td class="text-center">2</td><td>Adakah indikasi penduduk trauma setelah bencana?:........<br>
-Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?......</td></tr>
-        <tr><td class="text-center">3</td><td>Adakah program/kegiatan kesehatan masal dalam penanggulangan dampak bencana? Jelaskan
-.......</td></tr>
-        <tr><td class="text-center">4</td><td>Permasalahan kesehatan yang umum akibat bencana?
-        : Jelaskan........ 
-Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut;..............</td></tr>
-        <tr><td class="text-center">5</td><td>Adakah program pemberian makanan tambahan untuk balita/ anak sekolah? : Jelaskan...............</td></tr>
-        <tr><td class="text-center">6</td><td>Jumlah balita yang terdampak bencana.........<br>
-Jelaskan dampak bencana terhadap balita.............<br>
-Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap balita..............................</td></tr>
-        <tr><td class="text-center">7</td><td>Jumlah ibu hamil yang terdampak bencana Jelaskan dampak bencana terhadap ibu hamil
-Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap ibu hamil.</td></tr>
-        <tr><td class="text-center">8</td><td>Jumlah lansia yang terdampak bencana
-Jelaskan dampak bencana terhadap lansia
-Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap lansia.........</td></tr>
-        <tr><td class="text-center">9</td><td>Perkiraan dampak kesehatan jangka menengah akibat bencana Jelaskan
-Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut</td></tr>
-        <tr><td class="text-center">10</td><td>Adakah rencana kontingensi terkait bidang kesehatan dalam mengurangi risiko akibat bencana?
-        Jelaskan</td></tr>
+                                                Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?......</td></tr>        <tr><td class="text-center">3</td><td>Adakah program/kegiatan kesehatan masal dalam penanggulangan dampak bencana? Jelaskan
+                                            <input type="text" name="program_kesehatan_masal" class="form-input" style="width: 70%; display: inline-block;"></td></tr>
+        <tr><td class="text-center">4</td><td>Permasalahan kesehatan yang umum akibat bencana?: Jelaskan <input type="text" name="permasalahan_kesehatan" class="form-input" style="width: 60%; display: inline-block;"> 
+                                            Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut <input type="text" name="kegiatan_permasalahan_kesehatan" class="form-input" style="width: 60%; display: inline-block;"></td></tr>
+        <tr><td class="text-center">5</td><td>Adakah program pemberian makanan tambahan untuk balita/ anak sekolah? : Jelaskan <input type="text" name="program_makanan_tambahan" class="form-input" style="width: 70%; display: inline-block;"></td></tr>        <tr><td class="text-center">6</td><td>Jumlah balita yang terdampak bencana <input type="number" name="jumlah_balita_terdampak" class="form-input" style="width: 100px; display: inline-block;"><br>
+                                                Jelaskan dampak bencana terhadap balita <input type="text" name="dampak_balita" class="form-input" style="width: 60%; display: inline-block;"><br>
+                                                Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap balita <input type="text" name="kegiatan_balita" class="form-input" style="width: 60%; display: inline-block;"></td></tr>        <tr><td class="text-center">7</td><td>Jumlah ibu hamil yang terdampak bencana <input type="number" name="jumlah_ibu_hamil_terdampak" class="form-input" style="width: 100px; display: inline-block;"><br>
+                                            Jelaskan dampak bencana terhadap ibu hamil <input type="text" name="dampak_ibu_hamil" class="form-input" style="width: 60%; display: inline-block;">
+                                            Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap ibu hamil <input type="text" name="kegiatan_ibu_hamil" class="form-input" style="width: 60%; display: inline-block;"></td></tr>        <tr><td class="text-center">8</td><td>Jumlah lansia yang terdampak bencana <input type="number" name="jumlah_lansia_terdampak" class="form-input" style="width: 100px; display: inline-block;">
+                                            Jelaskan dampak bencana terhadap lansia <input type="text" name="dampak_lansia" class="form-input" style="width: 60%; display: inline-block;">
+                                            Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap lansia <input type="text" name="kegiatan_lansia" class="form-input" style="width: 60%; display: inline-block;"></td></tr>        <tr><td class="text-center">9</td><td>Perkiraan dampak kesehatan jangka menengah akibat bencana <br>
+                                            Jelaskan <input type="text" name="dampak_kesehatan_menengah" class="form-input" style="width: 70%; display: inline-block;">
+                                            Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut <input type="text" name="kegiatan_dampak_kesehatan" class="form-input" style="width: 60%; display: inline-block;"></td></tr>        <tr><td class="text-center">10</td><td>Adakah rencana kontingensi terkait bidang kesehatan dalam mengurangi risiko akibat bencana?
+                                            Jelaskan <input type="text" name="rencana_kontingensi_kesehatan" class="form-input" style="width: 70%; display: inline-block;"></td></tr>
     </tbody>
 </table>
 

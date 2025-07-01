@@ -44,7 +44,7 @@ return new class extends Migration
 
             $table->timestamps();
             
-            $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
+            // $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
         });
 
         // Drop the old tables if they exist

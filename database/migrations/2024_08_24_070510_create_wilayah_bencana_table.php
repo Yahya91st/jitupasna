@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('wilayah_bencana', function (Blueprint $table) {
             $table->id();
-            $table->integer('bencana_id');
+            $table->unsignedBigInteger('bencana_id');
             $table->integer('desa_id');
             $table->timestamps();
             $table->softDeletes();

@@ -26,14 +26,11 @@ return new class extends Migration
             $table->string('prioritas')->nullable(); // High, Medium, Low
             $table->string('durasi_penyelesaian')->nullable();
             $table->string('penanggung_jawab')->nullable();
-            $table->text('keterangan')->nullable();
-            $table->unsignedBigInteger('created_by')->nullable();
+            $table->text('keterangan')->nullable();            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             
-            $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->foreign('updated_by')->references('id')->on('users');
+            // Foreign keys will be added in the final migration: 9999_12_31_235959_add_all_foreign_key_constraints.php
         });
     }
 

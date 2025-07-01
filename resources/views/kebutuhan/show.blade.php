@@ -49,9 +49,140 @@
                         <p>{{ $bencana->desa ?? $bencana->desa_id }}</p>
                     </div>
                 </div>
+            </div>        </div>
+    </div>    
+    
+    <!-- Rekap Section -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title">
+                <i class="fas fa-chart-pie me-2"></i>
+                Data Rekap Bencana
+                <small id="last-updated" class="text-muted ms-2"></small>
+            </h4>
+            <div>
+                @if($rekaps->count() > 0)
+                    <a href="{{ route('rekap.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-info btn-sm">
+                        <i class="fas fa-eye me-1"></i>Lihat Semua Rekap
+                    </a>                @endif                <button id="sync-rekap-btn" class="btn btn-warning btn-sm" title="Sinkronisasi Data Rekap">
+                    <i class="fas fa-sync-alt me-1"></i>Sync Data
+                </button>
+                <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1"></i>Tambah Rekap
+                </a>
             </div>
         </div>
-    </div>    
+        <div class="card-body">
+            @if($rekaps->count() > 0)
+                <!-- Rekap Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
+                                <small>Total Rekap</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-danger text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">Rp {{ number_format(($rekap->format1Form4->total_kerusakan ?? $rekap->total_kerusakan ?? 0), 0, ',', '.') }}</h4>
+                                <small>Total Kerusakan</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
+                                <small>Total Kerugian</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
+                                <small>Verified</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rekap Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Lokasi</th>
+                                <th>Format Terisi</th>
+                                <th>Total Kerusakan</th>
+                                <th>Total Kerugian</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($rekaps as $rekap)
+                                <tr>
+                                    <td>
+                                        <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
+                                        <small class="text-muted">{{ $rekap->nama_distrik ?? '-' }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">
+                                            {{ $rekap->getFilledFormatsCount() }}/17
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <strong>Rp {{ number_format(($rekap->format1Form4->total_kerusakan ?? $rekap->total_kerusakan ?? 0), 0, ',', '.') }}</strong>
+                                    </td>
+                                    <td>
+                                        <strong>Rp {{ number_format($rekap->total_kerugian, 0, ',', '.') }}</strong>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $statusClass = match($rekap->status) {
+                                                'completed' => 'bg-success',
+                                                'verified' => 'bg-info',
+                                                default => 'bg-warning'
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $statusClass }}">
+                                            {{ ucfirst($rekap->status) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('rekap.edit', $rekap->id) }}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-outline-danger" title="PDF" target="_blank">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <h5>Belum ada data rekap</h5>
+                    <p class="text-muted mb-3">Belum ada data rekap untuk bencana ini. Mulai dengan menambahkan rekap baru.</p>
+                    <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Tambah Rekap Pertama
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
     
     <div class="card">
         <div class="card-header d-flex justify-content-between">
@@ -67,7 +198,7 @@
                     <div class="card bg-primary text-white">
                         <div class="card-body">
                             <h5>Total Kerusakan</h5>
-                            <h3>Rp {{ number_format($totals['kerusakan'], 0, ',', '.') }}</h3>
+                            <h3>Rp {{ number_format($totals['total_kerusakan'] ?? $totals['kerusakan'] ?? 0, 0, ',', '.') }}</h3>
                             <div class="progress progress-white mt-2" style="height: 10px;">
                                 @php
                                     $kerusakanPercentage = $totals['total'] > 0 ? ($totals['kerusakan'] / $totals['total'] * 100) : 0;
@@ -920,23 +1051,159 @@
 </section>
 @endsection
 
-@push('scripts')
+@push('script')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add any special scripts needed for the enhanced views here
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded - JavaScript is running');
+    
+    // Check jQuery availability
+    if (typeof $ === 'undefined') {
+        console.error('jQuery is not loaded!');
+        return;
+    } else {
+        console.log('jQuery is available, version:', $.fn.jquery);
+    }
+    
+    // Check SweetAlert availability
+    if (typeof Swal === 'undefined') {
+        console.error('SweetAlert2 is not loaded!');
+    } else {
+        console.log('SweetAlert2 is available');
+    }
+      // Check if elements exist
+    const syncBtn = document.getElementById('sync-rekap-btn');
+    
+    console.log('Sync button found:', syncBtn);    // Auto-sync functionality only
+    
+    // Sync rekap data
+    function syncRekapData() {
+        console.log('syncRekapData function called');
+        const syncBtn = document.getElementById('sync-rekap-btn');
+        console.log('Sync button element:', syncBtn);
         
-        // Function to toggle all details sections at once
-        const toggleAllDetails = (show) => {
-            document.querySelectorAll('[id^="details-"]').forEach(element => {
-                if (show) {
-                    element.classList.add('show');
+        if (!syncBtn) {
+            console.error('Sync button not found!');
+            return;
+        }
+        
+        const originalHtml = syncBtn.innerHTML;
+        
+        syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Syncing...';
+        syncBtn.disabled = true;
+
+        // Use jQuery AJAX for better AJAX detection compatibility
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
+        $.ajax({
+            url: '{{ route("rekap.sync-all") }}',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                bencana_id: {{ $bencana->id }},
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                console.log('AJAX Success - Response data:', data);
+                
+                if (data.success) {
+                    // Build detailed message
+                    let message = data.message;
+                    if (data.deleted_count > 0) {
+                        message += `\n\nDetail:\n• ${data.synced_count} rekap disinkronisasi\n• ${data.deleted_count} data orphan dihapus`;
+                    } else {
+                        message += `\n\nDetail:\n• ${data.synced_count} rekap disinkronisasi`;
+                    }
+                    
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: message,
+                        timer: 4000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Refresh the page to show updated data
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 } else {
-                    element.classList.remove('show');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message || 'Gagal sinkronisasi data'
+                    });
                 }
-            });
-        };
-        
-        // Add toggle buttons if needed
-    });
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {
+                    status: status,
+                    error: error,
+                    responseText: xhr.responseText,
+                    xhr: xhr
+                });
+                
+                // Check if it's actually a successful redirect (302/200 status)
+                if (xhr.status === 200 || xhr.status === 302) {
+                    // Parse response for success indicators
+                    const responseText = xhr.responseText || '';
+                    if (responseText.includes('success') || responseText.includes('berhasil') || responseText.includes('Berhasil')) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Sinkronisasi rekap berhasil dilakukan',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                        
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                        return;
+                    }
+                }
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat sinkronisasi data'
+                });
+            },
+            complete: function() {
+                syncBtn.innerHTML = originalHtml;
+                syncBtn.disabled = false;
+            }        });
+    }
+    
+    // Event listenersconsole.log('Adding event listeners...');
+    
+    const syncBtnElement = document.getElementById('sync-rekap-btn');
+    if (syncBtnElement) {
+        console.log('Adding click listener to sync button');
+        syncBtnElement.addEventListener('click', function(e) {
+            console.log('Sync button clicked!', e);
+            syncRekapData();
+        });    } else {
+        console.error('Sync button element not found for event listener!');
+    }
+    
+    // Debug: Log initial state
+    console.log('Sync system initialized successfully');
+    
+    // Function to toggle all details sections at once
+    const toggleAllDetails = (show) => {
+        document.querySelectorAll('[id^="details-"]').forEach(element => {
+            if (show) {
+                element.classList.add('show');
+            } else {
+                element.classList.remove('show');
+            }
+        });
+    };
+});
 </script>
 @endpush

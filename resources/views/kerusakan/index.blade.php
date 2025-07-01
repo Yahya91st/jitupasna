@@ -1,6 +1,138 @@
 @extends('layouts.main')
 
 @section('content')
+    <!-- Rekap Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>
+                        Rekap Data Bencana
+                    </h5>
+                    <div>
+                        <a href="{{ route('rekap.index') }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-eye me-1"></i>Lihat Semua Rekap
+                        </a>
+                        <a href="{{ route('rekap.dashboard') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <!-- Summary Cards -->
+                    <div class="row mb-3" style="margin: 15px;">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white mb-0">
+                                <div class="card-body text-center py-3">
+                                    <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
+                                    <small>Total Rekap</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-danger text-white mb-0">
+                                <div class="card-body text-center py-3">
+                                    <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerusakan'], 0, ',', '.') }}</h4>
+                                    <small>Total Kerusakan</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white mb-0">
+                                <div class="card-body text-center py-3">
+                                    <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
+                                    <small>Total Kerugian</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white mb-0">
+                                <div class="card-body text-center py-3">
+                                    <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
+                                    <small>Verified</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Rekap Table -->
+                    <div class="table-responsive" style="margin: 15px;">
+                        <h6 class="mb-3">10 Rekap Terbaru:</h6>
+                        <table class="table table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Bencana</th>
+                                    <th>Lokasi</th>
+                                    <th>Format Terisi</th>
+                                    <th>Total Kerusakan</th>
+                                    <th>Total Kerugian</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($rekaps as $rekap)
+                                    <tr>
+                                        <td>
+                                            <strong>{{ $rekap->bencana->nama_kejadian ?? '-' }}</strong><br>
+                                            <small class="text-muted">{{ $rekap->bencana->tanggal_kejadian ?? '-' }}</small>
+                                        </td>
+                                        <td>
+                                            <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
+                                            <small class="text-muted">{{ $rekap->nama_distrik ?? '-' }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">
+                                                {{ $rekap->getFilledFormatsCount() }}/17
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <strong>Rp {{ number_format($rekap->total_kerusakan, 0, ',', '.') }}</strong>
+                                        </td>
+                                        <td>
+                                            <strong>Rp {{ number_format($rekap->total_kerugian, 0, ',', '.') }}</strong>
+                                        </td>
+                                        <td>
+                                            @php
+                                                $statusClass = match($rekap->status) {
+                                                    'completed' => 'bg-success',
+                                                    'verified' => 'bg-info',
+                                                    default => 'bg-warning'
+                                                };
+                                            @endphp
+                                            <span class="badge {{ $statusClass }}">
+                                                {{ ucfirst($rekap->status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-outline-danger" title="PDF" target="_blank">
+                                                    <i class="fas fa-file-pdf"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                                            <p class="text-muted mb-0">Belum ada data rekap</p>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Original Kerusakan Section -->
     <div class="row" id="table-striped">
         <div class="col-12">
             <div class="card">

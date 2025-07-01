@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transportation_reports', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bencana_id');
-            $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
+            // $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
             
             // Report type (to differentiate between different sections of the form)
             $table->enum('report_type', [

@@ -8,6 +8,7 @@ use App\Models\HSD;
 use App\Models\KategoriBangunan;
 use App\Models\KategoriBencana;
 use App\Models\Kerusakan;
+use App\Models\Rekap;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,9 +30,35 @@ class KerusakanController extends Controller
         
         $kerusakan = $kerusakanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
 
+        // Get rekap data with related information
+        $rekapQuery = Rekap::with(['bencana', 'format1Form4', 'format5Form4', 'format6Form4', 'format7Form4'])
+            ->latest();
+        
+        // Filter rekap by bencana if specified
+        if ($request->filled('bencana_id')) {
+            $rekapQuery->where('bencana_id', $request->input('bencana_id'));
+        }
+        
+        $rekaps = $rekapQuery->limit(10)->get(); // Limit to recent 10 rekaps for display
+        
+        // Get rekap summary statistics
+        $rekapSummary = [
+            'total_rekaps' => Rekap::count(),
+            'total_kerusakan' => Rekap::sum('total_kerusakan'),
+            'total_kerugian' => Rekap::sum('total_kerugian'),
+            'completed_rekaps' => Rekap::where('status', 'completed')->count(),
+            'verified_rekaps' => Rekap::where('status', 'verified')->count(),
+        ];
+        
+        // Get bencana list for filter
+        $bencanas = Bencana::select('id', 'nama_kejadian', 'tanggal_kejadian')->latest()->get();
+
         return view('kerusakan.index', [
             'kerusakan' => $kerusakan,
             'kategoribangunan' => $kategoriBangunan,
+            'rekaps' => $rekaps,
+            'rekapSummary' => $rekapSummary,
+            'bencanas' => $bencanas,
         ]);
     }
     
@@ -79,14 +106,33 @@ class KerusakanController extends Controller
             return $item->kategori_bangunan->nama ?? 'Tidak Dikategorikan';
         })->map(function($group) {
             return $group->sum('BiayaKeseluruhan');
-        });
+        })->toArray(); // Convert Collection to array
+
+        // Get rekap data for this bencana
+        $rekaps = Rekap::where('bencana_id', $id)
+            ->with(['bencana', 'format1Form4', 'format5Form4', 'format6Form4', 'format7Form4'])
+            ->get();
+        
+        // Calculate rekap summary
+        $rekapSummary = [
+            'total_rekaps' => $rekaps->count(),
+            'total_kerusakan' => $rekaps->sum('total_kerusakan'),
+            'total_kerugian' => $rekaps->sum('total_kerugian'),
+            'completed_rekaps' => $rekaps->where('status', 'completed')->count(),
+            'verified_rekaps' => $rekaps->where('status', 'verified')->count(),
+            'total_formats_filled' => $rekaps->sum(function($rekap) {
+                return $rekap->getFilledFormatsCount();
+            }),
+        ];
         
         return view('kerusakan.detail', [
             'bencana' => $bencana,
             'kerusakanData' => $kerusakanData,
             'totalKerusakan' => $totalKerusakan,
             'jumlahItem' => $jumlahItem,
-            'kerusakanByKategori' => $kerusakanByKategori
+            'kerusakanByKategori' => $kerusakanByKategori,
+            'rekaps' => $rekaps,
+            'rekapSummary' => $rekapSummary
         ]);
     }
     

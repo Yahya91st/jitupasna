@@ -17,7 +17,64 @@ class Form9Controller extends Controller
         $bencana = Bencana::find($bencana_id);
         
         return view('forms.form9.form9', compact('bencana'));
-    }    public function list(Request $request)
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'bencana_id' => 'required|exists:bencana,id',
+            'jawaban' => 'required|array',
+        ]);
+
+        $bencana_id = $validated['bencana_id'];
+        $jawabanData = $validated['jawaban'];
+
+        // Delete old data for this bencana instance to prevent duplicates
+        Form9::where('bencana_id', $bencana_id)->delete();
+
+        // Pre-calculate total sums for each question to determine percentage
+        $question_totals = [];
+        foreach ($jawabanData as $pertanyaan_no => $jawaban_indices) {
+            $question_totals[$pertanyaan_no] = 0;
+            foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
+                // Ensure kuesioner_values is an array before summing
+                if (is_array($kuesioner_values)) {
+                    $question_totals[$pertanyaan_no] += array_sum(array_map('intval', $kuesioner_values));
+                }
+            }
+        }
+
+        foreach ($jawabanData as $pertanyaan_no => $jawaban_indices) {
+            foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
+                if (!is_array($kuesioner_values)) {
+                    continue; // Skip if there are no kuesioner values
+                }
+
+                $jumlah = array_sum(array_map('intval', $kuesioner_values));
+                $total_for_question = $question_totals[$pertanyaan_no];
+                $persentase = ($total_for_question > 0) ? ($jumlah / $total_for_question) * 100 : 0;
+
+                Form9::create([
+                    'bencana_id' => $bencana_id,
+                    'pertanyaan_no' => $pertanyaan_no,
+                    'jawaban_index' => $jawaban_index,
+                    'kuesioner_1' => $kuesioner_values[1] ?? 0,
+                    'kuesioner_2' => $kuesioner_values[2] ?? 0,
+                    'kuesioner_3' => $kuesioner_values[3] ?? 0,
+                    'kuesioner_4' => $kuesioner_values[4] ?? 0,
+                    'kuesioner_5' => $kuesioner_values[5] ?? 0,
+                    'kuesioner_6' => $kuesioner_values[6] ?? 0,
+                    'jumlah' => $jumlah,
+                    'persentase' => $persentase,
+                ]);
+            }
+        }
+
+        return redirect()->route('forms.form-list', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data Form 9 berhasil disimpan.');
+    }
+
+    public function list(Request $request)
     {
         $bencana_id = $request->get('bencana_id');
         $bencana = Bencana::find($bencana_id);
@@ -29,7 +86,8 @@ class Form9Controller extends Controller
         
         return view('forms.form9.list', compact('bencana', 'forms'));
     }
-      /**
+    
+    /**
      * Show the details of a specific form
      */
     public function show($id)
@@ -119,34 +177,6 @@ class Form9Controller extends Controller
         } catch (\Exception $e) {
             Log::error('Error previewing PDF: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat menampilkan pratinjau PDF: ' . $e->getMessage());
-        }
-    }public function store(Request $request)
-    {
-        // Validate form data
-        $validated = $request->validate([
-            'bencana_id' => 'required|exists:bencana,id',
-            'nomor_kuesioner' => 'required|string',
-            'jenis_kelamin' => 'required|string',
-            'umur' => 'required|string',
-            'desa_kelurahan' => 'required|string',
-            'kecamatan' => 'required|string',
-            'dukungan_pangan_air' => 'nullable|array',
-        ]);
-        
-        try {
-            // Add current date if not provided
-            if (!isset($validated['tanggal'])) {
-                $validated['tanggal'] = now();
-            }
-            
-            // Create a new Form9 record
-            Form9::create($validated);
-            
-            return redirect()->route('forms.form9.list', ['bencana_id' => $request->bencana_id])
-                ->with('success', 'Data kuesioner berhasil disimpan');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
-                ->withInput();
         }
     }
 }

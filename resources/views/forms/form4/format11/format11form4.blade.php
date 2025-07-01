@@ -1,98 +1,177 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mt-4">    <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
-    <p class="fw-bold">Format 11: Pengumpulan Data Sektor Peternakan</p>
-    
-    <form action="{{ route('forms.form4.store-format11') }}" method="POST">
-        @csrf
-        <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}">
-        
-        <div class="row mb-2">
-            <div class="col-md-6">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text">NAMA KAMPUNG</span>
-                    <input type="text" class="form-control form-control-sm" name="nama_kampung" required>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text">NAMA DISTRIK</span>
-                    <input type="text" class="form-control form-control-sm" name="nama_distrik" required>
-                </div>
-            </div>
+<div class="container-fluid mt-4">
+    <h2 class="text-center fw-bold mb-3">PENGKAJIAN KEBUTUHAN PASCABENCANA</h2>
+    <h4 class="text-center fw-bold mb-3">FORMAT 11: SEKTOR PETERNAKAN</h4>
+    <h5 class="text-center mb-4">Kabupaten [nama kabupaten]</h5>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Informasi Kerusakan Sektor Peternakan</h5>
         </div>
+        <div class="card-body">
+            <div class="mb-4">
+                <span class="fw-bold">NAMA KAMPUNG:</span>
+                <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
+            </div>
+            <div class="mb-4">
+                <span class="fw-bold">NAMA DISTRIK:</span>
+                <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
+            </div>
 
-    <p><strong>A. Kerusakan Bangunan & Sarana Peternakan</strong></p>
+            <form action="{{ route('forms.form4.format11.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center align-middle">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="align-middle">Perkiraan Kerusakan</th>
+                                <th rowspan="2" class="text-center">Jenis Hewan Ternak</th>
+                                <th rowspan="2" class="text-center">Jumlah Unit</th>
+                                <th rowspan="2" class="text-center">Harga Satuan Ternak/Produk Ternak (Telur, Susu dsb)</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="fw-bold bg-secondary text-white">PERKIRAAN KERUSAKAN</td>
+                            </tr>
+                            
+                            <!-- KEMATIAN HEWAN TERNAK -->
+                            <tr>
+                                <td rowspan="4" class="align-middle fw-bold bg-light">a) Kematian Hewan Ternak</td>
+                                <td class="text-start"><input type="text" name="komponen[0][0][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[0][0][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[0][0][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[0][1][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[0][1][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[0][1][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[0][2][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[0][2][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[0][2][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[0][3][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[0][3][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[0][3][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
 
-    <table class="table table-bordered text-center align-middle">
-        <thead>
-            <tr>
-                <th>Jenis Bangunan</th>
-                <th>Rusak Berat</th>
-                <th>Rusak Sedang</th>
-                <th>Rusak Ringan</th>
-                <th>Rata-rata Luas (m²)</th>
-                <th>Harga Satuan / m²</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>Kandang Ternak</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>Gudang Pakan</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>Balai Inseminasi / Klinik Hewan</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>Lainnya:</td><td></td><td></td><td></td><td></td><td></td></tr>
-        </tbody>
-    </table>
+                            <!-- KERUSAKAN KANDANG -->
+                            <tr>
+                                <td rowspan="3" class="align-middle fw-bold bg-light">b) Kerusakan Kandang</td>
+                                <td class="text-start"><input type="text" name="komponen[1][0][jenis]" class="form-control form-control-sm" placeholder="Jenis Kandang" value=""></td>
+                                <td><input type="number" name="komponen[1][0][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[1][0][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[1][1][jenis]" class="form-control form-control-sm" placeholder="Jenis Kandang" value=""></td>
+                                <td><input type="number" name="komponen[1][1][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[1][1][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[1][2][jenis]" class="form-control form-control-sm" placeholder="Jenis Kandang" value=""></td>
+                                <td><input type="number" name="komponen[1][2][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[1][2][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
 
-    <p><strong>B. Kerusakan Peralatan Peternakan</strong></p>
+                            <!-- KERUSAKAN PERALATAN KANDANG -->
+                            <tr>
+                                <td rowspan="3" class="align-middle fw-bold bg-light">c) Kerusakan Peralatan Kandang</td>
+                                <td class="text-start"><input type="text" name="komponen[2][0][jenis]" class="form-control form-control-sm" placeholder="Jenis Peralatan" value=""></td>
+                                <td><input type="number" name="komponen[2][0][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[2][0][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[2][1][jenis]" class="form-control form-control-sm" placeholder="Jenis Peralatan" value=""></td>
+                                <td><input type="number" name="komponen[2][1][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[2][1][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[2][2][jenis]" class="form-control form-control-sm" placeholder="Jenis Peralatan" value=""></td>
+                                <td><input type="number" name="komponen[2][2][unit]" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="komponen[2][2][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4" class="align-middle fw-bold bg-light">d) Produksi yang Hilang Total</td>
+                                <td>Jenis Hewan Ternak</td>
+                                <td>Jumalh Unit Yang Hilang</td>
+                                <th class="text-center">Harga Satuan Ternak/Produk Ternak (Telur, Susu dsb)</th>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][0][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][0][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][0][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][1][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][1][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][1][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][2][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][2][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][2][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4" class="align-middle fw-bold bg-light">E. Penurunan Produktifitas</td>
+                                <td>Jenis Hewan Ternak</td>
+                                <td>Penurunan Produktifitas Per Hari/Bulan/Tahun</td>
+                                <td class="text-center">Harga Satuan Ternak/Produk Ternak (Telur, Susu dsb)</td>
+                                <td>Perkiraan Jangka Waktu Pemulihan</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][0][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][0][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][0][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][1][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][1][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][1][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][2][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][2][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][2][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4" class="align-middle fw-bold bg-light">F. Kenaikan Ongkos Produksi</td>
+                                <td>Jenis Hewan Ternak</td>
+                                <td>Kenaikan Ongkos Produksi</td>
+                                <td class="text-center">Jumlah Hewan Yang Terpengaruh</td>
+                                <td>Perkiraan Jangka Waktu Pemulihan</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][0][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][0][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][0][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][1][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][1][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][1][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><input type="text" name="komponen[3][2][jenis]" class="form-control form-control-sm" placeholder="Jenis Hewan Ternak" value=""></td>
+                                <td><input type="number" name="komponen[3][2][unit]" class="form-control" min="0" value="0" placeholder="Jumlah Unit yang Hilang"></td>
+                                <td><input type="number" name="komponen[3][2][harga_satuan]" class="form-control" min="0" step="1000" value="0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <table class="table table-bordered text-center align-middle">
-        <thead>
-            <tr>
-                <th>Jenis Peralatan</th>
-                <th>Jumlah Rusak</th>
-                <th>Harga Satuan</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>Mesin Pencacah</td><td></td><td></td></tr>
-            <tr><td>Mesin Pakan Ternak</td><td></td><td></td></tr>
-            <tr><td>Alat Penampung Susu</td><td></td><td></td></tr>
-            <tr><td>Lainnya:</td><td></td><td></td></tr>
-        </tbody>
-    </table>
-
-    <p><strong>C. Kematian atau Hilangnya Ternak</strong></p>
-
-    <table class="table table-bordered text-center align-middle">
-        <thead>
-            <tr>
-                <th>Jenis Ternak</th>
-                <th>Jumlah Ternak Hilang / Mati</th>
-                <th>Harga Rata-Rata / Ekor</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>Sapi</td><td></td><td></td></tr>
-            <tr><td>Kambing</td><td></td><td></td></tr>
-            <tr><td>Ayam</td><td></td><td></td></tr>
-            <tr><td>Babi</td><td></td><td></td></tr>
-            <tr><td>Lainnya:</td><td></td><td></td></tr>
-        </tbody>
-    </table>
-
-    <p><strong>D. Dampak Ekonomi dan Sosial</strong></p>
-    <ul>
-        <li>Kehilangan Pendapatan Peternak: Rp ........</li>
-        <li>Penurunan Produksi (Susu, Daging, Telur): ........ satuan</li>
-        <li>Kenaikan Harga Pakan / Transportasi: Rp ........</li>
-        <li>Tambahan Biaya Kesehatan Ternak: Rp ........</li>
-    </ul>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-            <a href="{{ route('forms.form4.index', ['bencana_id' => request()->query('bencana_id')]) }}" class="btn btn-secondary">Kembali</a>
-            <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary">Simpan Data</button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 @endsection

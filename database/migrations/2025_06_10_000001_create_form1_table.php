@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('form1', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bencana_id')->constrained('bencana')->onDelete('cascade');
+            $table->unsignedBigInteger('bencana_id');
             $table->string('nomor_surat');
             $table->enum('sifat', ['Segera', 'Biasa', 'Rahasia'])->default('Biasa');
             $table->string('lampiran')->nullable();

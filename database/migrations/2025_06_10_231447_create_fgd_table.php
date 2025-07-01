@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fgd', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bencana_id')->constrained('bencana');
+            $table->unsignedBigInteger('bencana_id');
             $table->string('desa_kelurahan');
             $table->string('kecamatan');
             $table->string('kabupaten');

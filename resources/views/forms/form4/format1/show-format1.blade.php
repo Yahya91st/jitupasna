@@ -78,7 +78,7 @@
                                 <td>{{ $formPerumahan->rumah_rusak_berat_permanen }}</td>
                                 <td>{{ $formPerumahan->rumah_rusak_sedang_permanen }}</td>
                                 <td>{{ $formPerumahan->rumah_rusak_ringan_permanen }}</td>
-                                <td>Rp {{ number_format($formPerumahan->harga_satuan_permanen, 2, ',', '.') }}</td>
+                                <td>Rp {{ number_format($formPerumahan->harga_satuan_hancur_total_permanen, 2, ',', '.') }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -105,7 +105,7 @@
                                 <td>{{ $formPerumahan->rumah_rusak_berat_non_permanen }}</td>
                                 <td>{{ $formPerumahan->rumah_rusak_sedang_non_permanen }}</td>
                                 <td>{{ $formPerumahan->rumah_rusak_ringan_non_permanen }}</td>
-                                <td>Rp {{ number_format($formPerumahan->harga_satuan_non_permanen, 2, ',', '.') }}</td>
+                                <td>Rp {{ number_format($formPerumahan->harga_satuan_hancur_total_non_permanen, 2, ',', '.') }}</td>
                             </tr>
                         </tbody>
                     </table>

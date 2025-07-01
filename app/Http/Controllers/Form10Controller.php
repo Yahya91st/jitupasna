@@ -61,7 +61,7 @@ class Form10Controller extends Controller
         $analisa->created_by = Auth::id();
         $analisa->save();
 
-        return redirect()->route('forms.form10.show', $analisa->id)->with('success', 'Data analisa berhasil disimpan.');
+        return redirect()->route('forms.form10.show', ['id' => $analisa->id])->with('success', 'Data analisa berhasil disimpan.');
     }
     
     /**

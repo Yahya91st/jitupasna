@@ -39,7 +39,7 @@ return new class extends Migration
             $table->text('catatan')->nullable();
             $table->timestamps();
 
-            $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
+            // $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
         });
     }
 

@@ -16,11 +16,10 @@
         </div>
     @endif
     
-    <div class="mb-4 flex justify-between">
-        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
+    <div class="mb-4 flex justify-between">        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
             <i class="fa fa-arrow-left mr-2"></i> Kembali
         </a>
-        <a href="{{ route('forms.form4.format4form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+        <a href="{{ route('forms.form4.format4form4-alt', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
             <i class="fa fa-plus mr-2"></i> Tambah Data Baru
         </a>
     </div>
@@ -146,10 +145,9 @@
         <div class="bg-white p-8 rounded-lg shadow text-center">
             <div class="text-gray-400 mb-4">
                 <i class="fas fa-users fa-4x"></i>
-            </div>
-            <h3 class="text-lg font-semibold mb-2">Belum Ada Data</h3>
+            </div>            <h3 class="text-lg font-semibold mb-2">Belum Ada Data</h3>
             <p class="text-gray-600 mb-4">Belum ada data laporan perlindungan sosial untuk bencana ini.</p>
-            <a href="{{ route('forms.form4.format4form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+            <a href="{{ route('forms.form4.format4form4-alt', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
                 <i class="fa fa-plus mr-2"></i> Tambah Data Baru
             </a>
         </div>

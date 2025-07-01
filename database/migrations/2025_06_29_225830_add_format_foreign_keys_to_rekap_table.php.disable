@@ -1,0 +1,100 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('rekap', function (Blueprint $table) {
+            // Menambahkan foreign key untuk semua format (nullable)
+            $table->unsignedBigInteger('format2_form4_id')->nullable()->after('format1_form4_id');
+            $table->unsignedBigInteger('format3_form4_id')->nullable()->after('format2_form4_id');
+            $table->unsignedBigInteger('format4_form4_id')->nullable()->after('format3_form4_id');
+            $table->unsignedBigInteger('format5_form4_id')->nullable()->after('format4_form4_id');
+            $table->unsignedBigInteger('format6_form4_id')->nullable()->after('format5_form4_id');
+            $table->unsignedBigInteger('format7_form4_id')->nullable()->after('format6_form4_id');
+            $table->unsignedBigInteger('format8_form4_id')->nullable()->after('format7_form4_id');
+            $table->unsignedBigInteger('format9_form4_id')->nullable()->after('format8_form4_id');
+            $table->unsignedBigInteger('format10_form4_id')->nullable()->after('format9_form4_id');
+            $table->unsignedBigInteger('format11_form4_id')->nullable()->after('format10_form4_id');
+            $table->unsignedBigInteger('format12_form4_id')->nullable()->after('format11_form4_id');
+            $table->unsignedBigInteger('format13_form4_id')->nullable()->after('format12_form4_id');
+            $table->unsignedBigInteger('format14_form4_id')->nullable()->after('format13_form4_id');
+            $table->unsignedBigInteger('format15_form4_id')->nullable()->after('format14_form4_id');
+            $table->unsignedBigInteger('format16_form4_id')->nullable()->after('format15_form4_id');
+            $table->unsignedBigInteger('format17_form4_id')->nullable()->after('format16_form4_id');
+            
+            // Foreign key constraints will be added in the final migration: 9999_12_31_235959_add_all_foreign_key_constraints.php
+            
+            // Indexes untuk performance
+            $table->index('format2_form4_id');
+            $table->index('format3_form4_id');
+            $table->index('format4_form4_id');
+            $table->index('format5_form4_id');
+            $table->index('format6_form4_id');
+            $table->index('format7_form4_id');
+            $table->index('format8_form4_id');
+            $table->index('format9_form4_id');
+            $table->index('format10_form4_id');
+            $table->index('format11_form4_id');
+            $table->index('format12_form4_id');
+            $table->index('format13_form4_id');
+            $table->index('format14_form4_id');
+            $table->index('format15_form4_id');
+            $table->index('format16_form4_id');
+            $table->index('format17_form4_id');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('rekap', function (Blueprint $table) {
+            // Drop indexes
+            $table->dropIndex(['format2_form4_id']);
+            $table->dropIndex(['format3_form4_id']);
+            $table->dropIndex(['format4_form4_id']);
+            $table->dropIndex(['format5_form4_id']);
+            $table->dropIndex(['format6_form4_id']);
+            $table->dropIndex(['format7_form4_id']);
+            $table->dropIndex(['format8_form4_id']);
+            $table->dropIndex(['format9_form4_id']);
+            $table->dropIndex(['format10_form4_id']);
+            $table->dropIndex(['format11_form4_id']);
+            $table->dropIndex(['format12_form4_id']);
+            $table->dropIndex(['format13_form4_id']);
+            $table->dropIndex(['format14_form4_id']);
+            $table->dropIndex(['format15_form4_id']);
+            $table->dropIndex(['format16_form4_id']);
+            $table->dropIndex(['format17_form4_id']);
+            
+            // Drop columns
+            $table->dropColumn([
+                'format2_form4_id',
+                'format3_form4_id',
+                'format4_form4_id',
+                'format5_form4_id',
+                'format6_form4_id',
+                'format7_form4_id',
+                'format8_form4_id',
+                'format9_form4_id',
+                'format10_form4_id',
+                'format11_form4_id',
+                'format12_form4_id',
+                'format13_form4_id',
+                'format14_form4_id',
+                'format15_form4_id',
+                'format16_form4_id',
+                'format17_form4_id',
+            ]);
+        });
+    }
+};

@@ -6,12 +6,14 @@ use App\Models\Bencana;
 use App\Models\DetailKerusakan;
 use App\Models\EnvironmentalReport;
 use App\Models\FormPerumahan;
+use App\Models\Format1Form4;
 use App\Models\GovernmentReport;
 use App\Models\Kerugian;
 use App\Models\Kerusakan;
 use App\Models\Pendataan;
 use App\Models\TransportationReport;
 use App\Models\Fgd;
+use App\Models\Rekap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -243,7 +245,7 @@ class KebutuhanController extends Controller
         $pendataan = Pendataan::where('bencana_id', $id)->first();
         
         // Get data from Form4 tables
-        $perumahan = FormPerumahan::where('bencana_id', $id)->get();
+        $perumahan = Format1Form4::where('bencana_id', $id)->get();
         $government = GovernmentReport::where('bencana_id', $id)->get();
         $environment = EnvironmentalReport::where('bencana_id', $id)->get();
         $transportation = TransportationReport::where('bencana_id', $id)->get();
@@ -306,10 +308,6 @@ class KebutuhanController extends Controller
             $numericData['form_perumahan'] = $perumahanNumeric;
         }
         
-        // Calculate totals
-        $totalKerusakan = $kerusakan->sum('BiayaKeseluruhan');
-        $totalKerugian = $kerugian->sum('BiayaKeseluruhan');
-        
         // Calculate environmental loss and damage
         $environmentalTotals = [
             'damage' => $environment->sum('total_kerusakan'),
@@ -322,6 +320,13 @@ class KebutuhanController extends Controller
             'loss' => $government->sum('total_kerugian')
         ];
         
+        // Calculate totals
+        $totalKerusakan = $kerusakan->sum('BiayaKeseluruhan');
+        $totalKerugian = $kerugian->sum('BiayaKeseluruhan');
+        
+        // Ambil total kerusakan dari Format1Form4 (tabel format1_form4s)
+        $totalKerusakanFormat1 = \App\Models\Format1Form4::where('bencana_id', $id)->sum('total_kerusakan');
+        
         // Format totals
         $totals = [
             'kerusakan' => $totalKerusakan,
@@ -330,9 +335,10 @@ class KebutuhanController extends Controller
             'pemerintah' => $governmentTotals,
             'total' => $totalKerusakan + $totalKerugian + 
                        $environmentalTotals['damage'] + $environmentalTotals['loss'] + 
-                       $governmentTotals['damage'] + $governmentTotals['loss']
+                       $governmentTotals['damage'] + $governmentTotals['loss'],
+            'total_kerusakan' => $totalKerusakanFormat1 // pastikan tidak hilang
         ];
-        
+
         // Create detailed breakdown by damage/loss type
         $breakdownByType = [
             'kerusakan_fisik' => $totalKerusakan,
@@ -341,6 +347,23 @@ class KebutuhanController extends Controller
             'kerugian_lingkungan' => $environmentalTotals['loss'],
             'kerusakan_infrastruktur' => $governmentTotals['damage'],
             'kerugian_infrastruktur' => $governmentTotals['loss']
+        ];
+
+        // Get rekap data for this bencana
+        $rekaps = Rekap::where('bencana_id', $id)
+            ->with(['bencana', 'format1Form4', 'format5Form4', 'format6Form4', 'format7Form4'])
+            ->get();
+        
+        // Calculate rekap summary
+        $rekapSummary = [
+            'total_rekaps' => $rekaps->count(),
+            'total_kerusakan' => $rekaps->sum('total_kerusakan'),
+            'total_kerugian' => $rekaps->sum('total_kerugian'),
+            'completed_rekaps' => $rekaps->where('status', 'completed')->count(),
+            'verified_rekaps' => $rekaps->where('status', 'verified')->count(),
+            'total_formats_filled' => $rekaps->sum(function($rekap) {
+                return $rekap->getFilledFormatsCount();
+            }),
         ];
 
         return view('kebutuhan.show', compact(
@@ -356,7 +379,9 @@ class KebutuhanController extends Controller
             'totals',
             'numericData',
             'breakdownByType',
-            'detailKerusakan'
+            'detailKerusakan',
+            'rekaps',
+            'rekapSummary'
         ));
     }
 

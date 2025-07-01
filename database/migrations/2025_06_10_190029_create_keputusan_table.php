@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('tugas_tim');
             $table->string('penanggung_jawab');
             $table->text('tembusan');
-            $table->foreignId('bencana_id')->constrained('bencana')->onDelete('cascade');
+            $table->unsignedBigInteger('bencana_id');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();

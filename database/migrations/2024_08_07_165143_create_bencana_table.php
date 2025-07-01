@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bencana', function (Blueprint $table) {
             $table->id();
+            $table->string('Ref', 192)->nullable();
             $table->date('tanggal');
             $table->integer('kategori_bencana_id');
             $table->integer('kecamatan_id');

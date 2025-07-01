@@ -111,7 +111,7 @@
                         <h5 class="card-title">Format 4 - Perlindungan Sosial</h5>
                         <p class="card-text">Format pengumpulan data sektor perlindungan sosial.</p>
                         <div class="d-flex gap-2">
-                            <a href="{{ route('forms.form4.format4form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
+                            <a href="{{ route('forms.form4.format4form4-alt', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
                             <a href="#" class="btn btn-outline-info" onclick="alert('Format 4 - Fitur Lihat Data belum tersedia')">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>

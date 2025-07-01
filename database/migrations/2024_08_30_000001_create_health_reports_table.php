@@ -28,7 +28,7 @@ class CreateHealthReportsTable extends Migration
             $table->text('keterangan')->nullable();
             $table->timestamps();
             
-            $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
+            // $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
         });
     }
 

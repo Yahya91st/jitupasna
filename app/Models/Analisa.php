@@ -11,6 +11,8 @@ class Analisa extends Model
     
     protected $table = 'analisa';
     
+    protected $primaryKey = 'id';
+    
     protected $fillable = [
         'bencana_id',
         'sektor',

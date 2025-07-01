@@ -20,7 +20,6 @@ return new class extends Migration
             $table->json('data')->nullable();
             $table->timestamps();
             
-            $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
         });
     }
 

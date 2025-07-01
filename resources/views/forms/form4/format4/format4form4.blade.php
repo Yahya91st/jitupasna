@@ -24,74 +24,77 @@
             </div>
         </div>
 
-    <p><strong>A. Kerusakan Fisik Bangunan / Sarana Pelayanan Sosial</strong></p>    <table class="table table-bordered text-center align-middle">
-        <thead>
-            <tr>
-                <th>Jenis Bangunan</th>
-                <th>Jumlah Unit Rusak Berat</th>
-                <th>Jumlah Unit Rusak Sedang</th>
-                <th>Jumlah Unit Rusak Ringan</th>
-                <th>Rata-rata Luas Bangunan</th>
-                <th>Harga Satuan (Bangunan/m²)</th>
-                <th>Harga Satuan Peralatan</th>
-                <th>Harga Satuan Meubelair</th>
+    <p><strong>A. Kerusakan Fisik Bangunan / Sarana Pelayanan Sosial</strong></p>    <table class="table table-bordered text-center align-middle">        <thead>            <tr>
+                <th rowspan="2">Jenis Bangunan</th>
+                <th colspan="6">Jumlah Unit Rusak</th>
+                <th rowspan="2">Rata-rata Luas Bangunan</th>
+                <th colspan="4">Harga Satuan</th>
+            </tr>            <tr>
+                <th>Berat Negeri</th>
+                <th>Berat Swasta</th>
+                <th>Sedang Negeri</th>
+                <th>Sedang Swasta</th>
+                <th>Ringan Negeri</th>
+                <th>Ringan Swasta</th>
+                <th>Bangunan/m²</th>
+                <th>Obat-obatan</th>
+                <th>Meubelair</th>
+                <th>Peralatan lab dan lainnya</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>Panti Sosial</td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rb" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rs" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rr" style="min-width: 80px;"></td>
+        <tbody>            <tr>
+                <td>Panti Asuhan</td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rb_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rb_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rs_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rs_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rr_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rr_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_peralatan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_meubelair" style="min-width: 100px;"></td>
-            </tr>
-            <tr>
-                <td>Panti Asuhan</td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rb" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rs" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rr" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_peralatan_lab" style="min-width: 100px;"></td>
+            </tr><tr>
+                <td>Panti Wredha</td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rb_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rb_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rs_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rs_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rr_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rr_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_peralatan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_meubelair" style="min-width: 100px;"></td>
-            </tr>
-            <tr>
-                <td>Balai Pelayanan Sosial</td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rb" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rs" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rr" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_peralatan_lab" style="min-width: 100px;"></td>
+            </tr><tr>
+                <td>Panti Tuna  Grahita</td>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rb_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rb_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rs_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rs_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rr_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rr_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_peralatan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_meubelair" style="min-width: 100px;"></td>
-            </tr>
-            <tr>
-                <td>Balai Latihan Sosial</td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_latihan_rb" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_latihan_rs" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_latihan_rr" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_latihan_luas" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_latihan_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_latihan_harga_peralatan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_latihan_harga_meubelair" style="min-width: 100px;"></td>
-            </tr>
-            <tr>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_peralatan_lab" style="min-width: 100px;"></td>
+            </tr><tr>
                 <td>
                     <div class="input-group input-group-sm">
                         <span class="input-group-text">Lainnya:</span>
                         <input type="text" class="form-control form-control-sm" name="lainnya_jenis" placeholder="Sebutkan">
                     </div>
                 </td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_rb" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_rs" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_rr" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_rb_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_rb_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_rs_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_rs_swasta" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_rr_negeri" style="min-width: 80px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_rr_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="lainnya_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_peralatan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_peralatan_lab" style="min-width: 100px;"></td>
             </tr>
         </tbody>
     </table>    <h6 class="fw-bold mt-4">B. Perkiraan Kerugian</h6>
@@ -115,17 +118,16 @@
     </div>
 
     <div class="card mb-3">
-        <div class="card-header py-1 small fw-bold">2) Kehilangan Pendapatan Unit Pelayanan Sosial</div>
+        <div class="card-header py-1 small fw-bold">2) Biaya Penyediaan Jatah Hidup</div>
         <div class="card-body py-2">
             <div class="input-group input-group-sm mb-2">
-                <span class="input-group-text">Rata-rata Pendapatan per Hari</span>
-                <span class="input-group-text">Rp</span>
-                <input type="number" class="form-control form-control-sm" name="pendapatan_perhari" placeholder="0" style="min-width: 120px;">
+                <span class="input-group-text">Perkiraan Jumlah Pengungsi yang perlu ditangani</span>
+                <input type="number" class="form-control form-control-sm" name="jumlah_penerima" placeholder="0" style="min-width: 120px;">
             </div>
-            <div class="input-group input-group-sm">
-                <span class="input-group-text">Lama Gangguan Layanan</span>
-                <input type="number" class="form-control form-control-sm" name="lama_gangguan" placeholder="0" style="min-width: 100px;">
-                <span class="input-group-text">Hari</span>
+            <div class="input-group input-group-sm mb-2">
+                <span class="input-group-text">Rata rata biaya penanganan pengungsi</span>
+                <span class="input-group-text">Rp</span>
+                <input type="number" class="form-control form-control-sm" name="bantuan_per_orang" placeholder="0" style="min-width: 120px;">
             </div>
         </div>
     </div>
@@ -134,29 +136,24 @@
         <div class="card-header py-1 small fw-bold">3) Tambahan Biaya Sosial</div>
         <div class="card-body py-2">
             <div class="input-group input-group-sm mb-2">
-                <span class="input-group-text">Penanganan Korban Bencana (Tuna Sosial, Anak, Lansia)</span>
+                <span class="input-group-text">Biaya Pelayanan Kesehatan</span>
                 <span class="input-group-text">Rp</span>
-                <input type="number" class="form-control form-control-sm" name="biaya_penanganan_korban" placeholder="0" style="min-width: 120px;">
+                <input type="number" class="form-control form-control-sm" name="biaya_pelayanan_kesehatan" placeholder="0" style="min-width: 120px;">
             </div>
             <div class="input-group input-group-sm mb-2">
-                <span class="input-group-text">Bantuan Logistik</span>
+                <span class="input-group-text">Biaya Pelayanan Pendidikan</span>
                 <span class="input-group-text">Rp</span>
-                <input type="number" class="form-control form-control-sm" name="biaya_logistik" placeholder="0" style="min-width: 120px;">
+                <input type="number" class="form-control form-control-sm" name="biaya_pelayanan_pendidikan" placeholder="0" style="min-width: 120px;">
             </div>
             <div class="input-group input-group-sm mb-2">
-                <span class="input-group-text">Kebutuhan Pos Pelayanan Sementara</span>
-                <input type="number" class="form-control form-control-sm" name="jumlah_pos" placeholder="0" style="min-width: 100px;">
-                <span class="input-group-text">Unit</span>
-            </div>
-            <div class="input-group input-group-sm mb-2">
-                <span class="input-group-text">Biaya Operasional Pos Pelayanan per Hari</span>
+                <span class="input-group-text">Biaya Pendampingan Psikososial</span>
                 <span class="input-group-text">Rp</span>
-                <input type="number" class="form-control form-control-sm" name="biaya_operasional_perhari" placeholder="0" style="min-width: 120px;">
+                <input type="number" class="form-control form-control-sm" name="biaya_pendampingan_psikososial" placeholder="0" style="min-width: 120px;">
             </div>
             <div class="input-group input-group-sm">
-                <span class="input-group-text">Jangka Waktu Operasional</span>
-                <input type="number" class="form-control form-control-sm" name="jangka_waktu" placeholder="0" style="min-width: 100px;">
-                <span class="input-group-text">Hari</span>
+                <span class="input-group-text">Biaya Pelatihan Darurat</span>
+                <span class="input-group-text">Rp</span>
+                <input type="number" class="form-control form-control-sm" name="biaya_pelatihan_darurat" placeholder="0" style="min-width: 120px;">
             </div>
         </div>
     </div>

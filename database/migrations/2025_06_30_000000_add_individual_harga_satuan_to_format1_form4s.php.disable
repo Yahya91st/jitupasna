@@ -1,0 +1,52 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddIndividualHargaSatuanToFormat1Form4s extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('format1_form4s', function (Blueprint $table) {
+            // Menambahkan harga satuan untuk setiap kategori kerusakan
+            // 1a) Hancur Total
+            $table->decimal('harga_satuan_hancur_total_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_non_permanen');
+            $table->decimal('harga_satuan_hancur_total_non_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_hancur_total_permanen');
+            
+            // 1b) Rusak Berat
+            $table->decimal('harga_satuan_rusak_berat_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_hancur_total_non_permanen');
+            $table->decimal('harga_satuan_rusak_berat_non_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_rusak_berat_permanen');
+            
+            // 1c) Rusak Sedang
+            $table->decimal('harga_satuan_rusak_sedang_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_rusak_berat_non_permanen');
+            $table->decimal('harga_satuan_rusak_sedang_non_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_rusak_sedang_permanen');
+            
+            // 1d) Rusak Ringan
+            $table->decimal('harga_satuan_rusak_ringan_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_rusak_sedang_non_permanen');
+            $table->decimal('harga_satuan_rusak_ringan_non_permanen', 15, 2)->nullable()->default(0)->after('harga_satuan_rusak_ringan_permanen');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('format1_form4s', function (Blueprint $table) {
+            $table->dropColumn([
+                'harga_satuan_hancur_total_permanen',
+                'harga_satuan_hancur_total_non_permanen',
+                'harga_satuan_rusak_berat_permanen',
+                'harga_satuan_rusak_berat_non_permanen',
+                'harga_satuan_rusak_sedang_permanen',
+                'harga_satuan_rusak_sedang_non_permanen',
+                'harga_satuan_rusak_ringan_permanen',
+                'harga_satuan_rusak_ringan_non_permanen',
+            ]);
+        });
+    }
+};

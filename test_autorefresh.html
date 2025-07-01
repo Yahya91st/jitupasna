@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Auto Refresh</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <h1>Test Auto Refresh</h1>
+    <button id="test-fetch">Test Fetch</button>
+    <button id="test-jquery">Test jQuery</button>
+    <div id="result"></div>
+
+    <script>
+        // Test 1: Fetch API
+        document.getElementById('test-fetch').addEventListener('click', function() {
+            console.log('Testing Fetch API...');
+            
+            fetch('http://127.0.0.1:8000/rekap/auto-refresh', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                console.log('Fetch response:', response.status, response.ok);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Fetch success:', data);
+                document.getElementById('result').innerHTML = 'Fetch Success: ' + JSON.stringify(data);
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById('result').innerHTML = 'Fetch Error: ' + error.message;
+            });
+        });
+
+        // Test 2: jQuery AJAX
+        document.getElementById('test-jquery').addEventListener('click', function() {
+            console.log('Testing jQuery AJAX...');
+            
+            $.ajax({
+                url: 'http://127.0.0.1:8000/rekap/auto-refresh',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log('jQuery success:', data);
+                    document.getElementById('result').innerHTML = 'jQuery Success: ' + JSON.stringify(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('jQuery error:', error);
+                    document.getElementById('result').innerHTML = 'jQuery Error: ' + error;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

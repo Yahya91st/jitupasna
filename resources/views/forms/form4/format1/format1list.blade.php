@@ -24,30 +24,51 @@
             <i class="fa fa-plus mr-2"></i> Tambah Data Baru
         </a>
     </div>
+
+    @if(session('success'))
+        <div class="alert alert-success mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger mb-4">
+            @foreach($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
     
     <div class="bg-white rounded-lg shadow overflow-x-auto">
-        @if($formData->count() > 0)
+        @if($reports->count() > 0)
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Kampung</th>
                     <th>Distrik</th>
+                    <th>Total Kerusakan</th>
+                    <th>Total Kerugian</th>
                     <th>Tanggal Input</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($formData as $index => $data)
+                @foreach($reports as $index => $data)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $data->nama_kampung }}</td>
                     <td>{{ $data->nama_distrik }}</td>
+                    <td>{{ number_format($data->total_kerusakan ?? 0, 0, ',', '.') }}</td>
+                    <td>{{ number_format($data->total_kerugian ?? 0, 0, ',', '.') }}</td>
                     <td>{{ $data->created_at->format('d-m-Y H:i') }}</td>
                     <td>
                         <div class="btn-group">
                             <a href="{{ route('forms.form4.show-format1', $data->id) }}" class="btn btn-sm btn-info">
                                 <i class="fa fa-eye"></i> Detail
+                            </a>
+                            <a href="{{ route('forms.form4.edit-format1', $data->id) }}" class="btn btn-sm btn-warning">
+                                <i class="fa fa-edit"></i> Edit
                             </a>
                             <a href="{{ route('forms.form4.preview-pdf', $data->id) }}" class="btn btn-sm btn-secondary" target="_blank">
                                 <i class="fa fa-search"></i> Lihat PDF
@@ -55,6 +76,13 @@
                             <a href="{{ route('forms.form4.pdf', $data->id) }}" class="btn btn-sm btn-primary" target="_blank">
                                 <i class="fa fa-download"></i> Unduh PDF
                             </a>
+                            <form action="{{ route('forms.form4.destroy-format1', $data->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i> Hapus
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>

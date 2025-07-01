@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('rumahtangga', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bencana_id')->constrained('bencana');
-            $table->string('provinsi');
+            $table->unsignedBigInteger('bencana_id');            $table->string('provinsi');
             $table->string('kabupaten');
             $table->string('kecamatan');
             $table->string('desa');

@@ -53,9 +53,140 @@
                         <p>{{ $bencana->Ref }}</p>
                     </div>
                 </div>
+            </div>        </div>
+    </div>    
+    
+    <!-- Rekap Section -->
+    <div class="card">        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title">
+                <i class="fas fa-chart-pie me-2"></i>
+                Data Rekap Bencana
+                <small id="last-updated" class="text-muted ms-2"></small>
+            </h4>
+            <div>
+                @if($rekaps->count() > 0)
+                    <a href="{{ route('rekap.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-info btn-sm">
+                        <i class="fas fa-eye me-1"></i>Lihat Semua Rekap
+                    </a>
+                @endif                <button id="sync-rekap-btn" class="btn btn-warning btn-sm" title="Sinkronisasi Data Rekap">
+                    <i class="fas fa-sync-alt me-1"></i>Sync Data
+                </button>
+                <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1"></i>Tambah Rekap
+                </a>
             </div>
         </div>
-    </div>    
+        <div class="card-body">
+            @if($rekaps->count() > 0)
+                <!-- Rekap Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
+                                <small>Total Rekap</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-danger text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerusakan'], 0, ',', '.') }}</h4>
+                                <small>Total Kerusakan</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
+                                <small>Total Kerugian</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white mb-0">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
+                                <small>Verified</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rekap Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Lokasi</th>
+                                <th>Format Terisi</th>
+                                <th>Total Kerusakan</th>
+                                <th>Total Kerugian</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($rekaps as $rekap)
+                                <tr>
+                                    <td>
+                                        <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
+                                        <small class="text-muted">{{ $rekap->nama_distrik ?? '-' }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">
+                                            {{ $rekap->getFilledFormatsCount() }}/17
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <strong>Rp {{ number_format($rekap->total_kerusakan, 0, ',', '.') }}</strong>
+                                    </td>
+                                    <td>
+                                        <strong>Rp {{ number_format($rekap->total_kerugian, 0, ',', '.') }}</strong>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $statusClass = match($rekap->status) {
+                                                'completed' => 'bg-success',
+                                                'verified' => 'bg-info',
+                                                default => 'bg-warning'
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $statusClass }}">
+                                            {{ ucfirst($rekap->status) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('rekap.edit', $rekap->id) }}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-outline-danger" title="PDF" target="_blank">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <h5>Belum ada data rekap</h5>
+                    <p class="text-muted mb-3">Belum ada data rekap untuk bencana ini. Mulai dengan menambahkan rekap baru.</p>
+                    <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Tambah Rekap Pertama
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
     
     <div class="card">
         <div class="card-header d-flex justify-content-between">
@@ -159,7 +290,7 @@
     </div>
 </section>
 
-@if(count($kerusakanByKategori ?? []) > 0)
+@if(count($kerusakanByKategori ?? []) > 0 || true)
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -210,8 +341,64 @@
                     }
                 }
             }
+        });    });
+
+    // Sync rekap data
+    function syncRekapData() {
+        const syncBtn = document.getElementById('sync-rekap-btn');
+        const originalHtml = syncBtn.innerHTML;
+        
+        syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Syncing...';
+        syncBtn.disabled = true;
+        
+        fetch('{{ route("rekap.sync-all") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message,
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                
+                // Refresh the page to show updated data
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message || 'Gagal sinkronisasi data'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Terjadi kesalahan saat sinkronisasi data'
+            });
+        })
+        .finally(() => {
+            syncBtn.innerHTML = originalHtml;
+            syncBtn.disabled = false;
         });
-    });
+    }
+    
+    // Event listeners
+    document.getElementById('sync-rekap-btn').addEventListener('click', syncRekapData);
 </script>
 @endpush
 @endif

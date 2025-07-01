@@ -1,99 +1,186 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mt-4">
-    <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
-    <p class="fw-bold">Format 7: Pengumpulan Data Sektor Transportasi</p>
-
-    <table class="table table-bordered">
-        <tr>
-            <td style="width: 50%">NAMA KAMPUNG:</td>
-            <td>NAMA DISTRIK:</td>
-        </tr>
-    </table>
-
-    <p><strong>A. Kerusakan Jalan dan Jembatan</strong></p>
-
-    <table class="table table-bordered text-center align-middle">
+<div class="container mt-4">    <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
+    <h4 class="mb-3">Format 7. Pengumpulan Data Sektor Transportasi</h4>
+    
+<form method="POST" action="{{ route('forms.form4.format7.store') }}">
+    @csrf
+    <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
+    <table border="1" cellspacing="0" cellpadding="4" style="width: 100%; border-collapse: collapse; border: 2px solid #000;">
         <thead>
             <tr>
-                <th rowspan="2">Jenis Infrastruktur</th>
-                <th rowspan="2">Nama Ruas/Jembatan</th>
-                <th rowspan="2">Jenis (Nasional/Kab/Kota/Desa)</th>
-                <th rowspan="2">Material (Aspal/Batu/Tanah)</th>
-                <th colspan="3">Jumlah Kerusakan (Km)</th>
-                <th rowspan="2">Harga Satuan / m²</th>
-                <th rowspan="2">Perkiraan Biaya Perbaikan</th>
+                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">URAIAN<br>PERKIRAAN KERUSAKAN</th>
+                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Ruas Jalan/Nama Jembatan</th>
+                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Jenis Jalan/Jembatan<br>(Jalan Nasional/Kab/Kota/Desa)</th>
+                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Jenis Jalan/Jembatan (Aspal, Batu, Tanah)</th>
+                <th colspan="3" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">JUMLAH KERUSAKAN (Dalam Km)</th>
+                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">HARGA SATUAN/M2</th>
+                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Perkiraan Biaya Perbaikan</th>
             </tr>
             <tr>
-                <th>Berat</th>
-                <th>Sedang</th>
-                <th>Ringan</th>
+                <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">BERAT</th>
+                <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">SEDANG</th>
+                <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">RINGAN</th>
             </tr>
         </thead>
-        <tbody>
-            <tr><td>Jalan</td><td colspan="8"></td></tr>
-            <tr><td>Jembatan</td><td colspan="8"></td></tr>
-        </tbody>
-    </table>
-
-    <p><strong>B. Kerusakan Kendaraan</strong></p>
-
-    <table class="table table-bordered text-center align-middle">
-        <thead>
+        <tbody>            <tr>
+                <td style="border: 1px solid #000; font-weight: bold;">a.) JALAN</td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jalan_ruas" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jalan_jenis" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jalan_tipe" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jalan_rusak_berat" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jalan_rusak_sedang" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jalan_rusak_ringan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jalan_harga_satuan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jalan_biaya_perbaikan" class="form-control" style="width: 100%"></td>
+                
+            </tr>            <tr>
+                <td style="border: 1px solid #000; font-weight: bold;">b) JEMBATAN</td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jembatan_nama" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jembatan_jenis" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jembatan_tipe" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jembatan_rusak_berat" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jembatan_rusak_sedang" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jembatan_rusak_ringan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jembatan_harga_satuan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="jembatan_biaya_perbaikan" class="form-control" style="width: 100%"></td>
+            </tr><tr>                
+                <td colspan="1" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;"><strong></strong></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;"><strong>Jenis Kendaraan</strong></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;"><strong>Jumlah</strong></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;"><strong>Unit</strong></td>
+                <td rowspan="8" colspan="3" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;"><strong>Tidak diisi</strong></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;"><strong></strong></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;"><strong></strong></td>
+            </tr>
             <tr>
-                <th>Jenis Kendaraan</th>
-                <th>Jumlah</th>
-                <th>Unit</th>
-                <th colspan="2">Tidak Perlu Diisi</th>
+                <td rowspan="7" style="width: 25%; border: 1px solid #000; vertical-align: top; background-color: #f8f8f8;">
+                    <strong>c) Kerusakan KENDARAAN</strong><br>
+                    <i>Diisi dengan jumlah unit kendaraan Darat dan laut yang rusak</i>
+                </td>                <td colspan="1" style="border: 1px solid #000;">Sedan dan Minibus</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="sedan_minibus_jumlah" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="sedan_minibus_unit" class="form-control" style="width: 70%; display: inline-block"> Unit</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                
             </tr>
-        </thead>
-        <tbody>
-            <tr><td>Sedan / Minibus</td><td></td><td>Unit</td><td colspan="2"></td></tr>
-            <tr><td>Bus / Truk</td><td></td><td>Unit</td><td colspan="2"></td></tr>
-            <tr><td>Kendaraan Berat</td><td></td><td>Unit</td><td colspan="2"></td></tr>
-            <tr><td>Kapal Laut</td><td></td><td>Unit</td><td colspan="2"></td></tr>
-            <tr><td>Bus Air</td><td></td><td>Unit</td><td colspan="2"></td></tr>
-            <tr><td>Speed Boat</td><td></td><td>Unit</td><td colspan="2"></td></tr>
-            <tr><td>Perahu Klotok</td><td></td><td>Unit</td><td colspan="2"></td></tr>
-        </tbody>
-    </table>
-
-    <p><strong>C. Kerusakan Sarana Transportasi</strong></p>
-
-    <table class="table table-bordered">
-        <thead>
+            <tr>                <td colspan="1" style="border: 1px solid #000;">Bus dan Truk</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="bus_truk_jumlah" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="bus_truk_unit" class="form-control" style="width: 70%; display: inline-block"> Unit</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+            </tr>
+            <tr>                <td colspan="1" style="border: 1px solid #000;">Kendaraan Berat</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="kendaraan_berat_jumlah" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="kendaraan_berat_unit" class="form-control" style="width: 70%; display: inline-block"> Unit</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+            </tr>
+            <tr>                <td colspan="1" style="border: 1px solid #000;">KAPAL LAUT</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="kapal_laut_jumlah" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="kapal_laut_unit" class="form-control" style="width: 70%; display: inline-block"> Unit</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+            </tr>
+            <tr>                <td colspan="1" style="border: 1px solid #000;">BUS AIR</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="bus_air_jumlah" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="bus_air_unit" class="form-control" style="width: 70%; display: inline-block"> Unit</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+            </tr>
+            <tr>                <td colspan="1" style="border: 1px solid #000;">SPEED BOAT</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="speed_boat_jumlah" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="speed_boat_unit" class="form-control" style="width: 70%; display: inline-block"> Unit</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+            </tr>
+            <tr>                <td colspan="1" style="border: 1px solid #000;">Perahu Klotok</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="perahu_klotok_jumlah" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number" name="perahu_klotok_unit" class="form-control" style="width: 70%; display: inline-block"> Unit</td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+                <td colspan="1" style="border: 1px solid #000; text-align: center;"><input type="number"></td>
+            </tr>            <tr>
+                <td colspan="4" style="text-align: center; border: 1px solid #000; background-color: #f0f0f0; font-weight: bold;"></td>
+                <td colspan="1" style="text-align: center; border: 1px solid #000; background-color: #f0f0f0; font-weight: bold;">BERAT</td>
+                <td colspan="1" style="text-align: center; border: 1px solid #000; background-color: #f0f0f0; font-weight: bold;">SEDANG</td>
+                <td colspan="1" style="text-align: center; border: 1px solid #000; background-color: #f0f0f0; font-weight: bold;">RINGAN</td>
+                <td colspan="2" style="text-align: center; border: 1px solid #000; background-color: #f0f0f0; font-weight: bold;"></td>
+</tr>            <tr>
+                <td rowspan="3" style="border: 1px solid #000; background-color: #f8f8f8; font-weight: bold; vertical-align: middle;">KERUSAKAN PRASARANA TRANSPORTASI  <br>(Lengkapi informasi dengan luasan dan tipe)</td>
+                <td colspan="1" style="border: 1px solid #000;">TERMINAL</td>
+                <td style="border: 1px solid #000; text-align: center;"><input type="number" name="terminal_jumlah" class="form-control" style="width: 100%"></td>
+                <td style="border: 1px solid #000; text-align: center;">Unit</td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="terminal_rusak_berat" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="terminal_rusak_sedang" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="terminal_rusak_ringan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="terminal_biaya_perbaikan" class="form-control" style="width: 100%"></td>
+            </tr>
             <tr>
-                <th>Sarana</th>
-                <th>Jenis</th>
-                <th>Ukuran/Luas</th>
-                <th>Perkiraan Biaya</th>
+                <td colspan="1" style="border: 1px solid #000;">DERMAGA</td>
+                <td style="border: 1px solid #000; text-align: center;"><input type="number" name="dermaga_jumlah" class="form-control" style="width: 100%"></td>
+                <td style="border: 1px solid #000; text-align: center;">Unit</td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="dermaga_rusak_berat" class="form-control" style="width: 100%"></td>                
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="dermaga_rusak_sedang" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="dermaga_rusak_ringan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="dermaga_biaya_perbaikan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"></td>
             </tr>
-        </thead>
-        <tbody>
-            <tr><td>Terminal</td><td></td><td></td><td></td></tr>
-            <tr><td>Dermaga</td><td></td><td></td><td></td></tr>
-            <tr><td>Bandara</td><td></td><td></td><td></td></tr>
+            <tr>
+                <td colspan="1" style="border: 1px solid #000;">BANDARA</td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="bandara_jumlah" class="form-control" style="width: 100%"></td>                
+                <td style="border: 1px solid #000; text-align: center;">Unit</td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="bandara_rusak_berat" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="bandara_rusak_sedang" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="bandara_rusak_ringan" class="form-control" style="width: 100%"></td>
+                <td colspan="1" style="border: 1px solid #000;"><input type="number" name="bandara_biaya_perbaikan" class="form-control" style="width: 100%"></td>
+            </tr><tr>
+                <td colspan="9" style="border: 1px solid #000; background-color: #f0f0f0; font-weight: bold; text-align: center;">KEHILANGAN PENDAPATAN</td>
+            </tr>
+            <tr>                <td style="border: 1px solid #000; font-weight: bold; background-color: #f8f8f8;">KEHILANGAN PENDAPATAN ANGKUTAN DARAT</td>
+                <td colspan="4" style="border: 1px solid #000;">A. PENDAPATAN PER HARI: <input type="number" name="pendapatan_darat_per_hari" class="form-control" style="width: 50%; display: inline-block"> Rp</td>
+                <td colspan="4" style="border: 1px solid #000;">B: JUMLAH ANGKUTAN YANG TERKENA DAMPAK: <input type="number" name="jumlah_angkutan_darat_terdampak" class="form-control" style="width: 50%; display: inline-block"> Unit</td>
+            </tr>
+            <tr>                <td style="border: 1px solid #000; font-weight: bold; background-color: #f8f8f8;">KEHILANGAN PENDAPATAN ANGKUTAN LAUT/SUNGAI</td>
+                <td colspan="4" style="border: 1px solid #000;">A. PENDAPATAN PER HARI: <input type="number" name="pendapatan_laut_per_hari" class="form-control" style="width: 50%; display: inline-block"> Rp</td>
+                <td colspan="4" style="border: 1px solid #000;">B: JUMLAH ANGKUTAN YANG TERKENA DAMPAK: <input type="number" name="jumlah_angkutan_laut_terdampak" class="form-control" style="width: 50%; display: inline-block"> Unit</td>
+            </tr>
+            <tr>                <td style="border: 1px solid #000; font-weight: bold; background-color: #f8f8f8;">KEHILANGAN PENDAPATAN ANGKUTAN UDARA</td>
+                <td colspan="4" style="border: 1px solid #000;">A. PENDAPATAN PER HARI: <input type="number" name="pendapatan_udara_per_hari" class="form-control" style="width: 50%; display: inline-block"> Rp</td>
+                <td colspan="4" style="border: 1px solid #000;">B: JUMLAH ANGKUTAN YANG TERKENA DAMPAK: <input type="number" name="jumlah_angkutan_udara_terdampak" class="form-control" style="width: 50%; display: inline-block"> Unit</td>
+            </tr>            <tr>                <td style="border: 1px solid #000; font-weight: bold; background-color: #f8f8f8;">KEHILANGAN PENDAPATAN TERMINAL</td>
+                <td colspan="8" style="border: 1px solid #000;">A. PENDAPATAN PER HARI: <input type="number" name="pendapatan_terminal_per_hari" class="form-control" style="width: 30%; display: inline-block"> Rp</td>
+            </tr>
+            <tr>                <td style="border: 1px solid #000; font-weight: bold; background-color: #f8f8f8;">KEHILANGAN PENDAPATAN DERMAGA</td>
+                <td colspan="8" style="border: 1px solid #000;">A. PENDAPATAN PER HARI: <input type="number" name="pendapatan_dermaga_per_hari" class="form-control" style="width: 30%; display: inline-block"> Rp</td>
+            </tr>
+            <tr>                <td style="border: 1px solid #000; font-weight: bold; background-color: #f8f8f8;">KEHILANGAN PENDAPATAN BANDARA</td>
+                <td colspan="8" style="border: 1px solid #000;">A. PENDAPATAN PER HARI: <input type="number" name="pendapatan_bandara_per_hari" class="form-control" style="width: 30%; display: inline-block"> Rp</td>
+            </tr>
+            <tr>                <td rowspan="3" style="border: 1px solid #000; font-weight: bold; vertical-align: middle; background-color: #f8f8f8;">KENAIKAN BIAYA OPERASIONAL KENDARAAN AKIBAT PENGGUNAAN JALAN YANG RUSAK</td>
+                <td colspan="8" style="border: 1px solid #000;">A. BIAYA OPERASIONAL KENDARAAN SEBELUM BENCANA: <input type="number" name="biaya_operasional_sebelum" class="form-control" style="width: 30%; display: inline-block"> Rp</td>
+            </tr>
+            <tr>
+                <td colspan="8" style="border: 1px solid #000;">B. BIAYA OPERASIONAL KENDARAAN SETELAH BENCANA: <input type="number" name="biaya_operasional_setelah" class="form-control" style="width: 30%; display: inline-block"> Rp</td>
+            </tr><tr>
+                <td colspan="8" style="border: 1px solid #000;">C. JUMLAH KENDARAAN TERDAMPAK: <input type="number" name="jumlah_kendaraan_biaya_operasional" class="form-control" style="width: 30%; display: inline-block"> Unit</td>
+            </tr>
+                        
+            <tr>                <td rowspan="2" style="border: 1px solid #000; font-weight: bold; background-color: #f8f8f8;">BIAYA PEMASANGAN INFRASTRUKTUR DARURAT (Misalnya: Jembatan Bailey)</td>
+                <td colspan="8" style="border: 1px solid #000;">
+                    A. JUMLAH UNIT TERDAMPAK: <input type="number" name="infrastruktur_darurat_jumlah" class="form-control" style="width: 30%; display: inline-block"> Unit
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8" style="border: 1px solid #000;">
+                    B. BIAYA PER UNIT: <input type="number" name="infrastruktur_darurat_biaya" class="form-control" style="width: 30%; display: inline-block"> Rp
+                </td>            </tr>
         </tbody>
     </table>
-
-    <p><strong>D. Kehilangan Pendapatan</strong></p>
-    <ul>
-        <li>Angkutan Darat: Rp ......... / hari x ........ Unit</li>
-        <li>Angkutan Laut: Rp ......... / hari x ........ Unit</li>
-        <li>Angkutan Udara: Rp ......... / hari x ........ Unit</li>
-        <li>Terminal, Dermaga, Bandara: masing-masing Rp ......... / hari</li>
-    </ul>
-
-    <p><strong>E. Tambahan Biaya Operasional</strong></p>
-    <ul>
-        <li>Biaya Operasional Kendaraan Sebelum dan Sesudah Bencana</li>
-        <li>Jumlah Kendaraan Terdampak</li>
-        <li>Biaya per Unit</li>
-    </ul>
-
-    <p><strong>F. Infrastruktur Darurat</strong><br>
-        Contoh: Jembatan Bailey, Jalur Alternatif, dll – Biaya: Rp .........
-    </p>
+    
+    <div class="mt-3 text-center">
+        <button type="submit" class="btn btn-primary">Simpan Data</button>
+    </div>
+</form>
 </div>
 @endsection
