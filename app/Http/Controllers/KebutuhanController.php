@@ -7,6 +7,7 @@ use App\Models\DetailKerusakan;
 use App\Models\EnvironmentalReport;
 use App\Models\FormPerumahan;
 use App\Models\Format1Form4;
+use App\Models\Format2Form4;
 use App\Models\GovernmentReport;
 use App\Models\Kerugian;
 use App\Models\Kerusakan;
@@ -250,6 +251,15 @@ class KebutuhanController extends Controller
         $environment = EnvironmentalReport::where('bencana_id', $id)->get();
         $transportation = TransportationReport::where('bencana_id', $id)->get();
         
+        // Get data from Form4 Format2 (Pendidikan)
+        $format2 = Format2Form4::where('bencana_id', $id)->get();
+        
+        // Gabungkan kerusakan dan kerugian pada format2 (Pendidikan)
+        $totalKerusakanFormat2 = $format2->sum(function($item) {
+            return ($item->total_kerusakan ?? 0) + ($item->total_kerugian ?? 0);
+        });
+        $totalKerugianFormat2 = 0; // Tidak dipakai lagi, hanya kerusakan
+        
         // Get data from Form7
         $fgd = Fgd::where('bencana_id', $id)->first();
         
@@ -336,24 +346,33 @@ class KebutuhanController extends Controller
             'total' => $totalKerusakan + $totalKerugian + 
                        $environmentalTotals['damage'] + $environmentalTotals['loss'] + 
                        $governmentTotals['damage'] + $governmentTotals['loss'],
-            'total_kerusakan' => $totalKerusakanFormat1 // pastikan tidak hilang
+            'total_kerusakan' => $totalKerusakanFormat1, // pastikan tidak hilang
+            'total_kerusakan_format2' => $totalKerusakanFormat2,
+            'total_kerugian_format2' => $totalKerugianFormat2
         ];
 
-        // Create detailed breakdown by damage/loss type
-        $breakdownByType = [
-            'kerusakan_fisik' => $totalKerusakan,
-            'kerugian_ekonomi' => $totalKerugian,
-            'kerusakan_lingkungan' => $environmentalTotals['damage'],
-            'kerugian_lingkungan' => $environmentalTotals['loss'],
-            'kerusakan_infrastruktur' => $governmentTotals['damage'],
-            'kerugian_infrastruktur' => $governmentTotals['loss']
-        ];
-
-        // Get rekap data for this bencana
+        // Get rekap data for this bencana, with all format1-17 relasi
         $rekaps = Rekap::where('bencana_id', $id)
-            ->with(['bencana', 'format1Form4', 'format5Form4', 'format6Form4', 'format7Form4'])
+            ->with([
+                'bencana',
+                'format1Form4', 'format2Form4', 'format3Form4', 'format4Form4', 'format5Form4',
+                'format6Form4', 'format7Form4', 'format8Form4', 'format9Form4', 'format10Form4',
+                'format11Form4', 'format12Form4', 'format13Form4', 'format14Form4', 'format15Form4',
+                'format16Form4', 'format17Form4'
+            ])
             ->get();
-        
+        // Tambahkan total kerusakan seluruh format ke setiap rekap
+        foreach ($rekaps as $rekap) {
+            $totalKerusakanSemuaFormat = 0;
+            for ($i = 1; $i <= 17; $i++) {
+                $relasi = "format{$i}Form4";
+                if ($rekap->$relasi) {
+                    $totalKerusakanSemuaFormat += $rekap->$relasi->total_kerusakan ?? 0;
+                }
+            }
+            $rekap->total_kerusakan_semua_format = $totalKerusakanSemuaFormat;
+        }
+
         // Calculate rekap summary
         $rekapSummary = [
             'total_rekaps' => $rekaps->count(),
@@ -364,11 +383,12 @@ class KebutuhanController extends Controller
             'total_formats_filled' => $rekaps->sum(function($rekap) {
                 return $rekap->getFilledFormatsCount();
             }),
-        ];
-
-        return view('kebutuhan.show', compact(
+        ];        return view('kebutuhan.show', compact(
             'bencana', 
-            'kerusakan', 
+            'kerusakan',
+            'format2',
+            'totalKerusakanFormat2',
+            'totalKerugianFormat2',
             'kerugian',
             'pendataan',
             'perumahan',
@@ -378,7 +398,6 @@ class KebutuhanController extends Controller
             'fgd',
             'totals',
             'numericData',
-            'breakdownByType',
             'detailKerusakan',
             'rekaps',
             'rekapSummary'

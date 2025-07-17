@@ -31,7 +31,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bencana;
 use App\Models\FormPerumahan;
-use App\Models\Format1Form4;
 use App\Models\EnvironmentalReport;
 use App\Models\GovernmentReport;
 use App\Models\FormData;
@@ -268,10 +267,10 @@ class Form4Controller extends Controller
                 'jumlah_rumah_sementara' => 'nullable|integer',
                 'harga_rumah_sementara' => 'nullable|numeric',
                 'bencana_id' => 'nullable|exists:bencana,id'
-                        ]);
+            ]);
 
             // Create new form data
-            $formPerumahan = Format1Form4::create($validated);
+            $formPerumahan = FormPerumahan::create($validated);
 
             DB::commit();
 
@@ -897,9 +896,10 @@ class Form4Controller extends Controller
 
     /**
      * Show a specific form data
-     */    public function showFormat1($id)
+     */
+    public function showFormat1($id)
     {
-        $formPerumahan = Format1Form4::with('bencana')->findOrFail($id);
+        $formPerumahan = FormPerumahan::with('bencana')->findOrFail($id);
         $bencana = $formPerumahan->bencana;
         
         return view('forms.form4.format1.show-format1', compact('formPerumahan', 'bencana'));
@@ -932,9 +932,10 @@ class Form4Controller extends Controller
 
     /**
      * Generate PDF for form data
-     */    public function generatePdf($id)
+     */ 
+    public function generatePdf($id)
     {
-        $formPerumahan = Format1Form4::with('bencana.kategori_bencana', 'bencana.desa')->findOrFail($id);
+        $formPerumahan = FormPerumahan::with('bencana.kategori_bencana', 'bencana.desa')->findOrFail($id);
         $bencana = $formPerumahan->bencana;
         
         // Calculate totals
@@ -1005,9 +1006,12 @@ class Form4Controller extends Controller
         $pdf->loadView('forms.form4.format1.pdf', $data)
             ->setPaper('a4', 'landscape');
         return $pdf->download('FormPerumahan_' . $formPerumahan->id . '.pdf');
-    }    /**
+    }
+
+    /**
      * List all form data for a bencana
-     */    public function listFormat1(Request $request)
+     */
+    public function listFormat1(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -1016,9 +1020,9 @@ class Form4Controller extends Controller
         }
         
         $bencana = Bencana::findOrFail($bencana_id);
-        $reports = \App\Models\Format1Form4::where('bencana_id', $bencana_id)->latest()->get();
+        $formData = FormPerumahan::where('bencana_id', $bencana_id)->latest()->get();
         
-        return view('forms.form4.format1.format1list', compact('bencana', 'reports'));
+        return view('forms.form4.format1.format1list', compact('bencana', 'formData'));
     }
 
     /**

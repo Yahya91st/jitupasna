@@ -34,41 +34,38 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="dataTable">
-                    <thead class="thead-light">
+                <table class="table table-hover table-lg" id="dataTable">
+                    <thead>
                         <tr>
                             <th>No</th>
-                            <th>Kampung</th>
-                            <th>Distrik</th>
+                            <th>Nama Kampung</th>
+                            <th>Nama Distrik</th>
                             <th>Total Kerusakan</th>
                             <th>Total Kerugian</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($reports as $report)
+                        @forelse($reports as $index => $report)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $index + 1 }}</td>
                             <td>{{ $report->nama_kampung }}</td>
                             <td>{{ $report->nama_distrik }}</td>
-                            <td>{{ number_format($report->total_kerusakan, 0, ',', '.') }}</td>
-                            <td>{{ number_format($report->total_kerugian, 0, ',', '.') }}</td>
+                            <td>Rp. {{ number_format($report->total_kerusakan ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
                             <td>
-                                <div class="btn-group">
-                                    <a href="{{ route('forms.form4.show-format5', $report->id) }}" class="btn btn-sm btn-info">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('forms.form4.edit-format5', $report->id) }}" class="btn btn-sm btn-warning">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('forms.form4.destroy-format5', $report->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                <a href="{{ route('forms.form4.format5.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                                <a href="{{ route('forms.form4.format5.edit', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('forms.form4.destroy-format5', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                                @if(Route::has('forms.form4.format5.pdf'))
+                                    <a href="{{ route('forms.form4.format5.pdf', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
+                                @else
+                                    <a href="#" class="btn btn-secondary btn-sm disabled">PDF</a>
+                                @endif
                             </td>
                         </tr>
                         @empty

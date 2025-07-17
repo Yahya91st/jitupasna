@@ -36,103 +36,41 @@
                 </a>
             </div>
             <div class="card-body">
-                @if($transportationReports->isEmpty())
+                @if($reports->isEmpty())
                     <div class="alert alert-info">
                         Belum ada data laporan transportasi untuk bencana ini.
                     </div>
                 @else
-                    <a href="{{ route('forms.form4.show-format7', $bencana->id) }}" class="btn btn-success mb-3">
-                        <i class="bi bi-eye"></i> Lihat Laporan Lengkap
-                    </a>
-                    
-                    <h5>Jalan</h5>
                     <div class="table-responsive">
                         <table class="table table-hover table-lg">
                             <thead>
                                 <tr>
-                                    <th>Ruas Jalan</th>
-                                    <th>Status</th>
-                                    <th>Jenis</th>
-                                    <th>Rusak Berat</th>
-                                    <th>Rusak Sedang</th>
-                                    <th>Rusak Ringan</th>
-                                    <th>Harga Satuan</th>
-                                    <th>Total Biaya</th>
+                                    <th>No</th>
+                                    <th>Nama Kampung</th>
+                                    <th>Nama Distrik</th>
+                                    <th>Total Kerusakan</th>
+                                    <th>Total Kerugian</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($transportationReports->where('report_type', 'jalan') as $report)
+                                @foreach($reports as $index => $report)
                                     <tr>
-                                        <td>{{ $report->ruas_jalan }}</td>
-                                        <td>{{ $report->status_jalan }}</td>
-                                        <td>{{ $report->jenis_jalan }}</td>
-                                        <td>{{ number_format($report->rusak_berat, 2) }} m²</td>
-                                        <td>{{ number_format($report->rusak_sedang, 2) }} m²</td>
-                                        <td>{{ number_format($report->rusak_ringan, 2) }} m²</td>
-                                        <td>Rp. {{ number_format($report->harga_satuan) }}</td>
-                                        <td>Rp. {{ number_format($report->biaya_total) }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <h5 class="mt-4">Jembatan</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-lg">
-                            <thead>
-                                <tr>
-                                    <th>Nama Jembatan</th>
-                                    <th>Status</th>
-                                    <th>Jenis</th>
-                                    <th>Rusak Berat</th>
-                                    <th>Rusak Sedang</th>
-                                    <th>Rusak Ringan</th>
-                                    <th>Harga Satuan</th>
-                                    <th>Total Biaya</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($transportationReports->where('report_type', 'jembatan') as $report)
-                                    <tr>
-                                        <td>{{ $report->nama_jembatan }}</td>
-                                        <td>{{ $report->status_jembatan }}</td>
-                                        <td>{{ $report->jenis_jembatan }}</td>
-                                        <td>{{ number_format($report->rusak_berat, 2) }} m²</td>
-                                        <td>{{ number_format($report->rusak_sedang, 2) }} m²</td>
-                                        <td>{{ number_format($report->rusak_ringan, 2) }} m²</td>
-                                        <td>Rp. {{ number_format($report->harga_satuan) }}</td>
-                                        <td>Rp. {{ number_format($report->biaya_total) }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <h5 class="mt-4">Kendaraan</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-lg">
-                            <thead>
-                                <tr>
-                                    <th>Jenis Kendaraan</th>
-                                    <th>Moda</th>
-                                    <th>Rusak Berat</th>
-                                    <th>Rusak Sedang</th>
-                                    <th>Rusak Ringan</th>
-                                    <th>Harga Satuan</th>
-                                    <th>Total Biaya</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($transportationReports->where('report_type', 'kendaraan') as $report)
-                                    <tr>
-                                        <td>{{ $report->jenis_kendaraan }}</td>
-                                        <td>{{ $report->moda }}</td>
-                                        <td>{{ number_format($report->rusak_berat) }} unit</td>
-                                        <td>{{ number_format($report->rusak_sedang) }} unit</td>
-                                        <td>{{ number_format($report->rusak_ringan) }} unit</td>
-                                        <td>Rp. {{ number_format($report->harga_satuan) }}</td>
-                                        <td>Rp. {{ number_format($report->biaya_total) }}</td>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $report->nama_kampung }}</td>
+                                        <td>{{ $report->nama_distrik }}</td>
+                                        <td>{{ number_format($report->total_kerusakan ?? 0, 2) }}</td>
+                                        <td>{{ number_format($report->total_kerugian ?? 0, 2) }}</td>
+                                        <td>
+                                            <a href="{{ route('forms.form4.show-format7', $report->id) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i> Lihat</a>
+                                            <a href="{{ route('forms.form4.edit-format7', $report->id) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i> Edit</a>
+                                            <form action="{{ route('forms.form4.destroy-format7', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Hapus</button>
+                                            </form>
+                                            <a href="{{ route('forms.form4.format7.pdf', $report->id) }}" class="btn btn-sm btn-secondary"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -142,7 +80,6 @@
             </div>
         </div>
     </section>
-    
     <div class="d-flex justify-content-between mt-3">
         <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
             <i class="bi bi-arrow-left"></i> Kembali ke Form 4

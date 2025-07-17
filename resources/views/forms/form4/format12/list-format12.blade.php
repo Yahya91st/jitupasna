@@ -46,26 +46,34 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Kampung</th>
-                                    <th>Distrik</th>
-                                    <th>Tanggal Input</th>
+                                    <th>Nama Kampung</th>
+                                    <th>Nama Distrik</th>
+                                    <th>Total Kerusakan</th>
+                                    <th>Total Kerugian</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($reports as $index => $report)
-                                    @php
-                                        $data = json_decode($report->data, true);
-                                    @endphp
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $data['nama_kampung'] ?? '-' }}</td>
-                                        <td>{{ $data['nama_distrik'] ?? '-' }}</td>
-                                        <td>{{ $report->created_at->format('d-m-Y H:i') }}</td>
+                                        <td>{{ $report->nama_kampung }}</td>
+                                        <td>{{ $report->nama_distrik }}</td>
+                                        <td>Rp. {{ number_format($report->total_kerusakan ?? 0, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
                                         <td>
-                                            <a href="{{ route('show-format12', $report->id) }}" class="btn btn-sm btn-info">
-                                                <i class="bi bi-eye"></i> Detail
-                                            </a>
+                                            <a href="{{ route('forms.form4.show-format12', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                                            <a href="{{ route('forms.form4.edit-format12', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('forms.form4.destroy-format12', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                            @if(Route::has('forms.form4.format12.pdf'))
+                                                <a href="{{ route('forms.form4.format12.pdf', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
+                                            @else
+                                                <a href="#" class="btn btn-secondary btn-sm disabled">PDF</a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

@@ -42,6 +42,22 @@ class Format9Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
+                'kerusakan_1_nama' => 'nullable|string',
+                'kerusakan_1_satuan' => 'nullable|string',
+                'kerusakan_1_jumlah_unit' => 'nullable|integer',
+                'kerusakan_1_harga_satuan' => 'nullable|numeric',
+                'kerusakan_2_nama' => 'nullable|string',
+                'kerusakan_2_satuan' => 'nullable|string',
+                'kerusakan_2_jumlah_unit' => 'nullable|integer',
+                'kerusakan_2_harga_satuan' => 'nullable|numeric',
+                'kerusakan_3_nama' => 'nullable|string',
+                'kerusakan_3_satuan' => 'nullable|string',
+                'kerusakan_3_jumlah_unit' => 'nullable|integer',
+                'kerusakan_3_harga_satuan' => 'nullable|numeric',
+                'kerusakan_4_nama' => 'nullable|string',
+                'kerusakan_4_satuan' => 'nullable|string',
+                'kerusakan_4_jumlah_unit' => 'nullable|integer',
+                'kerusakan_4_harga_satuan' => 'nullable|numeric',
                 // Telecommunications sector specific fields
                 'tower_bts_rusak_total' => 'nullable|integer',
                 'tower_bts_rusak_sebagian' => 'nullable|integer',
@@ -75,7 +91,8 @@ class Format9Controller extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.list-format9', ['bencana_id' => $formTelekomunikasi->bencana_id])
+                ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -110,19 +127,19 @@ class Format9Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
-        // Redirect to bencana selection if no bencana_id is provided
+        // Jika bencana_id tidak ada di request, coba ambil dari session (jika sebelumnya pernah disimpan)
+        if (!$bencana_id) {
+            $bencana_id = session('last_bencana_id');
+        }
+        // Redirect ke pemilihan bencana jika tetap tidak ada
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
-        // Get bencana details
+        // Simpan bencana_id ke session untuk akses berikutnya
+        session(['last_bencana_id' => $bencana_id]);
         $bencana = Bencana::findOrFail($bencana_id);
-        
-        // Get form data for this disaster
-        $formData = Format9Form4::where('bencana_id', $bencana_id)->get();
-        
-        return view('forms.form4.format9.format9list', compact('bencana', 'formData'));
+        $reports = Format9Form4::where('bencana_id', $bencana_id)->get();
+        return view('forms.form4.format9.list-format9', compact('bencana', 'reports'));
     }
 
     /**
@@ -150,5 +167,83 @@ class Format9Controller extends Controller
         $pdf = Pdf::loadView('forms.form4.format9.pdf', compact('formTelekomunikasi', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
           return $pdf->stream('Format9_Telekomunikasi_' . $formTelekomunikasi->nama_kampung . '.pdf');
+    }
+
+    /**
+     * Show the form for editing the specified resource (Format 9)
+     */
+    public function edit($id)
+    {
+        $formTelekom = \App\Models\Format9Form4::with('bencana')->findOrFail($id);
+        $bencana = $formTelekom->bencana;
+        return view('forms.form4.format9.edit', compact('formTelekom', 'bencana'));
+    }
+
+    /**
+     * Update the specified resource in storage (Format 9)
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            \DB::beginTransaction();
+            $formTelekom = \App\Models\Format9Form4::findOrFail($id);
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string',
+                'nama_distrik' => 'required|string',
+                'kerusakan_1_nama' => 'nullable|string',
+                'kerusakan_1_satuan' => 'nullable|string',
+                'kerusakan_1_jumlah_unit' => 'nullable|integer',
+                'kerusakan_1_harga_satuan' => 'nullable|numeric',
+                'kerusakan_2_nama' => 'nullable|string',
+                'kerusakan_2_satuan' => 'nullable|string',
+                'kerusakan_2_jumlah_unit' => 'nullable|integer',
+                'kerusakan_2_harga_satuan' => 'nullable|numeric',
+                'kerusakan_3_nama' => 'nullable|string',
+                'kerusakan_3_satuan' => 'nullable|string',
+                'kerusakan_3_jumlah_unit' => 'nullable|integer',
+                'kerusakan_3_harga_satuan' => 'nullable|numeric',
+                'kerusakan_4_nama' => 'nullable|string',
+                'kerusakan_4_satuan' => 'nullable|string',
+                'kerusakan_4_jumlah_unit' => 'nullable|integer',
+                'kerusakan_4_harga_satuan' => 'nullable|numeric',
+                // Telecommunications sector specific fields
+                'tower_bts_rusak_total' => 'nullable|integer',
+                'tower_bts_rusak_sebagian' => 'nullable|integer',
+                'harga_satuan_tower_bts' => 'nullable|numeric',
+                'menara_telkom_rusak_total' => 'nullable|integer',
+                'menara_telkom_rusak_sebagian' => 'nullable|integer',
+                'harga_satuan_menara_telkom' => 'nullable|numeric',
+                'kabel_telepon_rusak' => 'nullable|numeric',
+                'harga_satuan_kabel_telepon' => 'nullable|numeric',
+                'kabel_fiber_optic_rusak' => 'nullable|numeric',
+                'harga_satuan_kabel_fiber' => 'nullable|numeric',
+                'wartel_rusak_total' => 'nullable|integer',
+                'wartel_rusak_sebagian' => 'nullable|integer',
+                'harga_satuan_wartel' => 'nullable|numeric',
+                'internet_cafe_rusak_total' => 'nullable|integer',
+                'internet_cafe_rusak_sebagian' => 'nullable|integer',
+                'harga_satuan_internet_cafe' => 'nullable|numeric',
+            ]);
+            $formTelekom->update($validated);
+            \DB::commit();
+            return redirect()->route('forms.form4.list-format9', ['bencana_id' => $validated['bencana_id']])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage (Format 9)
+     */
+    public function destroy($id)
+    {
+        $form = \App\Models\Format9Form4::findOrFail($id);
+        $bencana_id = $form->bencana_id;
+        $form->delete(); // Hard delete
+        return redirect()->route('forms.form4.list-format9', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus');
     }
 }

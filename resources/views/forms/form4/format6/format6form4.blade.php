@@ -23,7 +23,8 @@
             </div>
         </div>
 
-    <p><strong>A. Kerusakan Sarana Air Minum</strong></p>    <table class="table table-bordered text-center align-middle" style="border: 2px solid #000;">
+    <p><strong>A. Kerusakan Sarana Air Minum</strong></p>    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
         <thead>
             <tr>
                 <th style="border: 1px solid #000;">Uraian</th>
@@ -44,42 +45,42 @@
             <tr>
                 <td style="border: 1px solid #000;"></td>  
                 <td style="border: 1px solid #000;">Struktur Pengambilan Air</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="struktur_air_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="struktur_air_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="struktur_air_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="struktur_air_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Instalasi Pemurnian Air</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="instalasi_pemurnian_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="instalasi_pemurnian_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="instalasi_pemurnian_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="instalasi_pemurnian_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Sistem Perpipaan</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="perpipaan_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="perpipaan_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="perpipaan_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="perpipaan_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Sistem Penyimpanan</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="penyimpanan_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="penyimpanan_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="penyimpanan_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="penyimpanan_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Sumur</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sumur_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sumur_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sumur_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sumur_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Lain lain</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="mck_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="mck_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="mck_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="mck_total" min="0" readonly></td>
             </tr>
@@ -93,30 +94,30 @@
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Jaringan Pembuangan</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sanitasi_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sanitasi_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sanitasi_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="sanitasi_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Septik Tank</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_jumlah" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_unit" min="0" step="1"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_harga" min="0"></td>
                 <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">Sistem pengumpulan limbah padat</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_jumlah" min="0" step="1"></td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_harga" min="0"></td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_total" min="0" readonly></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="limbah_padat_unit" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="limbah_padat_harga" min="0"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="limbah_padat_total" min="0" readonly></td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000;"></td> 
                 <td style="border: 1px solid #000;">WC umum</td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_jumlah" min="0" step="1"></td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_harga" min="0"></td>
-                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="drainase_total" min="0" readonly></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="wc_umum_unit" min="0" step="1"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="wc_umum_harga" min="0"></td>
+                <td style="border: 1px solid #000;"><input type="number" class="form-control form-control-sm" name="wc_umum_total" min="0" readonly></td>
             </tr>
         </tbody>
     </table>
@@ -174,18 +175,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Auto calculate totals for air minum section
     const airComponents = [
-        { jumlah: 'struktur_air_jumlah', harga: 'struktur_air_harga', total: 'struktur_air_total' },
-        { jumlah: 'instalasi_pemurnian_jumlah', harga: 'instalasi_pemurnian_harga', total: 'instalasi_pemurnian_total' },
-        { jumlah: 'perpipaan_jumlah', harga: 'perpipaan_harga', total: 'perpipaan_total' },
-        { jumlah: 'penyimpanan_jumlah', harga: 'penyimpanan_harga', total: 'penyimpanan_total' },
-        { jumlah: 'sumur_jumlah', harga: 'sumur_harga', total: 'sumur_total' },
-        { jumlah: 'mck_jumlah', harga: 'mck_harga', total: 'mck_total' },
+        { jumlah: 'struktur_air_unit', harga: 'struktur_air_harga', total: 'struktur_air_total' },
+        { jumlah: 'instalasi_pemurnian_unit', harga: 'instalasi_pemurnian_harga', total: 'instalasi_pemurnian_total' },
+        { jumlah: 'perpipaan_unit', harga: 'perpipaan_harga', total: 'perpipaan_total' },
+        { jumlah: 'penyimpanan_unit', harga: 'penyimpanan_harga', total: 'penyimpanan_total' },
+        { jumlah: 'sumur_unit', harga: 'sumur_harga', total: 'sumur_total' },
+        { jumlah: 'mck_unit', harga: 'mck_harga', total: 'mck_total' },
     ];
-    
     // Auto calculate totals for sanitasi section
     const sanitasiComponents = [
-        { jumlah: 'sanitasi_jumlah', harga: 'sanitasi_harga', total: 'sanitasi_total' },
-        { jumlah: 'drainase_jumlah', harga: 'drainase_harga', total: 'drainase_total' },
+        { jumlah: 'sanitasi_unit', harga: 'sanitasi_harga', total: 'sanitasi_total' },
+        { jumlah: 'drainase_unit', harga: 'drainase_harga', total: 'drainase_total' },
+        { jumlah: 'limbah_padat_unit', harga: 'limbah_padat_harga', total: 'limbah_padat_total' },
+        { jumlah: 'wc_umum_unit', harga: 'wc_umum_harga', total: 'wc_umum_total' },
     ];
     
     // Function to set up auto-calculation for a component

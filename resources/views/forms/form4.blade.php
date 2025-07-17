@@ -29,6 +29,15 @@
     background-color: #28a745;
     border-color: #28a745;
 }
+.card {
+    height: 96%;
+}
+.card-content, .card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 </style>
 <div class="page-heading">
     <div class="page-title mb-4">
@@ -112,7 +121,7 @@
                         <p class="card-text">Format pengumpulan data sektor perlindungan sosial.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format4form4-alt', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 4 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.list-format4', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -130,7 +139,7 @@
                         <p class="card-text">Format pengumpulan data sektor keagamaan.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format5form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 5 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.list-format5', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -184,7 +193,7 @@
                         <p class="card-text">Format laporan sektor listrik.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format8form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 8 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.list-format8', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -202,7 +211,7 @@
                         <p class="card-text">Format pengumpulan data sektor Telkom.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format9form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 9 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.list-format9', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>
@@ -220,7 +229,7 @@
                         <p class="card-text">Format pengumpulan data sektor pertanian/perkebunan.</p>
                         <div class="d-flex gap-2">
                             <a href="{{ route('forms.form4.format10form4', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary">Buka Form</a>
-                            <a href="#" class="btn btn-outline-info" onclick="alert('Format 10 - Fitur Lihat Data belum tersedia')">
+                            <a href="{{ route('forms.form4.list-format10', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                                 <i class="fa fa-eye"></i> Lihat Data
                             </a>
                         </div>

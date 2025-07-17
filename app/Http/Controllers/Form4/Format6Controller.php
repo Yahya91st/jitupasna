@@ -42,23 +42,47 @@ class Format6Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Clean Water and Sanitation sector specific fields
-                'sumur_bor_rusak' => 'nullable|integer',
-                'harga_satuan_sumur_bor' => 'nullable|numeric',
-                'sumur_gali_rusak' => 'nullable|integer',
-                'harga_satuan_sumur_gali' => 'nullable|numeric',
-                'mata_air_rusak' => 'nullable|integer',
-                'harga_satuan_mata_air' => 'nullable|numeric',
-                'instalasi_pam_rusak' => 'nullable|integer',
-                'harga_satuan_instalasi_pam' => 'nullable|numeric',
-                'pipa_distribusi_rusak' => 'nullable|numeric',
-                'harga_satuan_pipa_distribusi' => 'nullable|numeric',
-                'tangki_air_rusak' => 'nullable|integer',
-                'harga_satuan_tangki_air' => 'nullable|numeric',
-                'mck_rusak' => 'nullable|integer',
-                'harga_satuan_mck' => 'nullable|numeric',
-                'septictank_rusak' => 'nullable|integer',
-                'harga_satuan_septictank' => 'nullable|numeric',
+                // Air Minum
+                'struktur_air_unit' => 'nullable|integer',
+                'struktur_air_harga' => 'nullable|numeric',
+                'struktur_air_total' => 'nullable|numeric',
+                'instalasi_pemurnian_unit' => 'nullable|integer',
+                'instalasi_pemurnian_harga' => 'nullable|numeric',
+                'instalasi_pemurnian_total' => 'nullable|numeric',
+                'perpipaan_unit' => 'nullable|integer',
+                'perpipaan_harga' => 'nullable|numeric',
+                'perpipaan_total' => 'nullable|numeric',
+                'penyimpanan_unit' => 'nullable|integer',
+                'penyimpanan_harga' => 'nullable|numeric',
+                'penyimpanan_total' => 'nullable|numeric',
+                'sumur_unit' => 'nullable|integer',
+                'sumur_harga' => 'nullable|numeric',
+                'sumur_total' => 'nullable|numeric',
+                'mck_unit' => 'nullable|integer',
+                'mck_harga' => 'nullable|numeric',
+                'mck_total' => 'nullable|numeric',
+                // Sanitasi
+                'sanitasi_unit' => 'nullable|integer',
+                'sanitasi_harga' => 'nullable|numeric',
+                'sanitasi_total' => 'nullable|numeric',
+                'drainase_unit' => 'nullable|integer',
+                'drainase_harga' => 'nullable|numeric',
+                'drainase_total' => 'nullable|numeric',
+                'limbah_padat_unit' => 'nullable|integer',
+                'limbah_padat_harga' => 'nullable|numeric',
+                'limbah_padat_total' => 'nullable|numeric',
+                'wc_umum_unit' => 'nullable|integer',
+                'wc_umum_harga' => 'nullable|numeric',
+                'wc_umum_total' => 'nullable|numeric',
+                // Kerugian
+                'kehilangan_pendapatan_pdam' => 'nullable|numeric',
+                'biaya_pemurnian_air' => 'nullable|numeric',
+                'biaya_distribusi_air' => 'nullable|numeric',
+                'biaya_pembersihan_sumur' => 'nullable|numeric',
+                'biaya_lain_air' => 'nullable|numeric',
+                'biaya_sanitasi_lain' => 'nullable|numeric',
+                'total_kerusakan' => 'nullable|numeric',
+                'total_kerugian' => 'nullable|numeric',
             ]);
 
             // Create new form data
@@ -75,7 +99,8 @@ class Format6Controller extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.list-format6', ['bencana_id' => $formAirSanitasi->bencana_id])
+                ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -121,8 +146,8 @@ class Format6Controller extends Controller
         
         // Get form data for this disaster
         $formData = Format6Form4::where('bencana_id', $bencana_id)->get();
-        
-        return view('forms.form4.format6.format6list', compact('bencana', 'formData'));
+        $reports = $formData; // For compatibility with the view
+        return view('forms.form4.format6.list-format6', compact('bencana', 'formData', 'reports'));
     }
 
     /**
@@ -151,5 +176,91 @@ class Format6Controller extends Controller
         $pdf->setPaper('A4', 'landscape');
         
         return $pdf->stream('Format6_AirSanitasi_' . $formAirSanitasi->nama_kampung . '.pdf');
+    }
+
+    /**
+     * Show the form for editing the specified resource (Format 6)
+     */
+    public function edit($id)
+    {
+        $formAirSanitasi = \App\Models\Format6Form4::with('bencana')->findOrFail($id);
+        $bencana = $formAirSanitasi->bencana;
+        return view('forms.form4.format6.edit', compact('formAirSanitasi', 'bencana'));
+    }
+
+    /**
+     * Update the specified resource in storage (Format 6)
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            \DB::beginTransaction();
+            $formAirSanitasi = \App\Models\Format6Form4::findOrFail($id);
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string',
+                'nama_distrik' => 'required|string',
+                // Air Minum
+                'struktur_air_unit' => 'nullable|integer',
+                'struktur_air_harga' => 'nullable|numeric',
+                'struktur_air_total' => 'nullable|numeric',
+                'instalasi_pemurnian_unit' => 'nullable|integer',
+                'instalasi_pemurnian_harga' => 'nullable|numeric',
+                'instalasi_pemurnian_total' => 'nullable|numeric',
+                'perpipaan_unit' => 'nullable|integer',
+                'perpipaan_harga' => 'nullable|numeric',
+                'perpipaan_total' => 'nullable|numeric',
+                'penyimpanan_unit' => 'nullable|integer',
+                'penyimpanan_harga' => 'nullable|numeric',
+                'penyimpanan_total' => 'nullable|numeric',
+                'sumur_unit' => 'nullable|integer',
+                'sumur_harga' => 'nullable|numeric',
+                'sumur_total' => 'nullable|numeric',
+                'mck_unit' => 'nullable|integer',
+                'mck_harga' => 'nullable|numeric',
+                'mck_total' => 'nullable|numeric',
+                // Sanitasi
+                'sanitasi_unit' => 'nullable|integer',
+                'sanitasi_harga' => 'nullable|numeric',
+                'sanitasi_total' => 'nullable|numeric',
+                'drainase_unit' => 'nullable|integer',
+                'drainase_harga' => 'nullable|numeric',
+                'drainase_total' => 'nullable|numeric',
+                'limbah_padat_unit' => 'nullable|integer',
+                'limbah_padat_harga' => 'nullable|numeric',
+                'limbah_padat_total' => 'nullable|numeric',
+                'wc_umum_unit' => 'nullable|integer',
+                'wc_umum_harga' => 'nullable|numeric',
+                'wc_umum_total' => 'nullable|numeric',
+                // Kerugian
+                'kehilangan_pendapatan_pdam' => 'nullable|numeric',
+                'biaya_pemurnian_air' => 'nullable|numeric',
+                'biaya_distribusi_air' => 'nullable|numeric',
+                'biaya_pembersihan_sumur' => 'nullable|numeric',
+                'biaya_lain_air' => 'nullable|numeric',
+                'biaya_sanitasi_lain' => 'nullable|numeric',
+                'total_kerusakan' => 'nullable|numeric',
+                'total_kerugian' => 'nullable|numeric',
+            ]);
+            $formAirSanitasi->update($validated);
+            \DB::commit();
+            return redirect()->route('forms.form4.list-format6', ['bencana_id' => $validated['bencana_id']])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage (Format 6)
+     */
+    public function destroy($id)
+    {
+        $formAirSanitasi = \App\Models\Format6Form4::findOrFail($id);
+        $bencana_id = $formAirSanitasi->bencana_id;
+        $formAirSanitasi->delete();
+        return redirect()->route('forms.form4.format6.list', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus');
     }
 }

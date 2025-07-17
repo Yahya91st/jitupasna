@@ -11,23 +11,23 @@
             <h5 class="mb-0">Informasi Kerusakan Sektor Industri dan UMKM</h5>
         </div>
         <div class="card-body">
-            <div class="mb-4">
-                <span class="fw-bold">KABUPATEN:</span>
-                <input type="text" name="kabupaten" class="form-control d-inline-block ms-2" style="width: 300px;">
-            </div>
-            <div class="mb-4">
-                <span class="fw-bold">NAMA KAMPUNG:</span>
-                <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
-            </div>
-            <div class="mb-4">
-                <span class="fw-bold">NAMA DISTRIK:</span>
-                <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
-            </div>            <form action="{{ route('forms.form4.format13.store') }}" method="POST">
+            <form action="{{ route('forms.form4.format13.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-                
+                <div class="mb-4">
+                    <span class="fw-bold">KABUPATEN:</span>
+                    <input type="text" name="kabupaten" class="form-control d-inline-block ms-2" style="width: 300px;">
+                </div>
+                <div class="mb-4">
+                    <span class="fw-bold">NAMA KAMPUNG:</span>
+                    <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
+                </div>
+                <div class="mb-4">
+                    <span class="fw-bold">NAMA DISTRIK:</span>
+                    <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
+                </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle">
+                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
                         <thead>
                             <tr>
                                 <th rowspan="2"></th>

@@ -24,7 +24,9 @@
             </div>
         </div>
 
-    <p><strong>A. Kerusakan Bangunan Ibadah</strong></p>    <table class="table table-bordered text-center align-middle">
+    <p><strong>A. Kerusakan Bangunan Ibadah</strong></p>    
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
         <thead>
             <tr>
                 <th rowspan="2">Jenis Bangunan Ibadah</th>

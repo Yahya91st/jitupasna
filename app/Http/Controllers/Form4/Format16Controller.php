@@ -42,7 +42,6 @@ class Format16Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Format 16 specific fields - customize based on actual form requirements
                 'item_rusak_1' => 'nullable|string',
                 'jumlah_rusak_1' => 'nullable|integer',
                 'harga_satuan_1' => 'nullable|numeric',
@@ -62,12 +61,12 @@ class Format16Controller extends Controller
                 'keterangan' => 'nullable|string',
             ]);
 
-            // Create new form data
-            $formData = Format16Form4::create($validated);
+            // Save all user input fields as per $fillable
+            $data = $request->only((new \App\Models\Format16Form4)->getFillable());
+            $formData = Format16Form4::create($data);
 
             DB::commit();
 
-            // Return success response for AJAX or redirect for regular form
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
@@ -76,18 +75,17 @@ class Format16Controller extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.list-format16', ['bencana_id' => $formData->bencana_id])
+                ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Terjadi kesalahan: ' . $e->getMessage()
                 ], 500);
             }
-
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
@@ -111,19 +109,12 @@ class Format16Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
-        // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
-        // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
-        // Get form data for this disaster
-        $formDataList = Format16Form4::where('bencana_id', $bencana_id)->get();
-        
-        return view('forms.form4.format16.format16list', compact('bencana', 'formDataList'));
+        $reports = Format16Form4::where('bencana_id', $bencana_id)->get(); // No soft delete filter
+        return view('forms.form4.format16.list-format16', compact('bencana', 'reports'));
     }
 
     /**
@@ -152,5 +143,51 @@ class Format16Controller extends Controller
         $pdf->setPaper('A4', 'landscape');
         
         return $pdf->stream('Format16_' . $formData->nama_kampung . '.pdf');
+    }
+
+    /**
+     * Show the form for editing the specified resource (Format 16)
+     */
+    public function edit($id)
+    {
+        $formData = Format16Form4::with('bencana')->findOrFail($id);
+        $bencana = $formData->bencana;
+        return view('forms.form4.format16.edit', compact('formData', 'bencana'));
+    }
+
+    /**
+     * Update the specified resource in storage (Format 16)
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $formData = Format16Form4::findOrFail($id);
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string',
+                'nama_distrik' => 'required|string',
+                // ...validation rules sesuai kebutuhan format16...
+            ]);
+            $formData->update($validated);
+            DB::commit();
+            return redirect()->route('forms.form4.list-format16', ['bencana_id' => $validated['bencana_id']])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage (Format 16)
+     */
+    public function destroy($id)
+    {
+        $form = \App\Models\Format16Form4::findOrFail($id);
+        $bencana_id = $form->bencana_id;
+        $form->delete(); // Hard delete
+        return redirect()->route('forms.form4.list-format16', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus');
     }
 }

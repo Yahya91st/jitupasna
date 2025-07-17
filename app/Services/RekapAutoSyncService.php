@@ -5,9 +5,22 @@ namespace App\Services;
 use App\Models\Bencana;
 use App\Models\Rekap;
 use App\Models\Format1Form4;
+use App\Models\Format2Form4;
+use App\Models\Format3Form4;
+use App\Models\Format4Form4;
 use App\Models\Format5Form4;
 use App\Models\Format6Form4;
 use App\Models\Format7Form4;
+use App\Models\Format8Form4;
+use App\Models\Format9Form4;
+use App\Models\Format10Form4;
+use App\Models\Format11Form4;
+use App\Models\Format12Form4;
+use App\Models\Format13Form4;
+use App\Models\Format14Form4;
+use App\Models\Format15Form4;
+use App\Models\Format16Form4;
+use App\Models\Format17Form4;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -66,6 +79,27 @@ class RekapAutoSyncService
             ->first();
         $rekap->format1_form4_id = $format1->id ?? null;
 
+        // Format 2 - Pendidikan
+        $format2 = Format2Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format2_form4_id = $format2->id ?? null;
+
+        // Format 3
+        $format3 = Format3Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format3_form4_id = $format3->id ?? null;
+
+        // Format 4
+        $format4 = Format4Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format4_form4_id = $format4->id ?? null;
+
         // Format 5 - Sektor Keagamaan
         $format5 = Format5Form4::where('bencana_id', $bencana_id)
             ->where('nama_kampung', $nama_kampung)
@@ -87,8 +121,75 @@ class RekapAutoSyncService
             ->first();
         $rekap->format7_form4_id = $format7->id ?? null;
 
-        // Add more formats as they become available
-        // Format 2-4, 8-17 will be added here when their models are created
+        // Format 8
+        $format8 = Format8Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format8_form4_id = $format8->id ?? null;
+
+        // Format 9
+        $format9 = Format9Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format9_form4_id = $format9->id ?? null;
+
+        // Format 10
+        $format10 = Format10Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format10_form4_id = $format10->id ?? null;
+
+        // Format 11
+        $format11 = Format11Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format11_form4_id = $format11->id ?? null;
+
+        // Format 12
+        $format12 = Format12Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format12_form4_id = $format12->id ?? null;
+
+        // Format 13
+        $format13 = Format13Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format13_form4_id = $format13->id ?? null;
+
+        // Format 14
+        $format14 = Format14Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format14_form4_id = $format14->id ?? null;
+
+        // Format 15
+        $format15 = Format15Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format15_form4_id = $format15->id ?? null;
+
+        // Format 16
+        $format16 = Format16Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format16_form4_id = $format16->id ?? null;
+
+        // Format 17
+        $format17 = Format17Form4::where('bencana_id', $bencana_id)
+            ->where('nama_kampung', $nama_kampung)
+            ->where('nama_distrik', $nama_distrik)
+            ->first();
+        $rekap->format17_form4_id = $format17->id ?? null;
 
         $rekap->save();
     }
@@ -209,7 +310,55 @@ class RekapAutoSyncService
                     $hasValidFormat = true;
                 }
             }
-            
+
+            // Check Format2Form4
+            if ($rekap->format2_form4_id) {
+                $format2Exists = Format2Form4::where('id', $rekap->format2_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format2Exists) {
+                    $rekap->format2_form4_id = null;
+                    Log::info("Removed invalid format2_form4_id {$rekap->format2_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format3Form4
+            if ($rekap->format3_form4_id) {
+                $format3Exists = Format3Form4::where('id', $rekap->format3_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format3Exists) {
+                    $rekap->format3_form4_id = null;
+                    Log::info("Removed invalid format3_form4_id {$rekap->format3_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format4Form4
+            if ($rekap->format4_form4_id) {
+                $format4Exists = Format4Form4::where('id', $rekap->format4_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format4Exists) {
+                    $rekap->format4_form4_id = null;
+                    Log::info("Removed invalid format4_form4_id {$rekap->format4_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
             // Check Format5Form4
             if ($rekap->format5_form4_id) {
                 $format5Exists = Format5Form4::where('id', $rekap->format5_form4_id)
@@ -257,10 +406,182 @@ class RekapAutoSyncService
                     $hasValidFormat = true;
                 }
             }
+
+            // Check Format8Form4
+            if ($rekap->format8_form4_id) {
+                $format8Exists = Format8Form4::where('id', $rekap->format8_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format8Exists) {
+                    $rekap->format8_form4_id = null;
+                    Log::info("Removed invalid format8_form4_id {$rekap->format8_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format9Form4
+            if ($rekap->format9_form4_id) {
+                $format9Exists = Format9Form4::where('id', $rekap->format9_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format9Exists) {
+                    $rekap->format9_form4_id = null;
+                    Log::info("Removed invalid format9_form4_id {$rekap->format9_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format10Form4
+            if ($rekap->format10_form4_id) {
+                $format10Exists = Format10Form4::where('id', $rekap->format10_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format10Exists) {
+                    $rekap->format10_form4_id = null;
+                    Log::info("Removed invalid format10_form4_id {$rekap->format10_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format11Form4
+            if ($rekap->format11_form4_id) {
+                $format11Exists = Format11Form4::where('id', $rekap->format11_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format11Exists) {
+                    $rekap->format11_form4_id = null;
+                    Log::info("Removed invalid format11_form4_id {$rekap->format11_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format12Form4
+            if ($rekap->format12_form4_id) {
+                $format12Exists = Format12Form4::where('id', $rekap->format12_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format12Exists) {
+                    $rekap->format12_form4_id = null;
+                    Log::info("Removed invalid format12_form4_id {$rekap->format12_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format13Form4
+            if ($rekap->format13_form4_id) {
+                $format13Exists = Format13Form4::where('id', $rekap->format13_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format13Exists) {
+                    $rekap->format13_form4_id = null;
+                    Log::info("Removed invalid format13_form4_id {$rekap->format13_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format14Form4
+            if ($rekap->format14_form4_id) {
+                $format14Exists = Format14Form4::where('id', $rekap->format14_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format14Exists) {
+                    $rekap->format14_form4_id = null;
+                    Log::info("Removed invalid format14_form4_id {$rekap->format14_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format15Form4
+            if ($rekap->format15_form4_id) {
+                $format15Exists = Format15Form4::where('id', $rekap->format15_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format15Exists) {
+                    $rekap->format15_form4_id = null;
+                    Log::info("Removed invalid format15_form4_id {$rekap->format15_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format16Form4
+            if ($rekap->format16_form4_id) {
+                $format16Exists = Format16Form4::where('id', $rekap->format16_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format16Exists) {
+                    $rekap->format16_form4_id = null;
+                    Log::info("Removed invalid format16_form4_id {$rekap->format16_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
+
+            // Check Format17Form4
+            if ($rekap->format17_form4_id) {
+                $format17Exists = Format17Form4::where('id', $rekap->format17_form4_id)
+                    ->where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists();
+                    
+                if (!$format17Exists) {
+                    $rekap->format17_form4_id = null;
+                    Log::info("Removed invalid format17_form4_id {$rekap->format17_form4_id} from rekap {$rekap->id}");
+                } else {
+                    $hasValidFormat = true;
+                }
+            }
             
             // Check if any format data exists for this location at all
             if (!$hasValidFormat) {
                 $locationHasData = Format1Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format2Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format3Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format4Form4::where('bencana_id', $bencana_id)
                     ->where('nama_kampung', $rekap->nama_kampung)
                     ->where('nama_distrik', $rekap->nama_distrik)
                     ->exists() ||
@@ -273,6 +594,46 @@ class RekapAutoSyncService
                     ->where('nama_distrik', $rekap->nama_distrik)
                     ->exists() ||
                 Format7Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format8Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format9Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format10Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format11Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format12Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format13Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format14Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format15Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format16Form4::where('bencana_id', $bencana_id)
+                    ->where('nama_kampung', $rekap->nama_kampung)
+                    ->where('nama_distrik', $rekap->nama_distrik)
+                    ->exists() ||
+                Format17Form4::where('bencana_id', $bencana_id)
                     ->where('nama_kampung', $rekap->nama_kampung)
                     ->where('nama_distrik', $rekap->nama_distrik)
                     ->exists();
@@ -313,6 +674,27 @@ class RekapAutoSyncService
             ->get();
         $locations = $locations->merge($format1Locations);
 
+        // Get locations from Format 2
+        $format2Locations = Format2Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format2Locations);
+
+        // Get locations from Format 3
+        $format3Locations = Format3Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format3Locations);
+
+        // Get locations from Format 4
+        $format4Locations = Format4Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format4Locations);
+
         // Get locations from Format 5
         $format5Locations = Format5Form4::where('bencana_id', $bencana_id)
             ->select('nama_kampung', 'nama_distrik')
@@ -333,6 +715,76 @@ class RekapAutoSyncService
             ->distinct()
             ->get();
         $locations = $locations->merge($format7Locations);
+
+        // Get locations from Format 8
+        $format8Locations = Format8Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format8Locations);
+
+        // Get locations from Format 9
+        $format9Locations = Format9Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format9Locations);
+
+        // Get locations from Format 10
+        $format10Locations = Format10Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format10Locations);
+
+        // Get locations from Format 11
+        $format11Locations = Format11Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format11Locations);
+
+        // Get locations from Format 12
+        $format12Locations = Format12Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format12Locations);
+
+        // Get locations from Format 13
+        $format13Locations = Format13Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format13Locations);
+
+        // Get locations from Format 14
+        $format14Locations = Format14Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format14Locations);
+
+        // Get locations from Format 15
+        $format15Locations = Format15Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format15Locations);
+
+        // Get locations from Format 16
+        $format16Locations = Format16Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format16Locations);
+
+        // Get locations from Format 17
+        $format17Locations = Format17Form4::where('bencana_id', $bencana_id)
+            ->select('nama_kampung', 'nama_distrik')
+            ->distinct()
+            ->get();
+        $locations = $locations->merge($format17Locations);
 
         // Remove duplicates and return
         return $locations->unique(function ($location) {

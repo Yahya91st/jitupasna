@@ -42,24 +42,95 @@ class Format17Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Format 17 specific fields - customize based on actual form requirements
-                'item_rusak_1' => 'nullable|string',
-                'jumlah_rusak_1' => 'nullable|integer',
-                'harga_satuan_1' => 'nullable|numeric',
-                'item_rusak_2' => 'nullable|string',
-                'jumlah_rusak_2' => 'nullable|integer',
-                'harga_satuan_2' => 'nullable|numeric',
-                'item_rusak_3' => 'nullable|string',
-                'jumlah_rusak_3' => 'nullable|integer',
-                'harga_satuan_3' => 'nullable|numeric',
-                'item_rusak_4' => 'nullable|string',
-                'jumlah_rusak_4' => 'nullable|integer',
-                'harga_satuan_4' => 'nullable|numeric',
-                'item_rusak_5' => 'nullable|string',
-                'jumlah_rusak_5' => 'nullable|integer',
-                'harga_satuan_5' => 'nullable|numeric',
-                'total_biaya' => 'nullable|numeric',
-                'keterangan' => 'nullable|string',
+                // Ekosistem Darat
+                'ekosistem_darat_1_jenis' => 'nullable|string',
+                'ekosistem_darat_1_rb' => 'nullable|integer',
+                'ekosistem_darat_1_rs' => 'nullable|integer',
+                'ekosistem_darat_1_rr' => 'nullable|integer',
+                'ekosistem_darat_1_rb_harga' => 'nullable|numeric',
+                'ekosistem_darat_1_rs_harga' => 'nullable|numeric',
+                'ekosistem_darat_1_rr_harga' => 'nullable|numeric',
+                'ekosistem_darat_2_jenis' => 'nullable|string',
+                'ekosistem_darat_2_rb' => 'nullable|integer',
+                'ekosistem_darat_2_rs' => 'nullable|integer',
+                'ekosistem_darat_2_rr' => 'nullable|integer',
+                'ekosistem_darat_2_rb_harga' => 'nullable|numeric',
+                'ekosistem_darat_2_rs_harga' => 'nullable|numeric',
+                'ekosistem_darat_2_rr_harga' => 'nullable|numeric',
+                'ekosistem_darat_3_jenis' => 'nullable|string',
+                'ekosistem_darat_3_rb' => 'nullable|integer',
+                'ekosistem_darat_3_rs' => 'nullable|integer',
+                'ekosistem_darat_3_rr' => 'nullable|integer',
+                'ekosistem_darat_3_rb_harga' => 'nullable|numeric',
+                'ekosistem_darat_3_rs_harga' => 'nullable|numeric',
+                'ekosistem_darat_3_rr_harga' => 'nullable|numeric',
+                // Ekosistem Laut
+                'ekosistem_laut_1_jenis' => 'nullable|string',
+                'ekosistem_laut_1_rb' => 'nullable|integer',
+                'ekosistem_laut_1_rs' => 'nullable|integer',
+                'ekosistem_laut_1_rr' => 'nullable|integer',
+                'ekosistem_laut_1_rb_harga' => 'nullable|numeric',
+                'ekosistem_laut_1_rs_harga' => 'nullable|numeric',
+                'ekosistem_laut_1_rr_harga' => 'nullable|numeric',
+                'ekosistem_laut_2_jenis' => 'nullable|string',
+                'ekosistem_laut_2_rb' => 'nullable|integer',
+                'ekosistem_laut_2_rs' => 'nullable|integer',
+                'ekosistem_laut_2_rr' => 'nullable|integer',
+                'ekosistem_laut_2_rb_harga' => 'nullable|numeric',
+                'ekosistem_laut_2_rs_harga' => 'nullable|numeric',
+                'ekosistem_laut_2_rr_harga' => 'nullable|numeric',
+                'ekosistem_laut_3_jenis' => 'nullable|string',
+                'ekosistem_laut_3_rb' => 'nullable|integer',
+                'ekosistem_laut_3_rs' => 'nullable|integer',
+                'ekosistem_laut_3_rr' => 'nullable|integer',
+                'ekosistem_laut_3_rb_harga' => 'nullable|numeric',
+                'ekosistem_laut_3_rs_harga' => 'nullable|numeric',
+                'ekosistem_laut_3_rr_harga' => 'nullable|numeric',
+                // Ekosistem Udara
+                'ekosistem_udara_1_jenis' => 'nullable|string',
+                'ekosistem_udara_1_rb' => 'nullable|integer',
+                'ekosistem_udara_1_rs' => 'nullable|integer',
+                'ekosistem_udara_1_rr' => 'nullable|integer',
+                'ekosistem_udara_1_rb_harga' => 'nullable|numeric',
+                'ekosistem_udara_1_rs_harga' => 'nullable|numeric',
+                'ekosistem_udara_1_rr_harga' => 'nullable|numeric',
+                'ekosistem_udara_2_jenis' => 'nullable|string',
+                'ekosistem_udara_2_rb' => 'nullable|integer',
+                'ekosistem_udara_2_rs' => 'nullable|integer',
+                'ekosistem_udara_2_rr' => 'nullable|integer',
+                'ekosistem_udara_2_rb_harga' => 'nullable|numeric',
+                'ekosistem_udara_2_rs_harga' => 'nullable|numeric',
+                'ekosistem_udara_2_rr_harga' => 'nullable|numeric',
+                'ekosistem_udara_3_jenis' => 'nullable|string',
+                'ekosistem_udara_3_rb' => 'nullable|integer',
+                'ekosistem_udara_3_rs' => 'nullable|integer',
+                'ekosistem_udara_3_rr' => 'nullable|integer',
+                'ekosistem_udara_3_rb_harga' => 'nullable|numeric',
+                'ekosistem_udara_3_rs_harga' => 'nullable|numeric',
+                'ekosistem_udara_3_rr_harga' => 'nullable|numeric',
+                // Kerugian Lingkungan
+                'kerugian_1_jenis' => 'nullable|string',
+                'kerugian_1_rb' => 'nullable|integer',
+                'kerugian_1_rs' => 'nullable|integer',
+                'kerugian_1_rr' => 'nullable|integer',
+                'kerugian_1_rb_harga' => 'nullable|numeric',
+                'kerugian_1_rs_harga' => 'nullable|numeric',
+                'kerugian_1_rr_harga' => 'nullable|numeric',
+                'kerugian_2_jenis' => 'nullable|string',
+                'kerugian_2_rb' => 'nullable|integer',
+                'kerugian_2_rs' => 'nullable|integer',
+                'kerugian_2_rr' => 'nullable|integer',
+                'kerugian_2_rb_harga' => 'nullable|numeric',
+                'kerugian_2_rs_harga' => 'nullable|numeric',
+                'kerugian_2_rr_harga' => 'nullable|numeric',
+                'kerugian_3_jenis' => 'nullable|string',
+                'kerugian_3_rb' => 'nullable|integer',
+                'kerugian_3_rs' => 'nullable|integer',
+                'kerugian_3_rr' => 'nullable|integer',
+                'kerugian_3_rb_harga' => 'nullable|numeric',
+                'kerugian_3_rs_harga' => 'nullable|numeric',
+                'kerugian_3_rr_harga' => 'nullable|numeric',
+                'total_kerusakan' => 'nullable|numeric',
             ]);
 
             // Create new form data
@@ -76,7 +147,8 @@ class Format17Controller extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.list-format17', ['bencana_id' => $formData->bencana_id])
+                ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -106,24 +178,151 @@ class Format17Controller extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource (Format 17)
+     */
+    public function edit($id)
+    {
+        $formData = Format17Form4::with('bencana')->findOrFail($id);
+        $bencana = $formData->bencana;
+        return view('forms.form4.format17.edit', compact('formData', 'bencana'));
+    }
+
+    /**
+     * Update the specified resource in storage (Format 17)
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $formData = Format17Form4::findOrFail($id);
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string',
+                'nama_distrik' => 'required|string',
+                // Ekosistem Darat
+                'ekosistem_darat_1_jenis' => 'nullable|string',
+                'ekosistem_darat_1_rb' => 'nullable|integer',
+                'ekosistem_darat_1_rs' => 'nullable|integer',
+                'ekosistem_darat_1_rr' => 'nullable|integer',
+                'ekosistem_darat_1_rb_harga' => 'nullable|numeric',
+                'ekosistem_darat_1_rs_harga' => 'nullable|numeric',
+                'ekosistem_darat_1_rr_harga' => 'nullable|numeric',
+                'ekosistem_darat_2_jenis' => 'nullable|string',
+                'ekosistem_darat_2_rb' => 'nullable|integer',
+                'ekosistem_darat_2_rs' => 'nullable|integer',
+                'ekosistem_darat_2_rr' => 'nullable|integer',
+                'ekosistem_darat_2_rb_harga' => 'nullable|numeric',
+                'ekosistem_darat_2_rs_harga' => 'nullable|numeric',
+                'ekosistem_darat_2_rr_harga' => 'nullable|numeric',
+                'ekosistem_darat_3_jenis' => 'nullable|string',
+                'ekosistem_darat_3_rb' => 'nullable|integer',
+                'ekosistem_darat_3_rs' => 'nullable|integer',
+                'ekosistem_darat_3_rr' => 'nullable|integer',
+                'ekosistem_darat_3_rb_harga' => 'nullable|numeric',
+                'ekosistem_darat_3_rs_harga' => 'nullable|numeric',
+                'ekosistem_darat_3_rr_harga' => 'nullable|numeric',
+                // Ekosistem Laut
+                'ekosistem_laut_1_jenis' => 'nullable|string',
+                'ekosistem_laut_1_rb' => 'nullable|integer',
+                'ekosistem_laut_1_rs' => 'nullable|integer',
+                'ekosistem_laut_1_rr' => 'nullable|integer',
+                'ekosistem_laut_1_rb_harga' => 'nullable|numeric',
+                'ekosistem_laut_1_rs_harga' => 'nullable|numeric',
+                'ekosistem_laut_1_rr_harga' => 'nullable|numeric',
+                'ekosistem_laut_2_jenis' => 'nullable|string',
+                'ekosistem_laut_2_rb' => 'nullable|integer',
+                'ekosistem_laut_2_rs' => 'nullable|integer',
+                'ekosistem_laut_2_rr' => 'nullable|integer',
+                'ekosistem_laut_2_rb_harga' => 'nullable|numeric',
+                'ekosistem_laut_2_rs_harga' => 'nullable|numeric',
+                'ekosistem_laut_2_rr_harga' => 'nullable|numeric',
+                'ekosistem_laut_3_jenis' => 'nullable|string',
+                'ekosistem_laut_3_rb' => 'nullable|integer',
+                'ekosistem_laut_3_rs' => 'nullable|integer',
+                'ekosistem_laut_3_rr' => 'nullable|integer',
+                'ekosistem_laut_3_rb_harga' => 'nullable|numeric',
+                'ekosistem_laut_3_rs_harga' => 'nullable|numeric',
+                'ekosistem_laut_3_rr_harga' => 'nullable|numeric',
+                // Ekosistem Udara
+                'ekosistem_udara_1_jenis' => 'nullable|string',
+                'ekosistem_udara_1_rb' => 'nullable|integer',
+                'ekosistem_udara_1_rs' => 'nullable|integer',
+                'ekosistem_udara_1_rr' => 'nullable|integer',
+                'ekosistem_udara_1_rb_harga' => 'nullable|numeric',
+                'ekosistem_udara_1_rs_harga' => 'nullable|numeric',
+                'ekosistem_udara_1_rr_harga' => 'nullable|numeric',
+                'ekosistem_udara_2_jenis' => 'nullable|string',
+                'ekosistem_udara_2_rb' => 'nullable|integer',
+                'ekosistem_udara_2_rs' => 'nullable|integer',
+                'ekosistem_udara_2_rr' => 'nullable|integer',
+                'ekosistem_udara_2_rb_harga' => 'nullable|numeric',
+                'ekosistem_udara_2_rs_harga' => 'nullable|numeric',
+                'ekosistem_udara_2_rr_harga' => 'nullable|numeric',
+                'ekosistem_udara_3_jenis' => 'nullable|string',
+                'ekosistem_udara_3_rb' => 'nullable|integer',
+                'ekosistem_udara_3_rs' => 'nullable|integer',
+                'ekosistem_udara_3_rr' => 'nullable|integer',
+                'ekosistem_udara_3_rb_harga' => 'nullable|numeric',
+                'ekosistem_udara_3_rs_harga' => 'nullable|numeric',
+                'ekosistem_udara_3_rr_harga' => 'nullable|numeric',
+                // Kerugian Lingkungan
+                'kerugian_1_jenis' => 'nullable|string',
+                'kerugian_1_rb' => 'nullable|integer',
+                'kerugian_1_rs' => 'nullable|integer',
+                'kerugian_1_rr' => 'nullable|integer',
+                'kerugian_1_rb_harga' => 'nullable|numeric',
+                'kerugian_1_rs_harga' => 'nullable|numeric',
+                'kerugian_1_rr_harga' => 'nullable|numeric',
+                'kerugian_2_jenis' => 'nullable|string',
+                'kerugian_2_rb' => 'nullable|integer',
+                'kerugian_2_rs' => 'nullable|integer',
+                'kerugian_2_rr' => 'nullable|integer',
+                'kerugian_2_rb_harga' => 'nullable|numeric',
+                'kerugian_2_rs_harga' => 'nullable|numeric',
+                'kerugian_2_rr_harga' => 'nullable|numeric',
+                'kerugian_3_jenis' => 'nullable|string',
+                'kerugian_3_rb' => 'nullable|integer',
+                'kerugian_3_rs' => 'nullable|integer',
+                'kerugian_3_rr' => 'nullable|integer',
+                'kerugian_3_rb_harga' => 'nullable|numeric',
+                'kerugian_3_rs_harga' => 'nullable|numeric',
+                'kerugian_3_rr_harga' => 'nullable|numeric',
+                'total_kerusakan' => 'nullable|numeric',
+            ]);
+            $formData->update($validated);
+            DB::commit();
+            return redirect()->route('forms.form4.list-format17', ['bencana_id' => $validated['bencana_id']])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage (Format 17)
+     */
+    public function destroy($id)
+    {
+        $form = \App\Models\Format17Form4::findOrFail($id);
+        $bencana_id = $form->bencana_id;
+        $form->delete(); // Hard delete
+        return redirect()->route('forms.form4.list-format17', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
      * List all entries for this format
      */
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
-        // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
-        // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
-        // Get form data for this disaster
-        $formDataList = Format17Form4::where('bencana_id', $bencana_id)->get();
-        
-        return view('forms.form4.format17.format17list', compact('bencana', 'formDataList'));
+        $reports = Format17Form4::where('bencana_id', $bencana_id)->get(); // No soft delete filter
+        return view('forms.form4.format17.list-format17', compact('bencana', 'reports'));
     }
 
     /**

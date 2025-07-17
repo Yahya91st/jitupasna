@@ -66,27 +66,89 @@ class Rekap extends Model
     }
 
     /**
-     * Relationship to Format5Form4
+     * Relationship to Format2Form4
      */
+    public function format2Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format2Form4::class, 'format2_form4_id');
+    }
+
+    /**
+     * Relationship to Format3Form4 - Format17Form4
+     */
+    public function format3Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format3Form4::class, 'format3_form4_id');
+    }
+
+    public function format4Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format4Form4::class, 'format4_form4_id');
+    }
+
     public function format5Form4(): BelongsTo
     {
         return $this->belongsTo(Format5Form4::class, 'format5_form4_id');
     }
 
-    /**
-     * Relationship to Format6Form4
-     */
     public function format6Form4(): BelongsTo
     {
         return $this->belongsTo(Format6Form4::class, 'format6_form4_id');
     }
 
-    /**
-     * Relationship to Format7Form4
-     */
     public function format7Form4(): BelongsTo
     {
         return $this->belongsTo(Format7Form4::class, 'format7_form4_id');
+    }
+
+    public function format8Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format8Form4::class, 'format8_form4_id');
+    }
+
+    public function format9Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format9Form4::class, 'format9_form4_id');
+    }
+
+    public function format10Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format10Form4::class, 'format10_form4_id');
+    }
+
+    public function format11Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format11Form4::class, 'format11_form4_id');
+    }
+
+    public function format12Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format12Form4::class, 'format12_form4_id');
+    }
+
+    public function format13Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format13Form4::class, 'format13_form4_id');
+    }
+
+    public function format14Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format14Form4::class, 'format14_form4_id');
+    }
+
+    public function format15Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format15Form4::class, 'format15_form4_id');
+    }
+
+    public function format16Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format16Form4::class, 'format16_form4_id');
+    }
+
+    public function format17Form4(): BelongsTo
+    {
+        return $this->belongsTo(Format17Form4::class, 'format17_form4_id');
     }
 
     /**
@@ -205,6 +267,21 @@ class Rekap extends Model
             $total += $this->format1Form4->grand_total ?? 0;
         }
         
+        // Format 2 - Pendidikan
+        if ($this->format2Form4) {
+            $total += $this->format2Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 3
+        if ($this->format3Form4) {
+            $total += $this->format3Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 4
+        if ($this->format4Form4) {
+            $total += $this->format4Form4->total_kerusakan ?? 0;
+        }
+        
         // Format 5 - Sektor Keagamaan
         if ($this->format5Form4) {
             $total += $this->format5Form4->total_kerusakan_bangunan ?? 0;
@@ -221,6 +298,56 @@ class Rekap extends Model
             $total += $this->format7Form4->total_kerusakan_infrastruktur ?? 0;
         }
         
+        // Format 8
+        if ($this->format8Form4) {
+            $total += $this->format8Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 9
+        if ($this->format9Form4) {
+            $total += $this->format9Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 10
+        if ($this->format10Form4) {
+            $total += $this->format10Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 11
+        if ($this->format11Form4) {
+            $total += $this->format11Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 12
+        if ($this->format12Form4) {
+            $total += $this->format12Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 13
+        if ($this->format13Form4) {
+            $total += $this->format13Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 14
+        if ($this->format14Form4) {
+            $total += $this->format14Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 15
+        if ($this->format15Form4) {
+            $total += $this->format15Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 16
+        if ($this->format16Form4) {
+            $total += $this->format16Form4->total_kerusakan ?? 0;
+        }
+        
+        // Format 17
+        if ($this->format17Form4) {
+            $total += $this->format17Form4->total_kerusakan ?? 0;
+        }
+        
         return $total;
     }
 
@@ -234,6 +361,21 @@ class Rekap extends Model
         // Format 1 - Perumahan dan Pemukiman
         if ($this->format1Form4) {
             // Sudah termasuk dalam grand_total, jadi skip untuk menghindari double counting
+        }
+        
+        // Format 2 - Pendidikan
+        if ($this->format2Form4) {
+            $total += $this->format2Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 3
+        if ($this->format3Form4) {
+            $total += $this->format3Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 4
+        if ($this->format4Form4) {
+            $total += $this->format4Form4->total_kerugian ?? 0;
         }
         
         // Format 5 - Sektor Keagamaan
@@ -252,6 +394,56 @@ class Rekap extends Model
             $total += $this->format7Form4->total_kehilangan_pendapatan ?? 0;
             $total += $this->format7Form4->total_kenaikan_biaya_operasional ?? 0;
             $total += $this->format7Form4->total_biaya_infrastruktur_darurat ?? 0;
+        }
+        
+        // Format 8
+        if ($this->format8Form4) {
+            $total += $this->format8Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 9
+        if ($this->format9Form4) {
+            $total += $this->format9Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 10
+        if ($this->format10Form4) {
+            $total += $this->format10Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 11
+        if ($this->format11Form4) {
+            $total += $this->format11Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 12
+        if ($this->format12Form4) {
+            $total += $this->format12Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 13
+        if ($this->format13Form4) {
+            $total += $this->format13Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 14
+        if ($this->format14Form4) {
+            $total += $this->format14Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 15
+        if ($this->format15Form4) {
+            $total += $this->format15Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 16
+        if ($this->format16Form4) {
+            $total += $this->format16Form4->total_kerugian ?? 0;
+        }
+        
+        // Format 17
+        if ($this->format17Form4) {
+            $total += $this->format17Form4->total_kerugian ?? 0;
         }
         
         return $total;

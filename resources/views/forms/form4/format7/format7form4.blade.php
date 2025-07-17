@@ -6,25 +6,32 @@
     
 <form method="POST" action="{{ route('forms.form4.format7.store') }}">
     @csrf
+    <table class="table table-bordered">
+        <tr>
+            <td style="width: 50%">NAMA KAMPUNG: <input type="text" class="form-control" name="nama_kampung" required value="{{ old('nama_kampung', $bencana->nama_kampung ?? '') }}"></td>
+            <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $bencana->nama_distrik ?? '') }}"></td>
+        </tr>
+    </table>
     <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-    <table border="1" cellspacing="0" cellpadding="4" style="width: 100%; border-collapse: collapse; border: 2px solid #000;">
-        <thead>
-            <tr>
-                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">URAIAN<br>PERKIRAAN KERUSAKAN</th>
-                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Ruas Jalan/Nama Jembatan</th>
-                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Jenis Jalan/Jembatan<br>(Jalan Nasional/Kab/Kota/Desa)</th>
-                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Jenis Jalan/Jembatan (Aspal, Batu, Tanah)</th>
-                <th colspan="3" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">JUMLAH KERUSAKAN (Dalam Km)</th>
-                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">HARGA SATUAN/M2</th>
-                <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Perkiraan Biaya Perbaikan</th>
-            </tr>
-            <tr>
-                <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">BERAT</th>
-                <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">SEDANG</th>
-                <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">RINGAN</th>
-            </tr>
-        </thead>
-        <tbody>            <tr>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">URAIAN<br>PERKIRAAN KERUSAKAN</th>
+                    <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Ruas Jalan/Nama Jembatan</th>
+                    <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Jenis Jalan/Jembatan<br>(Jalan Nasional/Kab/Kota/Desa)</th>
+                    <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Jenis Jalan/Jembatan (Aspal, Batu, Tanah)</th>
+                    <th colspan="3" style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">JUMLAH KERUSAKAN (Dalam Km)</th>
+                    <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">HARGA SATUAN/M2</th>
+                    <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">Perkiraan Biaya Perbaikan</th>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">BERAT</th>
+                    <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">SEDANG</th>
+                    <th style="border: 1px solid #000; text-align: center; background-color: #f0f0f0;">RINGAN</th>
+                </tr>
+            </thead>
+            <tbody>            <tr>
                 <td style="border: 1px solid #000; font-weight: bold;">a.) JALAN</td>
                 <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jalan_ruas" class="form-control" style="width: 100%"></td>
                 <td colspan="1" style="border: 1px solid #000;"><input type="text" name="jalan_jenis" class="form-control" style="width: 100%"></td>

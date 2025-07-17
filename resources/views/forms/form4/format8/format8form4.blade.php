@@ -1,18 +1,19 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container-fluid mt-4">    <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
+<div class="container-fluid mt-4">
+    <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
     <h4 class="mb-3">Format 8. Pengumpulan Data Sektor Listrik</h4>
 
     <form method="POST" action="{{ route('forms.form4.store-format8') }}">
         @csrf
         <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-        
         <div class="card mb-3">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">Informasi Lokasi</h5>
             </div>
-            <div class="card-body">                <div class="row mb-3">
+            <div class="card-body">
+                <div class="row mb-3">
                     <div class="col-md-6 col-sm-12">
                         <label for="nama_kampung" class="form-label">Nama Kampung:</label>
                         <input type="text" class="form-control responsive-input" id="nama_kampung" name="nama_kampung" required>
@@ -28,146 +29,116 @@
         <div class="card mb-3">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">Perkiraan Kerusakan Infrastruktur Listrik</h5>
-            </div>            <div class="card-body">                <div class="table-responsive">
-                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
                         <thead class="table-light">
                             <tr>
-                                <th rowspan="2" style="text-align: center; vertical-align: middle; width: 1000px;">URAIAN</th>
-                                <th rowspan="2" style="text-align: center; vertical-align: middle; width: 1000px;">KOMPONEN</th>
-                                <th colspan="2" style="text-align: center; vertical-align: middle; width: 10px;">Jumlah Kerusakan</th>
-                                <th rowspan="2" style="text-align: center; vertical-align: middle; width: 10px;">Harga Satuan (Rp)</th>
-                            </tr>
-                            <tr>
-                                <th style="text-align: center; width: 1px;">Satuan</th>
-                                <th style="text-align: center; width: 1px;">Unit</th>
+                                <th>Uraian</th>
+                                <th>Unit</th>
+                                <th>Harga Satuan (Rp)</th>
+                                <th>Jumlah (Rp)</th>
+                                <th>Keterangan</th>
                             </tr>
                         </thead>
-                            <tbody>                        <tr>
-                            <td rowspan="3" class="align-middle fw-bold bg-light" style="text-align: center; vertical-align: middle; font-size: clamp(0.8rem, 1vw, 1rem);">SISTEM TRANSMISI DAN DISTRIBUSI</td>
-                            <td style="vertical-align: middle; text-align: center;">KABEL (meter)</td>
-                            <td style=""><input type="number" name="kabel_rb" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="kabel_rs" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="kabel_rs" class="form-control" style="width: 10%"></td>
-                        </tr>
-                        <tr>
-                            <td style=" text-align: center;">TIANG</td>
-                            <td style=""><input type="number" name="tiang_rb" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="tiang_rs" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="tiang_rr" class="form-control" style="width: 10%"></td>
-                        </tr>
-                        <tr>
-                            <td style=" text-align: center;">GARDU/TRAFO</td>
-                            <td style=""><input type="number" name="trafo_rb" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="trafo_rs" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="trafo_rr" class="form-control" style="width: 10%"></td>
-                        </tr>                        <tr>
-                            <td rowspan="4" class="align-middle fw-bold bg-light" style="text-align: center;  font-size: clamp(0.8rem, 1vw, 1rem);">SISTEM PEMBANGKITAN</td>
-                            <td style=" text-align: center;">PLTA</td>
-                            <td style=""><input type="number" name="pembangkit_rb" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rs" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rr" class="form-control" style="width: 10%"></td>
-                        </tr>
-                        <tr>
-                            <td style=" text-align: center;">PLTU</td>
-                            <td style=""><input type="number" name="pembangkit_rb" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rs" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rr" class="form-control" style="width: 10%"></td>
-                        </tr>
-                        <tr>
-                            <td style=" text-align: center;">PLTD</td>
-                            <td style=""><input type="number" name="pembangkit_rb" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rs" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rr" class="form-control" style="width: 10%"></td>
-                        </tr>
-                        <tr>
-                            <td style=" text-align: center;">PEMBANGKIT LAIN-LAIN <input type="text"> KETERANGAN</td>                            
-                            <td style=""><input type="number" name="pembangkit_rb" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rs" class="form-control" style="width: 10%"></td>
-                            <td style=""><input type="number" name="pembangkit_rr" class="form-control" style="width: 10%"></td>
-                        </tr>
-                        <tr>
-                            <td style=" text-align: center;">PERKIRAAN JANGKA WAKTU PEMULIHAN</td>
-                            <td><input type="text"> BULAN</td>                            
-                        </tr>
-                        
-                        <tr>                            
-                            <td style="vertical-align: middle; text-align: center;">PEMBANGKIT LISTRIK DARURAT</td>
-                        </tr>
-                        
-                        <tr>
-                            <td style="vertical-align: middle; text-align: center;">GENSET</td>
-                            <td><input type="text"> UNIT</td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                BIAYA PENGADAAN PER GENSET
-                            </td>
-                            <td><input type="text"> RP</td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                PERKIRAAN KEHILANGAN PENURUNAN PENDAPATAN
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>B. PERMINTAAN LISTRIK PER BULAN SEBELUM BENCANA</td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td><input type="text" style="width: 10px"> KWH</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>C. PERMINTAAN LISTRIK PER BULAN PASCA BENCANA</td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td><input type="text" style="width: 10px"> KWH</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>D. TARIF LISTRIK PER KWH</td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td><input type="text" style="width: 10px"> RP.</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>E. PENURUNAN PENDAPATAN</td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>PERKIRAAN KENAIKAN BIAYA OPERASIONAL</td>
-                        </tr>
-                    
-                        <tr>
-                            <td></td>
-                            <td>B. BIAYA OPERASIONAL PER BULAN SEBELUM BENCANA</td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td><input type="text" style="width: 10px"> RP</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>C. BIAYA OPERASIONAL PER BULAN PASCA BENCANA</td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td><input type="text" style="width: 10px"> RP</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>D. KENAIKAN BIAYA OPERASIONAL</td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td><input type="text" style="width: 10px"></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
+                        <tbody>
+                            <tr class="fw-bold bg-light"><td colspan="5">SISTEM TRANSMISI DAN DISTRIBUSI</td></tr>
+                            <tr>
+                                <td>KABEL (meter)</td>
+                                <td><input type="number" name="kabel_unit" class="form-control" value="0"></td>
+                                <td><input type="number" name="kabel_harga_satuan" class="form-control" value="0"></td>
+                                <td><input type="number" name="kabel_jumlah" class="form-control" value="0" readonly></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>TIANG</td>
+                                <td><input type="number" name="tiang_unit" class="form-control" value="0"></td>
+                                <td><input type="number" name="tiang_harga_satuan" class="form-control" value="0"></td>
+                                <td><input type="number" name="tiang_jumlah" class="form-control" value="0" readonly></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>GARDU/TRAFO</td>
+                                <td><input type="number" name="trafo_unit" class="form-control" value="0"></td>
+                                <td><input type="number" name="trafo_harga_satuan" class="form-control" value="0"></td>
+                                <td><input type="number" name="trafo_jumlah" class="form-control" value="0" readonly></td>
+                                <td></td>
+                            </tr>
+                            <tr class="fw-bold bg-light"><td colspan="5">SISTEM PEMBANGKITAN</td></tr>
+                            <tr>
+                                <td>PLTA</td>
+                                <td><input type="number" name="plta_unit" class="form-control" value="0"></td>
+                                <td><input type="number" name="plta_harga_satuan" class="form-control" value="0"></td>
+                                <td><input type="number" name="plta_jumlah" class="form-control" value="0" readonly></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>PLTU</td>
+                                <td><input type="number" name="pltu_unit" class="form-control" value="0"></td>
+                                <td><input type="number" name="pltu_harga_satuan" class="form-control" value="0"></td>
+                                <td><input type="number" name="pltu_jumlah" class="form-control" value="0" readonly></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>PLTD</td>
+                                <td><input type="number" name="pltd_unit" class="form-control" value="0"></td>
+                                <td><input type="number" name="pltd_harga_satuan" class="form-control" value="0"></td>
+                                <td><input type="number" name="pltd_jumlah" class="form-control" value="0" readonly></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>PEMBANGKIT LAIN-LAIN</td>
+                                <td><input type="number" name="pembangkit_lain_unit" class="form-control" value="0"></td>
+                                <td><input type="number" name="pembangkit_lain_harga_satuan" class="form-control" value="0"></td>
+                                <td><input type="number" name="pembangkit_lain_jumlah" class="form-control" value="0" readonly></td>
+                                <td><input type="text" name="pembangkit_lain_keterangan" class="form-control" placeholder="Keterangan"></td>
+                            </tr>
+                            <tr class="fw-bold bg-light"><td colspan="5">PEMULIHAN & DARURAT</td></tr>
+                            <tr>
+                                <td>Perkiraan Jangka Waktu Pemulihan (bulan)</td>
+                                <td colspan="4"><input type="number" name="jangka_waktu_pemulihan_bulan" class="form-control" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td>GENSET (unit)</td>
+                                <td><input type="number" name="genset_unit" class="form-control" value="0"></td>
+                                <td>Biaya Pengadaan</td>
+                                <td><input type="number" name="genset_biaya_pengadaan" class="form-control" value="0"></td>
+                                <td></td>
+                            </tr>
+                            <tr class="fw-bold bg-light"><td colspan="5">PERKIRAAN KEHILANGAN/PENURUNAN PENDAPATAN</td></tr>
+                            <tr>
+                                <td>Permintaan Listrik Sebelum Bencana (kWh)</td>
+                                <td colspan="4"><input type="number" name="permintaan_listrik_sebelum_kwh" class="form-control" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td>Permintaan Listrik Pasca Bencana (kWh)</td>
+                                <td colspan="4"><input type="number" name="permintaan_listrik_pasca_kwh" class="form-control" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td>Tarif Listrik per kWh (Rp)</td>
+                                <td colspan="4"><input type="number" name="tarif_listrik_per_kwh" class="form-control" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td>Penurunan Pendapatan (Rp)</td>
+                                <td colspan="4"><input type="number" name="penurunan_pendapatan" class="form-control" value="0"></td>
+                            </tr>
+                            <tr class="fw-bold bg-light"><td colspan="5">PERKIRAAN KENAIKAN BIAYA OPERASIONAL</td></tr>
+                            <tr>
+                                <td>Biaya Operasional Sebelum (Rp)</td>
+                                <td colspan="4"><input type="number" name="biaya_operasional_sebelum" class="form-control" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td>Biaya Operasional Pasca (Rp)</td>
+                                <td colspan="4"><input type="number" name="biaya_operasional_pasca" class="form-control" value="0"></td>
+                            </tr>
+                            <tr>
+                                <td>Kenaikan Biaya Operasional (Rp)</td>
+                                <td colspan="4"><input type="number" name="kenaikan_biaya_operasional" class="form-control" value="0"></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
-                
             </div>
         </div>
         <div class="mt-3 text-center mb-5">
@@ -178,90 +149,28 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Langsung hilangkan semua transisi di AdminLTE
-        const style = document.createElement('style');
-        style.innerHTML = `
-            /* Override ALL AdminLTE transitions */
-            .main-sidebar, .main-sidebar *, .main-header, .main-header *, .content-wrapper, body, * {
-                -webkit-transition: none !important;
-                -moz-transition: none !important;
-                -o-transition: none !important;
-                transition: none !important;
-                animation: none !important;
+        const components = [
+            { unit: 'kabel_unit', harga: 'kabel_harga_satuan', jumlah: 'kabel_jumlah' },
+            { unit: 'tiang_unit', harga: 'tiang_harga_satuan', jumlah: 'tiang_jumlah' },
+            { unit: 'trafo_unit', harga: 'trafo_harga_satuan', jumlah: 'trafo_jumlah' },
+            { unit: 'plta_unit', harga: 'plta_harga_satuan', jumlah: 'plta_jumlah' },
+            { unit: 'pltu_unit', harga: 'pltu_harga_satuan', jumlah: 'pltu_jumlah' },
+            { unit: 'pltd_unit', harga: 'pltd_harga_satuan', jumlah: 'pltd_jumlah' },
+            { unit: 'pembangkit_lain_unit', harga: 'pembangkit_lain_harga_satuan', jumlah: 'pembangkit_lain_jumlah' },
+        ];
+        function setupAutoCalculation(component) {
+            const unitInput = document.querySelector(`[name="${component.unit}"]`);
+            const hargaInput = document.querySelector(`[name="${component.harga}"]`);
+            const jumlahInput = document.querySelector(`[name="${component.jumlah}"]`);
+            function calculate() {
+                const unit = parseFloat(unitInput.value) || 0;
+                const harga = parseFloat(hargaInput.value) || 0;
+                jumlahInput.value = unit * harga;
             }
-            
-            /* Override AdminLTE specific animations */
-            .sidebar-collapse .main-sidebar, .sidebar-collapse .main-sidebar::before {
-                margin-left: 0 !important;
-                transform: translate3d(0, 0, 0) !important;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Function to handle sidebar toggle events and adjust layout
-        function handleSidebarToggle() {
-            const body = document.querySelector('body');
-            const tableResponsive = document.querySelectorAll('.table-responsive');
-            
-            // Override AdminLTE animation properties
-            const mainSidebar = document.querySelector('.main-sidebar');
-            if (mainSidebar) {
-                mainSidebar.style.transition = 'none !important';
-            }
-            
-            // Observer for sidebar collapse/expand
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'class') {
-                        const isSidebarCollapsed = body.classList.contains('sidebar-collapse');
-                        
-                        // Re-force transition none on all elements
-                        document.querySelectorAll('.main-sidebar, .main-header, .content-wrapper').forEach(el => {
-                            el.style.transition = 'none !important';
-                            el.style.webkitTransition = 'none !important';
-                        });
-                        
-                        // Adjust table container width based on sidebar state without animation
-                        tableResponsive.forEach(function(table) {
-                            table.style.maxWidth = '100%';
-                            table.style.transition = 'none';
-                        });
-                    }
-                });
-            });
-            
-            // Start observing the body element for class changes
-            observer.observe(body, { attributes: true });
-            
-            // Initial setup
-            const isSidebarCollapsed = body.classList.contains('sidebar-collapse');
-            tableResponsive.forEach(function(table) {
-                table.style.maxWidth = '100%';
-            });
+            unitInput.addEventListener('input', calculate);
+            hargaInput.addEventListener('input', calculate);
         }
-        
-        // Initialize sidebar toggle handling
-        handleSidebarToggle();
-        
-        // Make form inputs more responsive
-        const adjustInputWidths = function() {
-            const inputs = document.querySelectorAll('input[type="number"], input[type="text"]');
-            const windowWidth = window.innerWidth;
-            
-            inputs.forEach(input => {
-                if (windowWidth < 768) {
-                    input.style.minWidth = '60px';
-                } else if (windowWidth < 992) {
-                    input.style.minWidth = '70px';
-                } else {
-                    input.style.minWidth = '80px';
-                }
-            });
-        };
-        
-        // Run on load and on resize
-        adjustInputWidths();
-        window.addEventListener('resize', adjustInputWidths);
+        components.forEach(setupAutoCalculation);
     });
 </script>
 @endsection

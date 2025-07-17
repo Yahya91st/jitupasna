@@ -111,8 +111,8 @@
                 <td class="text-center">{{ $report->rs_rr }}</td>
                 <td class="text-center">{{ $report->rs_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->rs_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->rs_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->rs_harga_obat, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->rs_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->rs_harga_obat }}</td>
             </tr>
             
             <!-- Puskesmas -->
@@ -123,8 +123,8 @@
                 <td class="text-center">{{ $report->puskesmas_rr }}</td>
                 <td class="text-center">{{ $report->puskesmas_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->puskesmas_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->puskesmas_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->puskesmas_harga_obat, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->puskesmas_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->puskesmas_harga_obat }}</td>
             </tr>
             
             <!-- Pustu -->
@@ -135,8 +135,8 @@
                 <td class="text-center">{{ $report->pustu_rr }}</td>
                 <td class="text-center">{{ $report->pustu_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->pustu_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pustu_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pustu_harga_obat, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->pustu_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->pustu_harga_obat }}</td>
             </tr>
             
             <!-- Polindes -->
@@ -147,8 +147,8 @@
                 <td class="text-center">{{ $report->polindes_rr }}</td>
                 <td class="text-center">{{ $report->polindes_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->polindes_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->polindes_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->polindes_harga_obat, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->polindes_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->polindes_harga_obat }}</td>
             </tr>
             
             <!-- Posyandu -->
@@ -159,8 +159,8 @@
                 <td class="text-center">{{ $report->posyandu_rr }}</td>
                 <td class="text-center">{{ $report->posyandu_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->posyandu_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->posyandu_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->posyandu_harga_obat, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->posyandu_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->posyandu_harga_obat }}</td>
             </tr>
             
             <!-- Apotek/Toko Obat -->
@@ -171,8 +171,8 @@
                 <td class="text-center">{{ $report->apotek_rr }}</td>
                 <td class="text-center">{{ $report->apotek_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->apotek_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->apotek_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->apotek_harga_obat, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->apotek_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->apotek_harga_obat }}</td>
             </tr>
         </tbody>
     </table>

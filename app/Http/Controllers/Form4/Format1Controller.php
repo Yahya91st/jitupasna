@@ -163,20 +163,21 @@ class Format1Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);        // Get form data for this disaster
         $reports = Format1Form4::where('bencana_id', $bencana_id)->get();
         
-        return view('forms.form4.format1.format1list', compact('bencana', 'reports'));
+        return view('forms.form4.format1.list-format1', compact('bencana', 'reports'));
     }
 
     /**
-     * Generate PDF for a specific form data
+     * Generate PDF for a specific form data (Format1/Perumahan)
+     *
+     * @param  int  $id
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function generatePdf($id)
     {
         $formPerumahan = Format1Form4::with('bencana')->findOrFail($id);
         $bencana = $formPerumahan->bencana;
-        
         $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('formPerumahan', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
-        
         return $pdf->download('Format1_Perumahan_' . $formPerumahan->nama_kampung . '.pdf');
     }
 
@@ -234,6 +235,10 @@ class Format1Controller extends Controller
 
     /**
      * Update the specified format1 data
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -241,7 +246,8 @@ class Format1Controller extends Controller
             DB::beginTransaction();
 
             // Find the existing record
-            $formPerumahan = Format1Form4::findOrFail($id);            // Validate the request
+            $formPerumahan = Format1Form4::findOrFail($id);
+            // Validate the request
             $validated = $request->validate([
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
@@ -262,42 +268,55 @@ class Format1Controller extends Controller
                 'harga_satuan_rusak_sedang_non_permanen' => 'nullable|numeric',
                 'harga_satuan_rusak_ringan_permanen' => 'nullable|numeric',
                 'harga_satuan_rusak_ringan_non_permanen' => 'nullable|numeric',
+                'jalan_rusak_berat' => 'nullable|numeric',
+                'jalan_rusak_sedang' => 'nullable|numeric',
+                'jalan_rusak_ringan' => 'nullable|numeric',
+                'harga_satuan_jalan' => 'nullable|numeric',
+                'saluran_rusak_berat' => 'nullable|numeric',
+                'saluran_rusak_sedang' => 'nullable|numeric',
+                'saluran_rusak_ringan' => 'nullable|numeric',
+                'harga_satuan_saluran' => 'nullable|numeric',
+                'balai_rusak_berat' => 'nullable|integer',
+                'balai_rusak_sedang' => 'nullable|integer',
+                'balai_rusak_ringan' => 'nullable|integer',
+                'harga_satuan_balai' => 'nullable|numeric',
+                'tenaga_kerja_hok' => 'nullable|integer',
+                'upah_harian' => 'nullable|numeric',
+                'alat_berat_hari' => 'nullable|integer',
+                'biaya_per_hari' => 'nullable|numeric',
+                'jumlah_rumah_disewa' => 'nullable|integer',
+                'harga_sewa_per_bulan' => 'nullable|numeric',
+                'durasi_sewa_bulan' => 'nullable|integer',
+                'jumlah_tenda' => 'nullable|integer',
+                'harga_tenda' => 'nullable|numeric',
+                'jumlah_barak' => 'nullable|integer',
+                'harga_barak' => 'nullable|numeric',
+                'jumlah_rumah_sementara' => 'nullable|integer',
+                'harga_rumah_sementara' => 'nullable|numeric',
             ]);
 
-            // Calculate totals
-            $total_rumah_hancur_total = ($validated['rumah_hancur_total_permanen'] ?? 0) + 
-                                      ($validated['rumah_hancur_total_non_permanen'] ?? 0);
-            $total_rumah_rusak_berat = ($validated['rumah_rusak_berat_permanen'] ?? 0) + 
-                                     ($validated['rumah_rusak_berat_non_permanen'] ?? 0);
-            $total_rumah_rusak_sedang = ($validated['rumah_rusak_sedang_permanen'] ?? 0) + 
-                                      ($validated['rumah_rusak_sedang_non_permanen'] ?? 0);
-            $total_rumah_rusak_ringan = ($validated['rumah_rusak_ringan_permanen'] ?? 0) + 
-                                      ($validated['rumah_rusak_ringan_non_permanen'] ?? 0);
-
-            // Calculate grand totals
-            $grand_total = $total_rumah_hancur_total + $total_rumah_rusak_berat + 
-                          $total_rumah_rusak_sedang + $total_rumah_rusak_ringan;
-
-            // Calculate kerugian (assuming some basic calculation - you may need to adjust)
-            $total_kerugian = ($total_rumah_hancur_total * 150000000) + // 150 juta per rumah hancur total
-                             ($total_rumah_rusak_berat * 100000000) +   // 100 juta per rumah rusak berat
-                             ($total_rumah_rusak_sedang * 75000000) +   // 75 juta per rumah rusak sedang
-                             ($total_rumah_rusak_ringan * 50000000);    // 50 juta per rumah rusak ringan
+            // Hitung total kerusakan otomatis (sama seperti store)
+            $total_kerusakan =
+                ($validated['rumah_hancur_total_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_permanen'] ?? 0) +
+                ($validated['rumah_hancur_total_non_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_non_permanen'] ?? 0) +
+                ($validated['rumah_rusak_berat_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_permanen'] ?? 0) +
+                ($validated['rumah_rusak_berat_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_non_permanen'] ?? 0) +
+                ($validated['rumah_rusak_sedang_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_permanen'] ?? 0) +
+                ($validated['rumah_rusak_sedang_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_non_permanen'] ?? 0) +
+                ($validated['rumah_rusak_ringan_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_permanen'] ?? 0) +
+                ($validated['rumah_rusak_ringan_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_non_permanen'] ?? 0) +
+                (($validated['jalan_rusak_berat'] ?? 0) + ($validated['jalan_rusak_sedang'] ?? 0) + ($validated['jalan_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_jalan'] ?? 0) +
+                (($validated['saluran_rusak_berat'] ?? 0) + ($validated['saluran_rusak_sedang'] ?? 0) + ($validated['saluran_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_saluran'] ?? 0) +
+                (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0);
+            $validated['total_kerusakan'] = $total_kerusakan;
 
             // Update the record
-            $formPerumahan->update(array_merge($validated, [
-                'total_rumah_hancur_total' => $total_rumah_hancur_total,
-                'total_rumah_rusak_berat' => $total_rumah_rusak_berat,
-                'total_rumah_rusak_sedang' => $total_rumah_rusak_sedang,
-                'total_rumah_rusak_ringan' => $total_rumah_rusak_ringan,
-                'grand_total' => $grand_total,
-                'total_kerugian' => $total_kerugian,
-            ]));
+            $formPerumahan->update($validated);
 
             DB::commit();
 
             return redirect()->route('forms.form4.list-format1', ['bencana_id' => $formPerumahan->bencana_id])
-                           ->with('success', 'Data berhasil diperbarui');
+                           ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();

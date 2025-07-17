@@ -11,53 +11,6 @@
         </div>
     </div>
 
-    <!-- Add User Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('users.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>                            <select class="form-select" id="role" name="role" required>
-                                @foreach($availableRoles as $role)
-                                <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
-                                @endforeach
-                            </select>
-                            <small class="form-text text-muted">
-                                @if(auth()->user()->hasRole('super-admin'))
-                                    As a Super Admin, you can only create admin accounts.
-                                @elseif(auth()->user()->hasRole('admin'))
-                                    As an Admin, you can only create regular user accounts.
-                                @endif
-                            </small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add User</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Flash message -->
     @if(session('success'))
     <div class="alert alert-success">
@@ -66,7 +19,9 @@
     @endif
 
     <section class="section">
-        <div class="card">            <div class="card-header">                <div class="d-flex justify-content-between align-items-center">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
                     <h4 class="card-title">
                         @if(auth()->user()->hasRole('super-admin'))
                             Admin Accounts
@@ -76,9 +31,15 @@
                             Users
                         @endif
                     </h4>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        <i class="bi bi-plus"></i> Add User
-                    </button>
+                    @if(auth()->user()->hasRole('super-admin'))
+                        <a href="{{ url('/admins/create') }}" class="btn btn-primary">
+                            <i class="bi bi-plus"></i> Create Admin
+                        </a>
+                    @elseif(auth()->user()->hasRole('admin'))
+                        <a href="{{ url('/users/create') }}" class="btn btn-primary">
+                            <i class="bi bi-plus"></i> Create User
+                        </a>
+                    @endif
                 </div>
             </div>
             <div class="card-body">

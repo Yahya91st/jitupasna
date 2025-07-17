@@ -26,7 +26,8 @@
 
     <p><strong>A. Kerusakan Tanaman</strong></p>
 
-    <table class="table table-bordered text-center align-middle" style="background-color: #f8f9fa; color:rgb(0, 0, 0);">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
         <thead>
             <tr style="background-color:rgb(0, 0, 0); color:rgb(255, 255, 255);">
                 <td></td>
@@ -48,62 +49,59 @@
                 <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="padi_total" id="padi_total" ></td>
             </tr>
             <tr>
-                
                 <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="palawija_luas" id="palawija_luas" step="0.01"></td>
                 <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="palawija_lama_tanam"></td>
                 <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="palawija_harga" id="palawija_harga"></td>
                 <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="palawija_total" id="palawija_total" ></td>
             </tr>
             <tr>
-                
                 <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="holtikultura_luas" id="holtikultura_luas" step="0.01"></td>
                 <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="holtikultura_lama_tanam"></td>
                 <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="holtikultura_harga" id="holtikultura_harga"></td>
                 <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="holtikultura_total" id="holtikultura_total" ></td>
             </tr>
             <tr>
-                
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_luas" id="perkebunan_luas" step="0.01"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_harga" id="perkebunan_harga"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan_total" id="perkebunan_total" ></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan1_luas" id="perkebunan1_luas" step="0.01"></td>
+                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan1_lama_tanam"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan1_harga" id="perkebunan1_harga"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan1_total" id="perkebunan1_total" ></td>
             </tr>
             <tr>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_luas" id="perkebunan_luas" step="0.01"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_harga" id="perkebunan_harga"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan_total" id="perkebunan_total" ></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan2_luas" id="perkebunan2_luas" step="0.01"></td>
+                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan2_lama_tanam"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan2_harga" id="perkebunan2_harga"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan2_total" id="perkebunan2_total" ></td>
             </tr>
             <tr>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_luas" id="perkebunan_luas" step="0.01"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_harga" id="perkebunan_harga"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan_total" id="perkebunan_total" ></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan3_luas" id="perkebunan3_luas" step="0.01"></td>
+                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan3_lama_tanam"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan3_harga" id="perkebunan3_harga"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan3_total" id="perkebunan3_total" ></td>
             </tr>
             <tr>
                 <td rowspan="4">Kerusakan Bibit & Tanaman</td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_luas" id="perkebunan_luas" step="0.01"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_harga" id="perkebunan_harga"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan_total" id="perkebunan_total" ></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit1_luas" id="bibit1_luas" step="0.01"></td>
+                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="bibit1_lama_tanam"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit1_harga" id="bibit1_harga"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="bibit1_total" id="bibit1_total" ></td>
             </tr>
             <tr>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_luas" id="perkebunan_luas" step="0.01"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_harga" id="perkebunan_harga"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan_total" id="perkebunan_total" ></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit2_luas" id="bibit2_luas" step="0.01"></td>
+                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="bibit2_lama_tanam"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit2_harga" id="bibit2_harga"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="bibit2_total" id="bibit2_total" ></td>
             </tr>
             <tr>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_luas" id="perkebunan_luas" step="0.01"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_harga" id="perkebunan_harga"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan_total" id="perkebunan_total" ></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit3_luas" id="bibit3_luas" step="0.01"></td>
+                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="bibit3_lama_tanam"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit3_harga" id="bibit3_harga"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="bibit3_total" id="bibit3_total" ></td>
             </tr>
             <tr>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_luas" id="perkebunan_luas" step="0.01"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="perkebunan_harga" id="perkebunan_harga"></td>
-                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="perkebunan_total" id="perkebunan_total" ></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit4_luas" id="bibit4_luas" step="0.01"></td>
+                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="bibit4_lama_tanam"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm calculate-crop-damage" name="bibit4_harga" id="bibit4_harga"></td>
+                <td style="padding:5px"><input type="number" class="form-control form-control-sm" name="bibit4_total" id="bibit4_total" ></td>
             </tr>
             <tr style="background-color:rgb(0, 0, 0); color:rgb(255, 255, 255);">
                 <td></td>
@@ -270,48 +268,6 @@
             <tr>
                 <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
                 <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-            </tr>
-            <tr style="padding: 0; background-color:rgb(0, 0, 0); color:rgb(255, 255, 255);">
-                <td>Kenaikan Ongkos Produksi</td>
-                <td>Jenis Tanaman</td>
-                <td>Luasan Tanaman</td>
-                <td>Selisih Kenaikan Ongkos Produksi</td>
-            </tr>        
-            <tr>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-            </tr>    
-            <tr>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-            </tr>    
-            <tr>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-            </tr>    
-            <tr>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-            </tr>    
-            <tr>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-                <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
-            </tr>    
-            <tr>
                 <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
                 <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>
                 <td style="padding:5px"><input type="text" class="form-control form-control-sm" name="perkebunan_lama_tanam"></td>

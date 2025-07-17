@@ -83,9 +83,9 @@ return new class extends Migration
             $table->integer('jumlah_rumah_sementara')->nullable()->default(0);
             $table->decimal('harga_rumah_sementara', 12, 2)->nullable()->default(0);
             
-            // Kolom baru untuk total kerusakan
-            $table->decimal('total_kerusakan', 18, 2)->nullable()->default(0);
-            
+            $table->decimal('total_kerusakan', 20, 2)->nullable()->default(0);
+            $table->decimal('total_kerugian', 20, 2)->nullable()->default(0);
+
             $table->timestamps();
             
             // Foreign key constraints will be added in the final migration: 9999_12_31_235959_add_all_foreign_key_constraints.php

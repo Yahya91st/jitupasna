@@ -49,17 +49,10 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|exists:roles,name'
         ]);
 
-        // Enforce role restrictions
-        if ($currentUser->hasRole('super-admin') && $request->role !== 'admin') {
-            return redirect()->back()->with('error', 'Super Admin can only create admin accounts');
-        }
-        
-        if ($currentUser->hasRole('admin') && $request->role !== 'user') {
-            return redirect()->back()->with('error', 'Admin can only create user accounts');
-        }
+        // Set role selalu 'user' untuk admin
+        $role = 'user';
 
         $user = User::create([
             'name' => $request->name,
@@ -67,10 +60,51 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->assignRole($request->role);
+        $user->assignRole($role);
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
+    }
+
+    /**
+     * Show the form for creating a new user (admin).
+     */
+    public function create()
+    {
+        $role = 'user';
+        return view('users.create', compact('role'));
+    }
+
+    /**
+     * Show the form for creating a new admin (super-admin).
+     */
+    public function createAdmin()
+    {
+        $role = 'admin';
+        return view('admins.create', compact('role'));
+    }
+
+    /**
+     * Store a newly created admin in storage (super-admin).
+     */
+    public function storeAdmin(Request $request)
+    {
+        $currentUser = auth()->user();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+        if (!$currentUser->hasRole('super-admin')) {
+            abort(403, 'Only super-admin can create admin');
+        }
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        $user->assignRole('admin');
+        return redirect()->route('users.index')->with('success', 'Admin created successfully');
     }
 
     /**

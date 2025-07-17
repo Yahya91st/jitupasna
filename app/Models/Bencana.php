@@ -49,4 +49,9 @@ class Bencana extends Model
     {
         return $this->hasMany(Format1Form4::class, 'bencana_id', 'id');
     }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
+    }
 }

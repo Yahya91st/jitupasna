@@ -111,8 +111,8 @@
                 <td class="text-center">Negeri: {{ $report->tk_ringan_negeri }}<br>Swasta: {{ $report->tk_ringan_swasta }}</td>
                 <td class="text-center">{{ $report->tk_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->tk_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->tk_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->tk_harga_meubelair, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->tk_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->tk_harga_meubelair }}</td>
             </tr>
             
             <!-- SD/MI -->
@@ -123,8 +123,8 @@
                 <td class="text-center">Negeri: {{ $report->sd_ringan_negeri }}<br>Swasta: {{ $report->sd_ringan_swasta }}</td>
                 <td class="text-center">{{ $report->sd_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->sd_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->sd_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->sd_harga_meubelair, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->sd_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->sd_harga_meubelair }}</td>
             </tr>
             
             <!-- SMP/MTs -->
@@ -135,8 +135,8 @@
                 <td class="text-center">Negeri: {{ $report->smp_ringan_negeri }}<br>Swasta: {{ $report->smp_ringan_swasta }}</td>
                 <td class="text-center">{{ $report->smp_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->smp_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->smp_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->smp_harga_meubelair, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->smp_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->smp_harga_meubelair }}</td>
             </tr>
             
             <!-- SMA/SMK/MA -->
@@ -147,8 +147,8 @@
                 <td class="text-center">Negeri: {{ $report->sma_ringan_negeri }}<br>Swasta: {{ $report->sma_ringan_swasta }}</td>
                 <td class="text-center">{{ $report->sma_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->sma_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->sma_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->sma_harga_meubelair, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->sma_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->sma_harga_meubelair }}</td>
             </tr>
             
             <tr>
@@ -158,8 +158,8 @@
                 <td class="text-center">Negeri: {{ $report->smk_ringan_negeri }}<br>Swasta: {{ $report->smk_ringan_swasta }}</td>
                 <td class="text-center">{{ $report->smk_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->smk_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->smk_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->smk_harga_meubelair, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->smk_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->smk_harga_meubelair }}</td>
             </tr>
             
             <tr>
@@ -169,8 +169,8 @@
                 <td class="text-center">Negeri: {{ $report->universitas_ringan_negeri }}<br>Swasta: {{ $report->universitas_ringan_swasta }}</td>
                 <td class="text-center">{{ $report->universitas_ukuran }}</td>
                 <td class="text-right">{{ number_format($report->universitas_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->universitas_harga_peralatan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->universitas_harga_meubelair, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $report->universitas_harga_peralatan }}</td>
+                <td class="text-right">{{ $report->universitas_harga_meubelair }}</td>
             </tr>
         </tbody>
     </table>

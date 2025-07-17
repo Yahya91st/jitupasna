@@ -3,7 +3,7 @@
 @push('style')
 <style>
     .card {
-        height: 100%;
+        height: 96%;
     }
     .card-content {
         height: 100%;

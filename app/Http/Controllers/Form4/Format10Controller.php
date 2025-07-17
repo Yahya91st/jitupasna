@@ -78,7 +78,8 @@ class Format10Controller extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.list-format10', ['bencana_id' => $formPertanian->bencana_id])
+                ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -113,19 +114,12 @@ class Format10Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
-        // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
-        // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
-        // Get form data for this disaster
-        $formData = Format10Form4::where('bencana_id', $bencana_id)->get();
-        
-        return view('forms.form4.format10.format10list', compact('bencana', 'formData'));
+        $reports = Format10Form4::where('bencana_id', $bencana_id)->get(); // No soft delete filter
+        return view('forms.form4.format10.list-format10', compact('bencana', 'reports'));
     }
 
     /**
@@ -153,5 +147,68 @@ class Format10Controller extends Controller
         $pdf = Pdf::loadView('forms.form4.format10.pdf', compact('formPertanian', 'bencana'));        $pdf->setPaper('A4', 'landscape');
         
         return $pdf->stream('Format10_Pertanian_' . $formPertanian->nama_kampung . '.pdf');
+    }
+
+    /**
+     * Show the form for editing the specified resource (Format 10)
+     */
+    public function edit($id)
+    {
+        $formPertanian = \App\Models\Format10Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPertanian->bencana;
+        return view('forms.form4.format10.edit', compact('formPertanian', 'bencana'));
+    }
+
+    /**
+     * Update the specified resource in storage (Format 10)
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            \DB::beginTransaction();
+            $formPertanian = \App\Models\Format10Form4::findOrFail($id);
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string',
+                'nama_distrik' => 'required|string',
+                // Agriculture sector specific fields
+                'sawah_rusak_total' => 'nullable|numeric',
+                'sawah_rusak_sebagian' => 'nullable|numeric',
+                'harga_satuan_sawah' => 'nullable|numeric',
+                'kebun_rusak_total' => 'nullable|numeric',
+                'kebun_rusak_sebagian' => 'nullable|numeric',
+                'harga_satuan_kebun' => 'nullable|numeric',
+                'kolam_ikan_rusak_total' => 'nullable|numeric',
+                'kolam_ikan_rusak_sebagian' => 'nullable|numeric',
+                'harga_satuan_kolam_ikan' => 'nullable|numeric',
+                'tambak_rusak_total' => 'nullable|numeric',
+                'tambak_rusak_sebagian' => 'nullable|numeric',
+                'harga_satuan_tambak' => 'nullable|numeric',
+                'gudang_pupuk_rusak_total' => 'nullable|integer',
+                'gudang_pupuk_rusak_sebagian' => 'nullable|integer',
+                'harga_satuan_gudang_pupuk' => 'nullable|numeric',
+                'traktor_rusak' => 'nullable|integer',
+                'harga_satuan_traktor' => 'nullable|numeric',
+            ]);
+            $formPertanian->update($validated);
+            \DB::commit();
+            return redirect()->route('forms.form4.list-format10', ['bencana_id' => $validated['bencana_id']])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage (Format 10)
+     */
+    public function destroy($id)
+    {
+        $form = \App\Models\Format10Form4::findOrFail($id);
+        $bencana_id = $form->bencana_id;
+        $form->delete(); // Hard delete
+        return redirect()->route('forms.form4.list-format10', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus');
     }
 }

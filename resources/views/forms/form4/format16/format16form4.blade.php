@@ -11,15 +11,19 @@
             <h5 class="mb-0">Informasi Kerusakan Sektor Pemerintahan</h5>
         </div>
         <div class="card-body">
-            <div class="mb-4">
-                <span class="fw-bold">Kabupaten:</span>
-                <input type="text" name="kabupaten" class="form-control d-inline-block ms-2" style="width: 300px;">
-            </div>            <form action="{{ route('forms.form4.format16.store') }}" method="POST">
+            <form action="{{ route('forms.form4.format16.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-                
+                <div class="mb-4">
+                    <span class="fw-bold">NAMA KAMPUNG:</span>
+                    <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
+                </div>
+                <div class="mb-4">
+                    <span class="fw-bold">NAMA DISTRIK:</span>
+                    <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
+                </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle">
+                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
                         <thead>
                             <tr>
                                 <th rowspan="2" class="align-middle"></th>
@@ -50,56 +54,56 @@
                             <!-- KANTOR PEMKAB -->
                             <tr>
                                 <td class="align-middle fw-bold bg-light">Kantor Pemkab</td>
-                                <td><input type="number" name="komponen[0][berat]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[0][sedang]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[0][ringan]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[0][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[0][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[0][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_pemkab_berat" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_pemkab_sedang" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_pemkab_ringan" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_pemkab_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_pemkab_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_pemkab_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
                             </tr>
                             
                             <!-- KANTOR KECAMATAN -->
                             <tr>
                                 <td class="align-middle fw-bold bg-light">Kantor Kecamatan</td>
-                                <td><input type="number" name="komponen[1][berat]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[1][sedang]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[1][ringan]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[1][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[1][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[1][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_kecamatan_berat" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_kecamatan_sedang" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_kecamatan_ringan" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_kecamatan_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_kecamatan_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_kecamatan_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
                             </tr>
                             
                             <!-- KANTOR DINAS -->
                             <tr>
                                 <td class="align-middle fw-bold bg-light">Kantor Dinas</td>
-                                <td><input type="number" name="komponen[2][berat]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[2][sedang]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[2][ringan]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[2][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[2][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[2][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_dinas_berat" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_dinas_sedang" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_dinas_ringan" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_dinas_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_dinas_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_dinas_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
                             </tr>
                             
                             <!-- KANTOR INSTANSI VERTIKAL -->
                             <tr>
                                 <td class="align-middle fw-bold bg-light">Kantor Instansi Vertikal/Pemerintah Pusat</td>
-                                <td><input type="number" name="komponen[3][berat]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[3][sedang]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[3][ringan]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[3][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[3][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[3][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_vertikal_berat" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_vertikal_sedang" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_vertikal_ringan" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="kantor_vertikal_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_vertikal_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="kantor_vertikal_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
                             </tr>
                             
                             <!-- MEBELAIR DAN PERALATAN KANTOR -->
                             <tr>
                                 <td class="align-middle fw-bold bg-light">Mebelair dan Peralatan Kantor</td>
-                                <td><input type="number" name="komponen[4][berat]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[4][sedang]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[4][ringan]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[4][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[4][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[4][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="mebelair_berat" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="mebelair_sedang" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="mebelair_ringan" class="form-control" min="0" value="0"></td>
+                                <td><input type="number" name="mebelair_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="mebelair_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="mebelair_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
                             </tr>
                         </tbody>
                     </table>

@@ -27,32 +27,35 @@
             <tr>
                 <td class="border border-black p-1 font-semibold">Perkiraan Kerusakan</td>
                 <td class="border border-black p-1">a) Ekosistem Darat</td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_darat_1_rb) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_darat_1_rs) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_darat_1_rr) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_darat_1_rb_harga) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_darat_1_rs_harga) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_darat_1_rr_harga) }}</td>
             </tr>
             <tr>
                 <td></td>
                 <td class="border border-black p-1">b) Ekosistem Laut</td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_laut_1_rb) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_laut_1_rs) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_laut_1_rr) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_laut_1_rb_harga) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_laut_1_rs_harga) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_laut_1_rr_harga) }}</td>
             </tr>
             <tr>
                 <td></td>
                 <td class="border border-black p-1">c) Ekosistem Udara</td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
-                <td class="border border-black p-1"></td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_udara_1_rb) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_udara_1_rs) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_udara_1_rr) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_udara_1_rb_harga) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_udara_1_rs_harga) }}</td>
+                <td class="border border-black p-1">{{ number_format($formData->ekosistem_udara_1_rr_harga) }}</td>
+            </tr>
+            <tr>
+                <td class="border border-black p-1 font-semibold text-end" colspan="8">Total Kerusakan: <b>{{ number_format($formData->total_kerusakan, 2) }}</b></td>
             </tr>
             <tr>
                 <td class="border border-black p-1 font-semibold">Perkiraan Kerugian</td>

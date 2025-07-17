@@ -42,22 +42,44 @@ class Format8Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Electricity sector specific fields
-                'gardu_listrik_rusak_total' => 'nullable|integer',
-                'gardu_listrik_rusak_sebagian' => 'nullable|integer',
-                'harga_satuan_gardu' => 'nullable|numeric',
-                'jaringan_primer_rusak' => 'nullable|numeric',
-                'harga_satuan_jaringan_primer' => 'nullable|numeric',
-                'jaringan_sekunder_rusak' => 'nullable|numeric',
-                'harga_satuan_jaringan_sekunder' => 'nullable|numeric',
-                'tiang_listrik_rusak' => 'nullable|integer',
-                'harga_satuan_tiang_listrik' => 'nullable|numeric',
-                'transformer_rusak' => 'nullable|integer',
-                'harga_satuan_transformer' => 'nullable|numeric',
-                'panel_listrik_rusak' => 'nullable|integer',
-                'harga_satuan_panel_listrik' => 'nullable|numeric',
-                'genset_rusak' => 'nullable|integer',
-                'harga_satuan_genset' => 'nullable|numeric',
+                // Sistem Transmisi dan Distribusi
+                'kabel_unit' => 'nullable|integer',
+                'kabel_harga_satuan' => 'nullable|numeric',
+                'kabel_jumlah' => 'nullable|numeric',
+                'tiang_unit' => 'nullable|integer',
+                'tiang_harga_satuan' => 'nullable|numeric',
+                'tiang_jumlah' => 'nullable|numeric',
+                'trafo_unit' => 'nullable|integer',
+                'trafo_harga_satuan' => 'nullable|numeric',
+                'trafo_jumlah' => 'nullable|numeric',
+                // Sistem Pembangkitan
+                'plta_unit' => 'nullable|integer',
+                'plta_harga_satuan' => 'nullable|numeric',
+                'plta_jumlah' => 'nullable|numeric',
+                'pltu_unit' => 'nullable|integer',
+                'pltu_harga_satuan' => 'nullable|numeric',
+                'pltu_jumlah' => 'nullable|numeric',
+                'pltd_unit' => 'nullable|integer',
+                'pltd_harga_satuan' => 'nullable|numeric',
+                'pltd_jumlah' => 'nullable|numeric',
+                'pembangkit_lain_unit' => 'nullable|integer',
+                'pembangkit_lain_harga_satuan' => 'nullable|numeric',
+                'pembangkit_lain_jumlah' => 'nullable|numeric',
+                'pembangkit_lain_keterangan' => 'nullable|string',
+                // Perkiraan Jangka Waktu Pemulihan
+                'jangka_waktu_pemulihan_bulan' => 'nullable|integer',
+                // Pembangkit Listrik Darurat
+                'genset_unit' => 'nullable|integer',
+                'genset_biaya_pengadaan' => 'nullable|numeric',
+                // Perkiraan Kehilangan/Penurunan Pendapatan
+                'permintaan_listrik_sebelum_kwh' => 'nullable|numeric',
+                'permintaan_listrik_pasca_kwh' => 'nullable|numeric',
+                'tarif_listrik_per_kwh' => 'nullable|numeric',
+                'penurunan_pendapatan' => 'nullable|numeric',
+                // Perkiraan Kenaikan Biaya Operasional
+                'biaya_operasional_sebelum' => 'nullable|numeric',
+                'biaya_operasional_pasca' => 'nullable|numeric',
+                'kenaikan_biaya_operasional' => 'nullable|numeric',
             ]);
 
             // Create new form data
@@ -74,7 +96,8 @@ class Format8Controller extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.list-format8', ['bencana_id' => $formListrik->bencana_id])
+                ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -109,19 +132,12 @@ class Format8Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
-        // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
-        // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
-        // Get form data for this disaster
-        $formData = Format8Form4::where('bencana_id', $bencana_id)->get();
-        
-        return view('forms.form4.format8.format8list', compact('bencana', 'formData'));
+        $reports = Format8Form4::where('bencana_id', $bencana_id)->get(); // No soft delete filter
+        return view('forms.form4.format8.list-format8', compact('bencana', 'reports'));
     }
 
     /**
@@ -149,5 +165,89 @@ class Format8Controller extends Controller
         $pdf = Pdf::loadView('forms.form4.format8.pdf', compact('formListrik', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format8_Listrik_' . $formListrik->nama_kampung . '.pdf');    }
+        return $pdf->stream('Format8_Listrik_' . $formListrik->nama_kampung . '.pdf');    
+    }
+
+    /**
+     * Show the form for editing the specified resource (Format 8)
+     */
+    public function edit($id)
+    {
+        $formListrik = \App\Models\Format8Form4::with('bencana')->findOrFail($id);
+        $bencana = $formListrik->bencana;
+        return view('forms.form4.format8.edit', compact('formListrik', 'bencana'));
+    }
+
+    /**
+     * Update the specified resource in storage (Format 8)
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            \DB::beginTransaction();
+            $formListrik = \App\Models\Format8Form4::findOrFail($id);
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string',
+                'nama_distrik' => 'required|string',
+                // Sistem Transmisi dan Distribusi
+                'kabel_unit' => 'nullable|integer',
+                'kabel_harga_satuan' => 'nullable|numeric',
+                'kabel_jumlah' => 'nullable|numeric',
+                'tiang_unit' => 'nullable|integer',
+                'tiang_harga_satuan' => 'nullable|numeric',
+                'tiang_jumlah' => 'nullable|numeric',
+                'trafo_unit' => 'nullable|integer',
+                'trafo_harga_satuan' => 'nullable|numeric',
+                'trafo_jumlah' => 'nullable|numeric',
+                // Sistem Pembangkitan
+                'plta_unit' => 'nullable|integer',
+                'plta_harga_satuan' => 'nullable|numeric',
+                'plta_jumlah' => 'nullable|numeric',
+                'pltu_unit' => 'nullable|integer',
+                'pltu_harga_satuan' => 'nullable|numeric',
+                'pltu_jumlah' => 'nullable|numeric',
+                'pltd_unit' => 'nullable|integer',
+                'pltd_harga_satuan' => 'nullable|numeric',
+                'pltd_jumlah' => 'nullable|numeric',
+                'pembangkit_lain_unit' => 'nullable|integer',
+                'pembangkit_lain_harga_satuan' => 'nullable|numeric',
+                'pembangkit_lain_jumlah' => 'nullable|numeric',
+                'pembangkit_lain_keterangan' => 'nullable|string',
+                // Perkiraan Jangka Waktu Pemulihan
+                'jangka_waktu_pemulihan_bulan' => 'nullable|integer',
+                // Pembangkit Listrik Darurat
+                'genset_unit' => 'nullable|integer',
+                'genset_biaya_pengadaan' => 'nullable|numeric',
+                // Perkiraan Kehilangan/Penurunan Pendapatan
+                'permintaan_listrik_sebelum_kwh' => 'nullable|numeric',
+                'permintaan_listrik_pasca_kwh' => 'nullable|numeric',
+                'tarif_listrik_per_kwh' => 'nullable|numeric',
+                'penurunan_pendapatan' => 'nullable|numeric',
+                // Perkiraan Kenaikan Biaya Operasional
+                'biaya_operasional_sebelum' => 'nullable|numeric',
+                'biaya_operasional_pasca' => 'nullable|numeric',
+                'kenaikan_biaya_operasional' => 'nullable|numeric',
+            ]);
+            $formListrik->update($validated);
+            \DB::commit();
+            return redirect()->route('forms.form4.list-format8', ['bencana_id' => $validated['bencana_id']])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage (Format 8)
+     */
+    public function destroy($id)
+    {
+        $formListrik = \App\Models\Format8Form4::findOrFail($id);
+        $bencana_id = $formListrik->bencana_id;
+        $formListrik->delete(); // This will hard delete if model does not use SoftDeletes
+        return redirect()->route('forms.form4.list-format8', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus');
+    }
 }

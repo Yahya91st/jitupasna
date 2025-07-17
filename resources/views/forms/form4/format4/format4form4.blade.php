@@ -24,25 +24,29 @@
             </div>
         </div>
 
-    <p><strong>A. Kerusakan Fisik Bangunan / Sarana Pelayanan Sosial</strong></p>    <table class="table table-bordered text-center align-middle">        <thead>            <tr>
-                <th rowspan="2">Jenis Bangunan</th>
-                <th colspan="6">Jumlah Unit Rusak</th>
-                <th rowspan="2">Rata-rata Luas Bangunan</th>
-                <th colspan="4">Harga Satuan</th>
-            </tr>            <tr>
-                <th>Berat Negeri</th>
-                <th>Berat Swasta</th>
-                <th>Sedang Negeri</th>
-                <th>Sedang Swasta</th>
-                <th>Ringan Negeri</th>
-                <th>Ringan Swasta</th>
-                <th>Bangunan/m²</th>
-                <th>Obat-obatan</th>
-                <th>Meubelair</th>
-                <th>Peralatan lab dan lainnya</th>
-            </tr>
-        </thead>
-        <tbody>            <tr>
+    <p><strong>A. Kerusakan Fisik Bangunan / Sarana Pelayanan Sosial</strong></p>    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+            <thead>
+                <tr>
+                    <th rowspan="2">Jenis Bangunan</th>
+                    <th colspan="6">Jumlah Unit Rusak</th>
+                    <th rowspan="2">Rata-rata Luas Bangunan</th>
+                    <th colspan="4">Harga Satuan</th>
+                </tr>
+                <tr>
+                    <th>Berat Negeri</th>
+                    <th>Berat Swasta</th>
+                    <th>Sedang Negeri</th>
+                    <th>Sedang Swasta</th>
+                    <th>Ringan Negeri</th>
+                    <th>Ringan Swasta</th>
+                    <th>Bangunan/m²</th>
+                    <th>Obat-obatan</th>
+                    <th>Meubelair</th>
+                    <th>Peralatan lab dan lainnya</th>
+                </tr>
+            </thead>
+            <tbody>            <tr>
                 <td>Panti Asuhan</td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rb_negeri" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rb_swasta" style="min-width: 80px;"></td>
@@ -50,10 +54,11 @@
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rs_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rr_negeri" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_rr_swasta" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_luas" style="min-width: 80px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_sosial_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_meubelair" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_sosial_harga_peralatan_lab" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_sosial_harga_peralatan" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_sosial_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_sosial_harga_peralatan_lab" style="min-width: 100px;"></td>
             </tr><tr>
                 <td>Panti Wredha</td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rb_negeri" style="min-width: 80px;"></td>
@@ -62,10 +67,11 @@
                 <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rs_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rr_negeri" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_rr_swasta" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_luas" style="min-width: 80px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_asuhan_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_meubelair" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="panti_asuhan_harga_peralatan_lab" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_asuhan_harga_peralatan" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_asuhan_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="panti_asuhan_harga_peralatan_lab" style="min-width: 100px;"></td>
             </tr><tr>
                 <td>Panti Tuna  Grahita</td>
                 <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rb_negeri" style="min-width: 80px;"></td>
@@ -74,10 +80,11 @@
                 <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rs_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rr_negeri" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_rr_swasta" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_luas" style="min-width: 80px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="balai_pelayanan_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_meubelair" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="balai_pelayanan_harga_peralatan_lab" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="balai_pelayanan_harga_peralatan" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="balai_pelayanan_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="balai_pelayanan_harga_peralatan_lab" style="min-width: 100px;"></td>
             </tr><tr>
                 <td>
                     <div class="input-group input-group-sm">
@@ -91,10 +98,11 @@
                 <td><input type="number" class="form-control form-control-sm" name="lainnya_rs_swasta" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="lainnya_rr_negeri" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="lainnya_rr_swasta" style="min-width: 80px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_luas" style="min-width: 80px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="lainnya_luas" style="min-width: 80px;"></td>
                 <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_bangunan" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_peralatan" style="min-width: 100px;"></td>                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_meubelair" style="min-width: 100px;"></td>
-                <td><input type="number" class="form-control form-control-sm" name="lainnya_harga_peralatan_lab" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="lainnya_harga_peralatan" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="lainnya_harga_meubelair" style="min-width: 100px;"></td>
+                <td><input type="text" class="form-control form-control-sm" name="lainnya_harga_peralatan_lab" style="min-width: 100px;"></td>
             </tr>
         </tbody>
     </table>    <h6 class="fw-bold mt-4">B. Perkiraan Kerugian</h6>

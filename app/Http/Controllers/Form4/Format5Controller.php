@@ -42,35 +42,16 @@ class Format5Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Religious sector specific fields
-                'masjid_hancur_total' => 'nullable|integer',
-                'masjid_rusak_berat' => 'nullable|integer',
-                'masjid_rusak_sedang' => 'nullable|integer',
-                'masjid_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_masjid' => 'nullable|numeric',
-                'gereja_hancur_total' => 'nullable|integer',
-                'gereja_rusak_berat' => 'nullable|integer',
-                'gereja_rusak_sedang' => 'nullable|integer',
-                'gereja_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_gereja' => 'nullable|numeric',
-                'pura_hancur_total' => 'nullable|integer',
-                'pura_rusak_berat' => 'nullable|integer',
-                'pura_rusak_sedang' => 'nullable|integer',
-                'pura_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_pura' => 'nullable|numeric',
-                'vihara_hancur_total' => 'nullable|integer',
-                'vihara_rusak_berat' => 'nullable|integer',
-                'vihara_rusak_sedang' => 'nullable|integer',
-                'vihara_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_vihara' => 'nullable|numeric',
+                // Religious sector specific fields - customize based on actual form
+                // ... add all other fields as needed ...
             ]);
 
-            // Create new form data
-            $formAgama = Format5Form4::create($validated);
+            // Save all user input fields as per $fillable
+            $data = $request->only((new \App\Models\Format5Form4)->getFillable());
+            $formAgama = Format5Form4::create($data);
 
             DB::commit();
 
-            // Return success response for AJAX or redirect for regular form
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
@@ -79,18 +60,17 @@ class Format5Controller extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.list-format5', ['bencana_id' => $formAgama->bencana_id])
+                ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Terjadi kesalahan: ' . $e->getMessage()
                 ], 500);
             }
-
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
@@ -125,8 +105,8 @@ class Format5Controller extends Controller
         
         // Get form data for this disaster
         $formData = Format5Form4::where('bencana_id', $bencana_id)->get();
-        
-        return view('forms.form4.format5.format5list', compact('bencana', 'formData'));
+        $reports = $formData; // For compatibility with the view
+        return view('forms.form4.format5.list-format5', compact('bencana', 'formData', 'reports'));
     }
 
     /**
@@ -155,5 +135,71 @@ class Format5Controller extends Controller
         $pdf->setPaper('A4', 'landscape');
         
         return $pdf->stream('Format5_Agama_' . $formAgama->nama_kampung . '.pdf');
+    }
+
+    /**
+     * Show the form for editing the specified resource (Format 5)
+     */
+    public function edit($id)
+    {
+        $formAgama = \App\Models\Format5Form4::with('bencana')->findOrFail($id);
+        $bencana = $formAgama->bencana;
+        return view('forms.form4.format5.edit', compact('formAgama', 'bencana'));
+    }
+
+    /**
+     * Update the specified resource in storage (Format 5)
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            \DB::beginTransaction();
+            $formAgama = \App\Models\Format5Form4::findOrFail($id);
+            $validated = $request->validate([
+                'bencana_id' => 'required|exists:bencana,id',
+                'nama_kampung' => 'required|string',
+                'nama_distrik' => 'required|string',
+                // Religious sector specific fields
+                'masjid_hancur_total' => 'nullable|integer',
+                'masjid_rusak_berat' => 'nullable|integer',
+                'masjid_rusak_sedang' => 'nullable|integer',
+                'masjid_rusak_ringan' => 'nullable|integer',
+                'harga_satuan_masjid' => 'nullable|numeric',
+                'gereja_hancur_total' => 'nullable|integer',
+                'gereja_rusak_berat' => 'nullable|integer',
+                'gereja_rusak_sedang' => 'nullable|integer',
+                'gereja_rusak_ringan' => 'nullable|integer',
+                'harga_satuan_gereja' => 'nullable|numeric',
+                'pura_hancur_total' => 'nullable|integer',
+                'pura_rusak_berat' => 'nullable|integer',
+                'pura_rusak_sedang' => 'nullable|integer',
+                'pura_rusak_ringan' => 'nullable|integer',
+                'harga_satuan_pura' => 'nullable|numeric',
+                'vihara_hancur_total' => 'nullable|integer',
+                'vihara_rusak_berat' => 'nullable|integer',
+                'vihara_rusak_sedang' => 'nullable|integer',
+                'vihara_rusak_ringan' => 'nullable|integer',
+                'harga_satuan_vihara' => 'nullable|numeric',
+            ]);
+            $formAgama->update($validated);
+            \DB::commit();
+            return redirect()->route('forms.form4.list-format5', ['bencana_id' => $validated['bencana_id']])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage (Format 5)
+     */
+    public function destroy($id)
+    {
+        $formAgama = \App\Models\Format5Form4::findOrFail($id);
+        $bencana_id = $formAgama->bencana_id;
+        $formAgama->delete();
+        return redirect()->route('forms.form4.format5.list', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus');
     }
 }

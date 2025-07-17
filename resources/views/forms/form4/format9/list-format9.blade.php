@@ -4,6 +4,11 @@
 <div class="container-fluid py-4">
     <h2 class="text-center mb-4">Daftar Laporan Sektor Telekomunikasi (Format 9)</h2>
     
+    @if(session('success'))
+        <div class="alert alert-success mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
     @if(isset($bencana))
         <div class="alert alert-info mb-4">
             <div class="d-flex justify-content-between align-items-center">
@@ -23,19 +28,14 @@
             </div>
         </div>
     @endif      <div class="mb-4 d-flex justify-content-between">
-        <a href="{{ route('form4.index', ['bencana_id' => $bencana_id ?? '']) }}" class="btn btn-secondary">
+        <a href="{{ route('forms.form4.index') }}" class="btn btn-secondary">
             <i class="fa fa-arrow-left me-2"></i> Kembali ke Form 4
         </a>
-        <a href="{{ route('format9form4', ['bencana_id' => $bencana_id ?? '']) }}" class="btn btn-primary">
+        <a href="{{ route('forms.form4.format9form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
             <i class="fa fa-plus me-2"></i> Tambah Data Baru
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
 
     <div class="card">
         <div class="card-body">
@@ -43,34 +43,39 @@
                     <thead class="thead-light">
                         <tr>
                             <th>No</th>
-                            <th>Kampung</th>
-                            <th>Distrik</th>
-                            <th>Total Kerusakan (Rp)</th>
-                            <th>Total Kerugian (Rp)</th>
+                            <th>Nama Kampung</th>
+                            <th>Nama Distrik</th>
+                            <th>Total Kerusakan</th>
+                            <th>Total Kerugian</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($forms as $form)
+                        @forelse($reports as $index => $report)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $form->nama_kampung }}</td>
-                            <td>{{ $form->nama_distrik }}</td>
-                            <td class="text-end">{{ number_format($form->getTotalDamage(), 0, ',', '.') }}</td>
-                            <td class="text-end">{{ number_format($form->getTotalLoss(), 0, ',', '.') }}</td>
-                            <td>                                <div class="btn-group">
-                                    <a href="{{ route('show-format9', $form->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('format9.pdf', $form->id) }}" target="_blank" class="btn btn-sm btn-danger" title="Download PDF">
-                                        <i class="fa fa-file-pdf"></i>
-                                    </a>
-                                </div>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $report->nama_kampung }}</td>
+                            <td>{{ $report->nama_distrik }}</td>
+                            <td>Rp. {{ number_format($report->total_kerusakan ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
+                            <td>
+                                <a href="{{ route('forms.form4.show-format9', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                                <a href="{{ route('forms.form4.edit-format9', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('forms.form4.destroy-format9', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                                @if(Route::has('forms.form4.format9.pdf'))
+                                    <a href="{{ route('forms.form4.format9.pdf', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
+                                @else
+                                    <a href="#" class="btn btn-secondary btn-sm disabled">PDF</a>
+                                @endif
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center">Belum ada data laporan sektor telekomunikasi</td>
+                            <td colspan="6" class="text-center">Tidak ada data</td>
                         </tr>
                         @endforelse
                     </tbody>

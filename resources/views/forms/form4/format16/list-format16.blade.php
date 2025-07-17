@@ -36,92 +36,42 @@
     </div>
     
     <div class="bg-white rounded-lg shadow overflow-x-auto">
-        @if($governmentReports->count() > 0)
+        @if($reports->count() > 0)
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Jenis Fasilitas</th>
-                    <th>Jumlah Rusak Berat</th>
-                    <th>Jumlah Rusak Sedang</th>
-                    <th>Jumlah Rusak Ringan</th>
+                    <th>Nama Kampung</th>
+                    <th>Nama Distrik</th>
                     <th>Total Kerusakan</th>
-                    <th>Tanggal Input</th>
+                    <th>Total Kerugian</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @php $no = 1; @endphp                @foreach($governmentReports->where('jenis_fasilitas', '!=', 'Kerugian Lainnya') as $report)
-                @php
-                    $totalDamage = ($report->jumlah_rb * $report->harga_rb) + 
-                                  ($report->jumlah_rs * $report->harga_rs) + 
-                                  ($report->jumlah_rr * $report->harga_rr);
-                @endphp
-                <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{ $report->jenis_fasilitas }}</td>
-                    <td>{{ $report->jumlah_rb }}</td>
-                    <td>{{ $report->jumlah_rs }}</td>
-                    <td>{{ $report->jumlah_rr }}</td>                    <td>Rp {{ number_format($totalDamage, 0, ',', '.') }}</td>
-                    <td>{{ $report->created_at->format('d M Y, H:i') }}</td>
-                    <td>
-                        <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
-                            <a href="#" class="btn btn-sm btn-info" onclick="alert('Fitur detail belum tersedia')" title="Lihat Detail">
-                                <i class="fa fa-eye"></i> Detail
-                            </a>
-                            <a href="#" class="btn btn-sm btn-warning" onclick="alert('Fitur edit belum tersedia')" title="Edit">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
-                            <a href="{{ route('forms.form4.format16-preview-pdf', $bencana->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
-                                <i class="fa fa-search"></i> Lihat PDF
-                            </a>
-                            <a href="{{ route('forms.form4.format16-pdf', $bencana->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
-                                <i class="fa fa-download"></i> Unduh PDF
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                @foreach($reports as $index => $report)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $report->nama_kampung }}</td>
+                        <td>{{ $report->nama_distrik }}</td>
+                        <td>Rp. {{ number_format($report->total_kerusakan ?? 0, 0, ',', '.') }}</td>
+                        <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
+                        <td>
+                            <a href="{{ route('forms.form4.show-format16', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                            <a href="{{ route('forms.form4.edit-format16', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('forms.form4.destroy-format16', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            @if(Route::has('forms.form4.format16.pdf'))
+                                <a href="{{ route('forms.form4.format16.pdf', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
+                            @else
+                                <a href="#" class="btn btn-secondary btn-sm disabled">PDF</a>
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
-                
-                @if($governmentReports->where('jenis_fasilitas', '=', 'Kerugian Lainnya')->count() > 0)
-                <tr class="bg-gray-100">
-                    <td colspan="8" class="font-semibold">Data Kerugian Lainnya</td>
-                </tr>
-                @foreach($governmentReports->where('jenis_fasilitas', '=', 'Kerugian Lainnya') as $lossReport)
-                <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{ $lossReport->jenis_fasilitas }}</td>
-                    <td colspan="3">
-                        <p>Pembersihan Puing: {{ $lossReport->tenaga_kerja_hok }} HOK × Rp {{ number_format($lossReport->upah_harian, 0, ',', '.') }}</p>
-                        <p>Alat Berat: {{ $lossReport->alat_berat_hari }} hari × Rp {{ number_format($lossReport->biaya_per_hari_alat_berat, 0, ',', '.') }}</p>
-                        <p>Sewa Kantor: {{ $lossReport->jumlah_unit }} unit × Rp {{ number_format($lossReport->biaya_sewa_per_unit, 0, ',', '.') }}</p>
-                        <p>Dokumen: {{ $lossReport->jumlah_arsip }} item × Rp {{ number_format($lossReport->harga_satuan, 0, ',', '.') }}</p>
-                    </td>                    @php
-                        $totalLoss = ($lossReport->tenaga_kerja_hok * $lossReport->upah_harian) +
-                                    ($lossReport->alat_berat_hari * $lossReport->biaya_per_hari_alat_berat) +
-                                    ($lossReport->jumlah_unit * $lossReport->biaya_sewa_per_unit) +
-                                    ($lossReport->jumlah_arsip * $lossReport->harga_satuan);
-                    @endphp
-                    <td>Rp {{ number_format($totalLoss, 0, ',', '.') }}</td>                    <td>{{ $lossReport->created_at->format('d M Y, H:i') }}</td>
-                    <td>
-                        <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
-                            <a href="#" class="btn btn-sm btn-info" onclick="alert('Fitur detail belum tersedia')" title="Lihat Detail">
-                                <i class="fa fa-eye"></i> Detail
-                            </a>
-                            <a href="#" class="btn btn-sm btn-warning" onclick="alert('Fitur edit belum tersedia')" title="Edit">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
-                            <a href="{{ route('forms.form4.format16-preview-pdf', $bencana->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
-                                <i class="fa fa-search"></i> Lihat PDF
-                            </a>
-                            <a href="{{ route('forms.form4.format16-pdf', $bencana->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
-                                <i class="fa fa-download"></i> Unduh PDF
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-                @endif
             </tbody>
         </table>
         @else
