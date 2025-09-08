@@ -153,9 +153,9 @@ class Format15Controller extends Controller
      */
     public function edit($id)
     {
-        $formData = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
-        return view('forms.form4.format15.edit', compact('formData', 'bencana'));
+        $formPariwisata = Format15Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPariwisata->bencana;
+        return view('forms.form4.format15.edit', compact('formPariwisata', 'bencana'));
     }
 
     /**

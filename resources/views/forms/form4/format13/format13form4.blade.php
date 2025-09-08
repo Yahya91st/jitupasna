@@ -1,6 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+</style>
 <div class="container-fluid mt-4">
     <h2 class="text-center fw-bold mb-3">PENGKAJIAN KEBUTUHAN PASCABENCANA</h2>
     <h4 class="text-center fw-bold mb-3">FORMAT 13: SEKTOR INDUSTRI DAN UMKM</h4>
@@ -15,16 +25,12 @@
                 @csrf
                 <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
                 <div class="mb-4">
-                    <span class="fw-bold">KABUPATEN:</span>
-                    <input type="text" name="kabupaten" class="form-control d-inline-block ms-2" style="width: 300px;">
-                </div>
-                <div class="mb-4">
                     <span class="fw-bold">NAMA KAMPUNG:</span>
-                    <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
+                    <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;" value="{{ old('nama_kampung', $data->nama_kampung ?? '') }}">
                 </div>
                 <div class="mb-4">
                     <span class="fw-bold">NAMA DISTRIK:</span>
-                    <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
+                    <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;" value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}">
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
@@ -57,9 +63,9 @@
                                 <td><input type="number" name="komponen[0][rb_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[0][rs_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[0][rr_jumlah]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[0][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[0][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[0][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="komponen[0][rb_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[0][rs_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[0][rr_harga]" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             
                             <!-- MESIN DAN PERALATAN -->
@@ -69,9 +75,9 @@
                                 <td><input type="number" name="komponen[1][rb_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[1][rs_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[1][rr_jumlah]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[1][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[1][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[1][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="komponen[1][rb_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[1][rs_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[1][rr_harga]" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             
                             <!-- BAHAN BAKU -->
@@ -81,9 +87,9 @@
                                 <td><input type="number" name="komponen[2][rb_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[2][rs_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[2][rr_jumlah]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[2][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[2][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[2][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="komponen[2][rb_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[2][rs_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[2][rr_harga]" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             
                             <!-- BAHAN JADI -->
@@ -93,9 +99,9 @@
                                 <td><input type="number" name="komponen[3][rb_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[3][rs_jumlah]" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="komponen[3][rr_jumlah]" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="komponen[3][rb_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[3][rs_harga]" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="komponen[3][rr_harga]" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="komponen[3][rb_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[3][rs_harga]" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="komponen[3][rr_harga]" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="fw-bold bg-secondary text-white">Perkiraan Kerugian</td>

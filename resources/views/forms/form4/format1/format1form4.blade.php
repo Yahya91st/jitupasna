@@ -1,6 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+</style>
     <div class="container mt-4">
         <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
         <p class="fw-bold">Format 1a: Pengumpulan Data Sektor Perumahan</p>
@@ -214,3 +224,4 @@
 
     </div>
 @endsection
+

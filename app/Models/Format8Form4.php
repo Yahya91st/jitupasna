@@ -143,15 +143,15 @@ class Format8Form4 extends Model
     protected static function boot()
     {
         parent::boot();
-        static::saving(function ($model) {
-            $model->kabel_jumlah = ($model->kabel_unit ?? 0) * ($model->kabel_harga_satuan ?? 0);
-            $model->tiang_jumlah = ($model->tiang_unit ?? 0) * ($model->tiang_harga_satuan ?? 0);
-            $model->trafo_jumlah = ($model->trafo_unit ?? 0) * ($model->trafo_harga_satuan ?? 0);
-            $model->plta_jumlah = ($model->plta_unit ?? 0) * ($model->plta_harga_satuan ?? 0);
-            $model->pltu_jumlah = ($model->pltu_unit ?? 0) * ($model->pltu_harga_satuan ?? 0);
-            $model->pltd_jumlah = ($model->pltd_unit ?? 0) * ($model->pltd_harga_satuan ?? 0);
-            $model->pembangkit_lain_jumlah = ($model->pembangkit_lain_unit ?? 0) * ($model->pembangkit_lain_harga_satuan ?? 0);
-            $model->biaya_genset_total = ($model->genset_unit ?? 0) * ($model->genset_biaya_pengadaan ?? 0);
+        static::saving(function ($format8) {
+            $format8->kabel_jumlah = ($format8->kabel_unit ?? 0) * ($format8->kabel_harga_satuan ?? 0);
+            $format8->tiang_jumlah = ($format8->tiang_unit ?? 0) * ($format8->tiang_harga_satuan ?? 0);
+            $format8->trafo_jumlah = ($format8->trafo_unit ?? 0) * ($format8->trafo_harga_satuan ?? 0);
+            $format8->plta_jumlah = ($format8->plta_unit ?? 0) * ($format8->plta_harga_satuan ?? 0);
+            $format8->pltu_jumlah = ($format8->pltu_unit ?? 0) * ($format8->pltu_harga_satuan ?? 0);
+            $format8->pltd_jumlah = ($format8->pltd_unit ?? 0) * ($format8->pltd_harga_satuan ?? 0);
+            $format8->pembangkit_lain_jumlah = ($format8->pembangkit_lain_unit ?? 0) * ($format8->pembangkit_lain_harga_satuan ?? 0);
+            $format8->biaya_genset_total = ($format8->genset_unit ?? 0) * ($format8->genset_biaya_pengadaan ?? 0);
         });
     }
 }

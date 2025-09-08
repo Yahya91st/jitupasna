@@ -1,6 +1,20 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+    .input-group-text {
+        padding: 0.2rem 0.5rem !important;
+        font-size: 0.9rem;
+    }
+</style>
 <div class="container mt-4">
     <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
     <p class="fw-bold">Format 2: Pengumpulan Data Sektor PENDIDIKAN</p>
@@ -14,7 +28,7 @@
             <div class="col-md-6">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text">NAMA KAMPUNG</span>
-                    <input type="text" class="form-control form-control-sm" name="nama_kampung" value="{{ old('nama_kampung', $data['nama_kampung'] ?? '') }}" required>
+                    <input type="text" class="form-control" name="nama_kampung" value="{{ old('nama_kampung', $data['nama_kampung'] ?? '') }}" required>
                 </div>
                 @error('nama_kampung')
                     <div class="text-danger small">{{ $message }}</div>
@@ -23,7 +37,7 @@
             <div class="col-md-6">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text">NAMA DISTRIK</span>
-                    <input type="text" class="form-control form-control-sm" name="nama_distrik" value="{{ old('nama_distrik', $data['nama_distrik'] ?? '') }}" required>
+                    <input type="text" class="form-control" name="nama_distrik" value="{{ old('nama_distrik', $data['nama_distrik'] ?? '') }}" required>
                 </div>
                 @error('nama_distrik')
                     <div class="text-danger small">{{ $message }}</div>
@@ -71,12 +85,12 @@
                     <tr>
                         <td>{{ $label }}</td>
                         @foreach(['berat_negeri','berat_swasta','sedang_negeri','sedang_swasta','ringan_negeri','ringan_swasta'] as $f)
-                        <td><input type="number" class="form-control form-control-sm" name="{{ $prefix . '_' . $f }}" value="{{ old($prefix . '_' . $f, $data[$prefix . '_' . $f] ?? '') }}" style="min-width: 80px;"></td>
+                        <td><input type="number" class="form-control" name="{{ $prefix . '_' . $f }}" value="{{ old($prefix . '_' . $f, $data[$prefix . '_' . $f] ?? '') }}" style="width: 100%;"></td>
                         @endforeach
-                        <td><input type="number" class="form-control form-control-sm" name="{{ $prefix . '_ukuran' }}" value="{{ old($prefix . '_ukuran', $data[$prefix . '_ukuran'] ?? '') }}" style="min-width: 80px;"></td>
-                        <td><input type="number" class="form-control form-control-sm" name="{{ $prefix . '_harga_bangunan' }}" value="{{ old($prefix . '_harga_bangunan', $data[$prefix . '_harga_bangunan'] ?? '') }}" style="min-width: 100px;"></td>
-                        <td><input type="text" class="form-control form-control-sm" name="{{ $prefix . '_harga_peralatan' }}" value="{{ old($prefix . '_harga_peralatan', $data[$prefix . '_harga_peralatan'] ?? '') }}" style="min-width: 100px;"></td>
-                        <td><input type="text" class="form-control form-control-sm" name="{{ $prefix . '_harga_meubelair' }}" value="{{ old($prefix . '_harga_meubelair', $data[$prefix . '_harga_meubelair'] ?? '') }}" style="min-width: 100px;"></td>
+                        <td><input type="number" class="form-control" name="{{ $prefix . '_ukuran' }}" value="{{ old($prefix . '_ukuran', $data[$prefix . '_ukuran'] ?? '') }}" style="width: 100%;"></td>
+                        <td><input type="number" class="form-control" name="{{ $prefix . '_harga_bangunan' }}" value="{{ old($prefix . '_harga_bangunan', $data[$prefix . '_harga_bangunan'] ?? '') }}" style="width: 100%;"></td>
+                        <td><input type="text" class="form-control" name="{{ $prefix . '_harga_peralatan' }}" value="{{ old($prefix . '_harga_peralatan', $data[$prefix . '_harga_peralatan'] ?? '') }}" style="width: 100%;"></td>
+                        <td><input type="text" class="form-control" name="{{ $prefix . '_harga_meubelair' }}" value="{{ old($prefix . '_harga_meubelair', $data[$prefix . '_harga_meubelair'] ?? '') }}" style="width: 100%;"></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -90,15 +104,15 @@
                     <div class="card-body py-2">
                         <div class="input-group input-group-sm mb-2">
                             <span class="input-group-text">Tenaga Kerja</span>
-                            <input type="number" class="form-control form-control-sm" name="biaya_tenaga_kerja_hok" value="{{ old('biaya_tenaga_kerja_hok', $data['biaya_tenaga_kerja_hok'] ?? '') }}" placeholder="HOK" style="min-width: 100px;">
+                            <input type="number" class="form-control" name="biaya_tenaga_kerja_hok" value="{{ old('biaya_tenaga_kerja_hok', $data['biaya_tenaga_kerja_hok'] ?? '') }}" placeholder="HOK" style="width: 100%;">
                             <span class="input-group-text">x Rp</span>
-                            <input type="number" class="form-control form-control-sm" name="biaya_tenaga_kerja_upah" value="{{ old('biaya_tenaga_kerja_upah', $data['biaya_tenaga_kerja_upah'] ?? '') }}" placeholder="Upah" style="min-width: 120px;">
+                            <input type="number" class="form-control" name="biaya_tenaga_kerja_upah" value="{{ old('biaya_tenaga_kerja_upah', $data['biaya_tenaga_kerja_upah'] ?? '') }}" placeholder="Upah" style="width: 100%;">
                         </div>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text">Alat Berat</span>
-                            <input type="number" class="form-control form-control-sm" name="biaya_alat_berat_hari" value="{{ old('biaya_alat_berat_hari', $data['biaya_alat_berat_hari'] ?? '') }}" placeholder="Hari" style="min-width: 100px;">
+                            <input type="number" class="form-control" name="biaya_alat_berat_hari" value="{{ old('biaya_alat_berat_hari', $data['biaya_alat_berat_hari'] ?? '') }}" placeholder="Hari" style="width: 100%;">
                             <span class="input-group-text">x Rp</span>
-                            <input type="number" class="form-control form-control-sm" name="biaya_alat_berat_harga" value="{{ old('biaya_alat_berat_harga', $data['biaya_alat_berat_harga'] ?? '') }}" placeholder="Sewa/Hari" style="min-width: 120px;">
+                            <input type="number" class="form-control" name="biaya_alat_berat_harga" value="{{ old('biaya_alat_berat_harga', $data['biaya_alat_berat_harga'] ?? '') }}" placeholder="Sewa/Hari" style="width: 100%;">
                         </div>
                     </div>
                 </div>
@@ -109,15 +123,15 @@
                     <div class="card-body py-2">
                         <div class="input-group input-group-sm mb-2">
                             <span class="input-group-text">Sekolah utk Pengungsian</span>
-                            <input type="number" class="form-control form-control-sm" name="sekolah_pengungsian" value="{{ old('sekolah_pengungsian', $data['sekolah_pengungsian'] ?? '') }}" placeholder="Unit" style="min-width: 120px;">
+                            <input type="number" class="form-control" name="sekolah_pengungsian" value="{{ old('sekolah_pengungsian', $data['sekolah_pengungsian'] ?? '') }}" placeholder="Unit" style="width: 100%;">
                         </div>
                         <div class="input-group input-group-sm mb-2">
                             <span class="input-group-text">Guru Korban Bencana</span>
-                            <input type="number" class="form-control form-control-sm" name="guru_korban" value="{{ old('guru_korban', $data['guru_korban'] ?? '') }}" placeholder="Orang" style="min-width: 120px;">
+                            <input type="number" class="form-control" name="guru_korban" value="{{ old('guru_korban', $data['guru_korban'] ?? '') }}" placeholder="Orang" style="width: 100%;">
                         </div>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text">Iuran Sekolah Swasta</span>
-                            <input type="number" class="form-control form-control-sm" name="iuran_sekolah" value="{{ old('iuran_sekolah', $data['iuran_sekolah'] ?? '') }}" placeholder="Rp/Bulan" style="min-width: 120px;">
+                            <input type="number" class="form-control" name="iuran_sekolah" value="{{ old('iuran_sekolah', $data['iuran_sekolah'] ?? '') }}" placeholder="Rp/Bulan" style="width: 100%;">
                         </div>
                     </div>
                 </div>
@@ -130,13 +144,13 @@
                             <div class="col-md-6">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text">Jumlah yang Diperlukan</span>
-                                    <input type="number" class="form-control form-control-sm" name="jumlah_sekolah_sementara" value="{{ old('jumlah_sekolah_sementara', $data['jumlah_sekolah_sementara'] ?? '') }}" placeholder="Unit" style="min-width: 120px;">
+                                    <input type="number" class="form-control" name="jumlah_sekolah_sementara" value="{{ old('jumlah_sekolah_sementara', $data['jumlah_sekolah_sementara'] ?? '') }}" placeholder="Unit" style="width: 100%;">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text">Harga Satuan</span>
-                                    <input type="number" class="form-control form-control-sm" name="harga_sekolah_sementara" value="{{ old('harga_sekolah_sementara', $data['harga_sekolah_sementara'] ?? '') }}" placeholder="Rp/Unit" style="min-width: 120px;">
+                                    <input type="number" class="form-control" name="harga_sekolah_sementara" value="{{ old('harga_sekolah_sementara', $data['harga_sekolah_sementara'] ?? '') }}" placeholder="Rp/Unit" style="width: 100%;">
                                 </div>
                             </div>
                         </div>
@@ -195,3 +209,4 @@
     @endif
 </div>
 @endsection
+

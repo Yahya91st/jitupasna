@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use App\Services\RekapAutoSyncService;
 
 class Format1Form4 extends Model
@@ -115,7 +116,7 @@ class Format1Form4 extends Model
                     $format1->nama_distrik
                 );
             } catch (\Exception $e) {
-                \Log::error("Failed to auto-sync rekap on Format1Form4 creation: " . $e->getMessage());
+                Log::error("Failed to auto-sync rekap on Format1Form4 creation: " . $e->getMessage());
             }
         });
 
@@ -129,7 +130,7 @@ class Format1Form4 extends Model
                     $format1->nama_distrik
                 );
             } catch (\Exception $e) {
-                \Log::error("Failed to auto-sync rekap on Format1Form4 update: " . $e->getMessage());
+                Log::error("Failed to auto-sync rekap on Format1Form4 update: " . $e->getMessage());
             }
         });
 
@@ -144,7 +145,7 @@ class Format1Form4 extends Model
                     1 // Format 1
                 );
             } catch (\Exception $e) {
-                \Log::error("Failed to handle rekap on Format1Form4 deletion: " . $e->getMessage());
+                Log::error("Failed to handle rekap on Format1Form4 deletion: " . $e->getMessage());
             }
         });
     }

@@ -1,6 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+</style>
 <div class="container-fluid mt-4">
     <h2 class="text-center fw-bold mb-3">PENGKAJIAN KEBUTUHAN PASCABENCANA</h2>
     <h4 class="text-center fw-bold mb-3">FORMAT 12: SEKTOR PERIKANAN</h4>
@@ -14,10 +24,7 @@
             <form action="{{ route('forms.form4.format12.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-                <div class="mb-4">
-                    <span class="fw-bold">KABUPATEN:</span>
-                    <input type="text" name="kabupaten" class="form-control d-inline-block ms-2" style="width: 300px;">
-                </div>
+                
                 <div class="mb-4">
                     <span class="fw-bold">NAMA KAMPUNG:</span>
                     <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
@@ -27,7 +34,7 @@
                     <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+                    <table class="table table-bordered text-center align-middle" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th rowspan="2" class="align-middle" style="width: 120px;">Perkiraan Kerusakan</th>

@@ -109,20 +109,20 @@ class Format6Form4 extends Model
     protected static function boot()
     {
         parent::boot();
-        static::saving(function ($model) {
-            $model->struktur_air_total = ($model->struktur_air_unit ?? 0) * ($model->struktur_air_harga ?? 0);
-            $model->instalasi_pemurnian_total = ($model->instalasi_pemurnian_unit ?? 0) * ($model->instalasi_pemurnian_harga ?? 0);
-            $model->perpipaan_total = ($model->perpipaan_unit ?? 0) * ($model->perpipaan_harga ?? 0);
-            $model->penyimpanan_total = ($model->penyimpanan_unit ?? 0) * ($model->penyimpanan_harga ?? 0);
-            $model->sumur_total = ($model->sumur_unit ?? 0) * ($model->sumur_harga ?? 0);
-            $model->mck_total = ($model->mck_unit ?? 0) * ($model->mck_harga ?? 0);
-            $model->sanitasi_total = ($model->sanitasi_unit ?? 0) * ($model->sanitasi_harga ?? 0);
-            $model->drainase_total = ($model->drainase_unit ?? 0) * ($model->drainase_harga ?? 0);
-            $model->limbah_padat_total = ($model->limbah_padat_unit ?? 0) * ($model->limbah_padat_harga ?? 0);
-            $model->wc_umum_total = ($model->wc_umum_unit ?? 0) * ($model->wc_umum_harga ?? 0);
+        static::saving(function ($format6) {
+            $format6->struktur_air_total = ($format6->struktur_air_unit ?? 0) * ($format6->struktur_air_harga ?? 0);
+            $format6->instalasi_pemurnian_total = ($format6->instalasi_pemurnian_unit ?? 0) * ($format6->instalasi_pemurnian_harga ?? 0);
+            $format6->perpipaan_total = ($format6->perpipaan_unit ?? 0) * ($format6->perpipaan_harga ?? 0);
+            $format6->penyimpanan_total = ($format6->penyimpanan_unit ?? 0) * ($format6->penyimpanan_harga ?? 0);
+            $format6->sumur_total = ($format6->sumur_unit ?? 0) * ($format6->sumur_harga ?? 0);
+            $format6->mck_total = ($format6->mck_unit ?? 0) * ($format6->mck_harga ?? 0);
+            $format6->sanitasi_total = ($format6->sanitasi_unit ?? 0) * ($format6->sanitasi_harga ?? 0);
+            $format6->drainase_total = ($format6->drainase_unit ?? 0) * ($format6->drainase_harga ?? 0);
+            $format6->limbah_padat_total = ($format6->limbah_padat_unit ?? 0) * ($format6->limbah_padat_harga ?? 0);
+            $format6->wc_umum_total = ($format6->wc_umum_unit ?? 0) * ($format6->wc_umum_harga ?? 0);
 
             // Simpan total kerusakan (air minum + sanitasi)
-            $model->total_kerusakan = $model->total_kerusakan_air_minum + $model->total_kerusakan_sanitasi;
+            $format6->total_kerusakan = $format6->total_kerusakan_air_minum + $format6->total_kerusakan_sanitasi;
         });
     }
 }

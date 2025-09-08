@@ -27,7 +27,7 @@
     <p><strong>A. Kerusakan Tanaman</strong></p>
 
     <div class="table-responsive">
-        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+        <table class="table table-bordered text-center align-middle" style="width: 100%;">
         <thead>
             <tr style="background-color:rgb(0, 0, 0); color:rgb(255, 255, 255);">
                 <td></td>
@@ -323,3 +323,4 @@ $(document).ready(function() {
 });
 </script>
 @endsection
+

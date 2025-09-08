@@ -174,9 +174,9 @@ class Format9Controller extends Controller
      */
     public function edit($id)
     {
-        $formTelekom = \App\Models\Format9Form4::with('bencana')->findOrFail($id);
-        $bencana = $formTelekom->bencana;
-        return view('forms.form4.format9.edit', compact('formTelekom', 'bencana'));
+        $formTelekomunikasi = \App\Models\Format9Form4::with('bencana')->findOrFail($id);
+        $bencana = $formTelekomunikasi->bencana;
+        return view('forms.form4.format9.edit', compact('formTelekomunikasi', 'bencana'));
     }
 
     /**

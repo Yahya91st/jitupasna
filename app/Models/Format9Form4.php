@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Format9Form4 extends Model
 {
@@ -51,12 +52,12 @@ class Format9Form4 extends Model
     protected static function boot()
     {
         parent::boot();
-        static::saving(function ($model) {
+        static::saving(function ($format9) {
             // Simpan hasil perkalian ke *_jumlah_unit
-            $model->kerusakan_1_jumlah_unit = ($model->kerusakan_1_satuan ?? 0) * ($model->kerusakan_1_harga_satuan ?? 0);
-            $model->kerusakan_2_jumlah_unit = ($model->kerusakan_2_satuan ?? 0) * ($model->kerusakan_2_harga_satuan ?? 0);
-            $model->kerusakan_3_jumlah_unit = ($model->kerusakan_3_satuan ?? 0) * ($model->kerusakan_3_harga_satuan ?? 0);
-            $model->kerusakan_4_jumlah_unit = ($model->kerusakan_4_satuan ?? 0) * ($model->kerusakan_4_harga_satuan ?? 0);
+            $format9->kerusakan_1_jumlah_unit = ($format9->kerusakan_1_satuan ?? 0) * ($format9->kerusakan_1_harga_satuan ?? 0);
+            $format9->kerusakan_2_jumlah_unit = ($format9->kerusakan_2_satuan ?? 0) * ($format9->kerusakan_2_harga_satuan ?? 0);
+            $format9->kerusakan_3_jumlah_unit = ($format9->kerusakan_3_satuan ?? 0) * ($format9->kerusakan_3_harga_satuan ?? 0);
+            $format9->kerusakan_4_jumlah_unit = ($format9->kerusakan_4_satuan ?? 0) * ($format9->kerusakan_4_harga_satuan ?? 0);
         });
     }
 
@@ -72,5 +73,13 @@ class Format9Form4 extends Model
     }
     public function getKerusakan4JumlahAttribute() {
         return ($this->kerusakan_4_satuan ?? 0) * ($this->kerusakan_4_harga_satuan ?? 0);
+    }
+
+    /**
+     * Get the bencana that owns the Format9Form4.
+     */
+    public function bencana(): BelongsTo
+    {
+        return $this->belongsTo(Bencana::class);
     }
 }

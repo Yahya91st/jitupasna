@@ -182,9 +182,9 @@ class Format17Controller extends Controller
      */
     public function edit($id)
     {
-        $formData = Format17Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
-        return view('forms.form4.format17.edit', compact('formData', 'bencana'));
+        $formLingkungan = Format17Form4::with('bencana')->findOrFail($id);
+        $bencana = $formLingkungan->bencana;
+        return view('forms.form4.format17.edit', compact('formLingkungan', 'bencana'));
     }
 
     /**

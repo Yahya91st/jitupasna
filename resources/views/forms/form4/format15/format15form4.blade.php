@@ -14,10 +14,7 @@
             <form action="{{ route('forms.form4.format15.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-                <div class="mb-4">
-                    <span class="fw-bold">KABUPATEN:</span>
-                    <input type="text" name="kabupaten" class="form-control d-inline-block ms-2" style="width: 300px;">
-                </div>
+                
                 <div class="mb-4">
                     <span class="fw-bold">NAMA KAMPUNG:</span>
                     <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
@@ -64,27 +61,27 @@
                                 <td><input type="number" name="fasilitas_1_rb_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_1_rs_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_1_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="fasilitas_1_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_1_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_1_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="fasilitas_2_jenis" class="form-control form-control-sm" placeholder="b) Hotel dan Restaurant" value="b) Hotel dan Restaurant"></td>
                                 <td><input type="number" name="fasilitas_2_rb_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_2_rs_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_2_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="fasilitas_2_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_2_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_2_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="fasilitas_3_jenis" class="form-control form-control-sm" placeholder="Jenis Fasilitas Lainnya" value=""></td>
                                 <td><input type="number" name="fasilitas_3_rb_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_3_rs_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_3_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="fasilitas_3_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_3_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_3_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td rowspan="3" class="align-middle fw-bold bg-light">B. Hotel Dan Restauran</td>
@@ -92,27 +89,27 @@
                                 <td><input type="number" name="fasilitas_4_rb_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_4_rs_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_4_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="fasilitas_4_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_4_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_4_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="fasilitas_5_jenis" class="form-control form-control-sm" placeholder="b) Hotel dan Restaurant" value="b) Hotel dan Restaurant"></td>
                                 <td><input type="number" name="fasilitas_5_rb_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_5_rs_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_5_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="fasilitas_5_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_5_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_5_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="fasilitas_6_jenis" class="form-control form-control-sm" placeholder="Jenis Fasilitas Lainnya" value=""></td>
                                 <td><input type="number" name="fasilitas_6_rb_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_6_rs_tingkat" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="fasilitas_6_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="fasilitas_6_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_6_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="fasilitas_6_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             
                             <!-- PERKIRAAN KERUGIAN -->

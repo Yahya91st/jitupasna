@@ -14,7 +14,7 @@
     </table>
     <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
     <div class="table-responsive">
-        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+        <table class="table table-bordered text-center align-middle" style="width: 100%;">
             <thead>
                 <tr>
                     <th rowspan="2" style="border: 1px solid #000; text-align: center; vertical-align: middle; background-color: #f0f0f0;">URAIAN<br>PERKIRAAN KERUSAKAN</th>
@@ -191,3 +191,4 @@
 </form>
 </div>
 @endsection
+

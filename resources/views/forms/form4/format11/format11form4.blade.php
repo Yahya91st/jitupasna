@@ -1,6 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+</style>
 <div class="container-fluid mt-4">
     <h2 class="text-center fw-bold mb-3">PENGKAJIAN KEBUTUHAN PASCABENCANA</h2>
     <h4 class="text-center fw-bold mb-3">FORMAT 11: SEKTOR PETERNAKAN</h4>
@@ -23,7 +33,7 @@
                     <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+                    <table class="table table-bordered text-center align-middle" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th rowspan="2" class="align-middle">Perkiraan Kerusakan</th>

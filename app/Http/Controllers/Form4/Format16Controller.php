@@ -150,9 +150,9 @@ class Format16Controller extends Controller
      */
     public function edit($id)
     {
-        $formData = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
-        return view('forms.form4.format16.edit', compact('formData', 'bencana'));
+        $formPemerintahan = Format16Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPemerintahan->bencana;
+        return view('forms.form4.format16.edit', compact('formPemerintahan', 'bencana'));
     }
 
     /**

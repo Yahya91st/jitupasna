@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Format14Form4 extends Model
 {
@@ -48,4 +49,12 @@ class Format14Form4 extends Model
         'barangdagangan_3_rb_jumlah' => 'integer', 'barangdagangan_3_rs_jumlah' => 'integer', 'barangdagangan_3_rr_jumlah' => 'integer',
         'barangdagangan_3_rb_harga' => 'decimal:2', 'barangdagangan_3_rs_harga' => 'decimal:2', 'barangdagangan_3_rr_harga' => 'decimal:2',
     ];
+
+    /**
+     * Get the bencana that owns the Format14Form4.
+     */
+    public function bencana(): BelongsTo
+    {
+        return $this->belongsTo(Bencana::class);
+    }
 }

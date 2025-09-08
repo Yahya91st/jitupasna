@@ -142,9 +142,9 @@ class Format5Controller extends Controller
      */
     public function edit($id)
     {
-        $formAgama = \App\Models\Format5Form4::with('bencana')->findOrFail($id);
-        $bencana = $formAgama->bencana;
-        return view('forms.form4.format5.edit', compact('formAgama', 'bencana'));
+        $formKeagamaan = \App\Models\Format5Form4::with('bencana')->findOrFail($id);
+        $bencana = $formKeagamaan->bencana;
+        return view('forms.form4.format5.edit', compact('formKeagamaan', 'bencana'));
     }
 
     /**

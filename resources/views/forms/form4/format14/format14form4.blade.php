@@ -1,6 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+</style>
 <div class="container-fluid mt-4">
     <h2 class="text-center fw-bold mb-3">PENGKAJIAN KEBUTUHAN PASCABENCANA</h2>
     <h4 class="text-center fw-bold mb-3">FORMAT 14: SEKTOR PERDAGANGAN</h4>
@@ -14,20 +24,17 @@
             <form action="{{ route('forms.form4.format14.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-                <div class="mb-4">
-                    <span class="fw-bold">KABUPATEN:</span>
-                    <input type="text" name="kabupaten" class="form-control d-inline-block ms-2" style="width: 300px;">
-                </div>
+                
                 <div class="mb-4">
                     <span class="fw-bold">NAMA KAMPUNG:</span>
-                    <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
+                    <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;" value="{{ old('nama_kampung', $data->nama_kampung ?? '') }}">
                 </div>
                 <div class="mb-4">
                     <span class="fw-bold">NAMA DISTRIK:</span>
-                    <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
+                    <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;" value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}">
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+                    <table class="table table-bordered text-center align-middle" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th rowspan="2" class="align-middle"></th>
@@ -64,27 +71,27 @@
                                 <td><input type="number" name="tempatusaha_1_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="tempatusaha_1_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="tempatusaha_1_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="tempatusaha_1_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="tempatusaha_1_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="tempatusaha_1_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="tempatusaha_1_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="tempatusaha_1_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="tempatusaha_1_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="tempatusaha_2_jenis" class="form-control form-control-sm" placeholder="Jenis Tempat Usaha" value=""></td>
                                 <td><input type="number" name="tempatusaha_2_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="tempatusaha_2_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="tempatusaha_2_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="tempatusaha_2_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="tempatusaha_2_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="tempatusaha_2_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="tempatusaha_2_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="tempatusaha_2_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="tempatusaha_2_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="tempatusaha_3_jenis" class="form-control form-control-sm" placeholder="Jenis Tempat Usaha" value=""></td>
                                 <td><input type="number" name="tempatusaha_3_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="tempatusaha_3_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="tempatusaha_3_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="tempatusaha_3_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="tempatusaha_3_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="tempatusaha_3_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="tempatusaha_3_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="tempatusaha_3_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="tempatusaha_3_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             
                             <!-- PERALATAN -->
@@ -94,27 +101,27 @@
                                 <td><input type="number" name="peralatan_1_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="peralatan_1_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="peralatan_1_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="peralatan_1_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="peralatan_1_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="peralatan_1_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="peralatan_1_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="peralatan_1_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="peralatan_1_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="peralatan_2_jenis" class="form-control form-control-sm" placeholder="Jenis Peralatan" value=""></td>
                                 <td><input type="number" name="peralatan_2_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="peralatan_2_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="peralatan_2_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="peralatan_2_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="peralatan_2_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="peralatan_2_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="peralatan_2_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="peralatan_2_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="peralatan_2_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="peralatan_3_jenis" class="form-control form-control-sm" placeholder="Jenis Peralatan" value=""></td>
                                 <td><input type="number" name="peralatan_3_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="peralatan_3_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="peralatan_3_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="peralatan_3_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="peralatan_3_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="peralatan_3_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="peralatan_3_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="peralatan_3_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="peralatan_3_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             
                             <!-- BARANG DAGANGAN -->
@@ -124,27 +131,27 @@
                                 <td><input type="number" name="barangdagangan_1_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="barangdagangan_1_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="barangdagangan_1_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="barangdagangan_1_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="barangdagangan_1_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="barangdagangan_1_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="barangdagangan_1_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="barangdagangan_1_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="barangdagangan_1_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="barangdagangan_2_jenis" class="form-control form-control-sm" placeholder="Jenis Barang Dagangan" value=""></td>
                                 <td><input type="number" name="barangdagangan_2_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="barangdagangan_2_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="barangdagangan_2_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="barangdagangan_2_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="barangdagangan_2_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="barangdagangan_2_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="barangdagangan_2_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="barangdagangan_2_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="barangdagangan_2_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><input type="text" name="barangdagangan_3_jenis" class="form-control form-control-sm" placeholder="Jenis Barang Dagangan" value=""></td>
                                 <td><input type="number" name="barangdagangan_3_rb_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="barangdagangan_3_rs_jumlah" class="form-control" min="0" value="0"></td>
                                 <td><input type="number" name="barangdagangan_3_rr_jumlah" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="barangdagangan_3_rb_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="barangdagangan_3_rs_harga" class="form-control" min="0" step="1000" value="0"></td>
-                                <td><input type="number" name="barangdagangan_3_rr_harga" class="form-control" min="0" step="1000" value="0"></td>
+                                <td><input type="number" name="barangdagangan_3_rb_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="barangdagangan_3_rs_harga" class="form-control" min="0" step="any" value="0"></td>
+                                <td><input type="number" name="barangdagangan_3_rr_harga" class="form-control" min="0" step="any" value="0"></td>
                             </tr>
                             <tr>
                                 <td class="fw-bold bg-secondary text-white">PERKIRAAN KERUGIAN</td>

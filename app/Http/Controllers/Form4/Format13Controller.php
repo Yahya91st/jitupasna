@@ -111,9 +111,9 @@ class Format13Controller extends Controller
      */
     public function edit($id)
     {
-        $formData = Format13Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
-        return view('forms.form4.format13.edit', compact('formData', 'bencana'));
+        $formIndustri = Format13Form4::with('bencana')->findOrFail($id);
+        $bencana = $formIndustri->bencana;
+        return view('forms.form4.format13.edit', compact('formIndustri', 'bencana'));
     }
 
     /**

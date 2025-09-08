@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Format17Form4 extends Model
 {
@@ -69,27 +70,35 @@ class Format17Form4 extends Model
 
     protected static function booted()
     {
-        static::saving(function ($model) {
+        static::saving(function ($format17) {
             $total = 0;
             // Ekosistem Darat
             for ($i = 1; $i <= 3; $i++) {
-                $total += ($model->{"ekosistem_darat_{$i}_rb"} * $model->{"ekosistem_darat_{$i}_rb_harga"});
-                $total += ($model->{"ekosistem_darat_{$i}_rs"} * $model->{"ekosistem_darat_{$i}_rs_harga"});
-                $total += ($model->{"ekosistem_darat_{$i}_rr"} * $model->{"ekosistem_darat_{$i}_rr_harga"});
+                $total += ($format17->{"ekosistem_darat_{$i}_rb"} * $format17->{"ekosistem_darat_{$i}_rb_harga"});
+                $total += ($format17->{"ekosistem_darat_{$i}_rs"} * $format17->{"ekosistem_darat_{$i}_rs_harga"});
+                $total += ($format17->{"ekosistem_darat_{$i}_rr"} * $format17->{"ekosistem_darat_{$i}_rr_harga"});
             }
             // Ekosistem Laut
             for ($i = 1; $i <= 3; $i++) {
-                $total += ($model->{"ekosistem_laut_{$i}_rb"} * $model->{"ekosistem_laut_{$i}_rb_harga"});
-                $total += ($model->{"ekosistem_laut_{$i}_rs"} * $model->{"ekosistem_laut_{$i}_rs_harga"});
-                $total += ($model->{"ekosistem_laut_{$i}_rr"} * $model->{"ekosistem_laut_{$i}_rr_harga"});
+                $total += ($format17->{"ekosistem_laut_{$i}_rb"} * $format17->{"ekosistem_laut_{$i}_rb_harga"});
+                $total += ($format17->{"ekosistem_laut_{$i}_rs"} * $format17->{"ekosistem_laut_{$i}_rs_harga"});
+                $total += ($format17->{"ekosistem_laut_{$i}_rr"} * $format17->{"ekosistem_laut_{$i}_rr_harga"});
             }
             // Ekosistem Udara
             for ($i = 1; $i <= 3; $i++) {
-                $total += ($model->{"ekosistem_udara_{$i}_rb"} * $model->{"ekosistem_udara_{$i}_rb_harga"});
-                $total += ($model->{"ekosistem_udara_{$i}_rs"} * $model->{"ekosistem_udara_{$i}_rs_harga"});
-                $total += ($model->{"ekosistem_udara_{$i}_rr"} * $model->{"ekosistem_udara_{$i}_rr_harga"});
+                $total += ($format17->{"ekosistem_udara_{$i}_rb"} * $format17->{"ekosistem_udara_{$i}_rb_harga"});
+                $total += ($format17->{"ekosistem_udara_{$i}_rs"} * $format17->{"ekosistem_udara_{$i}_rs_harga"});
+                $total += ($format17->{"ekosistem_udara_{$i}_rr"} * $format17->{"ekosistem_udara_{$i}_rr_harga"});
             }
-            $model->total_kerusakan = $total;
+            $format17->total_kerusakan = $total;
         });
+    }
+
+    /**
+     * Get the bencana that owns the Format17Form4.
+     */
+    public function bencana(): BelongsTo
+    {
+        return $this->belongsTo(Bencana::class);
     }
 }

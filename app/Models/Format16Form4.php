@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Format16Form4 extends Model
 {
@@ -84,10 +85,16 @@ class Format16Form4 extends Model
     // Simpan total_kerusakan ke database jika field tersedia
     protected static function booted()
     {
-        static::saving(function ($model) {
-            if (array_key_exists('total_kerusakan', $model->getAttributes())) {
-                $model->total_kerusakan = $model->total_kerusakan;
-            }
+        static::saving(function ($format16) {
+            $format16->total_kerusakan = $format16->getTotalKerusakanAttribute();
         });
+    }
+
+    /**
+     * Get the bencana that owns the Format16Form4.
+     */
+    public function bencana(): BelongsTo
+    {
+        return $this->belongsTo(Bencana::class);
     }
 }

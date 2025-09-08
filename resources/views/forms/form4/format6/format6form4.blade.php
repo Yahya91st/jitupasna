@@ -24,7 +24,7 @@
         </div>
 
     <p><strong>A. Kerusakan Sarana Air Minum</strong></p>    <div class="table-responsive">
-        <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+        <table class="table table-bordered text-center align-middle" style="width: 100%;">
         <thead>
             <tr>
                 <th style="border: 1px solid #000;">Uraian</th>
@@ -212,3 +212,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endsection
+

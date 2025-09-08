@@ -1,6 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+</style>
 <div class="container-fluid mt-4">
     <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
     <h4 class="mb-3">Format 8. Pengumpulan Data Sektor Listrik</h4>
@@ -32,7 +42,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
+                    <table class="table table-bordered text-center align-middle" style="width: 100%;">
                         <thead class="table-light">
                             <tr>
                                 <th>Uraian</th>
