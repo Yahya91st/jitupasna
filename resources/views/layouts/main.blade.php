@@ -17,34 +17,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/dist/assets/vendors/quill/quill.snow.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
 
-    <!-- CSS untuk menghilangkan semua animasi sidebar secara global -->
+    <!-- CSS untuk styling sidebar -->
     <style>
-        /* Menghilangkan semua transisi dan animasi untuk semua komponen sidebar */
-        .main-sidebar, .main-sidebar::before, #sidebar, .sidebar-wrapper,
-        .main-header, .content-wrapper, body.sidebar-mini .content-wrapper,
-        body.sidebar-mini.sidebar-collapse .content-wrapper,
-        .layout-fixed .main-sidebar, .sidebar-wrapper.active,
-        #sidebar.active, #sidebar.active .sidebar-wrapper {
-            -webkit-transition: none !important;
-            -moz-transition: none !important;
-            -o-transition: none !important;
-            transition: none !important;
-            animation: none !important;
-            transform: none !important;
-        }
-
-        /* Menghilangkan transisi AdminLTE */
-        .sidebar-collapse .main-sidebar, .sidebar-collapse .main-sidebar::before,
-        .sidebar-collapse .content-wrapper, .sidebar-collapse .main-header {
-            margin-left: 0 !important;
-            transform: translate3d(0, 0, 0) !important;
-            transition: none !important;
-        }
-
-        /* Nonaktifkan semua animasi sidebar */
-        * {
-            transition: none !important;
-        }
 
         /* Custom sidebar highlighting */
         .sidebar-item.active>.sidebar-link {
@@ -199,64 +173,13 @@
     <script src="{{ asset('frontend/dist/assets/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('frontend/dist/assets/js/main.js') }}"></script>
 
-    <!-- Script untuk menghilangkan animasi sidebar secara global -->
+    <!-- Script untuk fungsionalitas sidebar -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Fungsi untuk menghilangkan animasi sidebar
-            function disableAllSidebarAnimations() {
-                // Menambahkan style untuk menghilangkan transisi secara global
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    /* Override ALL transitions */
-                    .main-sidebar, .main-sidebar *, .main-header, .main-header *, 
-                    .content-wrapper, #sidebar, #sidebar *, .sidebar-wrapper, .sidebar-wrapper * {
-                        -webkit-transition: none !important;
-                        -moz-transition: none !important;
-                        -o-transition: none !important;
-                        transition: none !important;
-                        animation: none !important;
-                    }
-                    
-                    /* Override specific animations */
-                    .sidebar-collapse .main-sidebar, .sidebar-collapse .main-sidebar::before,
-                    .sidebar-collapse #sidebar, .sidebar-collapse .sidebar-wrapper {
-                        margin-left: 0 !important;
-                        transform: translate3d(0, 0, 0) !important;
-                    }
-                `;
-                document.head.appendChild(style);
-                
-                // Hapus animasi dari semua elemen sidebar
-                const sidebarElements = document.querySelectorAll('#sidebar, .sidebar-wrapper, .main-sidebar, .content-wrapper');
-                sidebarElements.forEach(function(el) {
-                    if (el) {
-                        el.style.transition = 'none !important';
-                        el.style.webkitTransition = 'none !important';
-                        el.style.animation = 'none !important';
-                    }
-                });
-                
-                // Mengatasi kemungkinan penambahan animasi oleh script lain
-                const observer = new MutationObserver(function() {
-                    sidebarElements.forEach(function(el) {
-                        if (el) {
-                            el.style.transition = 'none !important';
-                            el.style.webkitTransition = 'none !important';
-                            el.style.animation = 'none !important';
-                        }
-                    });
-                });
-                
-                // Memantau perubahan pada body
-                observer.observe(document.body, { 
-                    attributes: true,
-                    subtree: true,
-                    attributeFilter: ['class', 'style']
-                });
+            // Initialize feather icons jika tersedia
+            if (typeof feather !== 'undefined') {
+                feather.replace();
             }
-            
-            // Jalankan fungsi untuk menghilangkan animasi sidebar
-            disableAllSidebarAnimations();
         });
     </script>
 
