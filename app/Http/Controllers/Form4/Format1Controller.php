@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Bencana;
 use App\Models\Format1Form4;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class Format1Controller extends Controller
@@ -87,10 +88,11 @@ class Format1Controller extends Controller
             ]);
 
             // Debug log: cek data yang diterima dari form
-            \Log::debug('Format1Form4 STORE validated data', $validated);
+            Log::debug('Format1Form4 STORE validated data', $validated);
 
-            // Hitung total kerusakan otomatis
-            $total_kerusakan =
+            // Hitung total kerusakan otomatis (semua item sekarang masuk ke kerusakan)
+            $total_kerusakan = 
+                // Kerusakan rumah
                 ($validated['rumah_hancur_total_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_permanen'] ?? 0) +
                 ($validated['rumah_hancur_total_non_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_non_permanen'] ?? 0) +
                 ($validated['rumah_rusak_berat_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_permanen'] ?? 0) +
@@ -99,13 +101,23 @@ class Format1Controller extends Controller
                 ($validated['rumah_rusak_sedang_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_non_permanen'] ?? 0) +
                 ($validated['rumah_rusak_ringan_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_permanen'] ?? 0) +
                 ($validated['rumah_rusak_ringan_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_non_permanen'] ?? 0) +
+                // Kerusakan infrastruktur
                 (($validated['jalan_rusak_berat'] ?? 0) + ($validated['jalan_rusak_sedang'] ?? 0) + ($validated['jalan_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_jalan'] ?? 0) +
                 (($validated['saluran_rusak_berat'] ?? 0) + ($validated['saluran_rusak_sedang'] ?? 0) + ($validated['saluran_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_saluran'] ?? 0) +
-                (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0);
+                (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0) +
+                // Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+                ($validated['tenaga_kerja_hok'] ?? 0) * ($validated['upah_harian'] ?? 0) +
+                ($validated['alat_berat_hari'] ?? 0) * ($validated['biaya_per_hari'] ?? 0) +
+                // Rumah sewa (dipindahkan dari kerugian ke kerusakan)
+                ($validated['jumlah_rumah_disewa'] ?? 0) * ($validated['harga_sewa_per_bulan'] ?? 0) * ($validated['durasi_sewa_bulan'] ?? 0) +
+                // Hunian sementara (dipindahkan dari kerugian ke kerusakan)
+                ($validated['jumlah_tenda'] ?? 0) * ($validated['harga_tenda'] ?? 0) +
+                ($validated['jumlah_barak'] ?? 0) * ($validated['harga_barak'] ?? 0) +
+                ($validated['jumlah_rumah_sementara'] ?? 0) * ($validated['harga_rumah_sementara'] ?? 0);
             $validated['total_kerusakan'] = $total_kerusakan;
 
             // Debug log: cek hasil perhitungan total_kerusakan
-            \Log::debug('Format1Form4 STORE total_kerusakan', ['total_kerusakan' => $total_kerusakan]);
+            Log::debug('Format1Form4 STORE total_kerusakan', ['total_kerusakan' => $total_kerusakan]);
 
             // Create new form data
             $formPerumahan = Format1Form4::create($validated);
@@ -170,7 +182,7 @@ class Format1Controller extends Controller
      * Generate PDF for a specific form data (Format1/Perumahan)
      *
      * @param  int  $id
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return mixed
      */
     public function generatePdf($id)
     {
@@ -295,7 +307,7 @@ class Format1Controller extends Controller
                 'harga_rumah_sementara' => 'nullable|numeric',
             ]);
 
-            // Hitung total kerusakan otomatis (sama seperti store)
+            // Hitung total kerusakan otomatis (termasuk semua item yang dipindahkan dari kerugian)
             $total_kerusakan =
                 ($validated['rumah_hancur_total_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_permanen'] ?? 0) +
                 ($validated['rumah_hancur_total_non_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_non_permanen'] ?? 0) +
@@ -307,7 +319,16 @@ class Format1Controller extends Controller
                 ($validated['rumah_rusak_ringan_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_non_permanen'] ?? 0) +
                 (($validated['jalan_rusak_berat'] ?? 0) + ($validated['jalan_rusak_sedang'] ?? 0) + ($validated['jalan_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_jalan'] ?? 0) +
                 (($validated['saluran_rusak_berat'] ?? 0) + ($validated['saluran_rusak_sedang'] ?? 0) + ($validated['saluran_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_saluran'] ?? 0) +
-                (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0);
+                (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0) +
+                // Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+                ($validated['tenaga_kerja_hok'] ?? 0) * ($validated['upah_harian'] ?? 0) +
+                ($validated['alat_berat_hari'] ?? 0) * ($validated['biaya_per_hari'] ?? 0) +
+                // Biaya sewa rumah (dipindahkan dari kerugian ke kerusakan)
+                ($validated['jumlah_rumah_disewa'] ?? 0) * ($validated['harga_sewa_per_bulan'] ?? 0) * ($validated['durasi_sewa_bulan'] ?? 0) +
+                // Biaya hunian sementara (dipindahkan dari kerugian ke kerusakan)
+                ($validated['jumlah_tenda'] ?? 0) * ($validated['harga_tenda'] ?? 0) +
+                ($validated['jumlah_barak'] ?? 0) * ($validated['harga_barak'] ?? 0) +
+                ($validated['jumlah_rumah_sementara'] ?? 0) * ($validated['harga_rumah_sementara'] ?? 0);
             $validated['total_kerusakan'] = $total_kerusakan;
 
             // Update the record

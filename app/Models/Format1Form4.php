@@ -191,34 +191,21 @@ class Format1Form4 extends Model
 
     /**
      * Calculate grand total for this format (used by Rekap)
+     * All items now included in kerusakan calculation
      */
     public function getGrandTotalAttribute()
     {
-        $rumah_kerusakan = $this->total_estimasi_kerusakan_rumah;
-        $infrastruktur_kerusakan = $this->total_estimasi_kerusakan_infrastruktur;
-        
-        // Add temporary housing and work costs
-        $rumah_sewa = ($this->jumlah_rumah_disewa ?? 0) * ($this->harga_sewa_per_bulan ?? 0) * ($this->durasi_sewa_bulan ?? 0);
-        $tenda = ($this->jumlah_tenda ?? 0) * ($this->harga_tenda ?? 0);
-        $barak = ($this->jumlah_barak ?? 0) * ($this->harga_barak ?? 0);
-        $rumah_sementara = ($this->jumlah_rumah_sementara ?? 0) * ($this->harga_rumah_sementara ?? 0);
-        $tenaga_kerja = ($this->tenaga_kerja_hok ?? 0) * ($this->upah_harian ?? 0);
-        $alat_berat = ($this->alat_berat_hari ?? 0) * ($this->biaya_per_hari ?? 0);
-        
-        return $rumah_kerusakan + $infrastruktur_kerusakan + $rumah_sewa + $tenda + $barak + $rumah_sementara + $tenaga_kerja + $alat_berat;
+        // Use the total_kerusakan field which now includes everything
+        return $this->total_kerusakan ?? 0;
     }
 
     /**
      * Calculate total kerugian for this format (used by Rekap)
+     * Since all kerugian items moved to kerusakan, this is now 0
      */
     public function getTotalKerugianAttribute()
     {
-        // For Format 1, kerugian includes temporary costs
-        $rumah_sewa = ($this->jumlah_rumah_disewa ?? 0) * ($this->harga_sewa_per_bulan ?? 0) * ($this->durasi_sewa_bulan ?? 0);
-        $tenda = ($this->jumlah_tenda ?? 0) * ($this->harga_tenda ?? 0);
-        $barak = ($this->jumlah_barak ?? 0) * ($this->harga_barak ?? 0);
-        $rumah_sementara = ($this->jumlah_rumah_sementara ?? 0) * ($this->harga_rumah_sementara ?? 0);
-        
-        return $rumah_sewa + $tenda + $barak + $rumah_sementara;
+        // All kerugian items have been moved to kerusakan calculation
+        return 0;
     }
 }

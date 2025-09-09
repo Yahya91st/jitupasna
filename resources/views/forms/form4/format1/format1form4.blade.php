@@ -102,28 +102,29 @@
             Harga Satuan/M²: Rp <input type="number" class="form-control d-inline-block" name="harga_satuan_balai" placeholder="0" style="width: 150px;" value="{{ old('harga_satuan_balai', $data->harga_satuan_balai ?? '') }}">
         </p>
 
-        <hr class="my-4">
-
-        <h6 class="fw-bold">II. PERKIRAAN KERUGIAN</h6>
-        <p><strong>1) BIAYA PEMBERSIHAN PUING</strong></p>
+        <p class="fw-bold mt-4">3. BIAYA PEMBERSIHAN PUING</p>
         <p>
             A. Jumlah Tenaga Kerja: <input type="number" class="form-control d-inline-block" name="tenaga_kerja_hok" placeholder="0" style="width: 100px;" value="{{ old('tenaga_kerja_hok', $data->tenaga_kerja_hok ?? '') }}"> HOK * Rp <input type="number" class="form-control d-inline-block" name="upah_harian" placeholder="0" style="width: 150px;" value="{{ old('upah_harian', $data->upah_harian ?? '') }}"> /Upah Harian<br>
             B. Jumlah Alat Berat: <input type="number" class="form-control d-inline-block" name="alat_berat_hari" placeholder="0" style="width: 100px;" value="{{ old('alat_berat_hari', $data->alat_berat_hari ?? '') }}"> Hari X Rp <input type="number" class="form-control d-inline-block" name="biaya_per_hari" placeholder="0" style="width: 150px;" value="{{ old('biaya_per_hari', $data->biaya_per_hari ?? '') }}"> /Hari
         </p>
 
-        <p><strong>2) PERKIRAAN JUMLAH RUMAH YANG DISEWAKAN</strong><br>
+        <p class="fw-bold mt-4">4. PERKIRAAN JUMLAH RUMAH YANG DISEWAKAN</p>
+        <p>
             Jumlah Rumah: <input type="number" class="form-control d-inline-block" name="jumlah_rumah_disewa" placeholder="0" style="width: 100px;" value="{{ old('jumlah_rumah_disewa', $data->jumlah_rumah_disewa ?? '') }}"> Unit<br>
             Harga Sewa Per Bulan: <input type="number" class="form-control d-inline-block" name="harga_sewa_per_bulan" placeholder="0" style="width: 200px;" value="{{ old('harga_sewa_per_bulan', $data->harga_sewa_per_bulan ?? '') }}"> Rupiah<br>
             Durasi Sewa: <input type="number" class="form-control d-inline-block" name="durasi_sewa_bulan" placeholder="0" style="width: 100px;" value="{{ old('durasi_sewa_bulan', $data->durasi_sewa_bulan ?? '') }}"> Bulan
         </p>
 
-        <p><strong>3) PERKIRAAN KEBUTUHAN HUNIAN SEMENTARA</strong><br>
+        <p class="fw-bold mt-4">5. PERKIRAAN KEBUTUHAN HUNIAN SEMENTARA</p>
+        <p>
+            <strong>5.1 Kebutuhan:</strong><br>
             Tenda : <input type="number" class="form-control d-inline-block" name="jumlah_tenda" placeholder="0" style="width: 150px;" value="{{ old('jumlah_tenda', $data->jumlah_tenda ?? '') }}"> Unit<br>
             Barak : <input type="number" class="form-control d-inline-block" name="jumlah_barak" placeholder="0" style="width: 150px;" value="{{ old('jumlah_barak', $data->jumlah_barak ?? '') }}"> Unit<br>
             Rumah Sementara : <input type="number" class="form-control d-inline-block" name="jumlah_rumah_sementara" placeholder="0" style="width: 150px;" value="{{ old('jumlah_rumah_sementara', $data->jumlah_rumah_sementara ?? '') }}"> Unit
         </p>
 
-        <p><strong>4) HARGA SATUAN PENYEDIAAN HUNIAN SEMENTARA</strong><br>
+        <p>
+            <strong>5.2 Harga Satuan Penyediaan:</strong><br>
             Tenda : <input type="number" class="form-control d-inline-block" name="harga_tenda" placeholder="0" style="width: 200px;" value="{{ old('harga_tenda', $data->harga_tenda ?? '') }}"> Rupiah<br>
             Barak : <input type="number" class="form-control d-inline-block" name="harga_barak" placeholder="0" style="width: 200px;" value="{{ old('harga_barak', $data->harga_barak ?? '') }}"> Rupiah<br>
             Rumah Sementara : <input type="number" class="form-control d-inline-block" name="harga_rumah_sementara" placeholder="0" style="width: 200px;" value="{{ old('harga_rumah_sementara', $data->harga_rumah_sementara ?? '') }}"> Rupiah
@@ -147,12 +148,32 @@
             <div class="card-body text-center">
                 @php
                     $totalKerusakan = 0;
-                    // Perhitungan total kerusakan format1 (bisa disesuaikan jika field berubah)
-                    $totalKerusakan += (($data->rumah_hancur_total_permanen ?? 0) + ($data->rumah_hancur_total_non_permanen ?? 0)) * (($data->harga_satuan_hancur_total_permanen ?? 0) + ($data->harga_satuan_hancur_total_non_permanen ?? 0));
-                    $totalKerusakan += (($data->rumah_rusak_berat_permanen ?? 0) + ($data->rumah_rusak_berat_non_permanen ?? 0)) * (($data->harga_satuan_rusak_berat_permanen ?? 0) + ($data->harga_satuan_rusak_berat_non_permanen ?? 0));
-                    $totalKerusakan += (($data->rumah_rusak_sedang_permanen ?? 0) + ($data->rumah_rusak_sedang_non_permanen ?? 0)) * (($data->harga_satuan_rusak_sedang_permanen ?? 0) + ($data->harga_satuan_rusak_sedang_non_permanen ?? 0));
-                    $totalKerusakan += (($data->rumah_rusak_ringan_permanen ?? 0) + ($data->rumah_rusak_ringan_non_permanen ?? 0)) * (($data->harga_satuan_rusak_ringan_permanen ?? 0) + ($data->harga_satuan_rusak_ringan_non_permanen ?? 0));
-                    // Tambahkan perhitungan lain jika ada
+                    // Perhitungan kerusakan rumah
+                    $totalKerusakan += (($data->rumah_hancur_total_permanen ?? 0) * ($data->harga_satuan_hancur_total_permanen ?? 0)) +
+                                      (($data->rumah_hancur_total_non_permanen ?? 0) * ($data->harga_satuan_hancur_total_non_permanen ?? 0));
+                    $totalKerusakan += (($data->rumah_rusak_berat_permanen ?? 0) * ($data->harga_satuan_rusak_berat_permanen ?? 0)) +
+                                      (($data->rumah_rusak_berat_non_permanen ?? 0) * ($data->harga_satuan_rusak_berat_non_permanen ?? 0));
+                    $totalKerusakan += (($data->rumah_rusak_sedang_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_permanen ?? 0)) +
+                                      (($data->rumah_rusak_sedang_non_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_non_permanen ?? 0));
+                    $totalKerusakan += (($data->rumah_rusak_ringan_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_permanen ?? 0)) +
+                                      (($data->rumah_rusak_ringan_non_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_non_permanen ?? 0));
+                    
+                    // Perhitungan kerusakan infrastruktur
+                    $totalKerusakan += (($data->jalan_rusak_berat ?? 0) + ($data->jalan_rusak_sedang ?? 0) + ($data->jalan_rusak_ringan ?? 0)) * ($data->harga_satuan_jalan ?? 0);
+                    $totalKerusakan += (($data->saluran_rusak_berat ?? 0) + ($data->saluran_rusak_sedang ?? 0) + ($data->saluran_rusak_ringan ?? 0)) * ($data->harga_satuan_saluran ?? 0);
+                    $totalKerusakan += (($data->balai_rusak_berat ?? 0) + ($data->balai_rusak_sedang ?? 0) + ($data->balai_rusak_ringan ?? 0)) * ($data->harga_satuan_balai ?? 0);
+                    
+                    // Perhitungan biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+                    $totalKerusakan += ($data->tenaga_kerja_hok ?? 0) * ($data->upah_harian ?? 0);
+                    $totalKerusakan += ($data->alat_berat_hari ?? 0) * ($data->biaya_per_hari ?? 0);
+                    
+                    // Perhitungan rumah sewa (dipindahkan dari kerugian ke kerusakan)
+                    $totalKerusakan += ($data->jumlah_rumah_disewa ?? 0) * ($data->harga_sewa_per_bulan ?? 0) * ($data->durasi_sewa_bulan ?? 0);
+                    
+                    // Perhitungan hunian sementara (dipindahkan dari kerugian ke kerusakan)
+                    $totalKerusakan += ($data->jumlah_tenda ?? 0) * ($data->harga_tenda ?? 0);
+                    $totalKerusakan += ($data->jumlah_barak ?? 0) * ($data->harga_barak ?? 0);
+                    $totalKerusakan += ($data->jumlah_rumah_sementara ?? 0) * ($data->harga_rumah_sementara ?? 0);
                 @endphp
                 <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
                 <small>Total Kerusakan Format 1</small>
