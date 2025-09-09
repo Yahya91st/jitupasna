@@ -47,7 +47,7 @@ class Format5Controller extends Controller
             ]);
 
             // Save all user input fields as per $fillable
-            $data = $request->only((new \App\Models\Format5Form4)->getFillable());
+            $data = $request->only((new Format5Form4)->getFillable());
             $formAgama = Format5Form4::create($data);
 
             DB::commit();
@@ -142,7 +142,7 @@ class Format5Controller extends Controller
      */
     public function edit($id)
     {
-        $formKeagamaan = \App\Models\Format5Form4::with('bencana')->findOrFail($id);
+        $formKeagamaan = Format5Form4::with('bencana')->findOrFail($id);
         $bencana = $formKeagamaan->bencana;
         return view('forms.form4.format5.edit', compact('formKeagamaan', 'bencana'));
     }
@@ -153,8 +153,8 @@ class Format5Controller extends Controller
     public function update(Request $request, $id)
     {
         try {
-            \DB::beginTransaction();
-            $formAgama = \App\Models\Format5Form4::findOrFail($id);
+            DB::beginTransaction();
+            $formAgama = Format5Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
@@ -182,11 +182,11 @@ class Format5Controller extends Controller
                 'harga_satuan_vihara' => 'nullable|numeric',
             ]);
             $formAgama->update($validated);
-            \DB::commit();
+            DB::commit();
             return redirect()->route('forms.form4.list-format5', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
             return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
         }
     }
@@ -196,7 +196,7 @@ class Format5Controller extends Controller
      */
     public function destroy($id)
     {
-        $formAgama = \App\Models\Format5Form4::findOrFail($id);
+        $formAgama = Format5Form4::findOrFail($id);
         $bencana_id = $formAgama->bencana_id;
         $formAgama->delete();
         return redirect()->route('forms.form4.format5.list', ['bencana_id' => $bencana_id])

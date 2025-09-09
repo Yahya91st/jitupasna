@@ -174,7 +174,7 @@ class Format9Controller extends Controller
      */
     public function edit($id)
     {
-        $formTelekomunikasi = \App\Models\Format9Form4::with('bencana')->findOrFail($id);
+        $formTelekomunikasi = Format9Form4::with('bencana')->findOrFail($id);
         $bencana = $formTelekomunikasi->bencana;
         return view('forms.form4.format9.edit', compact('formTelekomunikasi', 'bencana'));
     }
@@ -185,8 +185,8 @@ class Format9Controller extends Controller
     public function update(Request $request, $id)
     {
         try {
-            \DB::beginTransaction();
-            $formTelekom = \App\Models\Format9Form4::findOrFail($id);
+            DB::beginTransaction();
+            $formTelekom = Format9Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
@@ -226,11 +226,11 @@ class Format9Controller extends Controller
                 'harga_satuan_internet_cafe' => 'nullable|numeric',
             ]);
             $formTelekom->update($validated);
-            \DB::commit();
+            DB::commit();
             return redirect()->route('forms.form4.list-format9', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
             return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
         }
     }
@@ -240,7 +240,7 @@ class Format9Controller extends Controller
      */
     public function destroy($id)
     {
-        $form = \App\Models\Format9Form4::findOrFail($id);
+        $form = Format9Form4::findOrFail($id);
         $bencana_id = $form->bencana_id;
         $form->delete(); // Hard delete
         return redirect()->route('forms.form4.list-format9', ['bencana_id' => $bencana_id])

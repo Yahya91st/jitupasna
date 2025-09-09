@@ -161,7 +161,7 @@ class Format12Controller extends Controller
      */
     public function destroy($id)
     {
-        $form = \App\Models\Format12Form4::findOrFail($id);
+        $form = Format12Form4::findOrFail($id);
         $bencana_id = $form->bencana_id;
         $form->delete(); // Hard delete
         return redirect()->route('forms.form4.list-format12', ['bencana_id' => $bencana_id])

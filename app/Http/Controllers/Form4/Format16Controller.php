@@ -62,7 +62,7 @@ class Format16Controller extends Controller
             ]);
 
             // Save all user input fields as per $fillable
-            $data = $request->only((new \App\Models\Format16Form4)->getFillable());
+            $data = $request->only((new Format16Form4)->getFillable());
             $formData = Format16Form4::create($data);
 
             DB::commit();
@@ -184,7 +184,7 @@ class Format16Controller extends Controller
      */
     public function destroy($id)
     {
-        $form = \App\Models\Format16Form4::findOrFail($id);
+        $form = Format16Form4::findOrFail($id);
         $bencana_id = $form->bencana_id;
         $form->delete(); // Hard delete
         return redirect()->route('forms.form4.list-format16', ['bencana_id' => $bencana_id])
