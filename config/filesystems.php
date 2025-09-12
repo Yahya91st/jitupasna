@@ -36,6 +36,14 @@ return [
             'throw' => false,
         ],
 
+        'avatars' => [
+            'driver' => 'local',
+            'root' => public_path('frontend/dist/assets/images/avatar'),
+            'url' => env('APP_URL').'/frontend/dist/assets/images/avatar',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

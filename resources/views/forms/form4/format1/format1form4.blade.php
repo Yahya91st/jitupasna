@@ -80,54 +80,308 @@
             </tbody>
         </table>
 
-        <p class="fw-bold mt-4">2. KERUSAKAN PRASARANA LINGKUNGAN</p>
-        <p><strong>2.1 JALAN LINGKUNGAN</strong><br>
-            Rusak berat: <input type="number" class="form-control d-inline-block" name="jalan_rusak_berat" placeholder="0" style="width: 150px;" value="{{ old('jalan_rusak_berat', $data->jalan_rusak_berat ?? '') }}"> m²<br>
-            Rusak sedang: <input type="number" class="form-control d-inline-block" name="jalan_rusak_sedang" placeholder="0" style="width: 150px;" value="{{ old('jalan_rusak_sedang', $data->jalan_rusak_sedang ?? '') }}"> m²<br>
-            Rusak ringan: <input type="number" class="form-control d-inline-block" name="jalan_rusak_ringan" placeholder="0" style="width: 150px;" value="{{ old('jalan_rusak_ringan', $data->jalan_rusak_ringan ?? '') }}"> m²<br>
-            Harga Satuan/M²: Rp <input type="number" class="form-control d-inline-block" name="harga_satuan_jalan" placeholder="0" style="width: 150px;" value="{{ old('harga_satuan_jalan', $data->harga_satuan_jalan ?? '') }}">
-        </p>
+        <h6 class="fw-bold mt-4">2. KERUSAKAN PRASARANA LINGKUNGAN</h6>
 
-        <p><strong>2.2 SALURAN AIR/GORONG-GORONG</strong><br>
-            Rusak berat: <input type="number" class="form-control d-inline-block" name="saluran_rusak_berat" placeholder="0" style="width: 150px;" value="{{ old('saluran_rusak_berat', $data->saluran_rusak_berat ?? '') }}"> m²<br>
-            Rusak sedang: <input type="number" class="form-control d-inline-block" name="saluran_rusak_sedang" placeholder="0" style="width: 150px;" value="{{ old('saluran_rusak_sedang', $data->saluran_rusak_sedang ?? '') }}"> m²<br>
-            Rusak ringan: <input type="number" class="form-control d-inline-block" name="saluran_rusak_ringan" placeholder="0" style="width: 150px;" value="{{ old('saluran_rusak_ringan', $data->saluran_rusak_ringan ?? '') }}"> m²<br>
-            Harga Satuan/M²: Rp <input type="number" class="form-control d-inline-block" name="harga_satuan_saluran" placeholder="0" style="width: 150px;" value="{{ old('harga_satuan_saluran', $data->harga_satuan_saluran ?? '') }}">
-        </p>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="5">2.1 JALAN LINGKUNGAN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Rusak Berat</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jalan_rusak_berat" placeholder="0" value="{{ old('jalan_rusak_berat', $data->jalan_rusak_berat ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Satuan/M²</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_satuan_jalan" placeholder="0" value="{{ old('harga_satuan_jalan', $data->harga_satuan_jalan ?? '') }}">
+                        </div>
+                    </td>
+                    <td style="width: 20%"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Sedang</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jalan_rusak_sedang" placeholder="0" value="{{ old('jalan_rusak_sedang', $data->jalan_rusak_sedang ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Ringan</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jalan_rusak_ringan" placeholder="0" value="{{ old('jalan_rusak_ringan', $data->jalan_rusak_ringan ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
 
-        <p><strong>2.3 BALAI PERTEMUAN RW/RT</strong><br>
-            RUSAK BERAT: <input type="number" class="form-control d-inline-block" name="balai_rusak_berat" placeholder="0" style="width: 150px;" value="{{ old('balai_rusak_berat', $data->balai_rusak_berat ?? '') }}"> UNIT<br>
-            RUSAK SEDANG: <input type="number" class="form-control d-inline-block" name="balai_rusak_sedang" placeholder="0" style="width: 150px;" value="{{ old('balai_rusak_sedang', $data->balai_rusak_sedang ?? '') }}"> UNIT<br>
-            RUSAK RINGAN: <input type="number" class="form-control d-inline-block" name="balai_rusak_ringan" placeholder="0" style="width: 150px;" value="{{ old('balai_rusak_ringan', $data->balai_rusak_ringan ?? '') }}"> UNIT<br>
-            Harga Satuan/M²: Rp <input type="number" class="form-control d-inline-block" name="harga_satuan_balai" placeholder="0" style="width: 150px;" value="{{ old('harga_satuan_balai', $data->harga_satuan_balai ?? '') }}">
-        </p>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="5">2.2 SALURAN AIR/GORONG-GORONG</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Rusak Berat</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="saluran_rusak_berat" placeholder="0" value="{{ old('saluran_rusak_berat', $data->saluran_rusak_berat ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Satuan/M²</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_satuan_saluran" placeholder="0" value="{{ old('harga_satuan_saluran', $data->harga_satuan_saluran ?? '') }}">
+                        </div>
+                    </td>
+                    <td style="width: 20%"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Sedang</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="saluran_rusak_sedang" placeholder="0" value="{{ old('saluran_rusak_sedang', $data->saluran_rusak_sedang ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Ringan</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="saluran_rusak_ringan" placeholder="0" value="{{ old('saluran_rusak_ringan', $data->saluran_rusak_ringan ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="5">2.3 BALAI PERTEMUAN RW/RT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Rusak Berat</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="balai_rusak_berat" placeholder="0" value="{{ old('balai_rusak_berat', $data->balai_rusak_berat ?? '') }}">
+                            <span class="input-group-text">UNIT</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Satuan/M²</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_satuan_balai" placeholder="0" value="{{ old('harga_satuan_balai', $data->harga_satuan_balai ?? '') }}">
+                        </div>
+                    </td>
+                    <td style="width: 20%"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Sedang</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="balai_rusak_sedang" placeholder="0" value="{{ old('balai_rusak_sedang', $data->balai_rusak_sedang ?? '') }}">
+                            <span class="input-group-text">UNIT</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Ringan</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="balai_rusak_ringan" placeholder="0" value="{{ old('balai_rusak_ringan', $data->balai_rusak_ringan ?? '') }}">
+                            <span class="input-group-text">UNIT</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
 
         <hr class="my-4">
 
         <h6 class="fw-bold">II. PERKIRAAN KERUGIAN</h6>
-        <p><strong>1) BIAYA PEMBERSIHAN PUING</strong></p>
-        <p>
-            A. Jumlah Tenaga Kerja: <input type="number" class="form-control d-inline-block" name="tenaga_kerja_hok" placeholder="0" style="width: 100px;" value="{{ old('tenaga_kerja_hok', $data->tenaga_kerja_hok ?? '') }}"> HOK * Rp <input type="number" class="form-control d-inline-block" name="upah_harian" placeholder="0" style="width: 150px;" value="{{ old('upah_harian', $data->upah_harian ?? '') }}"> /Upah Harian<br>
-            B. Jumlah Alat Berat: <input type="number" class="form-control d-inline-block" name="alat_berat_hari" placeholder="0" style="width: 100px;" value="{{ old('alat_berat_hari', $data->alat_berat_hari ?? '') }}"> Hari X Rp <input type="number" class="form-control d-inline-block" name="biaya_per_hari" placeholder="0" style="width: 150px;" value="{{ old('biaya_per_hari', $data->biaya_per_hari ?? '') }}"> /Hari
-        </p>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="4">1) BIAYA PEMBERSIHAN PUING</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">A. Jumlah Tenaga Kerja</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="tenaga_kerja_hok" placeholder="0" value="{{ old('tenaga_kerja_hok', $data->tenaga_kerja_hok ?? '') }}">
+                            <span class="input-group-text">HOK</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Upah Harian</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="upah_harian" placeholder="0" value="{{ old('upah_harian', $data->upah_harian ?? '') }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>B. Jumlah Alat Berat</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="alat_berat_hari" placeholder="0" value="{{ old('alat_berat_hari', $data->alat_berat_hari ?? '') }}">
+                            <span class="input-group-text">Hari</span>
+                        </div>
+                    </td>
+                    <td>Biaya per Hari</td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="biaya_per_hari" placeholder="0" value="{{ old('biaya_per_hari', $data->biaya_per_hari ?? '') }}">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-        <p><strong>2) PERKIRAAN JUMLAH RUMAH YANG DISEWAKAN</strong><br>
-            Jumlah Rumah: <input type="number" class="form-control d-inline-block" name="jumlah_rumah_disewa" placeholder="0" style="width: 100px;" value="{{ old('jumlah_rumah_disewa', $data->jumlah_rumah_disewa ?? '') }}"> Unit<br>
-            Harga Sewa Per Bulan: <input type="number" class="form-control d-inline-block" name="harga_sewa_per_bulan" placeholder="0" style="width: 200px;" value="{{ old('harga_sewa_per_bulan', $data->harga_sewa_per_bulan ?? '') }}"> Rupiah<br>
-            Durasi Sewa: <input type="number" class="form-control d-inline-block" name="durasi_sewa_bulan" placeholder="0" style="width: 100px;" value="{{ old('durasi_sewa_bulan', $data->durasi_sewa_bulan ?? '') }}"> Bulan
-        </p>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="4">2) PERKIRAAN JUMLAH RUMAH YANG DISEWAKAN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Jumlah Rumah</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jumlah_rumah_disewa" placeholder="0" value="{{ old('jumlah_rumah_disewa', $data->jumlah_rumah_disewa ?? '') }}">
+                            <span class="input-group-text">Unit</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Sewa/Bulan</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_sewa_per_bulan" placeholder="0" value="{{ old('harga_sewa_per_bulan', $data->harga_sewa_per_bulan ?? '') }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Durasi Sewa</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="durasi_sewa_bulan" placeholder="0" value="{{ old('durasi_sewa_bulan', $data->durasi_sewa_bulan ?? '') }}">
+                            <span class="input-group-text">Bulan</span>
+                        </div>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+            </tbody>
+        </table>
 
-        <p><strong>3) PERKIRAAN KEBUTUHAN HUNIAN SEMENTARA</strong><br>
-            Tenda : <input type="number" class="form-control d-inline-block" name="jumlah_tenda" placeholder="0" style="width: 150px;" value="{{ old('jumlah_tenda', $data->jumlah_tenda ?? '') }}"> Unit<br>
-            Barak : <input type="number" class="form-control d-inline-block" name="jumlah_barak" placeholder="0" style="width: 150px;" value="{{ old('jumlah_barak', $data->jumlah_barak ?? '') }}"> Unit<br>
-            Rumah Sementara : <input type="number" class="form-control d-inline-block" name="jumlah_rumah_sementara" placeholder="0" style="width: 150px;" value="{{ old('jumlah_rumah_sementara', $data->jumlah_rumah_sementara ?? '') }}"> Unit
-        </p>
-
-        <p><strong>4) HARGA SATUAN PENYEDIAAN HUNIAN SEMENTARA</strong><br>
-            Tenda : <input type="number" class="form-control d-inline-block" name="harga_tenda" placeholder="0" style="width: 200px;" value="{{ old('harga_tenda', $data->harga_tenda ?? '') }}"> Rupiah<br>
-            Barak : <input type="number" class="form-control d-inline-block" name="harga_barak" placeholder="0" style="width: 200px;" value="{{ old('harga_barak', $data->harga_barak ?? '') }}"> Rupiah<br>
-            Rumah Sementara : <input type="number" class="form-control d-inline-block" name="harga_rumah_sementara" placeholder="0" style="width: 200px;" value="{{ old('harga_rumah_sementara', $data->harga_rumah_sementara ?? '') }}"> Rupiah
-        </p>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr class="bg-light">
+                            <th colspan="2">3) PERKIRAAN KEBUTUHAN HUNIAN SEMENTARA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 30%">Tenda</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="jumlah_tenda" placeholder="0" value="{{ old('jumlah_tenda', $data->jumlah_tenda ?? '') }}">
+                                    <span class="input-group-text">Unit</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Barak</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="jumlah_barak" placeholder="0" value="{{ old('jumlah_barak', $data->jumlah_barak ?? '') }}">
+                                    <span class="input-group-text">Unit</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rumah Sementara</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="jumlah_rumah_sementara" placeholder="0" value="{{ old('jumlah_rumah_sementara', $data->jumlah_rumah_sementara ?? '') }}">
+                                    <span class="input-group-text">Unit</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr class="bg-light">
+                            <th colspan="2">4) HARGA SATUAN HUNIAN SEMENTARA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 30%">Tenda</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" name="harga_tenda" placeholder="0" value="{{ old('harga_tenda', $data->harga_tenda ?? '') }}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Barak</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" name="harga_barak" placeholder="0" value="{{ old('harga_barak', $data->harga_barak ?? '') }}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rumah Sementara</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" name="harga_rumah_sementara" placeholder="0" value="{{ old('harga_rumah_sementara', $data->harga_rumah_sementara ?? '') }}">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <hr class="my-4">
 
