@@ -2,15 +2,13 @@
 
 @section('content')
     <div class="page-title">
-        <h3>Dashboard</h3>
+        <h3 style="">Dashboard</h3>
     </div>
     <section class="section">
         <div class="row mb-4">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                    </div>
-                    <div class="card-body px-0 pb-0">
+                    <div class="card-body px-0 pb-0 py-0">
                         <div class="table-responsive">
                             <table class='table mb-0' id="table1">
                                 <thead>

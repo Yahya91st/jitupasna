@@ -28,6 +28,22 @@
             font-weight: bold;
         }
 
+        /* Hover effect untuk sidebar */
+        .sidebar-item:hover>.sidebar-link {
+             background-color: rgba(90, 141, 238, 0.1);
+            border-left: 3px solid #5A8DEE;
+            color: #5A8DEE;
+            font-weight: bold;
+        }
+
+        /* Hover effect untuk submenu */
+        .submenu li:hover>a {
+             background-color: rgba(90, 141, 238, 0.1);
+            border-left: 3px solid #5A8DEE;
+            color: #5A8DEE;
+            font-weight: bold;
+        }
+
         .submenu.active {
             display: block;
         }
