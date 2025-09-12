@@ -20,7 +20,7 @@
         <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
             <i class="fa fa-arrow-left mr-2"></i> Kembali ke Form 4
         </a>
-        <a href="{{ route('forms.form4.format5form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+        <a href="{{ route('forms.form4.format5.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
             <i class="fa fa-plus mr-2"></i> Tambah Data Baru
         </a>
     </div>
@@ -55,7 +55,7 @@
                             <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
                             <td>
                                 <a href="{{ route('forms.form4.format5.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
-                                <a href="{{ route('forms.form4.format5.edit', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ route('forms.form4.edit-format5', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                 <form action="{{ route('forms.form4.destroy-format5', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                     @csrf
                                     @method('DELETE')

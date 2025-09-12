@@ -1,6 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    .compact-table td, .compact-table th {
+        padding: 4px 8px !important;
+    }
+</style>
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-6">Data Format 6 - Sarana Air Minum & Sanitasi</h1>
     
@@ -48,7 +53,7 @@
             <h4 class="card-title">A. Kerusakan Sarana Air Minum</h4>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered compact-table">
                 <thead>
                     <tr>
                         <th>Komponen</th>
@@ -112,7 +117,7 @@
             <h4 class="card-title">B. Kerusakan Sistem Sanitasi</h4>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered compact-table">
                 <thead>
                     <tr>
                         <th>Komponen</th>

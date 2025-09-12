@@ -175,11 +175,20 @@
                 $bangunan = [
                     'tk','sd','smp','sma','smk','pt','perpus','lab','lainnya'
                 ];
+                
+                // 1. Kerusakan bangunan pendidikan
                 foreach($bangunan as $b) {
                     $totalKerusakan += (($data[$b.'_berat_negeri'] ?? 0) + ($data[$b.'_berat_swasta'] ?? 0)) * ($data[$b.'_harga_bangunan'] ?? 0);
                     $totalKerusakan += (($data[$b.'_sedang_negeri'] ?? 0) + ($data[$b.'_sedang_swasta'] ?? 0)) * ($data[$b.'_harga_bangunan'] ?? 0);
                     $totalKerusakan += (($data[$b.'_ringan_negeri'] ?? 0) + ($data[$b.'_ringan_swasta'] ?? 0)) * ($data[$b.'_harga_bangunan'] ?? 0);
                 }
+                
+                // 2. Biaya tenaga kerja dan alat berat (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += (($data['biaya_tenaga_kerja_hok'] ?? 0) * ($data['biaya_tenaga_kerja_upah'] ?? 0));
+                $totalKerusakan += (($data['biaya_alat_berat_hari'] ?? 0) * ($data['biaya_alat_berat_harga'] ?? 0));
+                
+                // 3. Biaya sekolah sementara (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += (($data['jumlah_sekolah_sementara'] ?? 0) * ($data['harga_sekolah_sementara'] ?? 0));
             @endphp
             <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
             <small>Total Kerusakan Format 2</small>

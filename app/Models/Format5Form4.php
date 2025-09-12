@@ -49,4 +49,66 @@ class Format5Form4 extends Model
     {
         return $this->belongsTo(Bencana::class);
     }
+    
+    /**
+     * Calculate total kerusakan for Format 5 (Religious sector)
+     * Total kerusakan = semua item kerusakan + semua item kerugian (kerugian = 0)
+     * TIDAK menggunakan "Rata-Rata Luas Bangunan" sesuai permintaan
+     */
+    public function calculateTotalKerusakan()
+    {
+        $totalKerusakan = 0;
+        
+        // Daftar jenis bangunan ibadah
+        $jenisIbadah = ['gereja', 'kapel', 'masjid', 'musholla', 'pura', 'vihara'];
+        
+        foreach ($jenisIbadah as $jenis) {
+            // Hitung total unit kerusakan
+            $totalUnit = ($this->{$jenis . '_rb_negeri'} ?? 0) + 
+                        ($this->{$jenis . '_rb_swasta'} ?? 0) + 
+                        ($this->{$jenis . '_rs_negeri'} ?? 0) + 
+                        ($this->{$jenis . '_rs_swasta'} ?? 0) + 
+                        ($this->{$jenis . '_rr_negeri'} ?? 0) + 
+                        ($this->{$jenis . '_rr_swasta'} ?? 0);
+            
+            // TIDAK menggunakan luas dan peralatan dalam perhitungan sesuai permintaan
+            // $luas = $this->{$jenis . '_luas'} ?? 0;
+            $hargaBangunan = $this->{$jenis . '_harga_bangunan'} ?? 0;
+            // $hargaPeralatan = $this->{$jenis . '_harga_peralatan'} ?? 0; // TIDAK DIGUNAKAN
+            
+            // Kerusakan = HANYA (total unit * harga bangunan) 
+            // TANPA mengalikan dengan luas dan TANPA harga peralatan
+            $totalKerusakan += ($totalUnit * $hargaBangunan);
+        }
+        
+        // Tambahkan kerugian (biaya pembersihan puing) ke total kerusakan
+        $biayaTenagaKerja = ($this->biaya_tenaga_kerja_hok ?? 0) * ($this->biaya_tenaga_kerja_upah ?? 0);
+        $biayaAlatBerat = ($this->biaya_alat_berat_hari ?? 0) * ($this->biaya_alat_berat_harga ?? 0);
+        
+        $totalKerusakan += $biayaTenagaKerja + $biayaAlatBerat;
+        
+        return $totalKerusakan;
+    }
+    
+    /**
+     * Calculate total kerugian (sesuai permintaan: kerugian = 0)
+     */
+    public function calculateTotalKerugian()
+    {
+        // Sesuai permintaan: kerugian = 0, semua masuk ke total kerusakan
+        return 0;
+    }
+    
+    /**
+     * Automatically calculate totals when saving
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::saving(function ($model) {
+            $model->total_kerusakan = $model->calculateTotalKerusakan();
+            $model->total_kerugian = $model->calculateTotalKerugian();
+        });
+    }
 }

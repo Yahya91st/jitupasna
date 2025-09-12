@@ -6,9 +6,9 @@
     
     @if($bencana)
         <div class="alert alert-light-primary color-primary mb-4">
-            <p>Bencana: {{ $bencana->kategori_bencana->nama }}</p>
-            <p>Tanggal: {{ $bencana->tanggal }}</p>
-            <p>Lokasi: 
+            <p><strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama }}</p>
+            <p><strong>Tanggal:</strong> {{ $bencana->tanggal }}</p>
+            <p><strong>Lokasi:</strong> 
                 @foreach($bencana->desa as $desa)
                     {{ $desa->nama }}@if(!$loop->last), @endif
                 @endforeach
@@ -16,141 +16,161 @@
         </div>
     @endif
     
-    <div class="mb-4 flex justify-between">        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
-            <i class="fa fa-arrow-left mr-2"></i> Kembali
+    <div class="mb-4 d-flex justify-content-between">
+        <a href="{{ route('forms.form4.list-format4', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
+            <i class="fa fa-arrow-left mr-2"></i> Kembali ke List
         </a>
-        <a href="{{ route('forms.form4.format4form4-alt', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-            <i class="fa fa-plus mr-2"></i> Tambah Data Baru
+        <a href="{{ route('forms.form4.edit-format4', $formSosial->id) }}" class="btn btn-warning">
+            <i class="fa fa-edit mr-2"></i> Edit Data
         </a>
     </div>
     
-    @if(count($facilityReports) > 0)
-        <div class="bg-white p-6 rounded-lg shadow mb-6">
-            <h2 class="text-xl font-semibold mb-4">Kerusakan Fasilitas Pelayanan Sosial</h2>
-            <div class="overflow-x-auto">
-                <table class="table table-striped table-hover">
+    <!-- Data Lokasi -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Informasi Lokasi</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nama Kampung:</strong> {{ $formSosial->nama_kampung }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Nama Distrik:</strong> {{ $formSosial->nama_distrik }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Kerusakan Fisik Bangunan -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">A. Kerusakan Fisik Bangunan / Sarana Pelayanan Sosial</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Jenis Fasilitas</th>
-                            <th>Rusak Berat</th>
-                            <th>Rusak Sedang</th>
-                            <th>Rusak Ringan</th>
-                            <th>Total Biaya (Rp)</th>
+                            <th>Jenis Bangunan</th>
+                            <th>Rusak Berat (Negeri)</th>
+                            <th>Rusak Berat (Swasta)</th>
+                            <th>Rusak Sedang (Negeri)</th>
+                            <th>Rusak Sedang (Swasta)</th>
+                            <th>Rusak Ringan (Negeri)</th>
+                            <th>Rusak Ringan (Swasta)</th>
+                            <th>Harga Satuan Bangunan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($facilityReports as $report)
-                        @php
-                            $data = json_decode($report->data);
-                        @endphp
                         <tr>
-                            <td>{{ $report->name }}</td>
-                            <td>{{ $data->rusak_berat }}</td>
-                            <td>{{ $data->rusak_sedang }}</td>
-                            <td>{{ $data->rusak_ringan }}</td>
-                            <td>{{ number_format($data->total_biaya, 0, ',', '.') }}</td>
+                            <td><strong>Panti Asuhan</strong></td>
+                            <td>{{ $formSosial->panti_sosial_rb_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_sosial_rb_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_sosial_rs_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_sosial_rs_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_sosial_rr_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_sosial_rr_swasta ?? 0 }}</td>
+                            <td>Rp {{ number_format($formSosial->panti_sosial_harga_bangunan ?? 0, 0, ',', '.') }}</td>
                         </tr>
-                        @endforeach
+                        <tr>
+                            <td><strong>Panti Wredha</strong></td>
+                            <td>{{ $formSosial->panti_asuhan_rb_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_asuhan_rb_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_asuhan_rs_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_asuhan_rs_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_asuhan_rr_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->panti_asuhan_rr_swasta ?? 0 }}</td>
+                            <td>Rp {{ number_format($formSosial->panti_asuhan_harga_bangunan ?? 0, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Panti Tuna Grahita</strong></td>
+                            <td>{{ $formSosial->balai_pelayanan_rb_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->balai_pelayanan_rb_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->balai_pelayanan_rs_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->balai_pelayanan_rs_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->balai_pelayanan_rr_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->balai_pelayanan_rr_swasta ?? 0 }}</td>
+                            <td>Rp {{ number_format($formSosial->balai_pelayanan_harga_bangunan ?? 0, 0, ',', '.') }}</td>
+                        </tr>
+                        @if($formSosial->lainnya_jenis)
+                        <tr>
+                            <td><strong>{{ $formSosial->lainnya_jenis }}</strong></td>
+                            <td>{{ $formSosial->lainnya_rb_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->lainnya_rb_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->lainnya_rs_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->lainnya_rs_swasta ?? 0 }}</td>
+                            <td>{{ $formSosial->lainnya_rr_negeri ?? 0 }}</td>
+                            <td>{{ $formSosial->lainnya_rr_swasta ?? 0 }}</td>
+                            <td>Rp {{ number_format($formSosial->lainnya_harga_bangunan ?? 0, 0, ',', '.') }}</td>
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
-        
-        @if($lossReport)
-        <div class="bg-white p-6 rounded-lg shadow mb-6">
-            <h2 class="text-xl font-semibold mb-4">Perkiraan Kerugian</h2>
-            @php
-                $lossData = json_decode($lossReport->data);
-            @endphp
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="border p-4 rounded">
-                    <h3 class="text-lg font-medium mb-3">Biaya Pembersihan Puing</h3>
-                    <p>Tenaga Kerja: {{ $lossData->biaya_tenaga_kerja_hok ?? 0 }} HOK × Rp {{ number_format($lossData->biaya_tenaga_kerja_upah ?? 0, 0, ',', '.') }} = Rp {{ number_format($lossData->biaya_tenaga_kerja ?? 0, 0, ',', '.') }}</p>
-                    <p>Alat Berat: {{ $lossData->biaya_alat_berat_hari ?? 0 }} Hari × Rp {{ number_format($lossData->biaya_alat_berat_harga ?? 0, 0, ',', '.') }} = Rp {{ number_format($lossData->biaya_alat_berat ?? 0, 0, ',', '.') }}</p>
-                </div>
-                
-                <div class="border p-4 rounded">
-                    <h3 class="text-lg font-medium mb-3">Kehilangan Pendapatan</h3>
-                    <p>Rata-rata Pendapatan per Hari: Rp {{ number_format($lossData->pendapatan_perhari ?? 0, 0, ',', '.') }}</p>
-                    <p>Lama Gangguan: {{ $lossData->lama_gangguan ?? 0 }} Hari</p>
-                    <p>Total Kehilangan: Rp {{ number_format($lossData->biaya_kehilangan_pendapatan ?? 0, 0, ',', '.') }}</p>
-                </div>
-                
-                <div class="border p-4 rounded">
-                    <h3 class="text-lg font-medium mb-3">Biaya Penanganan</h3>
-                    <p>Penanganan Korban Bencana: Rp {{ number_format($lossData->biaya_penanganan_korban ?? 0, 0, ',', '.') }}</p>
-                    <p>Bantuan Logistik: Rp {{ number_format($lossData->biaya_logistik ?? 0, 0, ',', '.') }}</p>
-                </div>
-                
-                <div class="border p-4 rounded">
-                    <h3 class="text-lg font-medium mb-3">Pos Pelayanan Sementara</h3>
-                    <p>Jumlah Pos: {{ $lossData->jumlah_pos ?? 0 }} Unit</p>
-                    <p>Biaya Operasional per Hari: Rp {{ number_format($lossData->biaya_operasional_perhari ?? 0, 0, ',', '.') }}</p>
-                    <p>Jangka Waktu: {{ $lossData->jangka_waktu ?? 0 }} Hari</p>
-                    <p>Total Biaya: Rp {{ number_format($lossData->biaya_pos_pelayanan ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            
-            <div class="mt-6 bg-gray-100 p-4 rounded text-center">
-                <h3 class="text-xl font-bold">Total Kerugian: Rp {{ number_format($lossData->total_biaya_kerugian ?? 0, 0, ',', '.') }}</h3>
-            </div>
+    </div>
+    
+    <!-- Perkiraan Kerugian (yang sudah masuk ke kerusakan) -->
+    <div class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">B. Perkiraan Kerugian (Telah Dipindahkan ke Total Kerusakan)</h5>
         </div>
-        @endif
-        
-        <!-- Summary -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Ringkasan</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                @php
-                    $totalRB = $totalRS = $totalRR = $totalKerusakan = $totalKerugian = 0;
-                    
-                    // Calculate damage totals
-                    foreach($facilityReports as $report) {
-                        $data = json_decode($report->data);
-                        $totalRB += $data->rusak_berat;
-                        $totalRS += $data->rusak_sedang;
-                        $totalRR += $data->rusak_ringan;
-                        $totalKerusakan += $data->total_biaya;
-                    }
-                    
-                    // Calculate loss total
-                    if($lossReport) {
-                        $lossData = json_decode($lossReport->data);
-                        $totalKerugian = $lossData->total_biaya_kerugian ?? 0;
-                    }
-                    
-                    $totalKeseluruhan = $totalKerusakan + $totalKerugian;
-                @endphp
-                
-                <div class="text-center">
-                    <h3 class="text-lg font-semibold text-red-600">{{ $totalRB }}</h3>
-                    <p class="text-sm text-gray-600">Total Rusak Berat</p>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="fw-bold">1) Biaya Pembersihan Puing</h6>
+                    <p>Tenaga Kerja: {{ $formSosial->biaya_tenaga_kerja_hok ?? 0 }} HOK × Rp {{ number_format($formSosial->biaya_tenaga_kerja_upah ?? 0, 0, ',', '.') }} = Rp {{ number_format(($formSosial->biaya_tenaga_kerja_hok ?? 0) * ($formSosial->biaya_tenaga_kerja_upah ?? 0), 0, ',', '.') }}</p>
+                    <p>Alat Berat: {{ $formSosial->biaya_alat_berat_hari ?? 0 }} Hari × Rp {{ number_format($formSosial->biaya_alat_berat_harga ?? 0, 0, ',', '.') }} = Rp {{ number_format(($formSosial->biaya_alat_berat_hari ?? 0) * ($formSosial->biaya_alat_berat_harga ?? 0), 0, ',', '.') }}</p>
                 </div>
-                <div class="text-center">
-                    <h3 class="text-lg font-semibold text-yellow-600">{{ $totalRS }}</h3>
-                    <p class="text-sm text-gray-600">Total Rusak Sedang</p>
+                <div class="col-md-6">
+                    <h6 class="fw-bold">2) Biaya Penyediaan Jatah Hidup</h6>
+                    <p>Jumlah Penerima: {{ number_format($formSosial->jumlah_penerima ?? 0, 0, ',', '.') }} orang</p>
+                    <p>Bantuan per Orang: Rp {{ number_format($formSosial->bantuan_per_orang ?? 0, 0, ',', '.') }}</p>
+                    <p>Total: Rp {{ number_format(($formSosial->jumlah_penerima ?? 0) * ($formSosial->bantuan_per_orang ?? 0), 0, ',', '.') }}</p>
                 </div>
-                <div class="text-center">
-                    <h3 class="text-lg font-semibold text-green-600">{{ $totalRR }}</h3>
-                    <p class="text-sm text-gray-600">Total Rusak Ringan</p>
-                </div>
-                <div class="text-center">
-                    <h3 class="text-lg font-semibold text-blue-600">Rp {{ number_format($totalKeseluruhan, 0, ',', '.') }}</h3>
-                    <p class="text-sm text-gray-600">Total Biaya</p>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h6 class="fw-bold">3) Tambahan Biaya Sosial</h6>
+                    <ul>
+                        <li>Biaya Pelayanan Kesehatan: Rp {{ number_format($formSosial->biaya_pelayanan_kesehatan ?? 0, 0, ',', '.') }}</li>
+                        <li>Biaya Pelayanan Pendidikan: Rp {{ number_format($formSosial->biaya_pelayanan_pendidikan ?? 0, 0, ',', '.') }}</li>
+                        <li>Biaya Pendampingan Psikososial: Rp {{ number_format($formSosial->biaya_pendampingan_psikososial ?? 0, 0, ',', '.') }}</li>
+                        <li>Biaya Pelatihan Darurat: Rp {{ number_format($formSosial->biaya_pelatihan_darurat ?? 0, 0, ',', '.') }}</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    @else
-        <div class="bg-white p-8 rounded-lg shadow text-center">
-            <div class="text-gray-400 mb-4">
-                <i class="fas fa-users fa-4x"></i>
-            </div>            <h3 class="text-lg font-semibold mb-2">Belum Ada Data</h3>
-            <p class="text-gray-600 mb-4">Belum ada data laporan perlindungan sosial untuk bencana ini.</p>
-            <a href="{{ route('forms.form4.format4form4-alt', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-                <i class="fa fa-plus mr-2"></i> Tambah Data Baru
-            </a>
+    </div>
+    
+    <!-- Total Perhitungan -->
+    <div class="card mb-4 border-success">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">TOTAL PERHITUNGAN</h5>
         </div>
-    @endif
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="text-center p-3 border rounded bg-light">
+                        <h4 class="text-success fw-bold">Rp {{ number_format($formSosial->total_kerusakan ?? 0, 0, ',', '.') }}</h4>
+                        <p class="mb-0 fw-bold">Total Kerusakan</p>
+                        <small class="text-muted">(Termasuk semua item kerugian)</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center p-3 border rounded bg-light">
+                        <h4 class="text-secondary fw-bold">Rp {{ number_format($formSosial->total_kerugian ?? 0, 0, ',', '.') }}</h4>
+                        <p class="mb-0 fw-bold">Total Kerugian</p>
+                        <small class="text-muted">(Sudah dipindahkan ke kerusakan)</small>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info mt-3 mb-0">
+                <i class="fas fa-info-circle"></i>
+                <strong>Catatan:</strong> Sesuai dengan pedoman terbaru, semua item kerugian telah dipindahkan ke dalam total kerusakan untuk memberikan gambaran dampak keseluruhan yang lebih akurat.
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

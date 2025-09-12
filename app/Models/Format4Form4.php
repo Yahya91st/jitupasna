@@ -50,39 +50,42 @@ class Format4Form4 extends Model
         return $this->hasOne(Rekap::class, 'format4_form4_id');
     }
 
-    // Calculate total kerusakan (damage)
+    // Calculate total kerusakan (damage) - now includes all kerugian items moved from losses
     public function calculateTotalKerusakan()
     {
-        $rumah_kerusakan = (
-            ($this->rumah_hancur_total_permanen * $this->harga_satuan_permanen) +
-            ($this->rumah_hancur_total_non_permanen * $this->harga_satuan_non_permanen) +
-            ($this->rumah_rusak_berat_permanen * $this->harga_satuan_permanen * 0.75) +
-            ($this->rumah_rusak_berat_non_permanen * $this->harga_satuan_non_permanen * 0.75) +
-            ($this->rumah_rusak_sedang_permanen * $this->harga_satuan_permanen * 0.5) +
-            ($this->rumah_rusak_sedang_non_permanen * $this->harga_satuan_non_permanen * 0.5) +
-            ($this->rumah_rusak_ringan_permanen * $this->harga_satuan_permanen * 0.25) +
-            ($this->rumah_rusak_ringan_non_permanen * $this->harga_satuan_non_permanen * 0.25)
-        );
+        $faskes = ['panti_sosial', 'panti_asuhan', 'balai_pelayanan', 'lainnya'];
+        $totalKerusakan = 0;
+        
+        // 1. Kerusakan bangunan fasilitas perlindungan sosial (tanpa luas)
+        foreach ($faskes as $f) {
+            // Rusak berat (100% x harga bangunan)
+            $totalKerusakan += (($this->{$f.'_rb_negeri'} ?? 0) + ($this->{$f.'_rb_swasta'} ?? 0)) * ($this->{$f.'_harga_bangunan'} ?? 0);
+            // Rusak sedang (75% x harga bangunan)
+            $totalKerusakan += (($this->{$f.'_rs_negeri'} ?? 0) + ($this->{$f.'_rs_swasta'} ?? 0)) * ($this->{$f.'_harga_bangunan'} ?? 0) * 0.75;
+            // Rusak ringan (50% x harga bangunan)
+            $totalKerusakan += (($this->{$f.'_rr_negeri'} ?? 0) + ($this->{$f.'_rr_swasta'} ?? 0)) * ($this->{$f.'_harga_bangunan'} ?? 0) * 0.5;
+        }
+        
+        // 2. Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->biaya_tenaga_kerja_hok ?? 0) * ($this->biaya_tenaga_kerja_upah ?? 0);
+        $totalKerusakan += ($this->biaya_alat_berat_hari ?? 0) * ($this->biaya_alat_berat_harga ?? 0);
+        
+        // 3. Biaya penyediaan jatah hidup (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->jumlah_penerima ?? 0) * ($this->bantuan_per_orang ?? 0);
+        
+        // 4. Tambahan biaya sosial (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->biaya_pelayanan_kesehatan ?? 0);
+        $totalKerusakan += ($this->biaya_pelayanan_pendidikan ?? 0);
+        $totalKerusakan += ($this->biaya_pendampingan_psikososial ?? 0);
+        $totalKerusakan += ($this->biaya_pelatihan_darurat ?? 0);
 
-        $infrastruktur_kerusakan = (
-            (($this->jalan_rusak_berat * 1.0) + ($this->jalan_rusak_sedang * 0.75) + ($this->jalan_rusak_ringan * 0.5)) * $this->harga_satuan_jalan +
-            (($this->saluran_rusak_berat * 1.0) + ($this->saluran_rusak_sedang * 0.75) + ($this->saluran_rusak_ringan * 0.5)) * $this->harga_satuan_saluran +
-            (($this->balai_rusak_berat * 1.0) + ($this->balai_rusak_sedang * 0.75) + ($this->balai_rusak_ringan * 0.5)) * $this->harga_satuan_balai
-        );
-
-        return $rumah_kerusakan + $infrastruktur_kerusakan;
+        return $totalKerusakan;
     }
 
-    // Calculate total kerugian (losses)
+    // Calculate total kerugian (losses) - now returns 0 since all moved to kerusakan
     public function calculateTotalKerugian()
     {
-        return (
-            ($this->tenaga_kerja_hok * $this->upah_harian) +
-            ($this->alat_berat_hari * $this->biaya_per_hari) +
-            ($this->jumlah_rumah_disewa * $this->harga_sewa_per_bulan * $this->durasi_sewa_bulan) +
-            ($this->jumlah_tenda * $this->harga_tenda) +
-            ($this->jumlah_barak * $this->harga_barak) +
-            ($this->jumlah_rumah_sementara * $this->harga_rumah_sementara)
-        );
+        // All kerugian items have been moved to kerusakan calculation
+        return 0;
     }
 }

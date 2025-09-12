@@ -33,7 +33,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="card-title">Daftar Laporan Sektor Sosial</h4>
-                <a href="{{ route('forms.form4.format4form4-alt', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                <a href="{{ route('forms.form4.index-format4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
                     <i class="bi bi-plus"></i> Tambah Data Baru
                 </a>
             </div>
@@ -64,18 +64,14 @@
                                         <td>Rp. {{ number_format($report->total_kerusakan ?? 0, 0, ',', '.') }}</td>
                                         <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
                                         <td>
-                                            <a href="{{ route('forms.form4.format4.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
-                                            <a href="{{ route('forms.form4.format4.edit', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="{{ route('forms.form4.show-format4', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                                            <a href="{{ route('forms.form4.edit-format4', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                             <form action="{{ route('forms.form4.destroy-format4', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                             </form>
-                                            @if(Route::has('forms.form4.format4.pdf'))
-                                                <a href="{{ route('forms.form4.format4.pdf', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
-                                            @else
-                                                <a href="#" class="btn btn-secondary btn-sm disabled">PDF</a>
-                                            @endif
+                                            <a href="{{ route('forms.form4.pdf-format4', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
                                         </td>
                                     </tr>
                                 @endforeach

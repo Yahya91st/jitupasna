@@ -43,44 +43,62 @@ class Format6Controller extends Controller
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
                 // Air Minum
-                'struktur_air_unit' => 'nullable|integer',
-                'struktur_air_harga' => 'nullable|numeric',
+                'struktur_air_unit' => 'nullable|string',
+                'struktur_air_jumlah' => 'nullable|integer',
+                'struktur_air_harga_satuan' => 'nullable|numeric',
                 'struktur_air_total' => 'nullable|numeric',
-                'instalasi_pemurnian_unit' => 'nullable|integer',
-                'instalasi_pemurnian_harga' => 'nullable|numeric',
+                'instalasi_pemurnian_unit' => 'nullable|string',
+                'instalasi_pemurnian_jumlah' => 'nullable|integer',
+                'instalasi_pemurnian_harga_satuan' => 'nullable|numeric',
                 'instalasi_pemurnian_total' => 'nullable|numeric',
-                'perpipaan_unit' => 'nullable|integer',
-                'perpipaan_harga' => 'nullable|numeric',
+                'perpipaan_unit' => 'nullable|string',
+                'perpipaan_jumlah' => 'nullable|integer',
+                'perpipaan_harga_satuan' => 'nullable|numeric',
                 'perpipaan_total' => 'nullable|numeric',
-                'penyimpanan_unit' => 'nullable|integer',
-                'penyimpanan_harga' => 'nullable|numeric',
+                'penyimpanan_unit' => 'nullable|string',
+                'penyimpanan_jumlah' => 'nullable|integer',
+                'penyimpanan_harga_satuan' => 'nullable|numeric',
                 'penyimpanan_total' => 'nullable|numeric',
-                'sumur_unit' => 'nullable|integer',
-                'sumur_harga' => 'nullable|numeric',
+                'sumur_unit' => 'nullable|string',
+                'sumur_jumlah' => 'nullable|integer',
+                'sumur_harga_satuan' => 'nullable|numeric',
                 'sumur_total' => 'nullable|numeric',
-                'mck_unit' => 'nullable|integer',
-                'mck_harga' => 'nullable|numeric',
+                'mck_unit' => 'nullable|string',
+                'mck_jumlah' => 'nullable|integer',
+                'mck_harga_satuan' => 'nullable|numeric',
                 'mck_total' => 'nullable|numeric',
                 // Sanitasi
-                'sanitasi_unit' => 'nullable|integer',
-                'sanitasi_harga' => 'nullable|numeric',
+                'sanitasi_unit' => 'nullable|string',
+                'sanitasi_jumlah' => 'nullable|integer',
+                'sanitasi_harga_satuan' => 'nullable|numeric',
                 'sanitasi_total' => 'nullable|numeric',
-                'drainase_unit' => 'nullable|integer',
-                'drainase_harga' => 'nullable|numeric',
+                'drainase_unit' => 'nullable|string',
+                'drainase_jumlah' => 'nullable|integer',
+                'drainase_harga_satuan' => 'nullable|numeric',
                 'drainase_total' => 'nullable|numeric',
-                'limbah_padat_unit' => 'nullable|integer',
-                'limbah_padat_harga' => 'nullable|numeric',
+                'limbah_padat_unit' => 'nullable|string',
+                'limbah_padat_jumlah' => 'nullable|integer',
+                'limbah_padat_harga_satuan' => 'nullable|numeric',
                 'limbah_padat_total' => 'nullable|numeric',
-                'wc_umum_unit' => 'nullable|integer',
-                'wc_umum_harga' => 'nullable|numeric',
+                'wc_umum_unit' => 'nullable|string',
+                'wc_umum_jumlah' => 'nullable|integer',
+                'wc_umum_harga_satuan' => 'nullable|numeric',
                 'wc_umum_total' => 'nullable|numeric',
                 // Kerugian
                 'kehilangan_pendapatan_pdam' => 'nullable|numeric',
-                'biaya_pemurnian_air' => 'nullable|numeric',
-                'biaya_distribusi_air' => 'nullable|numeric',
-                'biaya_pembersihan_sumur' => 'nullable|numeric',
-                'biaya_lain_air' => 'nullable|numeric',
-                'biaya_sanitasi_lain' => 'nullable|numeric',
+                'biaya_pemurnian' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_pemurnian' => 'nullable|string',
+                'biaya_distribusi' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_distribusi' => 'nullable|string',
+                'biaya_pembersihan' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_pembersihan' => 'nullable|string',
+                'biaya_lain' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_lain' => 'nullable|string',
+                'sanitasi_pendapatan' => 'nullable|numeric',
+                'biaya_pembersihan_jaringan' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_pembersihan_jaringan' => 'nullable|string',
+                'biaya_bahan_kimia' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_bahan_kimia' => 'nullable|string',
                 'total_kerusakan' => 'nullable|numeric',
                 'total_kerugian' => 'nullable|numeric',
             ]);
@@ -125,8 +143,9 @@ class Format6Controller extends Controller
     {
         $formAirSanitasi = Format6Form4::with('bencana')->findOrFail($id);
         $bencana = $formAirSanitasi->bencana;
+        $data = $formAirSanitasi->toArray(); // Convert model to array for the view
         
-        return view('forms.form4.format6.show-format6', compact('formAirSanitasi', 'bencana'));
+        return view('forms.form4.format6.show-format6', compact('formAirSanitasi', 'bencana', 'data'));
     }
 
     /**
@@ -157,8 +176,9 @@ class Format6Controller extends Controller
     {
         $formAirSanitasi = Format6Form4::with('bencana')->findOrFail($id);
         $bencana = $formAirSanitasi->bencana;
+        $report = $formAirSanitasi; // For compatibility with the PDF view
         
-        $pdf = Pdf::loadView('forms.form4.format6.pdf', compact('formAirSanitasi', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format6.pdf', compact('formAirSanitasi', 'bencana', 'report'));
         $pdf->setPaper('A4', 'landscape');
         
         return $pdf->download('Format6_AirSanitasi_' . $formAirSanitasi->nama_kampung . '.pdf');
@@ -171,8 +191,9 @@ class Format6Controller extends Controller
     {
         $formAirSanitasi = Format6Form4::with('bencana')->findOrFail($id);
         $bencana = $formAirSanitasi->bencana;
+        $report = $formAirSanitasi; // For compatibility with the PDF view
         
-        $pdf = Pdf::loadView('forms.form4.format6.pdf', compact('formAirSanitasi', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format6.pdf', compact('formAirSanitasi', 'bencana', 'report'));
         $pdf->setPaper('A4', 'landscape');
         
         return $pdf->stream('Format6_AirSanitasi_' . $formAirSanitasi->nama_kampung . '.pdf');
@@ -201,44 +222,62 @@ class Format6Controller extends Controller
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
                 // Air Minum
-                'struktur_air_unit' => 'nullable|integer',
-                'struktur_air_harga' => 'nullable|numeric',
+                'struktur_air_unit' => 'nullable|string',
+                'struktur_air_jumlah' => 'nullable|integer',
+                'struktur_air_harga_satuan' => 'nullable|numeric',
                 'struktur_air_total' => 'nullable|numeric',
-                'instalasi_pemurnian_unit' => 'nullable|integer',
-                'instalasi_pemurnian_harga' => 'nullable|numeric',
+                'instalasi_pemurnian_unit' => 'nullable|string',
+                'instalasi_pemurnian_jumlah' => 'nullable|integer',
+                'instalasi_pemurnian_harga_satuan' => 'nullable|numeric',
                 'instalasi_pemurnian_total' => 'nullable|numeric',
-                'perpipaan_unit' => 'nullable|integer',
-                'perpipaan_harga' => 'nullable|numeric',
+                'perpipaan_unit' => 'nullable|string',
+                'perpipaan_jumlah' => 'nullable|integer',
+                'perpipaan_harga_satuan' => 'nullable|numeric',
                 'perpipaan_total' => 'nullable|numeric',
-                'penyimpanan_unit' => 'nullable|integer',
-                'penyimpanan_harga' => 'nullable|numeric',
+                'penyimpanan_unit' => 'nullable|string',
+                'penyimpanan_jumlah' => 'nullable|integer',
+                'penyimpanan_harga_satuan' => 'nullable|numeric',
                 'penyimpanan_total' => 'nullable|numeric',
-                'sumur_unit' => 'nullable|integer',
-                'sumur_harga' => 'nullable|numeric',
+                'sumur_unit' => 'nullable|string',
+                'sumur_jumlah' => 'nullable|integer',
+                'sumur_harga_satuan' => 'nullable|numeric',
                 'sumur_total' => 'nullable|numeric',
-                'mck_unit' => 'nullable|integer',
-                'mck_harga' => 'nullable|numeric',
+                'mck_unit' => 'nullable|string',
+                'mck_jumlah' => 'nullable|integer',
+                'mck_harga_satuan' => 'nullable|numeric',
                 'mck_total' => 'nullable|numeric',
                 // Sanitasi
-                'sanitasi_unit' => 'nullable|integer',
-                'sanitasi_harga' => 'nullable|numeric',
+                'sanitasi_unit' => 'nullable|string',
+                'sanitasi_jumlah' => 'nullable|integer',
+                'sanitasi_harga_satuan' => 'nullable|numeric',
                 'sanitasi_total' => 'nullable|numeric',
-                'drainase_unit' => 'nullable|integer',
-                'drainase_harga' => 'nullable|numeric',
+                'drainase_unit' => 'nullable|string',
+                'drainase_jumlah' => 'nullable|integer',
+                'drainase_harga_satuan' => 'nullable|numeric',
                 'drainase_total' => 'nullable|numeric',
-                'limbah_padat_unit' => 'nullable|integer',
-                'limbah_padat_harga' => 'nullable|numeric',
+                'limbah_padat_unit' => 'nullable|string',
+                'limbah_padat_jumlah' => 'nullable|integer',
+                'limbah_padat_harga_satuan' => 'nullable|numeric',
                 'limbah_padat_total' => 'nullable|numeric',
-                'wc_umum_unit' => 'nullable|integer',
-                'wc_umum_harga' => 'nullable|numeric',
+                'wc_umum_unit' => 'nullable|string',
+                'wc_umum_jumlah' => 'nullable|integer',
+                'wc_umum_harga_satuan' => 'nullable|numeric',
                 'wc_umum_total' => 'nullable|numeric',
                 // Kerugian
                 'kehilangan_pendapatan_pdam' => 'nullable|numeric',
-                'biaya_pemurnian_air' => 'nullable|numeric',
-                'biaya_distribusi_air' => 'nullable|numeric',
-                'biaya_pembersihan_sumur' => 'nullable|numeric',
-                'biaya_lain_air' => 'nullable|numeric',
-                'biaya_sanitasi_lain' => 'nullable|numeric',
+                'biaya_pemurnian' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_pemurnian' => 'nullable|string',
+                'biaya_distribusi' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_distribusi' => 'nullable|string',
+                'biaya_pembersihan' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_pembersihan' => 'nullable|string',
+                'biaya_lain' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_lain' => 'nullable|string',
+                'sanitasi_pendapatan' => 'nullable|numeric',
+                'biaya_pembersihan_jaringan' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_pembersihan_jaringan' => 'nullable|string',
+                'biaya_bahan_kimia' => 'nullable|numeric',
+                'dasar_perhitungan_biaya_bahan_kimia' => 'nullable|string',
                 'total_kerusakan' => 'nullable|numeric',
                 'total_kerugian' => 'nullable|numeric',
             ]);

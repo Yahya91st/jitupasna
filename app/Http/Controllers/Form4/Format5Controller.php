@@ -42,12 +42,19 @@ class Format5Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Religious sector specific fields - customize based on actual form
-                // ... add all other fields as needed ...
+                // Format 5 fields - all others are optional
             ]);
 
             // Save all user input fields as per $fillable
             $data = $request->only((new Format5Form4)->getFillable());
+            
+            // Ensure numeric fields are properly cast
+            foreach ($data as $key => $value) {
+                if (empty($value) || $value === '') {
+                    $data[$key] = null;
+                }
+            }
+            
             $formAgama = Format5Form4::create($data);
 
             DB::commit();
@@ -60,7 +67,7 @@ class Format5Controller extends Controller
                 ]);
             }
 
-            return redirect()->route('forms.form4.list-format5', ['bencana_id' => $formAgama->bencana_id])
+            return redirect()->route('forms.form4.format5.list', ['bencana_id' => $formAgama->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -154,37 +161,33 @@ class Format5Controller extends Controller
     {
         try {
             DB::beginTransaction();
+            
             $formAgama = Format5Form4::findOrFail($id);
+            
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Religious sector specific fields
-                'masjid_hancur_total' => 'nullable|integer',
-                'masjid_rusak_berat' => 'nullable|integer',
-                'masjid_rusak_sedang' => 'nullable|integer',
-                'masjid_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_masjid' => 'nullable|numeric',
-                'gereja_hancur_total' => 'nullable|integer',
-                'gereja_rusak_berat' => 'nullable|integer',
-                'gereja_rusak_sedang' => 'nullable|integer',
-                'gereja_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_gereja' => 'nullable|numeric',
-                'pura_hancur_total' => 'nullable|integer',
-                'pura_rusak_berat' => 'nullable|integer',
-                'pura_rusak_sedang' => 'nullable|integer',
-                'pura_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_pura' => 'nullable|numeric',
-                'vihara_hancur_total' => 'nullable|integer',
-                'vihara_rusak_berat' => 'nullable|integer',
-                'vihara_rusak_sedang' => 'nullable|integer',
-                'vihara_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_vihara' => 'nullable|numeric',
+                // All other fields are optional
             ]);
-            $formAgama->update($validated);
+            
+            // Get all fillable data from request
+            $data = $request->only((new Format5Form4)->getFillable());
+            
+            // Ensure numeric fields are properly cast
+            foreach ($data as $key => $value) {
+                if (empty($value) || $value === '') {
+                    $data[$key] = null;
+                }
+            }
+            
+            $formAgama->update($data);
+            
             DB::commit();
-            return redirect()->route('forms.form4.list-format5', ['bencana_id' => $validated['bencana_id']])
+            
+            return redirect()->route('forms.form4.format5.list', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
+                
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);

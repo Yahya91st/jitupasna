@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Form4;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bencana;
+use Illuminate\Support\Facades\DB;
 
 class Format2Controller extends Controller
 {
@@ -31,7 +32,7 @@ class Format2Controller extends Controller
     public function store(Request $request)
     {
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
 
             // Validation rules for all education sector fields
             $validated = $request->validate([
@@ -104,26 +105,34 @@ class Format2Controller extends Controller
                 'harga_sekolah_sementara' => 'nullable|numeric',
             ]);
 
-            // Hitung total kerusakan
+            // Hitung total kerusakan (termasuk semua item yang dipindahkan dari kerugian)
             $bangunan = ['tk','sd','smp','sma','smk','pt','perpus','lab','lainnya'];
             $totalKerusakan = 0;
+            
+            // 1. Kerusakan bangunan pendidikan
             foreach ($bangunan as $b) {
                 $totalKerusakan += (($validated[$b.'_berat_negeri'] ?? 0) + ($validated[$b.'_berat_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
                 $totalKerusakan += (($validated[$b.'_sedang_negeri'] ?? 0) + ($validated[$b.'_sedang_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
                 $totalKerusakan += (($validated[$b.'_ringan_negeri'] ?? 0) + ($validated[$b.'_ringan_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
             }
+            
+            // 2. Biaya tenaga kerja dan alat berat (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['biaya_tenaga_kerja_hok'] ?? 0) * ($validated['biaya_tenaga_kerja_upah'] ?? 0);
+            $totalKerusakan += ($validated['biaya_alat_berat_hari'] ?? 0) * ($validated['biaya_alat_berat_harga'] ?? 0);
+            
+            // 3. Biaya sekolah sementara (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['jumlah_sekolah_sementara'] ?? 0) * ($validated['harga_sekolah_sementara'] ?? 0);
+            
             $validated['total_kerusakan'] = $totalKerusakan;
 
-            // Hitung total kerugian
-            $totalKerugian = ($validated['biaya_tenaga_kerja_hok'] ?? 0) * ($validated['biaya_tenaga_kerja_upah'] ?? 0)
-                + ($validated['biaya_alat_berat_hari'] ?? 0) * ($validated['biaya_alat_berat_harga'] ?? 0)
-                + ($validated['jumlah_sekolah_sementara'] ?? 0) * ($validated['harga_sekolah_sementara'] ?? 0);
+            // Hitung total kerugian (sekarang 0 karena semua dipindahkan ke kerusakan)
+            $totalKerugian = 0;
             $validated['total_kerugian'] = $totalKerugian;
 
             // Create new form data
             $formPendidikan = \App\Models\Format2Form4::create($validated);
 
-            \DB::commit();
+            DB::commit();
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
@@ -134,7 +143,7 @@ class Format2Controller extends Controller
             return redirect()->route('forms.form4.list-format2', ['bencana_id' => $formPendidikan->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
@@ -207,7 +216,7 @@ class Format2Controller extends Controller
     public function update(Request $request, $id)
     {
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
             $formPendidikan = \App\Models\Format2Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
@@ -279,24 +288,32 @@ class Format2Controller extends Controller
                 'harga_sekolah_sementara' => 'nullable|numeric',
             ]);
 
-            // Hitung total kerusakan
+            // Hitung total kerusakan (termasuk semua item yang dipindahkan dari kerugian)
             $bangunan = ['tk','sd','smp','sma','smk','pt','perpus','lab','lainnya'];
             $totalKerusakan = 0;
+            
+            // 1. Kerusakan bangunan pendidikan
             foreach ($bangunan as $b) {
                 $totalKerusakan += (($validated[$b.'_berat_negeri'] ?? 0) + ($validated[$b.'_berat_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
                 $totalKerusakan += (($validated[$b.'_sedang_negeri'] ?? 0) + ($validated[$b.'_sedang_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
                 $totalKerusakan += (($validated[$b.'_ringan_negeri'] ?? 0) + ($validated[$b.'_ringan_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
             }
+            
+            // 2. Biaya tenaga kerja dan alat berat (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['biaya_tenaga_kerja_hok'] ?? 0) * ($validated['biaya_tenaga_kerja_upah'] ?? 0);
+            $totalKerusakan += ($validated['biaya_alat_berat_hari'] ?? 0) * ($validated['biaya_alat_berat_harga'] ?? 0);
+            
+            // 3. Biaya sekolah sementara (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['jumlah_sekolah_sementara'] ?? 0) * ($validated['harga_sekolah_sementara'] ?? 0);
+            
             $validated['total_kerusakan'] = $totalKerusakan;
 
-            // Hitung total kerugian
-            $totalKerugian = ($validated['biaya_tenaga_kerja_hok'] ?? 0) * ($validated['biaya_tenaga_kerja_upah'] ?? 0)
-                + ($validated['biaya_alat_berat_hari'] ?? 0) * ($validated['biaya_alat_berat_harga'] ?? 0)
-                + ($validated['jumlah_sekolah_sementara'] ?? 0) * ($validated['harga_sekolah_sementara'] ?? 0);
+            // Hitung total kerugian (sekarang 0 karena semua dipindahkan ke kerusakan)
+            $totalKerugian = 0;
             $validated['total_kerugian'] = $totalKerugian;
 
             $formPendidikan->update($validated);
-            \DB::commit();
+            DB::commit();
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
@@ -307,7 +324,7 @@ class Format2Controller extends Controller
             return redirect()->route('forms.form4.list-format2', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,

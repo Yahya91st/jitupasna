@@ -180,6 +180,92 @@
         </div>
     </div>
     
+    <!-- Total Perhitungan -->
+    <div class="card mb-4 border-info">
+        <div class="card-header bg-info text-white py-2">
+            <h6 class="mb-0 fw-bold">TOTAL PERHITUNGAN KERUSAKAN</h6>
+        </div>
+        <div class="card-body py-2">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group input-group-sm mb-2">
+                        <span class="input-group-text fw-bold">Total Kerusakan (Rp)</span>
+                        <input type="text" class="form-control fw-bold text-end" id="total_kerusakan_display" readonly style="background-color: #e9ecef;">
+                        <input type="hidden" name="total_kerusakan" id="total_kerusakan_input">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group input-group-sm mb-2">
+                        <span class="input-group-text fw-bold">Total Kerugian (Rp)</span>
+                        <input type="text" class="form-control fw-bold text-end" value="0" readonly style="background-color: #e9ecef;">
+                        <input type="hidden" name="total_kerugian" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info py-2 mb-0 small">
+                <i class="fas fa-info-circle"></i> 
+                <strong>Catatan:</strong> Sesuai dengan pedoman terbaru, semua item kerugian telah dipindahkan ke dalam total kerusakan. Total kerugian = 0.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    function formatRupiah(angka) {
+        return new Intl.NumberFormat('id-ID').format(angka);
+    }
+    
+    function calculateTotals() {
+        let totalKerusakan = 0;
+        
+        // 1. Kerusakan Bangunan (unit × harga, tanpa luas)
+        const buildingTypes = ['panti_sosial', 'panti_asuhan', 'balai_pelayanan', 'lainnya'];
+        buildingTypes.forEach(type => {
+            const rbNegeri = parseFloat(document.querySelector(`input[name="${type}_rb_negeri"]`)?.value || 0);
+            const rbSwasta = parseFloat(document.querySelector(`input[name="${type}_rb_swasta"]`)?.value || 0);
+            const rsNegeri = parseFloat(document.querySelector(`input[name="${type}_rs_negeri"]`)?.value || 0);
+            const rsSwasta = parseFloat(document.querySelector(`input[name="${type}_rs_swasta"]`)?.value || 0);
+            const rrNegeri = parseFloat(document.querySelector(`input[name="${type}_rr_negeri"]`)?.value || 0);
+            const rrSwasta = parseFloat(document.querySelector(`input[name="${type}_rr_swasta"]`)?.value || 0);
+            const hargaBangunan = parseFloat(document.querySelector(`input[name="${type}_harga_bangunan"]`)?.value || 0);
+            
+            const totalUnits = rbNegeri + rbSwasta + rsNegeri + rsSwasta + rrNegeri + rrSwasta;
+            totalKerusakan += totalUnits * hargaBangunan;
+        });
+        
+        // 2. Semua item kerugian masuk ke kerusakan
+        // Biaya Pembersihan Puing
+        const biayaTenagaKerja = parseFloat(document.querySelector('input[name="biaya_tenaga_kerja_hok"]')?.value || 0) * 
+                                parseFloat(document.querySelector('input[name="biaya_tenaga_kerja_upah"]')?.value || 0);
+        const biayaAlatBerat = parseFloat(document.querySelector('input[name="biaya_alat_berat_hari"]')?.value || 0) * 
+                              parseFloat(document.querySelector('input[name="biaya_alat_berat_harga"]')?.value || 0);
+        totalKerusakan += biayaTenagaKerja + biayaAlatBerat;
+        
+        // Biaya Jatah Hidup
+        const biayaJatahHidup = parseFloat(document.querySelector('input[name="jumlah_penerima"]')?.value || 0) * 
+                               parseFloat(document.querySelector('input[name="bantuan_per_orang"]')?.value || 0);
+        totalKerusakan += biayaJatahHidup;
+        
+        // Tambahan Biaya Sosial
+        totalKerusakan += parseFloat(document.querySelector('input[name="biaya_pelayanan_kesehatan"]')?.value || 0);
+        totalKerusakan += parseFloat(document.querySelector('input[name="biaya_pelayanan_pendidikan"]')?.value || 0);
+        totalKerusakan += parseFloat(document.querySelector('input[name="biaya_pendampingan_psikososial"]')?.value || 0);
+        totalKerusakan += parseFloat(document.querySelector('input[name="biaya_pelatihan_darurat"]')?.value || 0);
+        
+        // Update display
+        document.getElementById('total_kerusakan_display').value = formatRupiah(totalKerusakan);
+        document.getElementById('total_kerusakan_input').value = totalKerusakan;
+    }
+    
+    // Add event listeners to all input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateTotals);
+        });
+        calculateTotals(); // Initial calculation
+    });
+    </script>
+    
     <div class="text-center mt-3 mb-5">
         <button type="submit" class="btn btn-primary btn-sm">Simpan Data</button>
     </div>

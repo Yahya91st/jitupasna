@@ -104,8 +104,19 @@ class Format4Controller extends Controller
                 'biaya_pelatihan_darurat' => 'nullable|numeric',
             ]);
 
-            // Save all user input fields as per $fillable
+            // Calculate totals before saving
             $data = $request->only((new \App\Models\Format4Form4)->getFillable());
+            
+            // Calculate kerusakan (damage) - only for building damage
+            $kerusakan_bangunan = $this->calculateKerusakanBangunan($data);
+            
+            // Calculate all kerugian items
+            $total_kerugian_items = $this->calculateKerugianItems($data);
+            
+            // Move all kerugian to kerusakan, make kerugian = 0
+            $data['total_kerusakan'] = $kerusakan_bangunan + $total_kerugian_items;
+            $data['total_kerugian'] = 0;
+            
             $formSosial = Format4Form4::create($data);
 
             DB::commit();
@@ -204,7 +215,7 @@ class Format4Controller extends Controller
     public function update(Request $request, $id)
     {
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
             $formSosial = \App\Models\Format4Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
@@ -271,12 +282,17 @@ class Format4Controller extends Controller
                 'biaya_pendampingan_psikososial' => 'nullable|numeric',
                 'biaya_pelatihan_darurat' => 'nullable|numeric',
             ]);
+            
+            // Calculate totals before updating
+            $validated['total_kerusakan'] = $this->calculateKerusakanBangunan($validated) + $this->calculateKerugianItems($validated);
+            $validated['total_kerugian'] = 0;
+            
             $formSosial->update($validated);
-            \DB::commit();
+            DB::commit();
             return redirect()->route('forms.form4.list-format4', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
             return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
         }
     }
@@ -291,5 +307,61 @@ class Format4Controller extends Controller
         $formSosial->delete();
         return redirect()->route('forms.form4.list-format4', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
+     * Calculate total kerusakan bangunan (physical building damage)
+     */
+    private function calculateKerusakanBangunan($data)
+    {
+        $total = 0;
+        
+        // Calculate for each building type
+        $buildingTypes = ['panti_sosial', 'panti_asuhan', 'balai_pelayanan', 'lainnya'];
+        
+        foreach ($buildingTypes as $type) {
+            // Get unit counts
+            $rb_negeri = floatval($data[$type . '_rb_negeri'] ?? 0);
+            $rb_swasta = floatval($data[$type . '_rb_swasta'] ?? 0);
+            $rs_negeri = floatval($data[$type . '_rs_negeri'] ?? 0);
+            $rs_swasta = floatval($data[$type . '_rs_swasta'] ?? 0);
+            $rr_negeri = floatval($data[$type . '_rr_negeri'] ?? 0);
+            $rr_swasta = floatval($data[$type . '_rr_swasta'] ?? 0);
+            
+            $total_units = $rb_negeri + $rb_swasta + $rs_negeri + $rs_swasta + $rr_negeri + $rr_swasta;
+            
+            // Get price per unit
+            $harga_bangunan = floatval($data[$type . '_harga_bangunan'] ?? 0);
+            
+            // Calculate building damage (units × price, not using luas)
+            $total += $total_units * $harga_bangunan;
+        }
+        
+        return $total;
+    }
+
+    /**
+     * Calculate total kerugian items (all loss items that will be moved to kerusakan)
+     */
+    private function calculateKerugianItems($data)
+    {
+        $total = 0;
+        
+        // 1. Biaya Pembersihan Puing
+        $biaya_tenaga_kerja = floatval($data['biaya_tenaga_kerja_hok'] ?? 0) * floatval($data['biaya_tenaga_kerja_upah'] ?? 0);
+        $biaya_alat_berat = floatval($data['biaya_alat_berat_hari'] ?? 0) * floatval($data['biaya_alat_berat_harga'] ?? 0);
+        $total += $biaya_tenaga_kerja + $biaya_alat_berat;
+        
+        // 2. Biaya Penyediaan Jatah Hidup
+        $biaya_jatah_hidup = floatval($data['jumlah_penerima'] ?? 0) * floatval($data['bantuan_per_orang'] ?? 0);
+        $total += $biaya_jatah_hidup;
+        
+        // 3. Tambahan Biaya Sosial
+        $total += floatval($data['biaya_pelayanan_kesehatan'] ?? 0);
+        $total += floatval($data['biaya_pelayanan_pendidikan'] ?? 0);
+        $total += floatval($data['biaya_pendampingan_psikososial'] ?? 0);
+        $total += floatval($data['biaya_pelatihan_darurat'] ?? 0);
+        
+        return $total;
     }
 }

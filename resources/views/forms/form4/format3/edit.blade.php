@@ -3,9 +3,9 @@
 @section('content')
 <div class="container mt-4">
     <h5 class="text-center fw-bold">Edit Data Sektor Kesehatan (Format 3)</h5>
-    <form action="{{ route('forms.form4.format3.update', $formKesehatan->id) }}" method="POST">
+    <form action="{{ route('forms.form4.update-format3', $formKesehatan->id) }}" method="POST">
         @csrf
-        @method('PATCH')
+        @method('PUT')
         <input type="hidden" name="bencana_id" value="{{ $bencana->id }}">
         @include('forms.form4.format3.format3form4', ['edit' => true, 'data' => $formKesehatan])
         <div class="text-center mt-3">

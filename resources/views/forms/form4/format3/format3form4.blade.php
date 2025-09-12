@@ -132,10 +132,11 @@
 
     Rata-Rata Biaya Penanganan Jenazah <input type="number" name="biaya_per_jenazah" class="form-control d-inline" style="width:150px;" value="{{ old('biaya_per_jenazah', $data->biaya_per_jenazah ?? '') }}"> Rupiah</p>    <p><strong>Biaya Perawatan Korban Bencana</strong><br>
     Perkiraan Jumlah Korban yang Dirawat <input type="number" name="jumlah_pasien" class="form-control d-inline" style="width:100px;" value="{{ old('jumlah_pasien', $data->jumlah_pasien ?? '') }}"> Orang<br>
-    Rata-Rata Biaya Perawatan/Per Korban <input type="number" name="biaya_per_pasien" class="form-control d-inline" style="width:150px;" value="{{ old('biaya_per_pasien', $data->biaya_per_pasien ?? '') }}"> Rupiah</p>    <p><strong>Jumlah Fasilitas Kesehatan Sementara yang Dibutuhkan</strong><br>
+    Rata-Rata Biaya Perawatan/Per Korban <input type="number" name="biaya_per_pasien" class="form-control d-inline" style="width:150px;" value="{{ old('biaya_per_pasien', $data->biaya_per_pasien ?? '') }}"> Rupiah</p>    
+    <p><strong>Jumlah Fasilitas Kesehatan Sementara yang Dibutuhkan</strong><br>
     <span style="font-style: italic;">(berikan keterangan jenis faskes yang dibutuhkan, contoh: Puskesmas Keliling, dll)  </span>
-    <input type="text" name="jenis_operasional" class="form-control d-inline" style="width:200px;" value="{{ old('jenis_operasional', $data->jenis_operasional ?? '') }}">
-    <input type="number" name="jumlah_faskes" class="form-control d-inline" style="width:100px;" value="{{ old('jumlah_faskes', $data->jumlah_faskes ?? '') }}"> Unit<br>
+    <input placeholder="Jenis Faskes" name="jenis_operasional" class="form-control d-inline" style="width:200px;" value="{{ old('jenis_operasional', $data->jenis_operasional ?? '') }}">  |  
+    <input placeholder="Jumlah Unit" name="jumlah_faskes" class="form-control d-inline" style="width:100px;" value="{{ old('jumlah_faskes', $data->jumlah_faskes ?? '') }}"> Unit<br>
     Biaya Pengadaan Faskes Sementara <input type="number" name="biaya_pengadaan_faskes" class="form-control d-inline" style="width:150px;" value="{{ old('biaya_pengadaan_faskes', $data->biaya_pengadaan_faskes ?? '') }}"> Rupiah</p><p><strong>Biaya Penanganan Psikologis Korban Bencana</strong><br>
     Perkiraan Jumlah Korban yang perlu penanganan psikologis <input type="number" name="jumlah_korban_psikologis" class="form-control d-inline" style="width:100px;" value="{{ old('jumlah_korban_psikologis', $data->jumlah_korban_psikologis ?? '') }}"> Orang<br>
     Rata-rata Biaya Penanganan Psikologis/Per Korban <input type="number" name="biaya_penanganan_psikologis" class="form-control d-inline" style="width:150px;" value="{{ old('biaya_penanganan_psikologis', $data->biaya_penanganan_psikologis ?? '') }}"> Rupiah</p>
@@ -151,6 +152,82 @@
     </div>
     
     </form>
+    
+    <hr class="my-4">
+    <div class="card mt-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Total Kerusakan (Otomatis)</h5>
+        </div>
+        <div class="card-body text-center">
+            @php
+                $totalKerusakan = 0;
+                $faskes = ['rs', 'puskesmas', 'poliklinik', 'pustu', 'polindes', 'posyandu'];
+                
+                // 1. Kerusakan bangunan fasilitas kesehatan
+                foreach ($faskes as $f) {
+                    // Rusak berat (100% x harga bangunan)
+                    $totalKerusakan += (($data->{$f.'_rb_negeri'} ?? 0) + ($data->{$f.'_rb_swasta'} ?? 0)) * 
+                                      ($data->{$f.'_harga_bangunan'} ?? 0);
+                    // Rusak sedang (75% x harga bangunan)
+                    $totalKerusakan += (($data->{$f.'_rs_negeri'} ?? 0) + ($data->{$f.'_rs_swasta'} ?? 0)) * 
+                                      ($data->{$f.'_harga_bangunan'} ?? 0) * 0.75;
+                    // Rusak ringan (50% x harga bangunan)
+                    $totalKerusakan += (($data->{$f.'_rr_negeri'} ?? 0) + ($data->{$f.'_rr_swasta'} ?? 0)) * 
+                                      ($data->{$f.'_harga_bangunan'} ?? 0) * 0.5;
+                }
+                
+                // 2. Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->biaya_tenaga_kerja_hok ?? 0) * ($data->biaya_tenaga_kerja_upah ?? 0);
+                $totalKerusakan += ($data->biaya_alat_berat_hari ?? 0) * ($data->biaya_alat_berat_harga ?? 0);
+                
+                // 3. Biaya pemulasaraan jenazah (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->jumlah_jenazah ?? 0) * ($data->biaya_per_jenazah ?? 0);
+                
+                // 4. Biaya perawatan korban bencana (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->jumlah_pasien ?? 0) * ($data->biaya_per_pasien ?? 0);
+                
+                // 5. Biaya faskes sementara (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->jumlah_faskes ?? 0) * ($data->biaya_pengadaan_faskes ?? 0);
+                
+                // 6. Biaya penanganan psikologis (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->jumlah_korban_psikologis ?? 0) * ($data->biaya_penanganan_psikologis ?? 0);
+                
+                // 7. Biaya pencegahan penyakit menular (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->biaya_pencegahan_penyakit ?? 0);
+                
+                // 8. Biaya honorarium tenaga kesehatan (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->jumlah_tenaga_kesehatan ?? 0) * ($data->honorarium_tenaga_kesehatan ?? 0);
+                
+                // 9. Pendapatan faskes swasta (dipindahkan dari kerugian ke kerusakan)
+                $totalKerusakan += ($data->pendapatan_faskes_swasta ?? 0);
+            @endphp
+            <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
+            <small>Total Kerusakan Format 3 (Termasuk Semua Item Kerugian)</small>
+        </div>
+    </div>
+    
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 </div>
 @endsection
 

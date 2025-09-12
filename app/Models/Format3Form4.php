@@ -58,39 +58,54 @@ class Format3Form4 extends Model
         return $this->hasOne(Rekap::class, 'format3_form4_id');
     }
 
-    // Calculate total kerusakan (damage)
+    // Calculate total kerusakan (damage) - now includes all kerugian items moved from losses
     public function calculateTotalKerusakan()
     {
-        $rumah_kerusakan = (
-            ($this->rumah_hancur_total_permanen * $this->harga_satuan_permanen) +
-            ($this->rumah_hancur_total_non_permanen * $this->harga_satuan_non_permanen) +
-            ($this->rumah_rusak_berat_permanen * $this->harga_satuan_permanen * 0.75) +
-            ($this->rumah_rusak_berat_non_permanen * $this->harga_satuan_non_permanen * 0.75) +
-            ($this->rumah_rusak_sedang_permanen * $this->harga_satuan_permanen * 0.5) +
-            ($this->rumah_rusak_sedang_non_permanen * $this->harga_satuan_non_permanen * 0.5) +
-            ($this->rumah_rusak_ringan_permanen * $this->harga_satuan_permanen * 0.25) +
-            ($this->rumah_rusak_ringan_non_permanen * $this->harga_satuan_non_permanen * 0.25)
-        );
+        $faskes = ['rs', 'puskesmas', 'poliklinik', 'pustu', 'polindes', 'posyandu'];
+        $totalKerusakan = 0;
+        
+        // 1. Kerusakan bangunan fasilitas kesehatan
+        foreach ($faskes as $f) {
+            // Rusak berat 
+            $totalKerusakan += (($this->{$f.'_rb_negeri'} ?? 0) + ($this->{$f.'_rb_swasta'} ?? 0)) * ($this->{$f.'_harga_bangunan'} ?? 0);
+            // Rusak sedang
+            $totalKerusakan += (($this->{$f.'_rs_negeri'} ?? 0) + ($this->{$f.'_rs_swasta'} ?? 0)) * ($this->{$f.'_harga_bangunan'} ?? 0);
+            // Rusak ringan
+            $totalKerusakan += (($this->{$f.'_rr_negeri'} ?? 0) + ($this->{$f.'_rr_swasta'} ?? 0)) * ($this->{$f.'_harga_bangunan'} ?? 0);
+        }
+        
+        // 2. Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->biaya_tenaga_kerja_hok ?? 0) * ($this->biaya_tenaga_kerja_upah ?? 0);
+        $totalKerusakan += ($this->biaya_alat_berat_hari ?? 0) * ($this->biaya_alat_berat_harga ?? 0);
+        
+        // 3. Biaya pemulasaraan jenazah (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->jumlah_jenazah ?? 0) * ($this->biaya_per_jenazah ?? 0);
+        
+        // 4. Biaya perawatan korban bencana (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->jumlah_pasien ?? 0) * ($this->biaya_per_pasien ?? 0);
+        
+        // 5. Biaya faskes sementara (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->jumlah_faskes ?? 0) * ($this->biaya_pengadaan_faskes ?? 0);
+        
+        // 6. Biaya penanganan psikologis (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->jumlah_korban_psikologis ?? 0) * ($this->biaya_penanganan_psikologis ?? 0);
+        
+        // 7. Biaya pencegahan penyakit menular (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->biaya_pencegahan_penyakit ?? 0);
+        
+        // 8. Biaya honorarium tenaga kesehatan (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->jumlah_tenaga_kesehatan ?? 0) * ($this->honorarium_tenaga_kesehatan ?? 0);
+        
+        // 9. Pendapatan faskes swasta (dipindahkan dari kerugian ke kerusakan)
+        $totalKerusakan += ($this->pendapatan_faskes_swasta ?? 0);
 
-        $infrastruktur_kerusakan = (
-            (($this->jalan_rusak_berat * 1.0) + ($this->jalan_rusak_sedang * 0.75) + ($this->jalan_rusak_ringan * 0.5)) * $this->harga_satuan_jalan +
-            (($this->saluran_rusak_berat * 1.0) + ($this->saluran_rusak_sedang * 0.75) + ($this->saluran_rusak_ringan * 0.5)) * $this->harga_satuan_saluran +
-            (($this->balai_rusak_berat * 1.0) + ($this->balai_rusak_sedang * 0.75) + ($this->balai_rusak_ringan * 0.5)) * $this->harga_satuan_balai
-        );
-
-        return $rumah_kerusakan + $infrastruktur_kerusakan;
+        return $totalKerusakan;
     }
 
-    // Calculate total kerugian (losses)
+    // Calculate total kerugian (losses) - now returns 0 since all moved to kerusakan
     public function calculateTotalKerugian()
     {
-        return (
-            ($this->tenaga_kerja_hok * $this->upah_harian) +
-            ($this->alat_berat_hari * $this->biaya_per_hari) +
-            ($this->jumlah_rumah_disewa * $this->harga_sewa_per_bulan * $this->durasi_sewa_bulan) +
-            ($this->jumlah_tenda * $this->harga_tenda) +
-            ($this->jumlah_barak * $this->harga_barak) +
-            ($this->jumlah_rumah_sementara * $this->harga_rumah_sementara)
-        );
+        // All kerugian items have been moved to kerusakan calculation
+        return 0;
     }
 }
