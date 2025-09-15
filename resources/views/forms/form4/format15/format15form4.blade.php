@@ -1,187 +1,159 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container-fluid mt-4">
-    <h2 class="text-center fw-bold mb-3">PENGKAJIAN KEBUTUHAN PASCABENCANA</h2>
-    <h4 class="text-center fw-bold mb-3">FORMAT 15: SEKTOR PARIWISATA</h4>
-    <h5 class="text-center mb-4">Kabupaten [nama kabupaten]</h5>
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+</style>
+<div class="container mt-4">
+    <h5 class="text-center fw-bold">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
+    <p class="fw-bold">Format 15: Sektor Pariwisata</p>
 
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Informasi Kerusakan Sektor Pariwisata</h5>
+    <form action="{{ isset($edit) && $edit ? route('forms.form4.format15.update', $data->id) : route('forms.form4.format15.store') }}" method="POST">
+        @csrf
+        @if(isset($edit) && $edit)
+            @method('PATCH')
+        @endif
+        <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}">
+
+        <table class="table table-bordered">
+            <tr>
+                <td style="width: 50%">NAMA KAMPUNG: <input type="text" class="form-control" name="nama_kampung" required value="{{ old('nama_kampung', $data->nama_kampung ?? '') }}"></td>
+                <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}"></td>
+            </tr>
+        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Keterangan</th>
+                        <th style="width: 20%;">Jenis Fasilitas</th>
+                        <th style="width: 10%;">RB</th>
+                        <th style="width: 10%;">RS</th>
+                        <th style="width: 10%;">RR</th>
+                        <th style="width: 11%;">RB Harga</th>
+                        <th style="width: 12%;">RS Harga</th>
+                        <th style="width: 12%;">RR Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #A3AFBD;" class="align-middle fw-bold text-white" colspan="8">PERKIRAAN KERUSAKAN</td>
+                    </tr>
+                    <!-- TEMPAT WISATA -->
+                    @for ($i = 1; $i <= 3; $i++)
+                    <tr>
+                        @if ($i == 1)
+                            <td class="text-start align-middle" rowspan="3">A. Tempat Wisata</td>
+                        @endif
+                        <td><input type="text" name="tempat_wisata_{{ $i }}_jenis" class="form-control" value="{{ old('tempat_wisata_'.$i.'_jenis', $data->{'tempat_wisata_'.$i.'_jenis'} ?? '') }}" placeholder="Jenis Fasilitas"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rb" class="form-control" min="0" value="{{ old('tempat_wisata_'.$i.'_rb', $data->{'tempat_wisata_'.$i.'_rb'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rs" class="form-control" min="0" value="{{ old('tempat_wisata_'.$i.'_rs', $data->{'tempat_wisata_'.$i.'_rs'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rr" class="form-control" min="0" value="{{ old('tempat_wisata_'.$i.'_rr', $data->{'tempat_wisata_'.$i.'_rr'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rb_harga" class="form-control" min="0" step="1000" value="{{ old('tempat_wisata_'.$i.'_rb_harga', $data->{'tempat_wisata_'.$i.'_rb_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rs_harga" class="form-control" min="0" step="1000" value="{{ old('tempat_wisata_'.$i.'_rs_harga', $data->{'tempat_wisata_'.$i.'_rs_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rr_harga" class="form-control" min="0" step="1000" value="{{ old('tempat_wisata_'.$i.'_rr_harga', $data->{'tempat_wisata_'.$i.'_rr_harga'} ?? '') }}"></td>
+                    </tr>
+                    @endfor
+                    @for ($i = 1; $i <= 3; $i++)
+                    <tr>
+                        @if ($i == 1)
+                            <td class="text-start align-middle" rowspan="3">B. Hotel Dan Restaurant</td>
+                        @endif
+                        <td><input type="text" name="hotel_restaurant_{{ $i }}_jenis" class="form-control" value="{{ old('hotel_restaurant_'.$i.'_jenis', $data->{'hotel_restaurant_'.$i.'_jenis'} ?? '') }}" placeholder="Jenis Fasilitas"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rb" class="form-control" min="0" value="{{ old('hotel_restaurant_'.$i.'_rb', $data->{'hotel_restaurant_'.$i.'_rb'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rs" class="form-control" min="0" value="{{ old('hotel_restaurant_'.$i.'_rs', $data->{'hotel_restaurant_'.$i.'_rs'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rr" class="form-control" min="0" value="{{ old('hotel_restaurant_'.$i.'_rr', $data->{'hotel_restaurant_'.$i.'_rr'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rb_harga" class="form-control" min="0" step="1000" value="{{ old('hotel_restaurant_'.$i.'_rb_harga', $data->{'hotel_restaurant_'.$i.'_rb_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rs_harga" class="form-control" min="0" step="1000" value="{{ old('hotel_restaurant_'.$i.'_rs_harga', $data->{'hotel_restaurant_'.$i.'_rs_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rr_harga" class="form-control" min="0" step="1000" value="{{ old('hotel_restaurant_'.$i.'_rr_harga', $data->{'hotel_restaurant_'.$i.'_rr_harga'} ?? '') }}"></td>
+                    </tr>
+                    @endfor
+                </tbody>
+            </table>
         </div>
-        <div class="card-body">
-            <form action="{{ route('forms.form4.format15.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
-                
-                <div class="mb-4">
-                    <span class="fw-bold">NAMA KAMPUNG:</span>
-                    <input type="text" name="nama_kampung" class="form-control d-inline-block ms-2" style="width: 300px;">
-                </div>
-                <div class="mb-4">
-                    <span class="fw-bold">NAMA DISTRIK:</span>
-                    <input type="text" name="nama_distrik" class="form-control d-inline-block ms-2" style="width: 300px;">
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle" style="min-width: 1200px;">
-                        <thead>
-                            <tr>
-                                <th rowspan="2" class="align-middle"></th>
-                                <th rowspan="2" class="text-center">JENIS FASILITAS</th>
-                                <th colspan="3" class="text-center">TINGKAT KERUSAKAN</th>
-                                <th colspan="3" class="text-center">HARGA SATUAN</th>
-                            </tr>
-                            <tr>
-                                <th class="text-center">RB</th>
-                                <th class="text-center">RS</th>
-                                <th class="text-center">RR</th>
-                                <th class="text-center">RB</th>
-                                <th class="text-center">RS</th>
-                                <th class="text-center">RR</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            <tr>
-                                <td class="fw-bold bg-secondary text-white">PERKIRAAN KERUSAKAN</td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                            </tr>
-                            
-                            <!-- TEMPAT WISATA -->
-                            <tr>
-                                <td rowspan="3" class="align-middle fw-bold bg-light">A. Tempat Wisata</td>
-                                <td class="text-start"><input type="text" name="fasilitas_1_jenis" class="form-control form-control-sm" placeholder="a) Tempat Wisata" value="a) Tempat Wisata"></td>
-                                <td><input type="number" name="fasilitas_1_rb_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rs_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rb_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rs_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_1_rr_harga" class="form-control" min="0" step="any" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="fasilitas_2_jenis" class="form-control form-control-sm" placeholder="b) Hotel dan Restaurant" value="b) Hotel dan Restaurant"></td>
-                                <td><input type="number" name="fasilitas_2_rb_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rs_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rb_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rs_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_2_rr_harga" class="form-control" min="0" step="any" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="fasilitas_3_jenis" class="form-control form-control-sm" placeholder="Jenis Fasilitas Lainnya" value=""></td>
-                                <td><input type="number" name="fasilitas_3_rb_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rs_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rb_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rs_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_3_rr_harga" class="form-control" min="0" step="any" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td rowspan="3" class="align-middle fw-bold bg-light">B. Hotel Dan Restauran</td>
-                                <td class="text-start"><input type="text" name="fasilitas_4_jenis" class="form-control form-control-sm" placeholder="a) Tempat Wisata" value="a) Tempat Wisata"></td>
-                                <td><input type="number" name="fasilitas_4_rb_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rs_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rb_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rs_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_4_rr_harga" class="form-control" min="0" step="any" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="fasilitas_5_jenis" class="form-control form-control-sm" placeholder="b) Hotel dan Restaurant" value="b) Hotel dan Restaurant"></td>
-                                <td><input type="number" name="fasilitas_5_rb_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rs_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rb_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rs_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_5_rr_harga" class="form-control" min="0" step="any" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="fasilitas_6_jenis" class="form-control form-control-sm" placeholder="Jenis Fasilitas Lainnya" value=""></td>
-                                <td><input type="number" name="fasilitas_6_rb_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rs_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rr_tingkat" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rb_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rs_harga" class="form-control" min="0" step="any" value="0"></td>
-                                <td><input type="number" name="fasilitas_6_rr_harga" class="form-control" min="0" step="any" value="0"></td>
-                            </tr>
-                            
-                            <!-- PERKIRAAN KERUGIAN -->
-                            <tr>
-                                <td class="fw-bold bg-secondary text-white">PERKIRAAN KERUGIAN</td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                                <td class="fw-bold bg-secondary text-white"></td>
-                            </tr>
-                            <tr>
-                                <td rowspan="3" class="align-middle fw-bold bg-light">A. Kehilangan Total Pendapatan</td>
-                                <td>Jenis Fasilitas</td>
-                                <td>A. Pendapatan Normal Rata-rata</td>
-                                <td>B. Jangka Waktu Pemulihan</td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="kerugian_1_jenis" class="form-control form-control-sm" placeholder="Jenis Kerugian Pariwisata" value=""></td>
-                                <td><input type="number" name="kerugian_1_rb_nilai" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="kerugian_1_rs_nilai" class="form-control" min="0" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="kerugian_2_jenis" class="form-control form-control-sm" placeholder="Jenis Kerugian Pariwisata" value=""></td>
-                                <td><input type="number" name="kerugian_2_rb_nilai" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="kerugian_2_rs_nilai" class="form-control" min="0" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td rowspan="3" class="align-middle fw-bold bg-light">B. Penurunan Pendapatan</td>
-                                <td>Jenis Fasilitas</td>
-                                <td>A. Penurunan Pendapatan</td>
-                                <td>B. Jangka Waktu Pemulihan</td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="kerugian_3_jenis" class="form-control form-control-sm" placeholder="Jenis Kerugian Pariwisata" value=""></td>
-                                <td><input type="number" name="kerugian_3_rb_nilai" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="kerugian_3_rs_nilai" class="form-control" min="0" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><input type="text" name="kerugian_4_jenis" class="form-control form-control-sm" placeholder="Jenis Kerugian Pariwisata" value=""></td>
-                                <td><input type="number" name="kerugian_4_rb_nilai" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="kerugian_4_rs_nilai" class="form-control" min="0" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle fw-bold bg-light">C. Kenaikan Biaya Produksi</td>
-                                <td>Jenis Fasilitas</td>
-                                <td>A. Kenaikan Biaya Operasional</td>
-                                <td>B. Jangka Waktu Pemulihan</td>
-                            </tr>
-                            <tr>
-                                <td>Biaya Operasional Yang Lebih Tinggi</td>
-                                <td class="text-start"><input type="text" name="kerugian_5_jenis" class="form-control form-control-sm" placeholder="Jenis Kerugian Pariwisata" value=""></td>
-                                <td><input type="number" name="kerugian_5_rb_nilai" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="kerugian_5_rs_nilai" class="form-control" min="0" value="0"></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td class="text-start"><input type="text" name="kerugian_6_jenis" class="form-control form-control-sm" placeholder="Jenis Kerugian Pariwisata" value=""></td>
-                                <td><input type="number" name="kerugian_6_rb_nilai" class="form-control" min="0" value="0"></td>
-                                <td><input type="number" name="kerugian_6_rs_nilai" class="form-control" min="0" value="0"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <input type="hidden" name="total_kerusakan" value="0">
 
-                <div class="d-flex justify-content-end mt-4">
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
-                </div>
-            </form>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+            </div>
+        </div>
+    </form>
+
+    <hr class="my-4">
+
+    <div class="card mt-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Total Kerusakan (Otomatis)</h5>
+        </div>
+        <div class="card-body text-center">
+            @php
+                $totalKerusakan = 0;
+                
+                // Menghitung total kerusakan tempat wisata
+                for ($i = 1; $i <= 3; $i++) {
+                    $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rb'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rb_harga'} ?? 0);
+                    $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rs'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rs_harga'} ?? 0);
+                    $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rr'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rr_harga'} ?? 0);
+                }
+
+                // Menghitung total kerusakan hotel restaurant
+                for ($i = 1; $i <= 3; $i++) {
+                    $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rb'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rb_harga'} ?? 0);
+                    $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rs'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rs_harga'} ?? 0);
+                    $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rr'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rr_harga'} ?? 0);
+                }
+            @endphp
+            <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
+            <small>Total Kerusakan Format 15</small>
         </div>
     </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form submission with loading state
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const form = document.querySelector('form');
+    
+    if (form && submitBtn) {
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+        });
+    }
+});
+</script>
 @endsection

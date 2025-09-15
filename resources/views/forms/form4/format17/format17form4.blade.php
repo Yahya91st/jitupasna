@@ -28,7 +28,7 @@
                 <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}"></td>
             </tr>
         </table>
-
+    
                 <div class="table-responsive">
                     <table class="table table-bordered text-center align-middle" style="width: 100%;">
                         <thead>
