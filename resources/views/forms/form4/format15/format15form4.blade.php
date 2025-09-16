@@ -44,78 +44,121 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="background-color: #A3AFBD;" class="align-middle fw-bold text-white" colspan="8">PERKIRAAN KERUSAKAN</td>
+                        <td class="align-middle fw-bold bg-secondary text-white" colspan="8">PERKIRAAN KERUSAKAN</td>
                     </tr>
                     <!-- TEMPAT WISATA -->
                     @for ($i = 1; $i <= 3; $i++)
                     <tr>
                         @if ($i == 1)
-                            <td class="text-start align-middle" rowspan="3">A. Tempat Wisata</td>
+                            <td class="text-start align-middle">A. Tempat Wisata</td>
+                        @endif
+                        @if ($i > 1)
+                        <td></td>
                         @endif
                         <td><input type="text" name="tempat_wisata_{{ $i }}_jenis" class="form-control" value="{{ old('tempat_wisata_'.$i.'_jenis', $data->{'tempat_wisata_'.$i.'_jenis'} ?? '') }}" placeholder="Jenis Fasilitas"></td>
                         <td><input type="number" name="tempat_wisata_{{ $i }}_rb" class="form-control" min="0" value="{{ old('tempat_wisata_'.$i.'_rb', $data->{'tempat_wisata_'.$i.'_rb'} ?? '') }}"></td>
                         <td><input type="number" name="tempat_wisata_{{ $i }}_rs" class="form-control" min="0" value="{{ old('tempat_wisata_'.$i.'_rs', $data->{'tempat_wisata_'.$i.'_rs'} ?? '') }}"></td>
                         <td><input type="number" name="tempat_wisata_{{ $i }}_rr" class="form-control" min="0" value="{{ old('tempat_wisata_'.$i.'_rr', $data->{'tempat_wisata_'.$i.'_rr'} ?? '') }}"></td>
-                        <td><input type="number" name="tempat_wisata_{{ $i }}_rb_harga" class="form-control" min="0" step="1000" value="{{ old('tempat_wisata_'.$i.'_rb_harga', $data->{'tempat_wisata_'.$i.'_rb_harga'} ?? '') }}"></td>
-                        <td><input type="number" name="tempat_wisata_{{ $i }}_rs_harga" class="form-control" min="0" step="1000" value="{{ old('tempat_wisata_'.$i.'_rs_harga', $data->{'tempat_wisata_'.$i.'_rs_harga'} ?? '') }}"></td>
-                        <td><input type="number" name="tempat_wisata_{{ $i }}_rr_harga" class="form-control" min="0" step="1000" value="{{ old('tempat_wisata_'.$i.'_rr_harga', $data->{'tempat_wisata_'.$i.'_rr_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rb_harga" class="form-control" min="0" step="1" value="{{ old('tempat_wisata_'.$i.'_rb_harga', $data->{'tempat_wisata_'.$i.'_rb_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rs_harga" class="form-control" min="0" step="1" value="{{ old('tempat_wisata_'.$i.'_rs_harga', $data->{'tempat_wisata_'.$i.'_rs_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="tempat_wisata_{{ $i }}_rr_harga" class="form-control" min="0" step="1" value="{{ old('tempat_wisata_'.$i.'_rr_harga', $data->{'tempat_wisata_'.$i.'_rr_harga'} ?? '') }}"></td>
                     </tr>
                     @endfor
                     @for ($i = 1; $i <= 3; $i++)
                     <tr>
                         @if ($i == 1)
-                            <td class="text-start align-middle" rowspan="3">B. Hotel Dan Restaurant</td>
+                            <td class="text-start align-middle">B. Hotel Dan Restaurant</td>
+                        @endif
+                        @if ($i > 1)
+                        <td></td>
                         @endif
                         <td><input type="text" name="hotel_restaurant_{{ $i }}_jenis" class="form-control" value="{{ old('hotel_restaurant_'.$i.'_jenis', $data->{'hotel_restaurant_'.$i.'_jenis'} ?? '') }}" placeholder="Jenis Fasilitas"></td>
                         <td><input type="number" name="hotel_restaurant_{{ $i }}_rb" class="form-control" min="0" value="{{ old('hotel_restaurant_'.$i.'_rb', $data->{'hotel_restaurant_'.$i.'_rb'} ?? '') }}"></td>
                         <td><input type="number" name="hotel_restaurant_{{ $i }}_rs" class="form-control" min="0" value="{{ old('hotel_restaurant_'.$i.'_rs', $data->{'hotel_restaurant_'.$i.'_rs'} ?? '') }}"></td>
                         <td><input type="number" name="hotel_restaurant_{{ $i }}_rr" class="form-control" min="0" value="{{ old('hotel_restaurant_'.$i.'_rr', $data->{'hotel_restaurant_'.$i.'_rr'} ?? '') }}"></td>
-                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rb_harga" class="form-control" min="0" step="1000" value="{{ old('hotel_restaurant_'.$i.'_rb_harga', $data->{'hotel_restaurant_'.$i.'_rb_harga'} ?? '') }}"></td>
-                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rs_harga" class="form-control" min="0" step="1000" value="{{ old('hotel_restaurant_'.$i.'_rs_harga', $data->{'hotel_restaurant_'.$i.'_rs_harga'} ?? '') }}"></td>
-                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rr_harga" class="form-control" min="0" step="1000" value="{{ old('hotel_restaurant_'.$i.'_rr_harga', $data->{'hotel_restaurant_'.$i.'_rr_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rb_harga" class="form-control" min="0" step="1" value="{{ old('hotel_restaurant_'.$i.'_rb_harga', $data->{'hotel_restaurant_'.$i.'_rb_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rs_harga" class="form-control" min="0" step="1" value="{{ old('hotel_restaurant_'.$i.'_rs_harga', $data->{'hotel_restaurant_'.$i.'_rs_harga'} ?? '') }}"></td>
+                        <td><input type="number" name="hotel_restaurant_{{ $i }}_rr_harga" class="form-control" min="0" step="1" value="{{ old('hotel_restaurant_'.$i.'_rr_harga', $data->{'hotel_restaurant_'.$i.'_rr_harga'} ?? '') }}"></td>
                     </tr>
                     @endfor
+                    <tr>
+                        <td class="align-middle fw-bold bg-secondary text-white" colspan="8">PERKIRAAN KERUGIAN</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"class="text-start align-middle">A. Kehilangan Total Pendapatan</td>
+                        <td colspan="2"class="text-start align-middle">Jenis Fasilitas</td>
+                        <td colspan="2"class="text-start align-middle">A. Pendapatan Normal Rata Rata</td>
+                        <td colspan="2"class="text-start align-middle">B. Jangka Waktu Pemulihan</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><input type="text" name="kehilangan_total_pendapatan_jenis_fasilitas" class="form-control" value="{{ old('kehilangan_total_pendapatan_jenis_fasilitas', $data->kehilangan_total_pendapatan_jenis_fasilitas ?? '') }}"></td>
+                        <td colspan="2"><input type="text" name="kehilangan_total_pendapatan_pendapatan_rata_rata" class="form-control" value="{{ old('kehilangan_total_pendapatan_pendapatan_rata_rata', $data->kehilangan_total_pendapatan_pendapatan_rata_rata ?? '') }}"></td>
+                        <td colspan="2"><input type="text" name="kehilangan_total_pendapatan_waktu" class="form-control" value="{{ old('kehilangan_total_pendapatan_waktu', $data->kehilangan_total_pendapatan_waktu ?? '') }}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-start align-middle">B. Penurunan Pendapatan </td>
+                        <td colspan="2" class="text-start align-middle">Jenis Fasilitas</td>
+                        <td colspan="2" class="text-start align-middle">A. Penurunan Pendapatan</td>
+                        <td colspan="2" class="text-start align-middle">B. Jangka Waktu Pemulihan</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><input type="text" name="penurunan_pendapatan_jenis_fasilitas" class="form-control" value="{{ old('penurunan_pendapatan_jenis_fasilitas', $data->penurunan_pendapatan_jenis_fasilitas ?? '') }}"></td>
+                        <td colspan="2"><input type="text" name="penurunan_pendapatan_pendapatan_rata_rata" class="form-control" value="{{ old('penurunan_pendapatan_pendapatan_rata_rata', $data->penurunan_pendapatan_pendapatan_rata_rata ?? '') }}"></td>
+                        <td colspan="2"><input type="text" name="penurunan_pendapatan_waktu" class="form-control" value="{{ old('penurunan_pendapatan_waktu', $data->penurunan_pendapatan_waktu ?? '') }}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-start align-middle">C. Kenaikan Biaya Produksi</td>
+                        <td colspan="2" class="text-start align-middle">Jenis Fasilitas</td>
+                        <td colspan="2" class="text-start align-middle">A. Kenaikan Biaya Operasional</td>
+                        <td colspan="2" class="text-start align-middle">B. Jangka Waktu Pemulihan</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Biaya Operasional yang Lebih Tinggi </td>
+                        <td colspan="2"><input type="text" name="kenaikan_biaya_produksi_jenis_fasilitas" class="form-control" value="{{ old('kenaikan_biaya_produksi_jenis_fasilitas', $data->kenaikan_biaya_produksi_jenis_fasilitas ?? '') }}"></td>
+                        <td colspan="2"><input type="text" name="kenaikan_biaya_produksi_pendapatan_rata_rata" class="form-control" value="{{ old('kenaikan_biaya_produksi_pendapatan_rata_rata', $data->kenaikan_biaya_produksi_pendapatan_rata_rata ?? '') }}"></td>
+                        <td colspan="2"><input type="text" name="kenaikan_biaya_produksi_waktu" class="form-control" value="{{ old('kenaikan_biaya_produksi_waktu', $data->kenaikan_biaya_produksi_waktu ?? '') }}"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-        <input type="hidden" name="total_kerusakan" value="0">
-
+        
         <div class="row mb-4">
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
             </div>
         </div>
     </form>
-
+    
     <hr class="my-4">
-
+    
     <div class="card mt-4">
         <div class="card-header bg-danger text-white">
             <h5 class="mb-0">Total Kerusakan (Otomatis)</h5>
         </div>
         <div class="card-body text-center">
-            @php
-                $totalKerusakan = 0;
-                
-                // Menghitung total kerusakan tempat wisata
-                for ($i = 1; $i <= 3; $i++) {
-                    $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rb'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rb_harga'} ?? 0);
-                    $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rs'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rs_harga'} ?? 0);
-                    $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rr'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rr_harga'} ?? 0);
-                }
-
-                // Menghitung total kerusakan hotel restaurant
-                for ($i = 1; $i <= 3; $i++) {
-                    $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rb'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rb_harga'} ?? 0);
-                    $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rs'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rs_harga'} ?? 0);
-                    $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rr'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rr_harga'} ?? 0);
-                }
+             @php
+            $totalKerusakan = 0;
+            for ($i = 1; $i <= 3; $i++) {
+                $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rb'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rb_harga'} ?? 0);
+                $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rs'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rs_harga'} ?? 0);
+                $totalKerusakan += ($data->{'tempat_wisata_'.$i.'_rr'} ?? 0) * ($data->{'tempat_wisata_'.$i.'_rr_harga'} ?? 0);
+            }
+            for ($i = 1; $i <= 3; $i++) {
+                $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rb'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rb_harga'} ?? 0);
+                $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rs'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rs_harga'} ?? 0);
+                $totalKerusakan += ($data->{'hotel_restaurant_'.$i.'_rr'} ?? 0) * ($data->{'hotel_restaurant_'.$i.'_rr_harga'} ?? 0);
+            }
             @endphp
-            <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
-            <small>Total Kerusakan Format 15</small>
+
+        <input type="hidden" name="total_kerusakan" value="{{ old('total_kerusakan', $totalKerusakan) }}">
+            {{-- $totalKerusakan sudah dihitung di atas --}}
+             <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
+             <small>Total Kerusakan Format 15</small>
         </div>
     </div>
-
+    
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
             {{ session('success') }}

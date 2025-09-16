@@ -11,11 +11,9 @@
         font-size: 0.95rem;
     }
 </style>
-
 <div class="container mt-4">
     <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
-    <p class="fw-bold">Format 10: Pengumpulan Data Sektor Pertanian & Perkebunan</p>
-     
+    <p class="fw-bold">Format 10: Pengumpulan Data Sektor Pertanian & Perkebunan</p>     
     <form action="{{ route('forms.form4.store-format10') }}" method="POST">
         @csrf
         <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}">
@@ -233,4 +231,3 @@ $(document).ready(function() {
 });
 </script>
 @endsection
-

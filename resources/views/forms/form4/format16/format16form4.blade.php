@@ -48,7 +48,7 @@
                         
                         <tbody>
                             <tr>
-                                <td class="fw-bold bg-light text-white" colspan="7" style="padding-left: 15%;">PERKIRAAN KERUSAKAN</td>
+                                <td class="fw-bold bg-secondary text-white" colspan="7" style="padding-left: 15%;">PERKIRAAN KERUSAKAN</td>
                             </tr>
                             
                             <!-- KANTOR PEMKAB -->
@@ -116,7 +116,7 @@
                 <!-- BIAYA PEMBERSIHAN PUING -->
                 <table class="table table-bordered mt-3">
                     <thead>
-                        <tr class="bg-light">
+                        <tr class="bg-secondary text-white">
                             <th colspan="4">1. BIAYA PEMBERSIHAN PUING</th>
                         </tr>
                     </thead>
@@ -159,7 +159,7 @@
                 <!-- BIAYA SEWA KANTOR SEMENTARA -->
                 <table class="table table-bordered mt-3">
                     <thead>
-                        <tr class="bg-light">
+                        <tr class="bg-secondary text-white">
                             <th colspan="4">2. BIAYA SEWA KANTOR SEMENTARA</th>
                         </tr>
                     </thead>
@@ -186,7 +186,7 @@
                 <!-- BIAYA RESTORASI ARSIP -->
                 <table class="table table-bordered mt-3">
                     <thead>
-                        <tr class="bg-light">
+                        <tr class="bg-secondary text-white">
                             <th colspan="4">3. BIAYA RESTORASI ARSIP</th>
                         </tr>
                     </thead>
@@ -213,7 +213,7 @@
                 <!-- KEHILANGAN PENDAPATAN RETRIBUSI -->
                 <table class="table table-bordered mt-3">
                     <thead>
-                        <tr class="bg-light">
+                        <tr class="bg-secondary text-white">
                             <th>4. KEHILANGAN PENDAPATAN RETRIBUSI JASA PEMERINTAHAN</th>
                         </tr>
                     </thead>
