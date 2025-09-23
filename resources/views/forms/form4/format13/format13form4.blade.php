@@ -10,10 +10,7 @@
         padding: 0.15rem 0.3rem !important;
         font-size: 0.95rem;
     }
-    .table thead th {
-        background-color: #f8f9fa;
-        border-bottom: 2px solid #dee2e6;
-    }
+
 </style>
 
 
@@ -47,7 +44,7 @@
                 </thead>
                 <tbody>
                     <tr class="card-header bg-danger"> 
-                        <td style="background-color: #A3AFBD;" class="align-middle fw-bold text-white" colspan="8">PERKIRAAN KERUSAKAN</td>
+                        <td style="background-color: #475F7B;" class="align-middle fw-bold text-white" colspan="8">PERKIRAAN KERUSAKAN</td>
                     </tr>
                     <tr>
                         <td class="align-middle fw-bold">Pabrik/tempat usaha</td>
@@ -96,7 +93,7 @@
         <h6 class="fw-bold">II. PERKIRAAN KERUGIAN</h6>
         <table class="table table-bordered mt-3">
             <thead>
-                <tr style="background-color: #A3AFBD; text-bold">
+                <tr style="background-color: #475F7B; color: white">
                     <th colspan="4">1. KEHILANGAN TOTAL PRODUKSI</th>
                 </tr>
             </thead>
@@ -129,7 +126,7 @@
         </table>
         <table class="table table-bordered mt-3">
             <thead>
-                <tr style="background-color: #A3AFBD; text-bold">
+                <tr style="background-color: #475F7B; color: white">
                     <th colspan="5">2. PENURUNAN PRODUKTIFITAS</th>
                 </tr>
             </thead>
@@ -169,7 +166,7 @@
         </table>
         <table class="table table-bordered mt-3">
             <thead>
-                <tr style="background-color: #A3AFBD; text-bold;">
+                <tr style="background-color: #475F7B; color: white;">
                     <th colspan="5">3. KENAIKAN ONGKOS PRODUKSI</th>
                 </tr>
             </thead>
