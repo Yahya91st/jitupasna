@@ -1,6 +1,67 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+    .form-table th, .form-table td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+    }
+    .form-table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        text-align: center;
+    }
+    .table-header {
+        background-color: var(--bs-secondary) !important;
+        color: white !important;
+        text-align: center;
+        font-weight: bold;
+    }
+    .input-underline {
+        border: none;
+        border-bottom: 1px solid #000;
+        background: transparent;
+        padding: 2px 4px;
+        width: 100%;
+        font-size: 13px;
+    }
+    .input-underline:focus {
+        outline: none;
+        border-bottom: 2px solid #333;
+    }
+    .checkbox-group {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .section-number {
+        background: var(--bs-secondary);
+        color: white;
+        padding: 5px 10px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+    .form-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+    }
+</style>
 <div class="page-heading">
     <div class="page-title mb-4">
         <div class="row">
@@ -42,313 +103,285 @@
             <div class="card-body">                <form action="{{ route('forms.form7.store') }}" method="POST" class="form form-vertical">
                     @csrf
                     
-                    <!-- Section 1: Informasi Umum -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">1. Informasi Umum</h5>
-                        </div>
-                        <div class="card-body">
-                            <!-- Bencana selection -->
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="bencana_id">Bencana <span class="text-danger">*</span></label>
-                                        @if(request()->has('bencana_id') && is_object($bencana))
-                                            <input type="hidden" name="bencana_id" value="{{ $bencana->id }}">
-                                            <p class="form-control-static">{{ $bencana->Ref }} - {{ $bencana->kategori_bencana->nama }} ({{ $bencana->tanggal }})</p>
-                                        @else
-                                            <select class="form-select @error('bencana_id') is-invalid @enderror" id="bencana_id" name="bencana_id" required>
-                                                <option value="">-- Pilih Bencana --</option>
-                                                @foreach($bencana as $b)
-                                                    <option value="{{ $b->id }}" {{ old('bencana_id') == $b->id ? 'selected' : '' }}>
-                                                        {{ $b->Ref }} - {{ $b->kategori_bencana->nama }} ({{ $b->tanggal }})
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('bencana_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="desa_kelurahan">Desa/Kelurahan Asal <span class="text-danger">*</span></label>
-                                        <input type="text" id="desa_kelurahan" class="form-control @error('desa_kelurahan') is-invalid @enderror" name="desa_kelurahan" value="{{ old('desa_kelurahan') }}" required>
-                                        @error('desa_kelurahan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="kecamatan">Kecamatan Asal <span class="text-danger">*</span></label>
-                                        <input type="text" id="kecamatan" class="form-control @error('kecamatan') is-invalid @enderror" name="kecamatan" value="{{ old('kecamatan') }}" required>
-                                        @error('kecamatan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="kabupaten">Kabupaten Asal <span class="text-danger">*</span></label>
-                                        <input type="text" id="kabupaten" class="form-control @error('kabupaten') is-invalid @enderror" name="kabupaten" value="{{ old('kabupaten') }}" required>
-                                        @error('kabupaten')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="tanggal">Tanggal <span class="text-danger">*</span></label>
-                                        <input type="date" id="tanggal" class="form-control @error('tanggal') is-invalid @enderror" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required>
-                                        @error('tanggal')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jarak_bencana">Jarak dari Lokasi Bencana (KM) <span class="text-danger">*</span></label>
-                                        <input type="number" id="jarak_bencana" class="form-control @error('jarak_bencana') is-invalid @enderror" name="jarak_bencana" value="{{ old('jarak_bencana') }}" min="0" required>
-                                        @error('jarak_bencana')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Tabel 1: Informasi Umum -->
                     
-                    <!-- Section 2: Informasi Peserta -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">2. Informasi Peserta</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="tempat_sesi">Tempat Sesi <span class="text-danger">*</span></label>
-                                        <input type="text" id="tempat_sesi" class="form-control @error('tempat_sesi') is-invalid @enderror" name="tempat_sesi" value="{{ old('tempat_sesi') }}" required>
-                                        @error('tempat_sesi')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jumlah_peserta">Jumlah Peserta <span class="text-danger">*</span></label>
-                                        <input type="number" id="jumlah_peserta" class="form-control @error('jumlah_peserta') is-invalid @enderror" name="jumlah_peserta" value="{{ old('jumlah_peserta') }}" min="1" required>
-                                        @error('jumlah_peserta')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jumlah_perempuan">Jumlah Peserta Perempuan <span class="text-danger">*</span></label>
-                                        <input type="number" id="jumlah_perempuan" class="form-control @error('jumlah_perempuan') is-invalid @enderror" name="jumlah_perempuan" value="{{ old('jumlah_perempuan') }}" min="0" required>
-                                        @error('jumlah_perempuan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jumlah_laki_laki">Jumlah Peserta Laki-laki <span class="text-danger">*</span></label>
-                                        <input type="number" id="jumlah_laki_laki" class="form-control @error('jumlah_laki_laki') is-invalid @enderror" name="jumlah_laki_laki" value="{{ old('jumlah_laki_laki') }}" min="0" required>
-                                        @error('jumlah_laki_laki')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="komposisi_peserta">Komposisi Peserta <span class="text-danger">*</span></label>
-                                        <textarea id="komposisi_peserta" class="form-control @error('komposisi_peserta') is-invalid @enderror" name="komposisi_peserta" rows="3" placeholder="Gambaran pekerjaan, status sosial, kelompok umur, dll." required>{{ old('komposisi_peserta') }}</textarea>
-                                        @error('komposisi_peserta')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="form-table">
+                        <thead>
+                            <tr>
+                                <th colspan="4" class="table-header">UMUM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Hidden Bencana Selection -->
+                            <tr style="display: none;">
+                                <td colspan="4">
+                                    @if(request()->has('bencana_id') && is_object($bencana))
+                                        <input type="hidden" name="bencana_id" value="{{ $bencana->id }}">
+                                    @else
+                                        <select class="form-select @error('bencana_id') is-invalid @enderror" id="bencana_id" name="bencana_id" required>
+                                            <option value="">-- Pilih Bencana --</option>
+                                            @foreach($bencana as $b)
+                                                <option value="{{ $b->id }}" {{ old('bencana_id') == $b->id ? 'selected' : '' }}>
+                                                    {{ $b->Ref }} - {{ $b->kategori_bencana->nama }} ({{ $b->tanggal }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%">Desa/kelurahan asal:</td>
+                                <td width="25%"><input type="text" name="desa_kelurahan" class="input-underline @error('desa_kelurahan') is-invalid @enderror" value="{{ old('desa_kelurahan') }}" required></td>
+                                <td width="25%">Kecamatan asal:</td>
+                                <td width="25%"><input type="text" name="kecamatan" class="input-underline @error('kecamatan') is-invalid @enderror" value="{{ old('kecamatan') }}" required></td>
+                            </tr>
+                            <tr>
+                                <td>Kabupaten asal:</td>
+                                <td><input type="text" name="kabupaten" class="input-underline @error('kabupaten') is-invalid @enderror" value="{{ old('kabupaten') }}" required></td>
+                                <td>Tanggal:</td>
+                                <td><input type="date" name="tanggal" class="input-underline @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', date('Y-m-d')) }}" required></td>
+                            </tr>
+                            <tr>
+                                <td>Km dari Bencana:</td>
+                                <td><input type="number" name="jarak_bencana" class="input-underline @error('jarak_bencana') is-invalid @enderror" value="{{ old('jarak_bencana') }}" required min="0"></td>
+                                <td colspan="2"><small>(diisi oleh fasilitator/pencatat)</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     
-                    <!-- Section 3: Penyelenggara -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">3. Penyelenggara</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="fasilitator">Fasilitator <span class="text-danger">*</span></label>
-                                        <input type="text" id="fasilitator" class="form-control @error('fasilitator') is-invalid @enderror" name="fasilitator" value="{{ old('fasilitator') }}" required>
-                                        @error('fasilitator')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="pencatat">Pencatat <span class="text-danger">*</span></label>
-                                        <input type="text" id="pencatat" class="form-control @error('pencatat') is-invalid @enderror" name="pencatat" value="{{ old('pencatat') }}" required>
-                                        @error('pencatat')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Tabel 2: Informasi Sesi -->
                     
-                    <!-- Section 4: Checklist Persiapan -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">4. Checklist Persiapan</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h6 class="font-weight-bold">Persiapan Pra-FGD</h6>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="persiapan_1" name="checklist[persiapan][]" value="ruangan">
-                                        <label class="form-check-label" for="persiapan_1">Ruangan sudah disiapkan</label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="persiapan_2" name="checklist[persiapan][]" value="alat_tulis">
-                                        <label class="form-check-label" for="persiapan_2">Alat tulis sudah tersedia</label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="persiapan_3" name="checklist[persiapan][]" value="konsumsi">
-                                        <label class="form-check-label" for="persiapan_3">Konsumsi sudah disiapkan</label>
-                                    </div>
-                                    
-                                    <h6 class="font-weight-bold mt-3">Pembagian Tugas</h6>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="tugas_1" name="checklist[tugas][]" value="fasilitator_siap">
-                                        <label class="form-check-label" for="tugas_1">Fasilitator sudah ditentukan</label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="tugas_2" name="checklist[tugas][]" value="pencatat_siap">
-                                        <label class="form-check-label" for="tugas_2">Pencatat sudah ditentukan</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <h6 class="font-weight-bold">Agenda FGD</h6>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="agenda_1" name="checklist[agenda][]" value="perkenalan">
-                                        <label class="form-check-label" for="agenda_1">Perkenalan dan pengantar</label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="agenda_2" name="checklist[agenda][]" value="pembahasan">
-                                        <label class="form-check-label" for="agenda_2">Pembahasan</label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="agenda_3" name="checklist[agenda][]" value="tanya_jawab">
-                                        <label class="form-check-label" for="agenda_3">Pendalaman/Tanya jawab</label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input type="checkbox" class="form-check-input" id="agenda_4" name="checklist[agenda][]" value="kesimpulan">
-                                        <label class="form-check-label" for="agenda_4">Penyimpulan dan penutupan</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="form-table">
+                        <thead>
+                            <tr>
+                                <th colspan="4" class="table-header">INFORMASI SESI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="25%">Tempat sesi:</td>
+                                <td width="25%"><input type="text" name="tempat_sesi" class="input-underline @error('tempat_sesi') is-invalid @enderror" value="{{ old('tempat_sesi') }}" required></td>
+                                <td width="15%">Desa/kel:</td>
+                                <td width="35%"><input type="text" name="desa_sesi" class="input-underline" value="{{ old('desa_sesi') }}"></td>
+                            </tr>
+                            <tr>
+                                <td>Kec:</td>
+                                <td colspan="3"><input type="text" name="kec_sesi" class="input-underline" value="{{ old('kec_sesi') }}"></td>
+                            </tr>
+                            <tr>
+                                <td>Jumlah peserta:</td>
+                                <td><input type="number" id="jumlah_peserta" name="jumlah_peserta" class="input-underline @error('jumlah_peserta') is-invalid @enderror" value="{{ old('jumlah_peserta') }}" required min="1"></td>
+                                <td colspan="2">
+                                    (perempuan: <input type="number" id="jumlah_perempuan" name="jumlah_perempuan" class="input-underline @error('jumlah_perempuan') is-invalid @enderror" value="{{ old('jumlah_perempuan') }}" required min="0" style="width: 50px; display: inline;">
+                                    laki-laki: <input type="number" id="jumlah_laki_laki" name="jumlah_laki_laki" class="input-underline @error('jumlah_laki_laki') is-invalid @enderror" value="{{ old('jumlah_laki_laki') }}" required min="0" style="width: 50px; display: inline;">)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <strong>Gambaran komposisi peserta, misalnya pekerjaan, status sosial, kelompok umur, dsb.</strong><br>
+                                    <textarea name="komposisi_peserta" class="input-underline @error('komposisi_peserta') is-invalid @enderror" rows="3" style="height: 60px; border: 1px solid #000; border-bottom: 1px solid #000;" required>{{ old('komposisi_peserta') }}</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     
-                    <!-- Section 5: Pertanyaan Diskusi -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">5. Pertanyaan Diskusi</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h6 class="font-weight-bold">Akses Hak</h6>
-                                    <div class="form-group">
-                                        <label for="hak_bekerja">Bagaimana akses terhadap hak bekerja setelah bencana?</label>
-                                        <textarea id="hak_bekerja" class="form-control" name="pertanyaan[akses_hak][bekerja]" rows="2">{{ old('pertanyaan.akses_hak.bekerja') }}</textarea>
+                    <!-- Tabel 3: Penyelenggara -->
+                    
+                    <table class="form-table">
+                        <thead>
+                            <tr>
+                                <th width="50%" class="table-header">Penyelenggara</th>
+                                <th width="50%" class="table-header">Paraf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Fasilitator: <input type="text" name="fasilitator" class="input-underline @error('fasilitator') is-invalid @enderror" value="{{ old('fasilitator') }}" required></td>
+                                <td style="height: 40px;"></td>
+                            </tr>
+                            <tr>
+                                <td>Pencatat: <input type="text" name="pencatat" class="input-underline @error('pencatat') is-invalid @enderror" value="{{ old('pencatat') }}" required></td>
+                                <td style="height: 40px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Tabel 4: Checklist Persiapan -->
+                    
+                    <table class="form-table">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="table-header">Checklist Persiapan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="5%">1.</td>
+                                <td width="70%">Persiapan pra-FGD:</td>
+                                <td width="25%">
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="prep_ya" name="checklist[persiapan][]" value="ya">
+                                            <label for="prep_ya">☐ Ya</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="prep_tidak" name="checklist[persiapan][]" value="tidak">
+                                            <label for="prep_tidak">☐ Tidak</label>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="jaminan_sosial">Bagaimana akses terhadap jaminan sosial setelah bencana?</label>
-                                        <textarea id="jaminan_sosial" class="form-control" name="pertanyaan[akses_hak][jaminan_sosial]" rows="2">{{ old('pertanyaan.akses_hak.jaminan_sosial') }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Pembagian tugas pelaksana</td>
+                                <td>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="tugas_ya" name="checklist[tugas][]" value="ya">
+                                            <label for="tugas_ya">☐ Ya</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="tugas_tidak" name="checklist[tugas][]" value="tidak">
+                                            <label for="tugas_tidak">☐ Tidak</label>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="perlindungan_keluarga">Bagaimana perlindungan keluarga setelah bencana?</label>
-                                        <textarea id="perlindungan_keluarga" class="form-control" name="pertanyaan[akses_hak][perlindungan_keluarga]" rows="2">{{ old('pertanyaan.akses_hak.perlindungan_keluarga') }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>Perkenalan dan pengantar</td>
+                                <td>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="perkenalan_ya" name="checklist[perkenalan][]" value="ya">
+                                            <label for="perkenalan_ya">☐ Ya</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="perkenalan_tidak" name="checklist[perkenalan][]" value="tidak">
+                                            <label for="perkenalan_tidak">☐ Tidak</label>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="pelayanan_kesehatan">Bagaimana akses terhadap pelayanan kesehatan setelah bencana?</label>
-                                        <textarea id="pelayanan_kesehatan" class="form-control" name="pertanyaan[akses_hak][pelayanan_kesehatan]" rows="2">{{ old('pertanyaan.akses_hak.pelayanan_kesehatan') }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4.</td>
+                                <td>Pembahasan</td>
+                                <td>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="pembahasan_ya" name="checklist[pembahasan][]" value="ya">
+                                            <label for="pembahasan_ya">☐ Ya</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="pembahasan_tidak" name="checklist[pembahasan][]" value="tidak">
+                                            <label for="pembahasan_tidak">☐ Tidak</label>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="pendidikan">Bagaimana akses terhadap pendidikan setelah bencana?</label>
-                                        <textarea id="pendidikan" class="form-control" name="pertanyaan[akses_hak][pendidikan]" rows="2">{{ old('pertanyaan.akses_hak.pendidikan') }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5.</td>
+                                <td>Pendalaman/Tanya jawab</td>
+                                <td>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="tanya_ya" name="checklist[tanya_jawab][]" value="ya">
+                                            <label for="tanya_ya">☐ Ya</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="tanya_tidak" name="checklist[tanya_jawab][]" value="tidak">
+                                            <label for="tanya_tidak">☐ Tidak</label>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h6 class="font-weight-bold">Fungsi Pranata</h6>
-                                    <div class="form-group">
-                                        <label for="pranata_sosial">Bagaimana fungsi pranata sosial setelah bencana?</label>
-                                        <textarea id="pranata_sosial" class="form-control" name="pertanyaan[fungsi_pranata][sosial]" rows="2">{{ old('pertanyaan.fungsi_pranata.sosial') }}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6.</td>
+                                <td>Penyimpulan dan penutupan</td>
+                                <td>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="penutupan_ya" name="checklist[penutupan][]" value="ya">
+                                            <label for="penutupan_ya">☐ Ya</label>
+                                        </div>
+                                        <div class="checkbox-item">
+                                            <input type="checkbox" id="penutupan_tidak" name="checklist[penutupan][]" value="tidak">
+                                            <label for="penutupan_tidak">☐ Tidak</label>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="pranata_ekonomi">Bagaimana fungsi pranata ekonomi setelah bencana?</label>
-                                        <textarea id="pranata_ekonomi" class="form-control" name="pertanyaan[fungsi_pranata][ekonomi]" rows="2">{{ old('pertanyaan.fungsi_pranata.ekonomi') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="pranata_agama">Bagaimana fungsi pranata agama setelah bencana?</label>
-                                        <textarea id="pranata_agama" class="form-control" name="pertanyaan[fungsi_pranata][agama]" rows="2">{{ old('pertanyaan.fungsi_pranata.agama') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="pranata_pemerintahan">Bagaimana fungsi pranata pemerintahan setelah bencana?</label>
-                                        <textarea id="pranata_pemerintahan" class="form-control" name="pertanyaan[fungsi_pranata][pemerintahan]" rows="2">{{ old('pertanyaan.fungsi_pranata.pemerintahan') }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <h6 class="font-weight-bold">Resiko Kerentanan</h6>
-                                    <div class="form-group">
-                                        <label for="kerentanan_sosial">Karakter sosial yang paling rentan dan cara membantu:</label>
-                                        <textarea id="kerentanan_sosial" class="form-control" name="pertanyaan[resiko_kerentanan][sosial]" rows="3">{{ old('pertanyaan.resiko_kerentanan.sosial') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="kerentanan_ekonomi">Karakter ekonomi yang paling rentan dan cara membantu:</label>
-                                        <textarea id="kerentanan_ekonomi" class="form-control" name="pertanyaan[resiko_kerentanan][ekonomi]" rows="3">{{ old('pertanyaan.resiko_kerentanan.ekonomi') }}</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="kerentanan_geografis">Karakter geografis yang paling rentan dan cara membantu:</label>
-                                        <textarea id="kerentanan_geografis" class="form-control" name="pertanyaan[resiko_kerentanan][geografis]" rows="3">{{ old('pertanyaan.resiko_kerentanan.geografis') }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Tabel 5: Pertanyaan Diskusi -->
+                    
+                    <table class="form-table">
+                        <thead>
+                            <tr>
+                                <th colspan="2" class="table-header">PERTANYAAN DISKUSI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2"><strong>A. Akses Hak</strong></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">1. Bagaimana akses terhadap hak bekerja setelah bencana?</td>
+                                <td width="60%"><textarea name="pertanyaan[akses_hak][bekerja]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.akses_hak.bekerja') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>2. Bagaimana akses terhadap jaminan sosial setelah bencana?</td>
+                                <td><textarea name="pertanyaan[akses_hak][jaminan_sosial]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.akses_hak.jaminan_sosial') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>3. Bagaimana perlindungan keluarga setelah bencana?</td>
+                                <td><textarea name="pertanyaan[akses_hak][perlindungan_keluarga]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.akses_hak.perlindungan_keluarga') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>4. Bagaimana akses terhadap pelayanan kesehatan setelah bencana?</td>
+                                <td><textarea name="pertanyaan[akses_hak][pelayanan_kesehatan]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.akses_hak.pelayanan_kesehatan') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>5. Bagaimana akses terhadap pendidikan setelah bencana?</td>
+                                <td><textarea name="pertanyaan[akses_hak][pendidikan]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.akses_hak.pendidikan') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>B. Fungsi Pranata</strong></td>
+                            </tr>
+                            <tr>
+                                <td>1. Bagaimana fungsi pranata sosial setelah bencana?</td>
+                                <td><textarea name="pertanyaan[fungsi_pranata][sosial]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.fungsi_pranata.sosial') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>2. Bagaimana fungsi pranata ekonomi setelah bencana?</td>
+                                <td><textarea name="pertanyaan[fungsi_pranata][ekonomi]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.fungsi_pranata.ekonomi') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>3. Bagaimana fungsi pranata agama setelah bencana?</td>
+                                <td><textarea name="pertanyaan[fungsi_pranata][agama]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.fungsi_pranata.agama') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>4. Bagaimana fungsi pranata pemerintahan setelah bencana?</td>
+                                <td><textarea name="pertanyaan[fungsi_pranata][pemerintahan]" class="input-underline" rows="2" style="height: 60px; border: 1px solid #000;">{{ old('pertanyaan.fungsi_pranata.pemerintahan') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>C. Resiko Kerentanan</strong></td>
+                            </tr>
+                            <tr>
+                                <td>1. Karakter sosial yang paling rentan dan cara membantu:</td>
+                                <td><textarea name="pertanyaan[resiko_kerentanan][sosial]" class="input-underline" rows="3" style="height: 80px; border: 1px solid #000;">{{ old('pertanyaan.resiko_kerentanan.sosial') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>2. Karakter ekonomi yang paling rentan dan cara membantu:</td>
+                                <td><textarea name="pertanyaan[resiko_kerentanan][ekonomi]" class="input-underline" rows="3" style="height: 80px; border: 1px solid #000;">{{ old('pertanyaan.resiko_kerentanan.ekonomi') }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>3. Karakter geografis yang paling rentan dan cara membantu:</td>
+                                <td><textarea name="pertanyaan[resiko_kerentanan][geografis]" class="input-underline" rows="3" style="height: 80px; border: 1px solid #000;">{{ old('pertanyaan.resiko_kerentanan.geografis') }}</textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
@@ -403,6 +436,35 @@
                 e.preventDefault();
                 alert('Harap periksa kembali: ' + jumlahPeserta.validationMessage);
                 return false;
+            }
+        });
+
+        // Checkbox mutual exclusion (only one per row)
+        const checkboxPairs = [
+            ['prep_ya', 'prep_tidak'],
+            ['tugas_ya', 'tugas_tidak'], 
+            ['perkenalan_ya', 'perkenalan_tidak'],
+            ['pembahasan_ya', 'pembahasan_tidak'],
+            ['tanya_ya', 'tanya_tidak'],
+            ['penutupan_ya', 'penutupan_tidak']
+        ];
+
+        checkboxPairs.forEach(([yaId, tidakId]) => {
+            const yaCheckbox = document.getElementById(yaId);
+            const tidakCheckbox = document.getElementById(tidakId);
+            
+            if (yaCheckbox && tidakCheckbox) {
+                yaCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        tidakCheckbox.checked = false;
+                    }
+                });
+                
+                tidakCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        yaCheckbox.checked = false;
+                    }
+                });
             }
         });
     });
