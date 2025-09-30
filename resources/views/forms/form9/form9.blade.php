@@ -1,31 +1,133 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mt-4">
-    <h5 class="text-center fw-bold mb-4">Formulir 09<br>Pengolahan Data dan Kuesioner</h5>
+<style>        
+    .form-table {
+
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+      .form-table th, .form-table td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+    }
+      .form-table th {
+        font-weight: bold;
+        text-align: center;
+    }
+    .table-header {
+        background-color: var(--bs-secondary) !important;
+        color: white !important;
+        text-align: center;
+        font-weight: bold;
+    }
+    .form-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+    }
+      .form-header {
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #000;
+    }
+      .form-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 5px 0;
+        text-transform: uppercase;
+    }
+    
+    .form-subtitle {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 5px;
+
+    }
+    #addRowBtn:hover {
+        background-color: #45a049;
+    }
+      .data-row td {
+        height: 28px;
+    }
+      [contenteditable="true"]:focus {
+        outline: 2px solid #4CAF50;
+        background-color: #f8f8f8;
+    }
+    
+    [contenteditable="true"]:hover:not(:focus) {
+        background-color: #f0f0f0;
+    }
+    
+    .editing {
+        background-color: #e8f5e9 !important;
+    }
+      @media print {
+        .form-table {
+            page-break-inside: auto;
+            border: 2.5px solid #000 !important;
+        }
+        
+        .form-table tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+        
+        .form-table td, 
+        .form-table th {
+            border: 1.5px solid #000 !important;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+        
+        .form-table thead th {
+            background-color: #b3b3b3 !important;
+            border-bottom: 2.5px solid #000 !important;
+        }
+          .total-row td {
+            border-top: 2.5px solid #000 !important;
+            border-bottom: 2.5px solid #000 !important;
+        }
+        
+        #addRowBtn, .no-print {
+            display: none !important;
+        }
+    }
+</style>
+<div class="container" style="font-family: Times New Roman, serif;">    
+    <div class="text-center mb-4">
+        <h5><strong>Formulir 09</strong></h5>
+        <h5>Pengolahan Data dan Kuesioner</h5>
+    </div>
 
     <form action="{{ route('forms.form9.store') }}" method="POST">
         @csrf
         <input type="hidden" name="bencana_id" value="{{ request()->get('bencana_id') }}">
 
-        <div class="table-responsive">
-            <table class="table table-bordered text-center align-middle" style="border-collapse: collapse;">
+        <div>
+            <table class="form-table text-center align-middle" style="border-collapse: collapse;">
                 <thead>
                     <tr>
-                        <th rowspan="2" style="vertical-align: middle;">No</th>
-                        <th rowspan="2" style="vertical-align: middle;">Pertanyaan</th>
-                        <th rowspan="2" style="vertical-align: middle;">Kategori jawaban</th>
-                        <th colspan="6">Nomor Kuesioner*</th>
-                        <th rowspan="2">Jumlah***</th>
-                        <th rowspan="2">Persentase****</th>
+                        <th class="table-header" rowspan="2" style="vertical-align: middle;">No</th>
+                        <th class="table-header" rowspan="2" style="vertical-align: middle;">Pertanyaan</th>
+                        <th class="table-header" rowspan="2" style="vertical-align: middle;">Kategori jawaban</th>
+                        <th class="table-header" colspan="6">Nomor Kuesioner*</th>
+                        <th class="table-header" rowspan="2">Jumlah***</th>
+                        <th class="table-header" rowspan="2">Persentase****</th>
                     </tr>
                     <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>…</th>
-                        <th>…</th>
-                        <th>…</th>
+                        <th class="table-header">1</th>
+                        <th class="table-header">2</th>
+                        <th class="table-header">3</th>
+                        <th class="table-header">…</th>
+                        <th class="table-header">…</th>
+                        <th class="table-header">…</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,8 +195,8 @@
                                 <td style="padding: 5px;"><input type="text" id="jawaban_{{ $row['no'] }}_{{ $index }}_6" name="jawaban[{{ $row['no'] }}][{{ $index }}][6]" class="form-control form-control-sm"></td>
                                 
                                 {{-- Fields for Jumlah and Persentase --}}
-                                <td style="padding: 5px;"><input type="text" id="jumlah_{{ $row['no'] }}_{{ $index }}" name="jumlah[{{ $row['no'] }}][{{ $index }}]" class="form-control form-control-sm" readonly></td>
-                                <td style="padding: 5px;"><input type="text" id="persentase_{{ $row['no'] }}_{{ $index }}" name="persentase[{{ $row['no'] }}][{{ $index }}]" class="form-control form-control-sm" readonly></td>
+                                <td style="padding: 5px;"><input type="text" id="jumlah_{{ $row['no'] }}_{{ $index }}" name="jumlah[{{ $row['no'] }}][{{ $index }}]" class="form-control form-control-sm"></td>
+                                <td style="padding: 5px;"><input type="text" id="persentase_{{ $row['no'] }}_{{ $index }}" name="persentase[{{ $row['no'] }}][{{ $index }}]" class="form-control form-control-sm"></td>
                             </tr>
                         @endforeach
                     @endforeach

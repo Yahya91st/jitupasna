@@ -36,66 +36,72 @@
 <input type="hidden" name="form_type" value="form2">
 <input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
 <input type="hidden" name="lokasi_hidden" value="{{ $lokasi_menimbang ?? '' }}">
-
-<div class="container" style="max-width: 800px; font-family: Times New Roman, serif; line-height: 1.6;">
+ 
+<div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
     <div class="text-center mb-4">
         <h5><strong>Formulir 02</strong></h5>
         <h5>Surat Keputusan Pembentukan Tim Kerja Pengkajian Kebutuhan Pascabencana</h5>
-    </div>    
-    <p class="text-center"><strong>SURAT KEPUTUSAN</strong><br>
-    No: <input type="text" name="nomor_surat" value="{{ $nomor_surat ?? '' }}" placeholder="Nomor Surat" class="form-input" style="width: 200px; background: transparent; border: none; border-bottom: 1px dotted #000; font-family: inherit; font-size: inherit; color: inherit; outline: none;"><br><br>        <strong>TENTANG</strong><br>    
-        <strong>PEMBENTUKAN TIM KERJA PENGKAJIAN KEBUTUHAN PASCA BENCANA (PDNA) DI <span id="display_lokasi" style="text-decoration: underline; display: inline-block; min-width: 50px;">{{ $lokasi_menimbang ?? '' }}</span>
-        </strong>
-    </p>    <p>
-    <strong>Menimbang</strong> : </p>      <ol type="a" style="padding-left: 20px;">
-        <li>bahwa dalam rangka perencanaan rehabilitasi dan rekonstruksi pascabencana di <input type="text" name="lokasi_menimbang" value="{{ $lokasi_menimbang ?? '' }}" placeholder="Nama Lokasi" class="form-input" style="width: 150px; background: transparent; border: none; border-bottom: 1px dotted #000; font-family: inherit; font-size: inherit; color: inherit; outline: none;" oninput="updateLokasiDisplay(this.value)" onchange="updateLokasiDisplay(this.value)"> perlu dilaksanakan pengkajian kebutuhan pascabencana.</li>
-        <li>bahwa untuk melaksanakan pengkajian kebutuhan pasca bencana perlu dibentuk tim kerja pengkajian kebutuhan pascabencana.</li>
-        <li>bahwa untuk maksud tersebut huruf b, perlu ditetapkan dengan keputusan <input type="text" name="pejabat_keputusan" value="{{ $pejabat_keputusan ?? 'Deputi Rehabilitasi dan Rekonstruksi BNPB (atau Kepala BPBD...)' }}" placeholder="Nama Pejabat/Jabatan" class="form-input" style="width: 400px;" oninput="updatePejabat(this.value)" onchange="updatePejabat(this.value)"></li>
-    </ol>
+    </div>
+    <div class="card">
+        <div class="card-body">
 
-    <p><strong>Mengingat</strong> :</p>
-    <ol type="a" style="padding-left: 20px;">
-        <li>Undang-Undang no. 24 tahun 2007 tentang Penanggulangan Bencana.</li>
-        <li>Peraturan Pemerintah no. 21 tahun 2008 tentang Penyelenggaraan Penanggulangan Bencana.</li>
-        <li>Peraturan Kepala BNPB no. 17 tahun 2010 tentang Pedoman Umum Rehabilitasi dan Rekonstruksi.</li>
-    </ol>
+            <p class="text-center"><strong>SURAT KEPUTUSAN</strong><br>
+            No: <input type="text" name="nomor_surat" value="{{ $nomor_surat ?? '' }}" placeholder="Nomor Surat" class="form-input" style="width: 200px; background: transparent; border: none; border-bottom: 1px dotted #000; font-family: inherit; font-size: inherit; color: inherit; outline: none;"><br><br>        <strong>TENTANG</strong><br>    
+                <strong>PEMBENTUKAN TIM KERJA PENGKAJIAN KEBUTUHAN PASCA BENCANA (PDNA) DI <span id="display_lokasi" style="text-decoration: underline; display: inline-block; min-width: 50px;">{{ $lokasi_menimbang ?? '' }}</span>
+                </strong>
+            </p>    
+            <p>
+            <strong>Menimbang</strong> : </p>      <ol type="a" style="padding-left: 20px;">
+                <li>bahwa dalam rangka perencanaan rehabilitasi dan rekonstruksi pascabencana di <input type="text" name="lokasi_menimbang" value="{{ $lokasi_menimbang ?? '' }}" placeholder="Nama Lokasi" class="form-input" style="width: 150px; background: transparent; border: none; border-bottom: 1px dotted #000; font-family: inherit; font-size: inherit; color: inherit; outline: none;" oninput="updateLokasiDisplay(this.value)" onchange="updateLokasiDisplay(this.value)"> perlu dilaksanakan pengkajian kebutuhan pascabencana.</li>
+                <li>bahwa untuk melaksanakan pengkajian kebutuhan pasca bencana perlu dibentuk tim kerja pengkajian kebutuhan pascabencana.</li>
+                <li>bahwa untuk maksud tersebut huruf b, perlu ditetapkan dengan keputusan <input type="text" name="pejabat_keputusan" value="{{ $pejabat_keputusan ?? 'Deputi Rehabilitasi dan Rekonstruksi BNPB (atau Kepala BPBD...)' }}" placeholder="Nama Pejabat/Jabatan" class="form-input" style="width: 400px;" oninput="updatePejabat(this.value)" onchange="updatePejabat(this.value)"></li>
+            </ol>
 
-    <p class="text-center"><strong>MEMUTUSKAN</strong></p>
+            <p><strong>Mengingat</strong> :</p>
+            <ol type="a" style="padding-left: 20px;">
+                <li>Undang-Undang no. 24 tahun 2007 tentang Penanggulangan Bencana.</li>
+                <li>Peraturan Pemerintah no. 21 tahun 2008 tentang Penyelenggaraan Penanggulangan Bencana.</li>
+                <li>Peraturan Kepala BNPB no. 17 tahun 2010 tentang Pedoman Umum Rehabilitasi dan Rekonstruksi.</li>
+            </ol>
 
-    <p><strong>Menetapkan</strong> :</p>
+            <p class="text-center"><strong>MEMUTUSKAN</strong></p>
 
-    <p><strong>PERTAMA</strong> : Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana di <span id="display_lokasi_pertama" style="text-decoration: underline; display: inline-block; min-width: 50px;">{{ $lokasi_menimbang ?? '' }}</span>, dengan susunan personil sebagaimana terdapat pada lampiran keputusan ini.</p>
+            <p><strong>Menetapkan</strong> :</p>
 
-    <p><strong>KEDUA</strong> : Tim dimaksud diktum pertama mempunyai tugas sebagai berikut:</p>
+            <p><strong>PERTAMA</strong> : Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana di <span id="display_lokasi_pertama" style="text-decoration: underline; display: inline-block; min-width: 50px;">{{ $lokasi_menimbang ?? '' }}</span>, dengan susunan personil sebagaimana terdapat pada lampiran keputusan ini.</p>
 
-    <ol style="padding-left: 20px;">
-        <li>Melakukan perencanaan dan persiapan pelaksanaan pengkajian kebutuhan pascabencana.</li>
-        <li>Melakukan pengumpulan data.</li>
-        <li>Melakukan pengolahan dan analisis data.</li>
-        <li>Menyusun laporan pengkajian kebutuhan pascabencana.</li>
-    </ol>
+            <p><strong>KEDUA</strong> : Tim dimaksud diktum pertama mempunyai tugas sebagai berikut:</p>
 
-    <p><strong>KETIGA</strong> : Tim Kerja dalam melaksanakan tugasnya bertanggung jawab kepada <span id="display_pejabat_ketiga" style="text-decoration: underline; display: inline-block; min-width: 50px;">{{ $pejabat_keputusan ?? '' }}</span> </p>
+            <ol style="padding-left: 20px;">
+                <li>Melakukan perencanaan dan persiapan pelaksanaan pengkajian kebutuhan pascabencana.</li>
+                <li>Melakukan pengumpulan data.</li>
+                <li>Melakukan pengolahan dan analisis data.</li>
+                <li>Menyusun laporan pengkajian kebutuhan pascabencana.</li>
+            </ol>
 
-    <p><strong>KEEMPAT</strong> : Keputusan ini berlaku sejak tanggal ditetapkan, apabila dikemudian hari terdapat kekeliruan dalam penetapan ini akan diperbaiki sebagaimana mestinya.</p>
+            <p><strong>KETIGA</strong> : Tim Kerja dalam melaksanakan tugasnya bertanggung jawab kepada <span id="display_pejabat_ketiga" style="text-decoration: underline; display: inline-block; min-width: 50px;">{{ $pejabat_keputusan ?? '' }}</span> </p>
 
-    <br>    <p>Ditetapkan di &nbsp;&nbsp;&nbsp;: <input type="text" name="tempat_ditetapkan" value="{{ $tempat_ditetapkan ?? '' }}" placeholder="Nama Kota" class="form-input" style="width: 200px;"><br>
-    Pada tanggal &nbsp;&nbsp;: <input type="date" name="tanggal_ditetapkan_date" value="{{ $tanggal_ditetapkan_date ?? '' }}" onchange="formatTanggalDitetapkan(this)" class="form-input" style="width: 200px;">
-    <input type="hidden" name="tanggal_ditetapkan" value="{{ $tanggal_ditetapkan ?? '' }}">    <span id="display_tanggal_ditetapkan">{{ $tanggal_ditetapkan ?? '' }}</span></p>
+            <p><strong>KEEMPAT</strong> : Keputusan ini berlaku sejak tanggal ditetapkan, apabila dikemudian hari terdapat kekeliruan dalam penetapan ini akan diperbaiki sebagaimana mestinya.</p>
 
-    <div class="text-right" style="margin-right: 100px;">
-        <p><span id="display_jabatan_penandatangan">{{ $pejabat_keputusan ?? '' }}</span></p>
+            <br>    <p>Ditetapkan di &nbsp;&nbsp;&nbsp;: <input type="text" name="tempat_ditetapkan" value="{{ $tempat_ditetapkan ?? '' }}" placeholder="Nama Kota" class="form-input" style="width: 200px;"><br>
+            Pada tanggal &nbsp;&nbsp;: <input type="date" name="tanggal_ditetapkan_date" value="{{ $tanggal_ditetapkan_date ?? '' }}" onchange="formatTanggalDitetapkan(this)" class="form-input" style="width: 200px;">
+            <input type="hidden" name="tanggal_ditetapkan" value="{{ $tanggal_ditetapkan ?? '' }}">    <span id="display_tanggal_ditetapkan">{{ $tanggal_ditetapkan ?? '' }}</span></p>
 
-        <br><br>
-        <p><strong><input type="text" name="nama_penandatangan" value="{{ $nama_penandatangan ?? '' }}" placeholder="Nama Penandatangan" class="form-input" style="width: 200px; font-weight: bold;"></strong></p>
-    </div><br>
-    <p><strong>Tembusan Yth.</strong></p>
-    <textarea name="tembusan" class="form-input" style="width: 100%; height: 100px; margin-top: 5px;">{{ $tembusan_text ?? '1. Kepala BNPB (atau Kepala Daerah)
-2. ... Menteri/Kepala Lembaga ... (atau Kepala OPD ....)
-3. Rektor .... (Perguruan Tinggi)
-4. Direktur/Manager/Koordinator .... (Organisasi Kemasyarakatan dan Dunia Usaha)' }}</textarea>
-      <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
-        <button type="submit" class="btn btn-primary" style="padding: 8px 20px; background-color: #4a90e2; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Simpan Data</button>
+            <div class="text-right" style="margin-right: 100px;">
+                <p><span id="display_jabatan_penandatangan">{{ $pejabat_keputusan ?? '' }}</span></p>
+
+                <br><br>
+                <p><strong><input type="text" name="nama_penandatangan" value="{{ $nama_penandatangan ?? '' }}" placeholder="Nama Penandatangan" class="form-input" style="width: 200px; font-weight: bold;"></strong></p>
+            </div><br>
+            <p><strong>Tembusan Yth.</strong></p>
+            <textarea name="tembusan" class="form-input" style="width: 100%; height: 100px; margin-top: 5px;">{{ $tembusan_text ?? '1. Kepala BNPB (atau Kepala Daerah)
+                2. ... Menteri/Kepala Lembaga ... (atau Kepala OPD ....)
+                3. Rektor .... (Perguruan Tinggi)
+                4. Direktur/Manager/Koordinator .... (Organisasi Kemasyarakatan dan Dunia Usaha)' }}</textarea>
+            <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+                <button type="submit" class="btn btn-primary" style="padding: 8px 20px; background-color: #4a90e2; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Simpan Data</button>
+            </div>
+        </div>
     </div>
 </div>
 </form>

@@ -25,6 +25,15 @@
         text-align: center;
         font-weight: bold;
     }
+    .form-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+    }
+/* form-header */
+/* form-title */
+/* form-subtitle */
     .input-underline {
         border: none;
         border-bottom: 1px solid #000;
@@ -55,31 +64,13 @@
         margin-bottom: 10px;
         display: inline-block;
     }
-    .form-container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 20px;
-        background: white;
-    }
 </style>
-<div class="page-heading">
-    <div class="page-title mb-4">
-        <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Formulir 07 - Diskusi Kelompok Terfokus (FGD)</h3>
-                <p class="text-subtitle text-muted">Formulir pendataan untuk Diskusi Kelompok Terfokus (FGD) pascabencana</p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-end float-lg-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('forms.index') }}">Forms</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Formulir 07</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+<div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
+    <div class="text-center mb-4">
+        <h5><strong>Formulir 07</strong></h5>
+        <h5>Diskusi Kelompok Terfokus (FGD)</h5>
     </div>
+
     
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show">
@@ -100,7 +91,8 @@
             <h4 class="card-title">Input Data FGD</h4>
         </div>
         <div class="card-content">
-            <div class="card-body">                <form action="{{ route('forms.form7.store') }}" method="POST" class="form form-vertical">
+            <div class="card-body">                
+                <form action="{{ route('forms.form7.store') }}" method="POST" class="form form-vertical">
                     @csrf
                     
                     <!-- Tabel 1: Informasi Umum -->

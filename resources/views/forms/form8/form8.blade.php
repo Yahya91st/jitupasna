@@ -1,87 +1,55 @@
 @extends('layouts.main')
 
 @section('content')
-<style>    @page {
-        size: landscape;
-        margin: 1cm;
+<style>        
+    .form-table {
+
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        font-size: 13px;
     }
-    
-    body {
-        margin: 0;
-        padding: 10px;
-        background-color: #fff;
+      .form-table th, .form-table td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
     }
-    
-    .report-container {
+      .form-table th {
+        font-weight: bold;
+        text-align: center;
+    }
+    .table-header {
+        background-color: var(--bs-secondary) !important;
+        color: white !important;
+        text-align: center;
+        font-weight: bold;
+    }
+    .form-container {
         max-width: 100%;
         margin: 0 auto;
-        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: white;
     }
-      .report-header {
+      .form-header {
         text-align: center;
         margin-bottom: 25px;
         padding-bottom: 10px;
         border-bottom: 2px solid #000;
     }
-      .report-title {
+      .form-title {
         font-size: 20px;
         font-weight: bold;
         margin: 5px 0;
         text-transform: uppercase;
     }
     
-    .report-subtitle {
+    .form-subtitle {
         font-size: 16px;
         font-weight: bold;
         margin-top: 5px;
-    }.report-table {
-        width: 100%;
-        font-size: 14px;
-        border-collapse: collapse;
-        border: 3px solid #000;
-        box-shadow: 0 0 3px rgba(0,0,0,0.2);
+
     }
-      .report-table th,
-    .report-table td {
-        border: 1.5px solid #000;
-        padding: 4px;
-        vertical-align: middle;
-    }
-      .report-table th {
-        background-color: #d1d1d1;
-        font-weight: bold;
-        text-align: center;
-        border-bottom: 2px solid #000;
-    }
-    
-    .report-table thead th {
-        background-color: #b3b3b3;
-        border-bottom: 3px solid #000;
-        padding: 6px 4px;
-    }
-      .gray-header {
-        background-color: #b3b3b3;
-        border-bottom: 2px solid #000 !important;
-    }
-    
-    .text-center {
-        text-align: center;
-    }
-    
-    .text-right {
-        text-align: right;
-    }
-      .total-row {
-        font-weight: bold;
-        background-color: #d1d1d1;
-        border-top: 2px solid #000;
-        border-bottom: 2px solid #000;
-    }
-      .breakable-column {
-        word-wrap: break-word;
-        max-width: 150px;
-    }
-    
     #addRowBtn:hover {
         background-color: #45a049;
     }
@@ -101,24 +69,24 @@
         background-color: #e8f5e9 !important;
     }
       @media print {
-        .report-table {
+        .form-table {
             page-break-inside: auto;
             border: 2.5px solid #000 !important;
         }
         
-        .report-table tr {
+        .form-table tr {
             page-break-inside: avoid;
             page-break-after: auto;
         }
         
-        .report-table td, 
-        .report-table th {
+        .form-table td, 
+        .form-table th {
             border: 1.5px solid #000 !important;
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
         }
         
-        .report-table thead th {
+        .form-table thead th {
             background-color: #b3b3b3 !important;
             border-bottom: 2.5px solid #000 !important;
         }
@@ -133,35 +101,42 @@
     }
 </style>
 
-<div class="report-container">    <div class="report-header">
-        <p style="margin: 0;">-</p>
-        <div class="report-title">Formulir 08</div>
-        <div class="report-subtitle">Formulir Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian</div>
+<div class="container">    
+    <div class="text-center mb-4">
+        <h5><strong>Formulir 08</strong></h5>
+        <h5>Formulir Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian</h5>
     </div>
-    <table class="report-table">
+    <div style="margin-top: 10px; margin-bottom: 20px; text-align: left;">
+        <button id="addRowBtn" type="button" style="background-color: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">+ Tambah Baris</button>
+    </div>    
+    <table class="form-table">
         <thead>
             <tr>
-                <th rowspan="3" style="width: 3%;">No</th>
-                <th rowspan="3" style="width: 10%;">Sektor/Sub Sektor</th>
-                <th rowspan="3" style="width: 15%;">Komponen Kerusakan dan Kerugian</th>
-                <th rowspan="3" style="width: 10%;">Lokasi</th>                <th colspan="3" style="border-bottom: 2px solid #000; background-color: #b8b8b8;">Data Kerusakan</th>
-                <th colspan="3" style="border-bottom: 2px solid #000; background-color: #b8b8b8;">Harga Satuan (Rp.)</th>
-                <th colspan="3" style="border-bottom: 2px solid #000; background-color: #b8b8b8;">Nilai Kerusakan (Damage)</th>
-                <th rowspan="3" style="width: 8%;">Perkiraan Kerugian (Losses)</th>
-                <th rowspan="3" style="width: 8%;">Kerusakan + Kerugian</th>
-                <th rowspan="3" style="width: 8%;">Kebutuhan</th>
-            </tr>            <tr class="text-center">
-                <th style="width: 4%; background-color: #c6c6c6;">RB</th>
-                <th style="width: 4%; background-color: #c6c6c6;">RS</th>
-                <th style="width: 4%; background-color: #c6c6c6;">RR</th>
-                <th style="width: 6%; background-color: #c6c6c6;">RB</th>
-                <th style="width: 6%; background-color: #c6c6c6;">RS</th>
-                <th style="width: 6%; background-color: #c6c6c6;">RR</th>
-                <th style="width: 6%; background-color: #c6c6c6;">RB</th>
-                <th style="width: 6%; background-color: #c6c6c6;">RS</th>
-                <th style="width: 6%; background-color: #c6c6c6;">RR</th>
+                <th class="table-header" rowspan="3" style="width: 3%;">No</th>
+                <th class="table-header" rowspan="3" style="width: 10%;">Sektor/Sub Sektor</th>
+                <th class="table-header" rowspan="3" style="width: 15%;">Komponen Kerusakan dan Kerugian</th>
+                <th class="table-header" rowspan="3" style="width: 10%;">Lokasi</th>                
+                <th class="table-header" colspan="3">Data Kerusakan</th>
+                <th class="table-header" colspan="3">Harga Satuan (Rp.)</th>
+                <th class="table-header" colspan="3">Nilai Kerusakan (Damage)</th>
+                <th class="table-header" rowspan="3" style="width: 8%;">Perkiraan Kerugian (Losses)</th>
+                <th class="table-header" rowspan="3" style="width: 8%;">Kerusakan + Kerugian</th>
+                <th class="table-header" rowspan="3" style="width: 8%;">Kebutuhan</th>
+            </tr>            
+            <tr class="text-center">
+                <th class="table-header" style="width: 4%;">RB</th>
+                <th class="table-header" style="width: 4%;">RS</th>
+                <th class="table-header" style="width: 4%;">RR</th>
+                <th class="table-header" style="width: 4%;">RB</th>
+                <th class="table-header" style="width: 4%;">RS</th>
+                <th class="table-header" style="width: 4%;">RR</th>
+                <th class="table-header" style="width: 4%;">RB</th>
+                <th class="table-header" style="width: 4%;">RS</th>
+                <th class="table-header" style="width: 4%;">RR</th>
             </tr>
-        </thead>        <tbody id="tableBody">            <tr class="data-row">
+        </thead>        
+        <tbody id="tableBody">            
+            <tr class="data-row">
                 <td style="text-align: center;">1</td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -171,15 +146,14 @@
                 @endfor
             </tr>
             <tr class="total-row" style="font-weight: bold; text-align: center; background-color: #d1d1d1;">
-                <td colspan="4" style="border-top: 2px solid #000; border-bottom: 2px solid #000;">Jumlah Total</td>
+                <td colspan="4">Jumlah Total</td>
                 @for ($j = 0; $j < 12; $j++)
-                    <td style="border-top: 2px solid #000; border-bottom: 2px solid #000;">&nbsp;</td>
+                    <td>&nbsp;</td>
                 @endfor
             </tr>
-        </tbody>    </table>
-      <div style="margin-top: 10px; margin-bottom: 20px; text-align: left;">
-        <button id="addRowBtn" type="button" style="background-color: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">+ Tambah Baris</button>
-    </div>    <script>
+        </tbody>    
+    </table>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const addRowBtn = document.getElementById('addRowBtn');
             const tableBody = document.getElementById('tableBody');
