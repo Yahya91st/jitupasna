@@ -387,9 +387,70 @@
         </tbody>
     </table>
 
-    <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
-        <button type="submit" class="btn btn-primary">Simpan Data</button>
+    <!-- Tombol Aksi -->
+    <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Simpan Data
+        </button>
+        <button type="reset" class="btn btn-warning" onclick="resetForm()">
+            <i class="bi bi-arrow-clockwise"></i> Reset
+        </button>
+        <button type="button" class="btn btn-info" onclick="printForm()">
+            <i class="bi bi-printer"></i> Cetak
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="previewForm()">
+            <i class="bi bi-eye"></i> Preview
+        </button>
     </div>
 </form>
 </div>
-@endsection
+
+<script>
+function resetForm() {
+    if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
+        document.querySelector('form').reset();
+    }
+}
+
+function printForm() {
+    window.print();
+}
+
+function previewForm() {
+    // Create preview window
+    const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+    const formContent = document.querySelector('.container').cloneNode(true);
+    
+    // Remove buttons from preview
+    const buttons = formContent.querySelectorAll('button');
+    buttons.forEach(btn => btn.style.display = 'none');
+    
+    // Remove input borders for preview
+    const inputs = formContent.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        const span = document.createElement('span');
+        span.textContent = input.value || input.placeholder || '';
+        span.style.borderBottom = '1px solid #000';
+        span.style.minWidth = '100px';
+        span.style.display = 'inline-block';
+        input.parentNode.replaceChild(span, input);
+    });
+    
+    previewWindow.document.write(`
+        <html>
+        <head>
+            <title>Preview Form 10 - Analisa Pendidikan</title>
+            <style>
+                body { font-family: 'Times New Roman', serif; padding: 20px; }
+                .form-table { border-collapse: collapse; width: 100%; }
+                .form-table td, .form-table th { border: 1px solid #000; padding: 8px; }
+            </style>
+        </head>
+        <body>
+            ${formContent.outerHTML}
+        </body>
+        </html>
+    `);
+    previewWindow.document.close();
+}
+</script>

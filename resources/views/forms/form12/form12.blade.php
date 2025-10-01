@@ -100,11 +100,23 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <a href="{{ route('forms.index') }}" class="btn btn-secondary">Kembali</a>
-                                <button type="submit" class="btn btn-primary float-end">Simpan Data</button>
-                            </div>
+                        <!-- Tombol Aksi -->
+                        <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save"></i> Simpan Data
+                            </button>
+                            <button type="reset" class="btn btn-warning" onclick="resetForm()">
+                                <i class="bi bi-arrow-clockwise"></i> Reset
+                            </button>
+                            <button type="button" class="btn btn-info" onclick="printForm()">
+                                <i class="bi bi-printer"></i> Cetak
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="previewForm()">
+                                <i class="bi bi-eye"></i> Preview
+                            </button>
+                            <a href="{{ route('forms.index') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Kembali
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -133,5 +145,57 @@
         volumeInput.addEventListener('input', updateTotal);
         hargaSatuanInput.addEventListener('input', updateTotal);
     });
+
+    function resetForm() {
+        if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
+            document.querySelector('form').reset();
+        }
+    }
+
+    function printForm() {
+        window.print();
+    }
+
+    function previewForm() {
+        // Create preview window
+        const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+        const formContent = document.querySelector('.container').cloneNode(true);
+        
+        // Remove buttons from preview
+        const buttons = formContent.querySelectorAll('button');
+        buttons.forEach(btn => btn.style.display = 'none');
+        
+        // Remove links from preview
+        const links = formContent.querySelectorAll('a');
+        links.forEach(link => link.style.display = 'none');
+        
+        // Remove input borders for preview
+        const inputs = formContent.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            const span = document.createElement('span');
+            span.textContent = input.value || input.placeholder || (input.selectedOptions && input.selectedOptions[0] ? input.selectedOptions[0].text : '');
+            span.style.borderBottom = '1px solid #000';
+            span.style.minWidth = '100px';
+            span.style.display = 'inline-block';
+            input.parentNode.replaceChild(span, input);
+        });
+        
+        previewWindow.document.write(`
+            <html>
+            <head>
+                <title>Preview Form 12 - Standar Anggaran PKPB</title>
+                <style>
+                    body { font-family: 'Times New Roman', serif; padding: 20px; }
+                    .card { border: none; }
+                    .card-body { padding: 0; }
+                </style>
+            </head>
+            <body>
+                ${formContent.outerHTML}
+            </body>
+            </html>
+        `);
+        previewWindow.document.close();
+    }
 </script>
 @endpush

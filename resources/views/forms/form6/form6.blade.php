@@ -187,9 +187,88 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Tombol Aksi -->
+            <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save"></i> Simpan Data
+                </button>
+                <button type="reset" class="btn btn-warning" onclick="resetForm()">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </button>
+                <button type="button" class="btn btn-info" onclick="printForm()">
+                    <i class="bi bi-printer"></i> Cetak
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="previewForm()">
+                    <i class="bi bi-eye"></i> Preview
+                </button>
+            </div>
         </div>
     </div>
 
+<script>
+function resetForm() {
+    if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
+        // Reset all checkboxes
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+        
+        // Reset all text inputs
+        const textInputs = document.querySelectorAll('input[type="text"], input[type="date"]');
+        textInputs.forEach(input => input.value = '');
+    }
+}
+
+function printForm() {
+    window.print();
+}
+
+function previewForm() {
+    // Create preview window
+    const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+    const formContent = document.querySelector('.container').cloneNode(true);
+    
+    // Remove buttons from preview
+    const buttons = formContent.querySelectorAll('button');
+    buttons.forEach(btn => btn.style.display = 'none');
+    
+    // Remove input borders for preview
+    const inputs = formContent.querySelectorAll('input[type="text"], input[type="date"]');
+    inputs.forEach(input => {
+        const span = document.createElement('span');
+        span.textContent = input.value || '________________';
+        span.style.borderBottom = '1px solid #000';
+        span.style.minWidth = '100px';
+        span.style.display = 'inline-block';
+        input.parentNode.replaceChild(span, input);
+    });
+    
+    // Handle checkboxes for preview
+    const checkboxes = formContent.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        const span = document.createElement('span');
+        span.textContent = checkbox.checked ? '☑' : '☐';
+        checkbox.parentNode.replaceChild(span, checkbox);
+    });
+    
+    previewWindow.document.write(`
+        <html>
+        <head>
+            <title>Preview Form 6 - Pendataan Tingkat Rumahtangga</title>
+            <style>
+                body { font-family: 'Times New Roman', serif; padding: 20px; }
+                .table { border-collapse: collapse; width: 100%; }
+                .table td, .table th { border: 1px solid #000; padding: 8px; }
+            </style>
+        </head>
+        <body>
+            ${formContent.outerHTML}
+        </body>
+        </html>
+    `);
+    previewWindow.document.close();
+}
+</script>
 
 </div>
 @endsection

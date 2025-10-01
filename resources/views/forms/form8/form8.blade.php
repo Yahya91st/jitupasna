@@ -108,6 +108,22 @@
     </div>
     <div style="margin-top: 10px; margin-bottom: 20px; text-align: left;">
         <button id="addRowBtn" type="button" style="background-color: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">+ Tambah Baris</button>
+    </div>
+    
+    <!-- Tombol Aksi -->
+    <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Simpan Data
+        </button>
+        <button type="reset" class="btn btn-warning" onclick="resetForm()">
+            <i class="bi bi-arrow-clockwise"></i> Reset
+        </button>
+        <button type="button" class="btn btn-info" onclick="printForm()">
+            <i class="bi bi-printer"></i> Cetak
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="previewForm()">
+            <i class="bi bi-eye"></i> Preview
+        </button>
     </div>    
     <table class="form-table">
         <thead>
@@ -214,5 +230,47 @@
                 setupRowListeners(newRow);
             });
         });
+        
+        function resetForm() {
+            if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
+                // Reset all contenteditable cells
+                const editableCells = document.querySelectorAll('[contenteditable="true"]');
+                editableCells.forEach(cell => {
+                    cell.textContent = '';
+                });
+            }
+        }
+
+        function printForm() {
+            window.print();
+        }
+
+        function previewForm() {
+            // Create preview window
+            const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+            const formContent = document.querySelector('.container').cloneNode(true);
+            
+            // Remove buttons from preview
+            const buttons = formContent.querySelectorAll('button');
+            buttons.forEach(btn => btn.style.display = 'none');
+            
+            previewWindow.document.write(`
+                <html>
+                <head>
+                    <title>Preview Form 8 - Analisis Kerusakan dan Kerugian</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; padding: 20px; }
+                        .form-table { border-collapse: collapse; width: 100%; font-size: 12px; }
+                        .form-table td, .form-table th { border: 1px solid #000; padding: 4px; text-align: center; }
+                        .table-header { background-color: #b3b3b3; }
+                    </style>
+                </head>
+                <body>
+                    ${formContent.outerHTML}
+                </body>
+                </html>
+            `);
+            previewWindow.document.close();
+        }
     </script>
 @endsection

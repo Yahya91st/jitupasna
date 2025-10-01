@@ -121,8 +121,20 @@
             3. Rektor .... (Perguruan Tinggi)
             4. Direktur/Manager/Koordinator .... (Organisasi Kemasyarakatan dan Dunia Usaha)' }}</textarea>
 
-            <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
-                <button type="submit" class="btn btn-primary" style="padding: 8px 20px; background-color: #4a90e2; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Simpan Data</button>
+            <!-- Tombol Aksi -->
+            <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save"></i> Simpan Data
+                </button>
+                <button type="reset" class="btn btn-warning" onclick="resetForm()">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </button>
+                <button type="button" class="btn btn-info" onclick="printForm()">
+                    <i class="bi bi-printer"></i> Cetak
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="previewForm()">
+                    <i class="bi bi-eye"></i> Preview
+                </button>
             </div>
         </div>
     </div>
@@ -274,6 +286,59 @@ function getMonthName(month) {
         "Juli", "Agustus", "September", "Oktober", "November", "Desember"
     ];
     return monthNames[month-1];
+}
+
+function resetForm() {
+    if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
+        document.querySelector('form').reset();
+        // Reset display elements
+        document.getElementById('display_lokasi_pdna').textContent = '';
+        document.getElementById('display_hari_tanggal').textContent = '';
+        document.getElementById('display_waktu').textContent = '';
+        document.getElementById('display_kepada_jabatan').textContent = '';
+    }
+}
+
+function printForm() {
+    window.print();
+}
+
+function previewForm() {
+    // Create preview window
+    const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+    const formContent = document.querySelector('.container').cloneNode(true);
+    
+    // Remove buttons from preview
+    const buttons = formContent.querySelectorAll('button');
+    buttons.forEach(btn => btn.style.display = 'none');
+    
+    // Remove input borders for preview
+    const inputs = formContent.querySelectorAll('.form-input');
+    inputs.forEach(input => {
+        const span = document.createElement('span');
+        span.textContent = input.value || input.placeholder || '';
+        span.style.borderBottom = '1px solid #000';
+        span.style.minWidth = '100px';
+        span.style.display = 'inline-block';
+        input.parentNode.replaceChild(span, input);
+    });
+    
+    previewWindow.document.write(`
+        <html>
+        <head>
+            <title>Preview Form 1</title>
+            <style>
+                body { font-family: 'Times New Roman', serif; padding: 20px; }
+                .card { border: none; }
+                .card-body { padding: 0; }
+            </style>
+        </head>
+        <body>
+            ${formContent.outerHTML}
+        </body>
+        </html>
+    `);
+    previewWindow.document.close();
 }
 </script>    
 @endsection
