@@ -128,7 +128,7 @@
         });
     });
 </script>
-<div class="container" style="font-family: Times New Roman, serif;">    
+<div class="container" style="font-family: Times New Roman, serif; max-width: 800px;">    
     <div class="text-center mb-4">
         <h5><strong>Formulir 10</strong></h5>
         <h5>Analisa Data Akibat terhadap Akses, Fungsi dan Resiko, serta Analisa Kebutuhan</h5>
@@ -139,21 +139,21 @@
     <input type="hidden" name="form_type" value="form10">
     <input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
 
-    <table class="form-table">
-        <thead>
-            <tr>
-                <th class="table-header" rowspan="2">No</th>
-                <th class="table-header" rowspan="2">Sektor-sub.sektor</th>
-                <th class="table-header" rowspan="2">Lokasi bencana terjadi</th>
-                <th class="table-header" colspan="3">Akibat terhadap akses, fungsi dan resiko</th>
-                <th class="table-header" rowspan="2">Kebutuhan-kegiatan pemulihan</th>
-            </tr>
-            <tr>
-                <th class="table-header">Point penting hasil pengolahan data survey</th>
-                <th class="table-header">Point penting hasil wawancara/FGD</th>
-                <th class="table-header">Point penting hasil pendalaman</th>
-            </tr>
-        </thead>    
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th class="table-header" rowspan="2">No</th>
+                    <th class="table-header" rowspan="2">Sektor-sub.sektor</th>
+                    <th class="table-header" rowspan="2">Lokasi bencana terjadi</th>
+                    <th class="table-header" colspan="3">Akibat terhadap akses, fungsi dan resiko</th>
+                    <th class="table-header" rowspan="2">Kebutuhan-kegiatan pemulihan</th>
+                </tr>
+                <tr>
+                    <th class="table-header">Point penting hasil pengolahan data survey</th>
+                    <th class="table-header">Point penting hasil wawancara/FGD</th>
+                    <th class="table-header">Point penting hasil pendalaman</th>
+                </tr>
+            </thead>    
             <tbody>
             <tr>
                 <td class="bold">1</td>
@@ -384,24 +384,24 @@
                 <td></td>
                 <td><input type="text" name="jumlah_kebutuhan_form10" style="width: 100%; border: none;"></td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
     <!-- Tombol Aksi -->
-    <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
-        <button type="submit" class="btn btn-success">
-            <i class="bi bi-save"></i> Simpan Data
-        </button>
-        <button type="reset" class="btn btn-warning" onclick="resetForm()">
-            <i class="bi bi-arrow-clockwise"></i> Reset
-        </button>
-        <button type="button" class="btn btn-info" onclick="printForm()">
-            <i class="bi bi-printer"></i> Cetak
-        </button>
-        <button type="button" class="btn btn-secondary" onclick="previewForm()">
-            <i class="bi bi-eye"></i> Preview
-        </button>
-    </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-save"></i> Simpan Data
+            </button>
+            <button type="reset" class="btn btn-warning" onclick="resetForm()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+            <button type="button" class="btn btn-info" onclick="printForm()">
+                <i class="bi bi-printer"></i> Cetak
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="previewForm()">
+                <i class="bi bi-eye"></i> Preview
+            </button>
+        </div>
 </form>
 </div>
 
@@ -454,3 +454,4 @@ function previewForm() {
     previewWindow.document.close();
 }
 </script>
+@endsection
