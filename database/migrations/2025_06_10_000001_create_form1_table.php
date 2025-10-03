@@ -14,21 +14,21 @@ return new class extends Migration
         Schema::create('form1', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bencana_id');
+            $table->string('kop_surat')->nullable();
             $table->string('nomor_surat');
+            $table->date('nomor_surat_date');
             $table->enum('sifat', ['Segera', 'Biasa', 'Rahasia'])->default('Biasa');
-            $table->string('lampiran')->nullable();
-            $table->string('perihal')->default('Permohonan Keterlibatan dalam PDNA');
-            $table->string('kepada');
+            $table->integer('lampiran')->nullable();
+            $table->text('kepada_jabatan');
             $table->string('lokasi_pdna');
-            $table->date('hari_tanggal');
-            $table->time('waktu');
+            $table->string('hari_tanggal');
+            $table->string('waktu');
             $table->string('tempat');
-            $table->string('agenda')->default('Konsolidasi awal PDNA');
-            $table->string('nama_penandatangan');            $table->string('jabatan_penandatangan');
+            $table->text('agenda');
+            $table->string('nama_penandatangan');
             $table->text('tembusan')->nullable();
-            $table->date('tanggal_surat')->default(now());
-            $table->string('instansi_pengirim')->nullable();
             $table->timestamps();
+            
         });
     }
 

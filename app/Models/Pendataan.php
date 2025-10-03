@@ -11,6 +11,7 @@ class Pendataan extends Model {
     protected $table = 'form3';
     
     protected $fillable = [
+        'bencana_id',
         'wilayah_bencana',
         'jumlah_laki_laki',
         'jumlah_perempuan',
@@ -28,6 +29,23 @@ class Pendataan extends Model {
         'jumlah_manula',
         'jumlah_penerima_jps_kesehatan',
         'jumlah_rumah_air_bersih',
+        // New fields from form
+        'program_kesehatan_masal',
+        'permasalahan_kesehatan',
+        'kegiatan_permasalahan_kesehatan',
+        'program_makanan_tambahan',
+        'jumlah_balita_terdampak',
+        'dampak_balita',
+        'kegiatan_balita',
+        'jumlah_ibu_hamil_terdampak',
+        'dampak_ibu_hamil',
+        'kegiatan_ibu_hamil',
+        'jumlah_lansia_terdampak',
+        'dampak_lansia',
+        'kegiatan_lansia',
+        'dampak_kesehatan_menengah',
+        'kegiatan_dampak_kesehatan',
+        'rencana_kontingensi_kesehatan',
         'jumlah_rumah_jamban',
         'jumlah_pasar',
         'jumlah_koperasi',
@@ -77,7 +95,6 @@ class Pendataan extends Model {
         'kesehatan_gangguan_layanan',
         'kesehatan_dampak_menengah',
         'kesehatan_pemulihan',
-        'bencana_id',
     ];
 
     public function bencana()

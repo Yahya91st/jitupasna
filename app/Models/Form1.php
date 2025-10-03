@@ -11,11 +11,11 @@ class Form1 extends Model
     
     protected $table = 'form1';    protected $fillable = [
         'bencana_id',
+        'kop_surat',
         'nomor_surat',
+        'nomor_surat_date',
         'sifat',
         'lampiran',
-        'perihal',
-        'kepada',
         'kepada_jabatan',
         'lokasi_pdna',
         'hari_tanggal',
@@ -23,17 +23,13 @@ class Form1 extends Model
         'tempat',
         'agenda',
         'nama_penandatangan',
-        'jabatan_penandatangan',
-        'tembusan',
-        'tanggal_surat',
-        'instansi_pengirim'
+        'tembusan'
     ];
     
-    // Dates
+    // Dates  
     protected $casts = [
-        'hari_tanggal' => 'date',
-        'tanggal_surat' => 'date',
-        'waktu' => 'datetime:H:i'
+        'nomor_surat_date' => 'date',
+        'lampiran' => 'integer'
     ];
       // Relationships
     public function bencana()

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-class Form8Controller extends Controller
+class Form8ControllerNew extends Controller
 {
     /**
      * Display the form for creating a new Form8.

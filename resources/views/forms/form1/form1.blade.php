@@ -44,101 +44,101 @@
 
 <form method="POST" action="{{ route('forms.form1.store') }}">
 @csrf
-<input type="hidden" name="form_type" value="form1">
-<input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
+    <input type="hidden" name="form_type" value="form1">
+    <input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
 
-<div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
-    <div class="text-center mb-4">
-        <h5><strong>Formulir 01</strong></h5>
-        <h5>Surat Permohonan Keterlibatan dalam Pengkajian Kebutuhan Pascabencana (PDNA)</h5>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            
-            <p class="text-center">
-                <input type="text" name="kop_surat" value="{{ $kop_surat ?? 'Kop Surat BNPB (atau BPBD)' }}" class="form-input" style="width: 80%; text-align: center; font-style: italic;">
-            </p>    
-            <p>
-                <span class="form-label">Nomor</span>: 
-                <input type="text" name="nomor_surat_part1" value="{{ $nomor_surat_part1 ?? '' }}" placeholder="Nomor" class="form-input" style="width: 20%;">, 
-                <input type="date" name="nomor_surat_part2_date" value="{{ $nomor_surat_part2_date ?? '' }}" onchange="formatDate(this)" class="form-input" style="width: 25%;">
-                <input type="hidden" name="nomor_surat_part2" value="{{ $nomor_surat_part2 ?? '' }}"> 
-                <input type="text" name="nomor_surat_part3" value="{{ $nomor_surat_part3 ?? '' }}" placeholder="Tahun" class="form-input" style="width: 20%;">
-            </p>
-
-            <p>
-                <span class="form-label">Sifat</span>: 
-                <select name="sifat" class="form-input" style="width: auto; display: inline-block; padding: 2px 0;">
-                    <option value="Segera" {{ ($sifat ?? '') == 'Segera' ? 'selected' : '' }}>Segera</option>
-                    <option value="Biasa" {{ ($sifat ?? '') == 'Biasa' ? 'selected' : '' }}>Biasa</option>
-                    <option value="Rahasia" {{ ($sifat ?? '') == 'Rahasia' ? 'selected' : '' }}>Rahasia</option>
-                </select>
-            </p>    
-            <p>
-                <span class="form-label">Lampiran</span>: 
-                <input type="number" name="lampiran" value="{{ $lampiran ?? '' }}" min="0" placeholder="0" class="form-input" style="width: 50px;"> lembar
-            </p>    
-            <p>
-                <span class="form-label">Perihal</span>: Permohonan Keterlibatan dalam<br>        <span class="form-indent">Pengkajian Kebutuhan Pascabencana (PDNA)</span><br>
-            </p>    
-            <p style="margin-bottom: 1.5em;">
-                <span class="form-label" style="margin-bottom: 10px; display: block; margin-left: 160px; margin-top: 20px;">Kepada Yth</span>
-                <span class="form-indent">
-                    <textarea name="kepada_jabatan" class="form-input" style="width: 80%; height: 60px; margin-bottom: 10px;" oninput="updateKepadaJabatan(this.value)" onchange="updateKepadaJabatan(this.value)">{{ $kepada_jabatan ?? 'Direktur Kementerian/Lembaga(atau Kepala OPD ....)' }}</textarea>
-                </span><br>
-                <span class="form-indent">di</span><input type="text" name="lokasi_pdna" value="{{ $lokasi_pdna ?? '' }}" placeholder="Lokasi" class="form-input" style="width: 50%;" oninput="updateLokasiPdna(this.value)">
-            </p>
-
-            <p>
-                Berkenaan dengan akan diadakannya Pengkajian Kebutuhan Pascabencana (PDNA) di <span id="display_lokasi_pdna">{{ $lokasi_pdna ?? '' }}</span>, bersama ini kami memohon keterlibatan perwakilan resmi instansi Bapak/Ibu dalam kegiatan tersebut.<br><br>
-                Untuk konsolidasi awal, mohon kiranya perwakilan resmi instansi Bapak/Ibu dapat hadir pada pertemuan yang akan diadakan pada:
-            </p>    
-            <p>        
-                <span class="form-label">Hari/tanggal</span>: 
-                <input type="date" name="hari_tanggal_date" value="{{ $hari_tanggal_date ?? '' }}" onchange="formatHariTanggal(this)" class="form-input" style="width: 30%;">
-                <input type="hidden" name="hari_tanggal" value="{{ $hari_tanggal ?? '' }}">
-                <span id="display_hari_tanggal">{{ $hari_tanggal ?? '' }}</span><br>
+    <div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
+        <div class="text-center mb-4">
+            <h5><strong>Formulir 01</strong></h5>
+            <h5>Surat Permohonan Keterlibatan dalam Pengkajian Kebutuhan Pascabencana (PDNA)</h5>
+        </div>
+        <div class="card">
+            <div class="card-body">
                 
-                <span class="form-label">Waktu</span>: 
-                <input type="time" name="waktu_time" value="{{ $waktu_time ?? '' }}" onchange="formatWaktu(this)" class="form-input" style="width: 30%;">
-                <input type="hidden" name="waktu" value="{{ $waktu ?? '' }}">
-                <span id="display_waktu">{{ $waktu ?? '' }}</span><br>        <span class="form-label">Tempat</span>: 
-                <input type="text" name="tempat" value="{{ $tempat ?? '' }}" placeholder="Lokasi pertemuan" class="form-input" style="width: 60%;"><br>        
-                <span class="form-label">Agenda</span>: <textarea name="agenda" class="form-input" style="width: 60%; height: 60px; vertical-align: middle;">{{ $agenda ?? '- Konsolidasi awal
-                - Persiapan Pengkajian Kebutuhan Pascabencana (PDNA)' }}</textarea>
-            </p>
-            <p>Demikian atas kerjasamanya diucapkan terima kasih.</p>    <br>    <div style="text-align: right; margin-right: 100px;">
-                <div style="text-align: left; margin-bottom: 10px;">
-                    <strong>Kepada:</strong> 
+                <p class="text-center">
+                    <input type="text" name="kop_surat" value="{{ $kop_surat ?? 'Kop Surat BNPB (atau BPBD)' }}" class="form-input" style="width: 80%; text-align: center; font-style: italic;">
+                </p>    
+                <p>
+                    <span class="form-label">Nomor</span>: 
+                    <input type="text" name="nomor_surat" value="{{ $nomor_surat ?? '' }}" placeholder="Nomor" class="form-input" style="width: 20%;">, 
+                    <input type="date" name="nomor_surat_date" value="{{ $nomor_surat_date ?? '' }}" onchange="formatDate(this)" class="form-input" style="width: 25%;">
+                    {{-- <input type="hidden" name="nomor_surat_part2" value="{{ $nomor_surat_part2 ?? '' }}">  --}}
+                    {{-- <input type="text" name="nomor_surat_part3" value="{{ $nomor_surat_part3 ?? '' }}" placeholder="Tahun" class="form-input" style="width: 20%;"> --}}
+                </p>
+
+                <p>
+                    <span class="form-label">Sifat</span>: 
+                    <select name="sifat" class="form-input" style="width: auto; display: inline-block; padding: 2px 0;">
+                        <option value="Segera" {{ ($sifat ?? '') == 'Segera' ? 'selected' : '' }}>Segera</option>
+                        <option value="Biasa" {{ ($sifat ?? '') == 'Biasa' ? 'selected' : '' }}>Biasa</option>
+                        <option value="Rahasia" {{ ($sifat ?? '') == 'Rahasia' ? 'selected' : '' }}>Rahasia</option>
+                    </select>
+                </p>    
+                <p>
+                    <span class="form-label">Lampiran</span>: 
+                    <input type="number" name="lampiran" value="{{ $lampiran ?? '' }}" min="0" placeholder="0" class="form-input" style="width: 50px;"> lembar
+                </p>    
+                <p>
+                    <span class="form-label">Perihal</span>: Permohonan Keterlibatan dalam<br>        <span class="form-indent">Pengkajian Kebutuhan Pascabencana (PDNA)</span><br>
+                </p>    
+                <p style="margin-bottom: 1.5em;">
+                    <span class="form-label" style="margin-bottom: 10px; display: block; margin-left: 160px; margin-top: 20px;">Kepada Yth</span>
+                    <span class="form-indent">
+                        <textarea name="kepada_jabatan" class="form-input" style="width: 80%; height: 60px; margin-bottom: 10px;" oninput="updateKepadaJabatan(this.value)" onchange="updateKepadaJabatan(this.value)">{{ $kepada_jabatan ?? 'Direktur Kementerian/Lembaga(atau Kepala OPD ....)' }}</textarea>
+                    </span><br>
+                    <span class="form-indent">di</span><input type="text" name="lokasi_pdna" value="{{ $lokasi_pdna ?? '' }}" placeholder="Lokasi" class="form-input" style="width: 50%;" oninput="updateLokasiPdna(this.value)">
+                </p>
+
+                <p>
+                    Berkenaan dengan akan diadakannya Pengkajian Kebutuhan Pascabencana (PDNA) di <span id="display_lokasi_pdna">{{ $lokasi_pdna ?? '' }}</span>, bersama ini kami memohon keterlibatan perwakilan resmi instansi Bapak/Ibu dalam kegiatan tersebut.<br><br>
+                    Untuk konsolidasi awal, mohon kiranya perwakilan resmi instansi Bapak/Ibu dapat hadir pada pertemuan yang akan diadakan pada:
+                </p>    
+                <p>        
+                    <span class="form-label">Hari/tanggal</span>: 
+                    <input type="date" name="hari_tanggal_date" value="{{ $hari_tanggal_date ?? '' }}" onchange="formatHariTanggal(this)" class="form-input" style="width: 30%;">
+                    <input type="hidden" name="hari_tanggal" value="{{ $hari_tanggal ?? '' }}">
+                    <span id="display_hari_tanggal">{{ $hari_tanggal ?? '' }}</span><br>
+                    
+                    <span class="form-label">Waktu</span>: 
+                    <input type="time" name="waktu_time" value="{{ $waktu_time ?? '' }}" onchange="formatWaktu(this)" class="form-input" style="width: 30%;">
+                    <input type="hidden" name="waktu" value="{{ $waktu ?? '' }}">
+                    <span id="display_waktu">{{ $waktu ?? '' }}</span><br>        <span class="form-label">Tempat</span>: 
+                    <input type="text" name="tempat" value="{{ $tempat ?? '' }}" placeholder="Lokasi pertemuan" class="form-input" style="width: 60%;"><br>        
+                    <span class="form-label">Agenda</span>: <textarea name="agenda" class="form-input" style="width: 60%; height: 60px; vertical-align: middle;">{{ $agenda ?? '- Konsolidasi awal
+                    - Persiapan Pengkajian Kebutuhan Pascabencana (PDNA)' }}</textarea>
+                </p>
+                <p>Demikian atas kerjasamanya diucapkan terima kasih.</p>    <br>    <div style="text-align: right; margin-right: 100px;">
+                    <div style="text-align: left; margin-bottom: 10px;">
+                        <strong>Kepada:</strong> 
+                    </div>
+                    <span id="display_kepada_jabatan" style="display: inline-block; margin-left: 5px; text-decoration: underline;">{{ $kepada_jabatan ?? 'Direktur Kementerian/Lembaga (atau Kepala OPD ....)' }}</span>
+
+                    <br><br>
+                    <input type="text" name="nama_penandatangan" value="{{ $nama_penandatangan ?? 'Nama Jelas' }}" class="form-input" style="text-align: center; font-weight: bold; width: 350px;">
+                </div><br>
+                <p><strong>Tembusan Yth.</strong></p>    <textarea name="tembusan" class="form-input" style="width: 100%; height: 100px; margin-top: 5px;">{{ $tembusan_text ?? '1. Kepala BNPB (atau Kepala Daerah)
+                2. ... Menteri/Kepala Lembaga ... (atau Kepala OPD ....)
+                3. Rektor .... (Perguruan Tinggi)
+                4. Direktur/Manager/Koordinator .... (Organisasi Kemasyarakatan dan Dunia Usaha)' }}</textarea>
+
+                <!-- Tombol Aksi -->
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Simpan Data
+                    </button>
+                    <button type="reset" class="btn btn-warning" onclick="resetForm()">
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                    </button>
+                    <button type="button" class="btn btn-info" onclick="printForm()">
+                        <i class="bi bi-printer"></i> Cetak
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="previewForm()">
+                        <i class="bi bi-eye"></i> Preview
+                    </button>
                 </div>
-                <span id="display_kepada_jabatan" style="display: inline-block; margin-left: 5px; text-decoration: underline;">{{ $kepada_jabatan ?? 'Direktur Kementerian/Lembaga (atau Kepala OPD ....)' }}</span>
-
-                <br><br>
-                <input type="text" name="nama_penandatangan" value="{{ $nama_penandatangan ?? 'Nama Jelas' }}" class="form-input" style="text-align: center; font-weight: bold; width: 350px;">
-            </div><br>
-            <p><strong>Tembusan Yth.</strong></p>    <textarea name="tembusan" class="form-input" style="width: 100%; height: 100px; margin-top: 5px;">{{ $tembusan_text ?? '1. Kepala BNPB (atau Kepala Daerah)
-            2. ... Menteri/Kepala Lembaga ... (atau Kepala OPD ....)
-            3. Rektor .... (Perguruan Tinggi)
-            4. Direktur/Manager/Koordinator .... (Organisasi Kemasyarakatan dan Dunia Usaha)' }}</textarea>
-
-            <!-- Tombol Aksi -->
-            <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
-                <button type="submit" class="btn btn-success">
-                    <i class="bi bi-save"></i> Simpan Data
-                </button>
-                <button type="reset" class="btn btn-warning" onclick="resetForm()">
-                    <i class="bi bi-arrow-clockwise"></i> Reset
-                </button>
-                <button type="button" class="btn btn-info" onclick="printForm()">
-                    <i class="bi bi-printer"></i> Cetak
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="previewForm()">
-                    <i class="bi bi-eye"></i> Preview
-                </button>
             </div>
         </div>
     </div>
-</div>
 </form>
 
 <script>
@@ -268,8 +268,6 @@ document.addEventListener('DOMContentLoaded', function() {
         formatWaktu(waktuInput);
     }
 });
-</script>    
-<script>
 function formatDate(dateInput) {
     if(dateInput.value) {
         const date = new Date(dateInput.value);
@@ -340,5 +338,5 @@ function previewForm() {
     `);
     previewWindow.document.close();
 }
-</script>    
+</script>     
 @endsection

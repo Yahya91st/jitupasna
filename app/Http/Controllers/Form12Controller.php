@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggaran;
+use App\Models\Form12;
 use App\Models\Bencana;
 use App\Models\IndeksBiaya;
 use Illuminate\Http\Request;
@@ -54,21 +54,21 @@ class Form12Controller extends Controller
         // Calculate jumlah
         $jumlah = $request->volume * $request->harga_satuan;
 
-        $anggaran = new Anggaran();
-        $anggaran->bencana_id = $request->bencana_id;
-        $anggaran->sektor = $request->sektor;
-        $anggaran->komponen_kebutuhan = $request->komponen_kebutuhan;
-        $anggaran->kegiatan = $request->kegiatan;
-        $anggaran->lokasi = $request->lokasi;
-        $anggaran->volume = $request->volume;
-        $anggaran->satuan = $request->satuan;
-        $anggaran->harga_satuan = $request->harga_satuan;
-        $anggaran->jumlah = $jumlah;
-        $anggaran->keterangan = $request->keterangan;
-        $anggaran->created_by = Auth::id();
-        $anggaran->save();
+        $form12 = new Form12();
+        $form12->bencana_id = $request->bencana_id;
+        $form12->sektor = $request->sektor;
+        $form12->komponen_kebutuhan = $request->komponen_kebutuhan;
+        $form12->kegiatan = $request->kegiatan;
+        $form12->lokasi = $request->lokasi;
+        $form12->volume = $request->volume;
+        $form12->satuan = $request->satuan;
+        $form12->harga_satuan = $request->harga_satuan;
+        $form12->jumlah = $jumlah;
+        $form12->keterangan = $request->keterangan;
+        $form12->created_by = Auth::id();
+        $form12->save();
 
-        return redirect()->route('forms.form12.show', $anggaran->id)->with('success', 'Data anggaran berhasil disimpan.');
+        return redirect()->route('forms.form12.show', $form12->id)->with('success', 'Data anggaran berhasil disimpan.');
     }
     
     /**
@@ -76,8 +76,8 @@ class Form12Controller extends Controller
      */
     public function show($id)
     {
-        $anggaran = Anggaran::with('bencana')->findOrFail($id);
-        return view('forms.form12.show', compact('anggaran'));
+        $form12 = Form12::with('bencana')->findOrFail($id);
+        return view('forms.form12.show', compact('form12'));
     }
     
     /**
@@ -85,9 +85,9 @@ class Form12Controller extends Controller
      */
     public function edit($id)
     {
-        $anggaran = Anggaran::findOrFail($id);
+        $form12 = Form12::findOrFail($id);
         $bencanas = Bencana::all();
-        return view('forms.form12.edit', compact('anggaran', 'bencanas'));
+        return view('forms.form12.edit', compact('form12', 'bencanas'));
     }
     
     /**
@@ -95,7 +95,7 @@ class Form12Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $anggaran = Anggaran::findOrFail($id);
+        $form12 = Form12::findOrFail($id);
         
         $validator = Validator::make($request->all(), [
             'bencana_id' => 'required|exists:bencana,id',
@@ -116,20 +116,20 @@ class Form12Controller extends Controller
         // Calculate total jumlah
         $jumlah = $request->volume * $request->harga_satuan;
         
-        $anggaran->bencana_id = $request->bencana_id;
-        $anggaran->sektor = $request->sektor;
-        $anggaran->komponen_kebutuhan = $request->komponen_kebutuhan;
-        $anggaran->kegiatan = $request->kegiatan;
-        $anggaran->lokasi = $request->lokasi;
-        $anggaran->volume = $request->volume;
-        $anggaran->satuan = $request->satuan;
-        $anggaran->harga_satuan = $request->harga_satuan;
-        $anggaran->jumlah = $jumlah;
-        $anggaran->keterangan = $request->keterangan;
-        $anggaran->updated_by = Auth::id();
-        $anggaran->save();
+        $form12->bencana_id = $request->bencana_id;
+        $form12->sektor = $request->sektor;
+        $form12->komponen_kebutuhan = $request->komponen_kebutuhan;
+        $form12->kegiatan = $request->kegiatan;
+        $form12->lokasi = $request->lokasi;
+        $form12->volume = $request->volume;
+        $form12->satuan = $request->satuan;
+        $form12->harga_satuan = $request->harga_satuan;
+        $form12->jumlah = $jumlah;
+        $form12->keterangan = $request->keterangan;
+        $form12->updated_by = Auth::id();
+        $form12->save();
 
-        return redirect()->route('forms.form12.show', $anggaran->id)->with('success', 'Data anggaran berhasil diperbarui.');
+        return redirect()->route('forms.form12.show', $form12->id)->with('success', 'Data anggaran berhasil diperbarui.');
     }
     
     /**
@@ -138,36 +138,36 @@ class Form12Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->query('bencana_id');
-        $query = Anggaran::with('bencana');
+        $query = Form12::with('bencana');
         
         if ($bencana_id) {
             $bencana = Bencana::findOrFail($bencana_id);
             $query->where('bencana_id', $bencana_id);
-            $anggaranList = $query->orderBy('created_at', 'desc')->get();
-            return view('forms.form12.list', compact('anggaranList', 'bencana'));
+            $form12List = $query->orderBy('created_at', 'desc')->get();
+            return view('forms.form12.list', compact('form12List', 'bencana'));
         }
         
-        $anggaranList = $query->orderBy('created_at', 'desc')->paginate(10);
-        return view('forms.form12.list', compact('anggaranList'));
+        $form12List = $query->orderBy('created_at', 'desc')->paginate(10);
+        return view('forms.form12.list', compact('form12List'));
     }
     
     /**
-     * Generate PDF document from Anggaran
+     * Generate PDF document from Form12
      */
     public function generatePdf($id)
     {
-        $anggaran = Anggaran::with('bencana')->findOrFail($id);
-        $pdf = PDF::loadView('forms.form12.pdf', compact('anggaran'));
-        return $pdf->download('formulir-12-anggaran-' . $anggaran->id . '.pdf');
+        $form12 = Form12::with('bencana')->findOrFail($id);
+        $pdf = PDF::loadView('forms.form12.pdf', compact('form12'));
+        return $pdf->download('formulir-12-anggaran-' . $form12->id . '.pdf');
     }
     
     /**
-     * Preview PDF document from Anggaran
+     * Preview PDF document from Form12
      */
     public function previewPdf($id)
     {
-        $anggaran = Anggaran::with('bencana')->findOrFail($id);
-        return view('forms.form12.pdf', compact('anggaran'));
+        $form12 = Form12::with('bencana')->findOrFail($id);
+        return view('forms.form12.pdf', compact('form12'));
     }
     
     /**

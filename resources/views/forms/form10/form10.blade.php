@@ -129,6 +129,7 @@
     });
 </script>
 <div class="container" style="font-family: Times New Roman, serif; max-width: 800px;">    
+
     <div class="text-center mb-4">
         <h5><strong>Formulir 10</strong></h5>
         <h5>Analisa Data Akibat terhadap Akses, Fungsi dan Resiko, serta Analisa Kebutuhan</h5>

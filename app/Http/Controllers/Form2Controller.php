@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Form2;
 use App\Models\Bencana;
-use App\Models\Keputusan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class Form2Controller extends Controller
 {    /**
@@ -29,67 +30,69 @@ class Form2Controller extends Controller
     /**
      * Store a newly created Surat Keputusan in database.
      */
-    public function store(Request $request)
-    {
-        try {
-            $validated = $request->validate([
-                'nomor_surat' => 'required|string|max:255|unique:keputusan,nomor_surat',
-                'tentang' => 'required|string|max:255',
-                'lokasi' => 'required|string|max:255',
-                'tanggal_ditetapkan' => 'required|date',
-                'pejabat_penandatangan' => 'required|string|max:255',
-                'menimbang' => 'required|string',
-                'mengingat' => 'required|string',
-                'tim_kerja' => 'required|string',
-                'tugas_tim' => 'required|string',
-                'penanggung_jawab' => 'required|string|max:255',
+            public function store(Request $request)
+        {
+            $validator = Validator::make($request->all(), [
+                'bencana_id' => 'required|exists:bencana,id',
+                'nomor_surat' => 'required|string|max:255|unique:form2,nomor_surat',
+                'lokasi_menimbang' => 'required|string|max:255',
+                'pejabat_keputusan' => 'required|string|max:255',
+                'tempat_ditetapkan' => 'required|string|max:255',
+                'tanggal_ditetapkan' => 'required|string|max:255',
+                'nama_penandatangan' => 'required|string|max:255',
                 'tembusan' => 'required|string',
-                'bencana_id' => 'required|exists:bencana,id'
             ]);
 
-            // Combine menimbang and mengingat to create dasar_hukum field
-            $dasar_hukum = "Menimbang:\n{$validated['menimbang']}\n\nMengingat:\n{$validated['mengingat']}";
-            
-            // Structure the keputusan content
-            $keputusan = "KESATU: Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana dengan susunan tim sebagai berikut:\n{$validated['tim_kerja']}\n\n";
-            $keputusan .= "KEDUA: Tim sebagaimana dimaksud dalam Diktum KESATU mempunyai tugas sebagai berikut:\n{$validated['tugas_tim']}\n\n";
-            $keputusan .= "KETIGA: Dalam melaksanakan tugasnya, Tim bertanggung jawab kepada {$validated['penanggung_jawab']}.\n\n";
-            $keputusan .= "KEEMPAT: Keputusan ini mulai berlaku pada tanggal ditetapkan.";
-            
-            // Create new keputusan record
-            $keputusanData = new Keputusan();
-            $keputusanData->nomor_surat = $validated['nomor_surat'];
-            $keputusanData->tentang = $validated['tentang'];
-            $keputusanData->lokasi = $validated['lokasi'];
-            $keputusanData->tanggal_ditetapkan = $validated['tanggal_ditetapkan'];
-            $keputusanData->pejabat_penandatangan = $validated['pejabat_penandatangan'];
-            $keputusanData->dasar_hukum = $dasar_hukum;
-            $keputusanData->keputusan = $keputusan;
-            $keputusanData->tim_kerja = $validated['tim_kerja'];
-            $keputusanData->tugas_tim = $validated['tugas_tim'];
-            $keputusanData->penanggung_jawab = $validated['penanggung_jawab'];
-            $keputusanData->tembusan = $validated['tembusan'];
-            $keputusanData->bencana_id = $validated['bencana_id'];
-            $keputusanData->created_by = Auth::id();
-            $keputusanData->save();
-            
-            return redirect()->route('forms.form2.show', $keputusanData->id)
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $validated = $validator->validated();
+
+            // Generate default values for required database fields
+            $tentang = "PEMBENTUKAN TIM KERJA PENGKAJIAN KEBUTUHAN PASCA BENCANA (PDNA) DI " . strtoupper($validated['lokasi_menimbang']);
+
+            $dasar_hukum = "Menimbang:\na. bahwa dalam rangka perencanaan rehabilitasi dan rekonstruksi pascabencana di {$validated['lokasi_menimbang']} perlu dilaksanakan pengkajian kebutuhan pascabencana.\nb. bahwa untuk melaksanakan pengkajian kebutuhan pasca bencana perlu dibentuk tim kerja pengkajian kebutuhan pascabencana.\nc. bahwa untuk maksud tersebut huruf b, perlu ditetapkan dengan keputusan {$validated['pejabat_keputusan']}\n\nMengingat:\na. Undang-Undang no. 24 tahun 2007 tentang Penanggulangan Bencana.\nb. Peraturan Pemerintah no. 21 tahun 2008 tentang Penyelenggaraan Penanggulangan Bencana.\nc. Peraturan Kepala BNPB no. 17 tahun 2010 tentang Pedoman Umum Rehabilitasi dan Rekonstruksi.";
+
+            // $keputusan = "KESATU: Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana di {$validated['lokasi_menimbang']}, dengan susunan personil sebagaimana terdapat pada lampiran keputusan ini.\n\n";
+            // $keputusan .= "KEDUA: Tim dimaksud diktum pertama mempunyai tugas sebagai berikut:\n1. Melakukan perencanaan dan persiapan pelaksanaan pengkajian kebutuhan pascabencana.\n2. Melakukan pengumpulan data.\n3. Melakukan pengolahan dan analisis data.\n4. Menyusun laporan pengkajian kebutuhan pascabencana.\n\n";
+            // $keputusan .= "KETIGA: Tim Kerja dalam melaksanakan tugasnya bertanggung jawab kepada {$validated['pejabat_keputusan']}.\n\n";
+            // $keputusan .= "KEEMPAT: Keputusan ini berlaku sejak tanggal ditetapkan, apabila dikemudian hari terdapat kekeliruan dalam penetapan ini akan diperbaiki sebagaimana mestinya.";
+
+            // Create new form2 record
+            $form2Data = new Form2();
+            $form2Data->nomor_surat = $validated['nomor_surat'];
+            $form2Data->tentang = $tentang;
+            $form2Data->lokasi = $validated['lokasi_menimbang'];
+            $form2Data->tanggal_ditetapkan = $validated['tanggal_ditetapkan'];
+            $form2Data->tempat_ditetapkan = $validated['tempat_ditetapkan'];
+            $form2Data->pejabat_penandatangan = $validated['pejabat_keputusan'];
+            $form2Data->nama_penandatangan = $validated['nama_penandatangan'];
+            $form2Data->dasar_hukum = $dasar_hukum;
+            // $form2Data->keputusan = $keputusan;
+            $form2Data->tim_kerja = "Tim akan ditentukan kemudian";
+            $form2Data->tugas_tim = "Sesuai dengan diktum KEDUA";
+            $form2Data->penanggung_jawab = $validated['pejabat_keputusan'];
+            $form2Data->tembusan = $validated['tembusan'];
+            $form2Data->bencana_id = $validated['bencana_id'];
+            // $form2Data->created_by = Auth::id();
+            $form2Data->save();
+
+            return redirect()->route('forms.form2.show', $form2Data->id)
                 ->with('success', 'Surat Keputusan berhasil dibuat.');
-        } catch (\Exception $e) {
-            Log::error('Error creating keputusan: ' . $e->getMessage());
-            return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-    }
+            
+    
       /**
      * Display the specified Surat Keputusan.
      */
     public function show($id)
     {
-        try {
-            $keputusan = Keputusan::findOrFail($id);
-            return view('forms.form2.form2-show', compact('keputusan'));
-        } catch (\Exception $e) {
-            return back()->with('error', 'Surat Keputusan tidak ditemukan.');
+        {
+            $form2Data = Form2::findOrFail($id);
+            return view('forms.form2.form2-show', compact('form2Data'));
         }
     }
     
@@ -99,14 +102,14 @@ class Form2Controller extends Controller
     public function edit($id)
     {
         try {
-            $keputusan = Keputusan::findOrFail($id);
+            $form2 = Form2::findOrFail($id);
             
             // Parse dasar_hukum back to menimbang and mengingat for form fields
-            $dasar_hukum_parts = explode("Mengingat:", $keputusan->dasar_hukum);
+            $dasar_hukum_parts = explode("Mengingat:", $form2->dasar_hukum);
             $menimbang = trim(str_replace("Menimbang:", "", $dasar_hukum_parts[0]));
             $mengingat = isset($dasar_hukum_parts[1]) ? trim($dasar_hukum_parts[1]) : "";
             
-            return view('forms.form2.form2-edit', compact('keputusan', 'menimbang', 'mengingat'));
+            return view('forms.form2.form2-edit', compact('form2', 'menimbang', 'mengingat'));
         } catch (\Exception $e) {
             return back()->with('error', 'Surat Keputusan tidak ditemukan.');
         }
@@ -118,10 +121,10 @@ class Form2Controller extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $keputusan = Keputusan::findOrFail($id);
+            $form2 = Form2::findOrFail($id);
             
             $validated = $request->validate([
-                'nomor_surat' => 'required|string|max:255|unique:keputusan,nomor_surat,' . $id,
+                'nomor_surat' => 'required|string|max:255|unique:form2,nomor_surat,' . $id,
                 'tentang' => 'required|string|max:255',
                 'lokasi' => 'required|string|max:255',
                 'tanggal_ditetapkan' => 'required|date',
@@ -143,15 +146,15 @@ class Form2Controller extends Controller
             $keputusan_content .= "KETIGA: Dalam melaksanakan tugasnya, Tim bertanggung jawab kepada {$validated['penanggung_jawab']}.\n\n";
             $keputusan_content .= "KEEMPAT: Keputusan ini mulai berlaku pada tanggal ditetapkan.";
             
-            // Update keputusan record
-            $keputusan->update([
+            // Update form2 record
+            $form2->update([
                 'nomor_surat' => $validated['nomor_surat'],
                 'tentang' => $validated['tentang'],
                 'lokasi' => $validated['lokasi'],
                 'tanggal_ditetapkan' => $validated['tanggal_ditetapkan'],
                 'pejabat_penandatangan' => $validated['pejabat_penandatangan'],
                 'dasar_hukum' => $dasar_hukum,
-                'keputusan' => $keputusan_content,
+                // 'keputusan' => $keputusan_content,
                 'tim_kerja' => $validated['tim_kerja'],
                 'tugas_tim' => $validated['tugas_tim'],
                 'penanggung_jawab' => $validated['penanggung_jawab'],
@@ -159,7 +162,7 @@ class Form2Controller extends Controller
                 'updated_by' => Auth::id()
             ]);
             
-            return redirect()->route('forms.form2.show', $keputusan->id)
+            return redirect()->route('forms.form2.show', $form2->id)
                 ->with('success', 'Surat Keputusan berhasil diperbarui.');
         } catch (\Exception $e) {
             Log::error('Error updating keputusan: ' . $e->getMessage());
@@ -171,12 +174,12 @@ class Form2Controller extends Controller
      * Display a listing of Surat Keputusan.
      */    public function listForm2()
     {
-        $keputusan = Keputusan::join('bencana', 'keputusan.bencana_id', '=', 'bencana.id')
-            ->select('keputusan.*', 'bencana.Ref as nama_bencana')
-            ->orderBy('keputusan.created_at', 'desc')
+        $form2 = Form2::join('bencana', 'form2.bencana_id', '=', 'bencana.id')
+            ->select('form2.*', 'bencana.Ref as nama_bencana')
+            ->orderBy('form2.created_at', 'desc')
             ->get();
             
-        return view('forms.form2.form2-list', compact('keputusan'));
+        return view('forms.form2.form2-list', compact('form2'));
     }
     
     /**
@@ -185,10 +188,10 @@ class Form2Controller extends Controller
     public function generatePdf($id)
     {
         try {
-            $keputusan = Keputusan::findOrFail($id);
-            $bencana = Bencana::find($keputusan->bencana_id);
+            $form2 = Form2::findOrFail($id);
+            $bencana = Bencana::find($form2->bencana_id);
             
-            $pdf = PDF::loadView('pdf.form2-pdf', compact('keputusan', 'bencana'));
+            $pdf = PDF::loadView('pdf.form2-pdf', compact('form2', 'bencana'));
             return $pdf->download('SK_Tim_Kerja_' . $id . '.pdf');
         } catch (\Exception $e) {
             Log::error('Error generating PDF: ' . $e->getMessage());
@@ -202,10 +205,10 @@ class Form2Controller extends Controller
     public function previewPdf($id)
     {
         try {
-            $keputusan = Keputusan::findOrFail($id);
-            $bencana = Bencana::find($keputusan->bencana_id);
+            $form2 = Form2::findOrFail($id);
+            $bencana = Bencana::find($form2->bencana_id);
             
-            $pdf = PDF::loadView('pdf.form2-pdf', compact('keputusan', 'bencana'));
+            $pdf = PDF::loadView('pdf.form2-pdf', compact('form2', 'bencana'));
             return $pdf->stream('SK_Tim_Kerja_' . $id . '.pdf');
         } catch (\Exception $e) {
             Log::error('Error previewing PDF: ' . $e->getMessage());

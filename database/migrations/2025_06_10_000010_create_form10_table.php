@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anggaran', function (Blueprint $table) {
+        Schema::create('form10', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bencana_id');
-            $table->string('sektor');
-            $table->string('komponen_kebutuhan');
-            $table->string('kegiatan');
-            $table->string('lokasi');
-            $table->integer('volume');
-            $table->string('satuan');
-            $table->decimal('harga_satuan', 15, 2);
-            $table->decimal('jumlah', 15, 2);
-            $table->text('keterangan')->nullable();
+
+            $table->string('sektor')->nullable();
+            $table->string('sub_sektor')->nullable();
+            $table->string('lokasi')->nullable();
+            $table->text('hasil_survey')->nullable();
+            $table->text('hasil_wawancara')->nullable();
+            $table->text('hasil_pendataan_skpd')->nullable();
+            $table->text('kebutuhan_pemulihan')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('anggaran');
+        Schema::dropIfExists('form10');
     }
 };

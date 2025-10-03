@@ -58,7 +58,7 @@
                     <p><strong>Perihal:</strong> {{ $form->perihal }}</p>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <p><strong>Tanggal Surat:</strong> {{ $form->tanggal_surat->format('d F Y') }}</p>
+                    <p><strong>Tanggal Surat:</strong> {{ $form->nomor_surat_date->format('d F Y') }}</p>
                 </div>
                 <div class="col-md-4 mb-2">
                     <p><strong>Kepada:</strong> {{ $form->kepada }}</p>
@@ -74,7 +74,7 @@
                     <p><strong>Lokasi PDNA:</strong> {{ $form->lokasi_pdna }}</p>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <p><strong>Tanggal Konsolidasi:</strong> {{ $form->hari_tanggal->format('d F Y') }}</p>
+                    <p><strong>Tanggal Konsolidasi:</strong> {{ $form->hari_tanggal}}</p>
                 </div>
                 <div class="col-md-4 mb-2">
                     <p><strong>Waktu:</strong> {{ \Carbon\Carbon::parse($form->waktu)->format('H:i') }}</p>

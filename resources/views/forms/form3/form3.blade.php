@@ -135,6 +135,12 @@
         margin-bottom: 0;
     }
 </style>
+
+<form method="POST" action="{{ route('forms.form3.store') }}">
+@csrf
+<input type="hidden" name="form_type" value="form3">
+<input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
+
 <div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
     <div class="text-center mb-4">
         <h5><strong>Formulir 03</strong></h5>
@@ -663,6 +669,7 @@
         </div>
     </div>
 </div>
+</form>
 
 <script>
 function resetForm() {

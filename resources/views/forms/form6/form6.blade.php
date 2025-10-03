@@ -1,6 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
+<form method="POST" action="{{ route('forms.form6.store') }}">
+@csrf
+<input type="hidden" name="form_type" value="form6">
+<input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
+
 <div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
     <div class="text-center mb-4">
         <h5><strong>Formulir 06</strong></h5>
@@ -205,6 +210,8 @@
             </div>
         </div>
     </div>
+</div>
+</form>
 
 <script>
 function resetForm() {

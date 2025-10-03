@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bencana;
-use App\Models\Pendataan;
+use App\Models\Form3;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -11,9 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class Form3Controller extends Controller
 {
     /**
-     * Display the form for creating a new pendataan.
-     *
-     * @return \Illuminate\Http\Response|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * Display the form for creating a new Form3.
      */
     public function index()
     {
@@ -39,19 +37,34 @@ class Form3Controller extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'wilayah_bencana' => 'required|string',
-            'bencana_id' => 'required|exists:bencana,id'
+            'bencana_id' => 'required|exists:bencana,id',
+            'program_kesehatan_masal' => 'nullable|string',
+            'permasalahan_kesehatan' => 'nullable|string',
+            'kegiatan_permasalahan_kesehatan' => 'nullable|string',
+            'program_makanan_tambahan' => 'nullable|string',
+            'jumlah_balita_terdampak' => 'nullable|integer|min:0',
+            'dampak_balita' => 'nullable|string',
+            'kegiatan_balita' => 'nullable|string',
+            'jumlah_ibu_hamil_terdampak' => 'nullable|integer|min:0',
+            'dampak_ibu_hamil' => 'nullable|string',
+            'kegiatan_ibu_hamil' => 'nullable|string',
+            'jumlah_lansia_terdampak' => 'nullable|integer|min:0',
+            'dampak_lansia' => 'nullable|string',
+            'kegiatan_lansia' => 'nullable|string',
+            'dampak_kesehatan_menengah' => 'nullable|string',
+            'kegiatan_dampak_kesehatan' => 'nullable|string',
+            'rencana_kontingensi_kesehatan' => 'nullable|string',
         ]);
 
         try {
             DB::beginTransaction();
 
-            // Create the pendataan record
-            $pendataan = Pendataan::create($request->all());
+            // Create the form3 record
+            $form3 = Form3::create($request->all());
             DB::commit();
 
-            return redirect()->route('forms.form3.show', $pendataan->id)
-                ->with('success', 'Data pendataan berhasil disimpan');
+            return redirect()->route('forms.form3.show', $form3->id)
+                ->with('success', 'Data Form 3 berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
@@ -66,8 +79,8 @@ class Form3Controller extends Controller
      */
     public function show($id)
     {
-        $pendataan = Pendataan::with('bencana.desa', 'bencana.kategori_bencana')->findOrFail($id);
-        return view('forms.form3.show', compact('pendataan'));
+        $form3 = Form3::with('bencana.desa', 'bencana.kategori_bencana')->findOrFail($id);
+        return view('forms.form3.show', compact('form3'));
     }
 
     /**
@@ -85,11 +98,11 @@ class Form3Controller extends Controller
             $bencana = Bencana::with('desa', 'kategori_bencana')->find($bencana_id);
             
             if ($bencana) {
-                $pendataanList = Pendataan::where('bencana_id', $bencana_id)->get();
+                $form3List = Form3::where('bencana_id', $bencana_id)->get();
             }
         }
         
-        return view('forms.form3.list', compact('bencana', 'pendataanList'));
+        return view('forms.form3.list', compact('bencana', 'form3List'));
     }
 
     /**
@@ -100,10 +113,10 @@ class Form3Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $pendataan = Pendataan::with('bencana.desa', 'bencana.kategori_bencana')->findOrFail($id);
+        $form3 = Form3::with('bencana.desa', 'bencana.kategori_bencana')->findOrFail($id);
         
-        $pdf = Pdf::loadView('forms.form3.pdf', compact('pendataan'));
-        return $pdf->download('Form3_Pendataan_' . $pendataan->id . '.pdf');
+        $pdf = Pdf::loadView('forms.form3.pdf', compact('form3'));
+        return $pdf->download('Form3_' . $form3->id . '.pdf');
     }
 
     /**
@@ -113,10 +126,10 @@ class Form3Controller extends Controller
      * @return \Illuminate\Http\Response
      */    public function previewPdf($id)
     {
-        $pendataan = Pendataan::with('bencana.desa', 'bencana.kategori_bencana')->findOrFail($id);
+        $form3 = Form3::with('bencana.desa', 'bencana.kategori_bencana')->findOrFail($id);
         
-        $pdf = Pdf::loadView('forms.form3.pdf', compact('pendataan'));
-        return $pdf->stream('Form3_Pendataan_' . $pendataan->id . '.pdf');
+        $pdf = Pdf::loadView('forms.form3.pdf', compact('form3'));
+        return $pdf->stream('Form3_' . $form3->id . '.pdf');
     }
     
     /**
@@ -128,10 +141,10 @@ class Form3Controller extends Controller
     public function edit($id)
     {
         try {
-            $pendataan = Pendataan::findOrFail($id);
-            $bencana = Bencana::with('desa', 'kategori_bencana')->find($pendataan->bencana_id);
+            $form3 = Form3::findOrFail($id);
+            $bencana = Bencana::with('desa', 'kategori_bencana')->find($form3->bencana_id);
             
-            return view('forms.form3.edit', compact('pendataan', 'bencana'));
+            return view('forms.form3.form3', compact('form3', 'bencana'));
         } catch (\Exception $e) {
             return back()->with('error', 'Data pendataan tidak ditemukan.');
         }
@@ -147,24 +160,11 @@ class Form3Controller extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $pendataan = Pendataan::findOrFail($id);
+            $form3 = Form3::findOrFail($id);
+            $form3->update($request->all());
             
-            $validated = $request->validate([
-                'tanggal' => 'required|date',
-                'nomor_surat' => 'required|string|max:255',
-                'sifat' => 'required|string|max:50',
-                'lampiran' => 'nullable|string|max:100',
-                'perihal' => 'required|string|max:255',
-                'instansi_tujuan' => 'required|string|max:255',
-                'tembusan' => 'nullable|string',
-                'nama_penandatangan' => 'required|string|max:255',
-                'jabatan_penandatangan' => 'required|string|max:255',
-            ]);
-            
-            $pendataan->update($validated);
-            
-            return redirect()->route('forms.form3.show', $pendataan->id)
-                ->with('success', 'Data pendataan berhasil diperbarui.');
+            return redirect()->route('forms.form3.show', $form3->id)
+                ->with('success', 'Data Form 3 berhasil diperbarui.');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }

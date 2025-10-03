@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rekapitulasi;
+use App\Models\Form11;
 use App\Models\Bencana;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,25 +57,25 @@ class Form11Controller extends Controller
         // Calculate total kebutuhan
         $totalKebutuhan = $request->jumlah_unit * $request->harga_satuan;
 
-        $rekapitulasi = new Rekapitulasi();
-        $rekapitulasi->bencana_id = $request->bencana_id;
-        $rekapitulasi->sektor = $request->sektor;
-        $rekapitulasi->sub_sektor = $request->sub_sektor;
-        $rekapitulasi->lokasi = $request->lokasi;
-        $rekapitulasi->jenis_kebutuhan = $request->jenis_kebutuhan;
-        $rekapitulasi->rincian_kebutuhan = $request->rincian_kebutuhan;
-        $rekapitulasi->jumlah_unit = $request->jumlah_unit;
-        $rekapitulasi->satuan = $request->satuan;
-        $rekapitulasi->harga_satuan = $request->harga_satuan;
-        $rekapitulasi->total_kebutuhan = $totalKebutuhan;
-        $rekapitulasi->prioritas = $request->prioritas;
-        $rekapitulasi->durasi_penyelesaian = $request->durasi_penyelesaian;
-        $rekapitulasi->penanggung_jawab = $request->penanggung_jawab;
-        $rekapitulasi->keterangan = $request->keterangan;
-        $rekapitulasi->created_by = Auth::id();
-        $rekapitulasi->save();
+        $form11 = new Form11();
+        $form11->bencana_id = $request->bencana_id;
+        $form11->sektor = $request->sektor;
+        $form11->sub_sektor = $request->sub_sektor;
+        $form11->lokasi = $request->lokasi;
+        $form11->jenis_kebutuhan = $request->jenis_kebutuhan;
+        $form11->rincian_kebutuhan = $request->rincian_kebutuhan;
+        $form11->jumlah_unit = $request->jumlah_unit;
+        $form11->satuan = $request->satuan;
+        $form11->harga_satuan = $request->harga_satuan;
+        $form11->total_kebutuhan = $totalKebutuhan;
+        $form11->prioritas = $request->prioritas;
+        $form11->durasi_penyelesaian = $request->durasi_penyelesaian;
+        $form11->penanggung_jawab = $request->penanggung_jawab;
+        $form11->keterangan = $request->keterangan;
+        $form11->created_by = Auth::id();
+        $form11->save();
 
-        return redirect()->route('forms.form11.show', $rekapitulasi->id)->with('success', 'Data rekapitulasi kebutuhan berhasil disimpan.');
+        return redirect()->route('forms.form11.show', $form11->id)->with('success', 'Data rekapitulasi kebutuhan berhasil disimpan.');
     }
     
     /**
@@ -83,8 +83,8 @@ class Form11Controller extends Controller
      */
     public function show($id)
     {
-        $rekapitulasi = Rekapitulasi::with('bencana')->findOrFail($id);
-        return view('forms.form11.show', compact('rekapitulasi'));
+        $form11 = Form11::with('bencana')->findOrFail($id);
+        return view('forms.form11.show', compact('form11'));
     }
     
     /**
@@ -92,9 +92,9 @@ class Form11Controller extends Controller
      */
     public function edit($id)
     {
-        $rekapitulasi = Rekapitulasi::findOrFail($id);
+        $form11 = Form11::findOrFail($id);
         $bencanas = Bencana::all();
-        return view('forms.form11.edit', compact('rekapitulasi', 'bencanas'));
+        return view('forms.form11.edit', compact('form11', 'bencanas'));
     }
     
     /**
@@ -102,7 +102,7 @@ class Form11Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rekapitulasi = Rekapitulasi::findOrFail($id);
+        $form11 = Form11::findOrFail($id);
         
         $validator = Validator::make($request->all(), [
             'bencana_id' => 'required|exists:bencana,id',
@@ -127,24 +127,24 @@ class Form11Controller extends Controller
         // Calculate total kebutuhan
         $totalKebutuhan = $request->jumlah_unit * $request->harga_satuan;
 
-        $rekapitulasi->bencana_id = $request->bencana_id;
-        $rekapitulasi->sektor = $request->sektor;
-        $rekapitulasi->sub_sektor = $request->sub_sektor;
-        $rekapitulasi->lokasi = $request->lokasi;
-        $rekapitulasi->jenis_kebutuhan = $request->jenis_kebutuhan;
-        $rekapitulasi->rincian_kebutuhan = $request->rincian_kebutuhan;
-        $rekapitulasi->jumlah_unit = $request->jumlah_unit;
-        $rekapitulasi->satuan = $request->satuan;
-        $rekapitulasi->harga_satuan = $request->harga_satuan;
-        $rekapitulasi->total_kebutuhan = $totalKebutuhan;
-        $rekapitulasi->prioritas = $request->prioritas;
-        $rekapitulasi->durasi_penyelesaian = $request->durasi_penyelesaian;
-        $rekapitulasi->penanggung_jawab = $request->penanggung_jawab;
-        $rekapitulasi->keterangan = $request->keterangan;
-        $rekapitulasi->updated_by = Auth::id();
-        $rekapitulasi->save();
+        $form11->bencana_id = $request->bencana_id;
+        $form11->sektor = $request->sektor;
+        $form11->sub_sektor = $request->sub_sektor;
+        $form11->lokasi = $request->lokasi;
+        $form11->jenis_kebutuhan = $request->jenis_kebutuhan;
+        $form11->rincian_kebutuhan = $request->rincian_kebutuhan;
+        $form11->jumlah_unit = $request->jumlah_unit;
+        $form11->satuan = $request->satuan;
+        $form11->harga_satuan = $request->harga_satuan;
+        $form11->total_kebutuhan = $totalKebutuhan;
+        $form11->prioritas = $request->prioritas;
+        $form11->durasi_penyelesaian = $request->durasi_penyelesaian;
+        $form11->penanggung_jawab = $request->penanggung_jawab;
+        $form11->keterangan = $request->keterangan;
+        $form11->updated_by = Auth::id();
+        $form11->save();
 
-        return redirect()->route('forms.form11.show', $rekapitulasi->id)->with('success', 'Data rekapitulasi kebutuhan berhasil diperbarui.');
+        return redirect()->route('forms.form11.show', $form11->id)->with('success', 'Data rekapitulasi kebutuhan berhasil diperbarui.');
     }
     
     /**
@@ -153,35 +153,35 @@ class Form11Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->query('bencana_id');
-        $query = Rekapitulasi::with('bencana');
+        $query = Form11::with('bencana');
         
         if ($bencana_id) {
             $bencana = Bencana::findOrFail($bencana_id);
             $query->where('bencana_id', $bencana_id);
-            $rekapitulasiList = $query->orderBy('created_at', 'desc')->get();
-            return view('forms.form11.list', compact('rekapitulasiList', 'bencana'));
+            $form11List = $query->orderBy('created_at', 'desc')->get();
+            return view('forms.form11.list', compact('form11List', 'bencana'));
         }
         
-        $rekapitulasiList = $query->orderBy('created_at', 'desc')->paginate(10);
-        return view('forms.form11.list', compact('rekapitulasiList'));
+        $form11List = $query->orderBy('created_at', 'desc')->paginate(10);
+        return view('forms.form11.list', compact('form11List'));
     }
     
     /**
-     * Generate PDF document from Rekapitulasi
+     * Generate PDF document from Form11
      */
     public function generatePdf($id)
     {
-        $rekapitulasi = Rekapitulasi::with('bencana')->findOrFail($id);
-        $pdf = PDF::loadView('forms.form11.pdf', compact('rekapitulasi'));
-        return $pdf->download('formulir-11-rekapitulasi-' . $rekapitulasi->id . '.pdf');
+        $form11 = Form11::with('bencana')->findOrFail($id);
+        $pdf = PDF::loadView('forms.form11.pdf', compact('form11'));
+        return $pdf->download('formulir-11-rekapitulasi-' . $form11->id . '.pdf');
     }
     
     /**
-     * Preview PDF document from Rekapitulasi
+     * Preview PDF document from Form11
      */
     public function previewPdf($id)
     {
-        $rekapitulasi = Rekapitulasi::with('bencana')->findOrFail($id);
-        return view('forms.form11.pdf', compact('rekapitulasi'));
+        $form11 = Form11::with('bencana')->findOrFail($id);
+        return view('forms.form11.pdf', compact('form11'));
     }
 }

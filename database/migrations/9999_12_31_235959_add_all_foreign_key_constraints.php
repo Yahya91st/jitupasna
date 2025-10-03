@@ -114,13 +114,13 @@ return new class extends Migration
         }
 
         // Foreign keys for form1 table
-        if (Schema::hasTable('form1')) {
-            Schema::table('form1', function (Blueprint $table) {
-                if (Schema::hasColumn('form1', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
+        // if (Schema::hasTable('form1')) {
+        //     Schema::table('form1', function (Blueprint $table) {
+        //         if (Schema::hasColumn('form1', 'bencana_id')) {
+        //             $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
+        //         }
+        //     });
+        // }
 
         // Foreign keys for keputusan table
         if (Schema::hasTable('keputusan')) {

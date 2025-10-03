@@ -12,7 +12,8 @@ class Form1Controller extends Controller
 {
     /**
      * Display the form
-     */    public function index(Request $request)
+     */    
+    public function index(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -32,21 +33,19 @@ class Form1Controller extends Controller
     public function store(Request $request)
     {        $validator = Validator::make($request->all(), [
             'bencana_id' => 'required|exists:bencana,id',
+            'kop_surat' => 'nullable|string|max:255',
             'nomor_surat' => 'required|string|max:255',
+            'nomor_surat_date' => 'required|date',
             'sifat' => 'required|in:Segera,Biasa,Rahasia',
-            'lampiran' => 'nullable|string|max:255',
-            'perihal' => 'required|string|max:255',
+            'lampiran' => 'nullable|integer|min:0',
             'kepada_jabatan' => 'required|string',
             'lokasi_pdna' => 'required|string|max:255',
-            'hari_tanggal' => 'required|date',
-            'waktu' => 'required',
+            'hari_tanggal' => 'required|string|max:255',
+            'waktu' => 'required|string|max:255',
             'tempat' => 'required|string|max:255',
-            'agenda' => 'required|string|max:255',
+            'agenda' => 'required|string',
             'nama_penandatangan' => 'required|string|max:255',
-            'jabatan_penandatangan' => 'required|string|max:255',
             'tembusan' => 'nullable|string',
-            'tanggal_surat' => 'required|date',
-            'instansi_pengirim' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -141,21 +140,19 @@ class Form1Controller extends Controller
             $form = Form1::findOrFail($id);
             
             $validator = Validator::make($request->all(), [
+                'kop_surat' => 'nullable|string|max:255',
                 'nomor_surat' => 'required|string|max:255',
+                'nomor_surat_date' => 'required|date',
                 'sifat' => 'required|in:Segera,Biasa,Rahasia',
-                'lampiran' => 'nullable|string|max:255',
-                'perihal' => 'required|string|max:255',
-                'kepada' => 'required|string|max:255',
+                'lampiran' => 'nullable|integer|min:0',
+                'kepada_jabatan' => 'required|string',
                 'lokasi_pdna' => 'required|string|max:255',
-                'hari_tanggal' => 'required|date',
-                'waktu' => 'required',
+                'hari_tanggal' => 'required|string|max:255',
+                'waktu' => 'required|string|max:255',
                 'tempat' => 'required|string|max:255',
-                'agenda' => 'required|string|max:255',
+                'agenda' => 'required|string',
                 'nama_penandatangan' => 'required|string|max:255',
-                'jabatan_penandatangan' => 'required|string|max:255',
                 'tembusan' => 'nullable|string',
-                'tanggal_surat' => 'required|date',
-                'instansi_pengirim' => 'nullable|string|max:255',
             ]);
 
             if ($validator->fails()) {

@@ -101,6 +101,11 @@
     }
 </style>
 
+<form method="POST" action="{{ route('forms.form8.store') }}">
+@csrf
+<input type="hidden" name="form_type" value="form8">
+<input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
+
 <div class="container">    
     <div class="text-center mb-4">
         <h5><strong>Formulir 08</strong></h5>
@@ -110,21 +115,6 @@
         <button id="addRowBtn" type="button" style="background-color: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">+ Tambah Baris</button>
     </div>
     
-    <!-- Tombol Aksi -->
-    <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
-        <button type="submit" class="btn btn-success">
-            <i class="bi bi-save"></i> Simpan Data
-        </button>
-        <button type="reset" class="btn btn-warning" onclick="resetForm()">
-            <i class="bi bi-arrow-clockwise"></i> Reset
-        </button>
-        <button type="button" class="btn btn-info" onclick="printForm()">
-            <i class="bi bi-printer"></i> Cetak
-        </button>
-        <button type="button" class="btn btn-secondary" onclick="previewForm()">
-            <i class="bi bi-eye"></i> Preview
-        </button>
-    </div>    
     <table class="form-table">
         <thead>
             <tr>
@@ -169,6 +159,21 @@
             </tr>
         </tbody>    
     </table>
+    <!-- Tombol Aksi -->
+    <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Simpan Data
+        </button>
+        <button type="reset" class="btn btn-warning" onclick="resetForm()">
+            <i class="bi bi-arrow-clockwise"></i> Reset
+        </button>
+        <button type="button" class="btn btn-info" onclick="printForm()">
+            <i class="bi bi-printer"></i> Cetak
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="previewForm()">
+            <i class="bi bi-eye"></i> Preview
+        </button>
+    </div>    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const addRowBtn = document.getElementById('addRowBtn');
@@ -273,4 +278,7 @@
             previewWindow.document.close();
         }
     </script>
+</div>
+</form>
+
 @endsection
