@@ -21,6 +21,7 @@
             @method('PATCH')
         @endif
         <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}">
+        <input type="hidden" name="kabupaten" value="{{ $bencana->kabupaten ?? 'Papua Selatan' }}">
 
         <table class="table table-bordered">
             <tr>

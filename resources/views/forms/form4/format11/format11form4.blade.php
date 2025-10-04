@@ -15,15 +15,17 @@
     <h5 class="text-center fw-bold">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
     <p class="fw-bold">Format 11: Sektor Peternakan</p>
 
-    <table class="table table-bordered">
+    <form action="{{ route('forms.form4.format11.store') }}" method="POST">
+        @csrf
+        <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
+        <input type="hidden" name="kabupaten" value="Default">
+        
+        <table class="table table-bordered">
             <tr>
                 <td style="width: 50%">NAMA KAMPUNG: <input type="text" class="form-control" name="nama_kampung" required value="{{ old('nama_kampung', $data->nama_kampung ?? '') }}"></td>
                 <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}"></td>
             </tr>
         </table>
-            <form action="{{ route('forms.form4.format11.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
                 
                 <div class="table-responsive">
                     <table class="table table-bordered text-center align-middle" style="width: 100%;">

@@ -174,7 +174,118 @@ class Format17Controller extends Controller
         $formData = Format17Form4::with('bencana')->findOrFail($id);
         $bencana = $formData->bencana;
         
-        return view('forms.form4.format17.show-format17', compact('formData', 'bencana'));
+        // Prepare damage reports (kerusakan) data as arrays
+        $damageReports = [
+            'darat' => [],
+            'laut' => [],
+            'udara' => []
+        ];
+        
+        // Process Ekosistem Darat
+        for ($i = 1; $i <= 3; $i++) {
+            if (!empty($formData->{"ekosistem_darat_{$i}_jenis"})) {
+                $damageReports['darat'][] = (object)[
+                    'jenis_kerusakan' => $formData->{"ekosistem_darat_{$i}_jenis"},
+                    'rb' => $formData->{"ekosistem_darat_{$i}_rb"} ?? 0,
+                    'rs' => $formData->{"ekosistem_darat_{$i}_rs"} ?? 0,
+                    'rr' => $formData->{"ekosistem_darat_{$i}_rr"} ?? 0,
+                    'harga_rb' => $formData->{"ekosistem_darat_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' => $formData->{"ekosistem_darat_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' => $formData->{"ekosistem_darat_{$i}_rr_harga"} ?? 0,
+                ];
+            }
+        }
+        
+        // Process Ekosistem Laut
+        for ($i = 1; $i <= 3; $i++) {
+            if (!empty($formData->{"ekosistem_laut_{$i}_jenis"})) {
+                $damageReports['laut'][] = (object)[
+                    'jenis_kerusakan' => $formData->{"ekosistem_laut_{$i}_jenis"},
+                    'rb' => $formData->{"ekosistem_laut_{$i}_rb"} ?? 0,
+                    'rs' => $formData->{"ekosistem_laut_{$i}_rs"} ?? 0,
+                    'rr' => $formData->{"ekosistem_laut_{$i}_rr"} ?? 0,
+                    'harga_rb' => $formData->{"ekosistem_laut_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' => $formData->{"ekosistem_laut_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' => $formData->{"ekosistem_laut_{$i}_rr_harga"} ?? 0,
+                ];
+            }
+        }
+        
+        // Process Ekosistem Udara
+        for ($i = 1; $i <= 3; $i++) {
+            if (!empty($formData->{"ekosistem_udara_{$i}_jenis"})) {
+                $damageReports['udara'][] = (object)[
+                    'jenis_kerusakan' => $formData->{"ekosistem_udara_{$i}_jenis"},
+                    'rb' => $formData->{"ekosistem_udara_{$i}_rb"} ?? 0,
+                    'rs' => $formData->{"ekosistem_udara_{$i}_rs"} ?? 0,
+                    'rr' => $formData->{"ekosistem_udara_{$i}_rr"} ?? 0,
+                    'harga_rb' => $formData->{"ekosistem_udara_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' => $formData->{"ekosistem_udara_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' => $formData->{"ekosistem_udara_{$i}_rr_harga"} ?? 0,
+                ];
+            }
+        }
+        
+        // Prepare loss reports (kerugian) data as arrays
+        $lossReports = [
+            'kehilangan_jasa_lingkungan' => [],
+            'pencemaran_air' => [],
+            'pencemaran_udara' => []
+        ];
+        
+        // Process Kerugian data (based on validation fields)
+        for ($i = 1; $i <= 3; $i++) {
+            if (!empty($formData->{"kerugian_{$i}_jenis"})) {
+                $lossReports['kehilangan_jasa_lingkungan'][] = (object)[
+                    'jenis' => $formData->{"kerugian_{$i}_jenis"},
+                    'dasar_perhitungan' => 'Berdasarkan perhitungan standar',
+                    'rb' => $formData->{"kerugian_{$i}_rb"} ?? 0,
+                    'rs' => $formData->{"kerugian_{$i}_rs"} ?? 0,
+                    'rr' => $formData->{"kerugian_{$i}_rr"} ?? 0,
+                    'harga_rb' => $formData->{"kerugian_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' => $formData->{"kerugian_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' => $formData->{"kerugian_{$i}_rr_harga"} ?? 0,
+                ];
+            }
+        }
+        
+        // Calculate totals
+        $totalKerusakan = 0;
+        $totalKerugian = 0;
+        
+        // Calculate total damage costs
+        foreach($damageReports as $reports) {
+            if (is_array($reports) || $reports instanceof \Countable) {
+                foreach($reports as $report) {
+                    if (is_object($report)) {
+                        $totalKerusakan += ($report->harga_rb ?? 0) + ($report->harga_rs ?? 0) + ($report->harga_rr ?? 0);
+                    }
+                }
+            }
+        }
+        
+        // Calculate total loss costs
+        foreach($lossReports as $reports) {
+            if (is_array($reports) || $reports instanceof \Countable) {
+                foreach($reports as $report) {
+                    if (is_object($report)) {
+                        $totalKerugian += ($report->harga_rb ?? 0) + ($report->harga_rs ?? 0) + ($report->harga_rr ?? 0);
+                    }
+                }
+            }
+        }
+        
+        $grandTotal = $totalKerusakan + $totalKerugian;
+        
+        return view('forms.form4.format17.show-format17', compact(
+            'formData', 
+            'bencana', 
+            'damageReports', 
+            'lossReports',
+            'totalKerusakan',
+            'totalKerugian', 
+            'grandTotal'
+        ));
     }
 
     /**

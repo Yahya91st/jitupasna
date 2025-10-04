@@ -44,7 +44,7 @@
     <div class="bg-white p-6 rounded-lg shadow mb-6">
         <h2 class="text-xl font-semibold mb-4">I. PERKIRAAN KERUSAKAN LINGKUNGAN HIDUP</h2>
         
-        @if($damageReports->count() > 0)
+        @if(count(array_filter($damageReports)) > 0)
             @foreach($damageReports as $ekosistem => $reports)
                 <div class="mb-6">
                     <h3 class="text-lg font-medium mb-4">{{ ucfirst($ekosistem) }} Ecosystem</h3>
@@ -89,7 +89,7 @@
     <div class="bg-white p-6 rounded-lg shadow mb-6">
         <h2 class="text-xl font-semibold mb-4">II. PERKIRAAN KERUGIAN LINGKUNGAN HIDUP</h2>
         
-        @if($lossReports->count() > 0)
+        @if(count(array_filter($lossReports)) > 0)
             @foreach($lossReports as $jenisKerugian => $reports)
                 <div class="mb-6">
                     <h3 class="text-lg font-medium mb-4">
@@ -150,26 +150,7 @@
     <div class="bg-white p-6 rounded-lg shadow">
         <h2 class="text-xl font-semibold mb-4">III. RINGKASAN TOTAL</h2>
         
-        @php
-            $totalKerusakan = 0;
-            $totalKerugian = 0;
-            
-            // Calculate total damage costs
-            foreach($damageReports as $reports) {
-                foreach($reports as $report) {
-                    $totalKerusakan += $report->harga_rb + $report->harga_rs + $report->harga_rr;
-                }
-            }
-            
-            // Calculate total loss costs
-            foreach($lossReports as $reports) {
-                foreach($reports as $report) {
-                    $totalKerugian += $report->harga_rb + $report->harga_rs + $report->harga_rr;
-                }
-            }
-            
-            $grandTotal = $totalKerusakan + $totalKerugian;
-        @endphp
+        {{-- Calculation is now done in controller --}}
         
         <div class="overflow-x-auto">
             <table class="table table-bordered">

@@ -76,6 +76,28 @@ class Format9Form4 extends Model
     }
 
     /**
+     * Calculate total damage from all kerusakan items
+     */
+    public function getTotalDamage()
+    {
+        return ($this->kerusakan_1_satuan ?? 0) * ($this->kerusakan_1_harga_satuan ?? 0) +
+               ($this->kerusakan_2_satuan ?? 0) * ($this->kerusakan_2_harga_satuan ?? 0) +
+               ($this->kerusakan_3_satuan ?? 0) * ($this->kerusakan_3_harga_satuan ?? 0) +
+               ($this->kerusakan_4_satuan ?? 0) * ($this->kerusakan_4_harga_satuan ?? 0);
+    }
+
+    /**
+     * Calculate total loss from pendapatan and biaya operasional
+     */
+    public function getTotalLoss()
+    {
+        $penurunanPendapatan = ($this->penurunan_pendapatan_unit ?? 0) * ($this->penurunan_pendapatan_harga_satuan ?? 0);
+        $kenaikanBiaya = ($this->kenaikan_biaya_operasional_unit ?? 0) * ($this->kenaikan_biaya_operasional_harga_satuan ?? 0);
+        
+        return $penurunanPendapatan + $kenaikanBiaya;
+    }
+
+    /**
      * Get the bencana that owns the Format9Form4.
      */
     public function bencana(): BelongsTo

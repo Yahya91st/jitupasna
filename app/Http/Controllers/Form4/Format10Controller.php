@@ -102,10 +102,10 @@ class Format10Controller extends Controller
      */
     public function show($id)
     {
-        $formPertanian = Format10Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPertanian->bencana;
+        $report = Format10Form4::with('bencana')->findOrFail($id);
+        $bencana = $report->bencana;
         
-        return view('forms.form4.format10.show-format10', compact('formPertanian', 'bencana'));
+        return view('forms.form4.format10.show-format10', compact('report', 'bencana'));
     }
 
     /**

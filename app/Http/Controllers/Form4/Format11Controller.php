@@ -37,33 +37,149 @@ class Format11Controller extends Controller
         try {
             DB::beginTransaction();
 
-            // Validate the request
+            // Validate the request with actual form fields
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Format 11 specific fields - customize based on actual form requirements
-                'item_rusak_1' => 'nullable|string',
-                'jumlah_rusak_1' => 'nullable|integer',
-                'harga_satuan_1' => 'nullable|numeric',
-                'item_rusak_2' => 'nullable|string',
-                'jumlah_rusak_2' => 'nullable|integer',
-                'harga_satuan_2' => 'nullable|numeric',
-                'item_rusak_3' => 'nullable|string',
-                'jumlah_rusak_3' => 'nullable|integer',
-                'harga_satuan_3' => 'nullable|numeric',
-                'item_rusak_4' => 'nullable|string',
-                'jumlah_rusak_4' => 'nullable|integer',
-                'harga_satuan_4' => 'nullable|numeric',
-                'item_rusak_5' => 'nullable|string',
-                'jumlah_rusak_5' => 'nullable|integer',
-                'harga_satuan_5' => 'nullable|numeric',
-                'total_biaya' => 'nullable|numeric',
-                'keterangan' => 'nullable|string',
+                'kabupaten' => 'nullable|string',
+                // Kematian fields
+                'kematian_jenis_0' => 'nullable|string',
+                'kematian_unit_0' => 'nullable|integer|min:0',
+                'kematian_harga_satuan_0' => 'nullable|numeric|min:0',
+                'kematian_jenis_1' => 'nullable|string',
+                'kematian_unit_1' => 'nullable|integer|min:0',
+                'kematian_harga_satuan_1' => 'nullable|numeric|min:0',
+                'kematian_jenis_2' => 'nullable|string',
+                'kematian_unit_2' => 'nullable|integer|min:0',
+                'kematian_harga_satuan_2' => 'nullable|numeric|min:0',
+                // Kandang fields
+                'kandang_jenis_0' => 'nullable|string',
+                'kandang_unit_0' => 'nullable|integer|min:0',
+                'kandang_harga_satuan_0' => 'nullable|numeric|min:0',
+                'kandang_jenis_1' => 'nullable|string',
+                'kandang_unit_1' => 'nullable|integer|min:0',
+                'kandang_harga_satuan_1' => 'nullable|numeric|min:0',
+                'kandang_jenis_2' => 'nullable|string',
+                'kandang_unit_2' => 'nullable|integer|min:0',
+                'kandang_harga_satuan_2' => 'nullable|numeric|min:0',
+                // Peralatan fields
+                'peralatan_jenis_0' => 'nullable|string',
+                'peralatan_unit_0' => 'nullable|integer|min:0',
+                'peralatan_harga_satuan_0' => 'nullable|numeric|min:0',
+                'peralatan_jenis_1' => 'nullable|string',
+                'peralatan_unit_1' => 'nullable|integer|min:0',
+                'peralatan_harga_satuan_1' => 'nullable|numeric|min:0',
+                'peralatan_jenis_2' => 'nullable|string',
+                'peralatan_unit_2' => 'nullable|integer|min:0',
+                'peralatan_harga_satuan_2' => 'nullable|numeric|min:0',
+                // Hilang fields
+                'hilang_jenis_0' => 'nullable|string',
+                'hilang_unit_0' => 'nullable|integer|min:0',
+                'hilang_harga_satuan_0' => 'nullable|numeric|min:0',
+                'hilang_jenis_1' => 'nullable|string',
+                'hilang_unit_1' => 'nullable|integer|min:0',
+                'hilang_harga_satuan_1' => 'nullable|numeric|min:0',
+                'hilang_jenis_2' => 'nullable|string',
+                'hilang_unit_2' => 'nullable|integer|min:0',
+                'hilang_harga_satuan_2' => 'nullable|numeric|min:0',
+                // Produktifitas fields
+                'produktifitas_jenis_0' => 'nullable|string',
+                'produktifitas_unit_0' => 'nullable|integer|min:0',
+                'produktifitas_harga_satuan_0' => 'nullable|numeric|min:0',
+                'produktifitas_jenis_1' => 'nullable|string',
+                'produktifitas_unit_1' => 'nullable|integer|min:0',
+                'produktifitas_harga_satuan_1' => 'nullable|numeric|min:0',
+                'produktifitas_jenis_2' => 'nullable|string',
+                'produktifitas_unit_2' => 'nullable|integer|min:0',
+                'produktifitas_harga_satuan_2' => 'nullable|numeric|min:0',
+                // Ongkos fields
+                'ongkos_jenis_0' => 'nullable|string',
+                'ongkos_unit_0' => 'nullable|integer|min:0',
+                'ongkos_harga_satuan_0' => 'nullable|numeric|min:0',
+                'ongkos_jenis_1' => 'nullable|string',
+                'ongkos_unit_1' => 'nullable|integer|min:0',
+                'ongkos_harga_satuan_1' => 'nullable|numeric|min:0',
+                'ongkos_jenis_2' => 'nullable|string',
+                'ongkos_unit_2' => 'nullable|integer|min:0',
+                'ongkos_harga_satuan_2' => 'nullable|numeric|min:0',
             ]);
 
+            // Map form fields to model structure
+            $mappedData = [
+                'bencana_id' => $validated['bencana_id'],
+                'nama_kampung' => $validated['nama_kampung'],
+                'nama_distrik' => $validated['nama_distrik'],
+                // Map kematian fields (0->1, 1->2, 2->3, add extra one as kematian_4)
+                'kematian_1_jenis' => $validated['kematian_jenis_0'] ?? null,
+                'kematian_1_unit' => $validated['kematian_unit_0'] ?? 0,
+                'kematian_1_harga_satuan' => $validated['kematian_harga_satuan_0'] ?? 0,
+                'kematian_2_jenis' => $validated['kematian_jenis_1'] ?? null,
+                'kematian_2_unit' => $validated['kematian_unit_1'] ?? 0,
+                'kematian_2_harga_satuan' => $validated['kematian_harga_satuan_1'] ?? 0,
+                'kematian_3_jenis' => $validated['kematian_jenis_2'] ?? null,
+                'kematian_3_unit' => $validated['kematian_unit_2'] ?? 0,
+                'kematian_3_harga_satuan' => $validated['kematian_harga_satuan_2'] ?? 0,
+                'kematian_4_jenis' => null, // Extra field in model
+                'kematian_4_unit' => 0,
+                'kematian_4_harga_satuan' => 0,
+                // Map kandang fields
+                'kandang_1_jenis' => $validated['kandang_jenis_0'] ?? null,
+                'kandang_1_unit' => $validated['kandang_unit_0'] ?? 0,
+                'kandang_1_harga_satuan' => $validated['kandang_harga_satuan_0'] ?? 0,
+                'kandang_2_jenis' => $validated['kandang_jenis_1'] ?? null,
+                'kandang_2_unit' => $validated['kandang_unit_1'] ?? 0,
+                'kandang_2_harga_satuan' => $validated['kandang_harga_satuan_1'] ?? 0,
+                'kandang_3_jenis' => $validated['kandang_jenis_2'] ?? null,
+                'kandang_3_unit' => $validated['kandang_unit_2'] ?? 0,
+                'kandang_3_harga_satuan' => $validated['kandang_harga_satuan_2'] ?? 0,
+                // Map peralatan fields
+                'peralatan_1_jenis' => $validated['peralatan_jenis_0'] ?? null,
+                'peralatan_1_unit' => $validated['peralatan_unit_0'] ?? 0,
+                'peralatan_1_harga_satuan' => $validated['peralatan_harga_satuan_0'] ?? 0,
+                'peralatan_2_jenis' => $validated['peralatan_jenis_1'] ?? null,
+                'peralatan_2_unit' => $validated['peralatan_unit_1'] ?? 0,
+                'peralatan_2_harga_satuan' => $validated['peralatan_harga_satuan_1'] ?? 0,
+                'peralatan_3_jenis' => $validated['peralatan_jenis_2'] ?? null,
+                'peralatan_3_unit' => $validated['peralatan_unit_2'] ?? 0,
+                'peralatan_3_harga_satuan' => $validated['peralatan_harga_satuan_2'] ?? 0,
+                // Map hilang fields
+                'hilang_1_jenis' => $validated['hilang_jenis_0'] ?? null,
+                'hilang_1_unit' => $validated['hilang_unit_0'] ?? 0,
+                'hilang_1_harga_satuan' => $validated['hilang_harga_satuan_0'] ?? 0,
+                'hilang_2_jenis' => $validated['hilang_jenis_1'] ?? null,
+                'hilang_2_unit' => $validated['hilang_unit_1'] ?? 0,
+                'hilang_2_harga_satuan' => $validated['hilang_harga_satuan_1'] ?? 0,
+                'hilang_3_jenis' => $validated['hilang_jenis_2'] ?? null,
+                'hilang_3_unit' => $validated['hilang_unit_2'] ?? 0,
+                'hilang_3_harga_satuan' => $validated['hilang_harga_satuan_2'] ?? 0,
+                // Map produktifitas fields
+                'produktifitas_1_jenis' => $validated['produktifitas_jenis_0'] ?? null,
+                'produktifitas_1_unit' => $validated['produktifitas_unit_0'] ?? 0,
+                'produktifitas_1_harga_satuan' => $validated['produktifitas_harga_satuan_0'] ?? 0,
+                'produktifitas_2_jenis' => $validated['produktifitas_jenis_1'] ?? null,
+                'produktifitas_2_unit' => $validated['produktifitas_unit_1'] ?? 0,
+                'produktifitas_2_harga_satuan' => $validated['produktifitas_harga_satuan_1'] ?? 0,
+                'produktifitas_3_jenis' => $validated['produktifitas_jenis_2'] ?? null,
+                'produktifitas_3_unit' => $validated['produktifitas_unit_2'] ?? 0,
+                'produktifitas_3_harga_satuan' => $validated['produktifitas_harga_satuan_2'] ?? 0,
+                // Map ongkos fields
+                'ongkos_1_jenis' => $validated['ongkos_jenis_0'] ?? null,
+                'ongkos_1_unit' => $validated['ongkos_unit_0'] ?? 0,
+                'ongkos_1_harga_satuan' => $validated['ongkos_harga_satuan_0'] ?? 0,
+                'ongkos_2_jenis' => $validated['ongkos_jenis_1'] ?? null,
+                'ongkos_2_unit' => $validated['ongkos_unit_1'] ?? 0,
+                'ongkos_2_harga_satuan' => $validated['ongkos_harga_satuan_1'] ?? 0,
+                'ongkos_3_jenis' => $validated['ongkos_jenis_2'] ?? null,
+                'ongkos_3_unit' => $validated['ongkos_unit_2'] ?? 0,
+                'ongkos_3_harga_satuan' => $validated['ongkos_harga_satuan_2'] ?? 0,
+                // Calculate totals (optional)
+                'total_kerusakan' => 0,
+                'total_kerugian' => 0,
+            ];
+
             // Create new form data
-            $formData = Format11Form4::create($validated);
+            $formData = Format11Form4::create($mappedData);
 
             DB::commit();
 
@@ -103,7 +219,76 @@ class Format11Controller extends Controller
         $formData = Format11Form4::with('bencana')->findOrFail($id);
         $bencana = $formData->bencana;
         
-        return view('forms.form4.format11.show-format11', compact('formData', 'bencana'));
+        // Map model fields to expected data array structure for the view
+        $data = [
+            'nama_kampung' => $formData->nama_kampung,
+            'nama_distrik' => $formData->nama_distrik,
+            
+            // A. Kerusakan Bangunan & Sarana Peternakan
+            'kandang_rb' => $formData->kandang_1_unit ?? 0,
+            'kandang_rs' => $formData->kandang_2_unit ?? 0,
+            'kandang_rr' => $formData->kandang_3_unit ?? 0,
+            'kandang_luas' => 100, // Default value - approximate livestock building size
+            'kandang_harga_m2' => $formData->kandang_1_harga_satuan ?? 0,
+            
+            'gudang_pakan_rb' => 0, // Not mapped to current model structure
+            'gudang_pakan_rs' => 0,
+            'gudang_pakan_rr' => 0,
+            'gudang_pakan_luas' => 50, // Default value
+            'gudang_pakan_harga_m2' => 0,
+            
+            'balai_inseminasi_rb' => 0, // Not mapped to current model structure
+            'balai_inseminasi_rs' => 0,
+            'balai_inseminasi_rr' => 0,
+            'balai_inseminasi_luas' => 80, // Default value
+            'balai_inseminasi_harga_m2' => 0,
+            
+            'lainnya_jenis_bangunan' => $formData->peralatan_1_jenis ?? 'Lainnya',
+            'lainnya_bangunan_rb' => $formData->peralatan_1_unit ?? 0,
+            'lainnya_bangunan_rs' => $formData->peralatan_2_unit ?? 0,
+            'lainnya_bangunan_rr' => $formData->peralatan_3_unit ?? 0,
+            'lainnya_bangunan_luas' => 60, // Default value
+            'lainnya_bangunan_harga_m2' => $formData->peralatan_1_harga_satuan ?? 0,
+            
+            // B. Kerusakan Peralatan
+            'mesin_pencacah_jumlah' => $formData->peralatan_1_unit ?? 0,
+            'mesin_pencacah_harga' => $formData->peralatan_1_harga_satuan ?? 0,
+            
+            'mesin_pakan_jumlah' => $formData->peralatan_2_unit ?? 0,
+            'mesin_pakan_harga' => $formData->peralatan_2_harga_satuan ?? 0,
+            
+            'alat_penampung_susu_jumlah' => $formData->peralatan_3_unit ?? 0,
+            'alat_penampung_susu_harga' => $formData->peralatan_3_harga_satuan ?? 0,
+            
+            'lainnya_jenis_peralatan' => $formData->peralatan_3_jenis ?? 'Lainnya',
+            'lainnya_peralatan_jumlah' => $formData->peralatan_3_unit ?? 0,
+            'lainnya_peralatan_harga' => $formData->peralatan_3_harga_satuan ?? 0,
+            
+            // C. Kematian Hewan Ternak - Map from kematian fields
+            'sapi_jumlah' => $formData->kematian_1_unit ?? 0,
+            'sapi_harga' => $formData->kematian_1_harga_satuan ?? 0,
+            
+            'kambing_jumlah' => $formData->kematian_2_unit ?? 0,
+            'kambing_harga' => $formData->kematian_2_harga_satuan ?? 0,
+            
+            'ayam_jumlah' => $formData->kematian_3_unit ?? 0,
+            'ayam_harga' => $formData->kematian_3_harga_satuan ?? 0,
+            
+            'babi_jumlah' => $formData->kematian_4_unit ?? 0,
+            'babi_harga' => $formData->kematian_4_harga_satuan ?? 0,
+            
+            'lainnya_jenis_ternak' => $formData->hilang_1_jenis ?? 'Lainnya',
+            'lainnya_ternak_jumlah' => $formData->hilang_1_unit ?? 0,
+            'lainnya_ternak_harga' => $formData->hilang_1_harga_satuan ?? 0,
+            
+            // D. Dampak Ekonomi - Map from various fields or defaults
+            'kehilangan_pendapatan' => ($formData->produktifitas_1_unit ?? 0) * ($formData->produktifitas_1_harga_satuan ?? 0),
+            'penurunan_produksi' => $formData->produktifitas_2_unit ?? 0,
+            'kenaikan_harga_pakan' => $formData->ongkos_1_harga_satuan ?? 0,
+            'biaya_kesehatan_ternak' => $formData->ongkos_2_harga_satuan ?? 0,
+        ];
+        
+        return view('forms.form4.format11.show-format11', compact('formData', 'bencana', 'data'));
     }
 
     /**

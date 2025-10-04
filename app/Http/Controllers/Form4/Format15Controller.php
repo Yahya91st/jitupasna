@@ -37,33 +37,121 @@ class Format15Controller extends Controller
         try {
             DB::beginTransaction();
 
-            // Validate the request
+            // Validate the request based on actual form fields
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
+                'kabupaten' => 'nullable|string',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Format 15 specific fields - customize based on actual form requirements
-                'item_rusak_1' => 'nullable|string',
-                'jumlah_rusak_1' => 'nullable|integer',
-                'harga_satuan_1' => 'nullable|numeric',
-                'item_rusak_2' => 'nullable|string',
-                'jumlah_rusak_2' => 'nullable|integer',
-                'harga_satuan_2' => 'nullable|numeric',
-                'item_rusak_3' => 'nullable|string',
-                'jumlah_rusak_3' => 'nullable|integer',
-                'harga_satuan_3' => 'nullable|numeric',
-                'item_rusak_4' => 'nullable|string',
-                'jumlah_rusak_4' => 'nullable|integer',
-                'harga_satuan_4' => 'nullable|numeric',
-                'item_rusak_5' => 'nullable|string',
-                'jumlah_rusak_5' => 'nullable|integer',
-                'harga_satuan_5' => 'nullable|numeric',
-                'total_biaya' => 'nullable|numeric',
-                'keterangan' => 'nullable|string',
+                // Tempat Wisata (1-3)
+                'tempat_wisata_1_jenis' => 'nullable|string',
+                'tempat_wisata_1_rb' => 'nullable|integer',
+                'tempat_wisata_1_rs' => 'nullable|integer',
+                'tempat_wisata_1_rr' => 'nullable|integer',
+                'tempat_wisata_1_rb_harga' => 'nullable|numeric',
+                'tempat_wisata_1_rs_harga' => 'nullable|numeric',
+                'tempat_wisata_1_rr_harga' => 'nullable|numeric',
+                'tempat_wisata_2_jenis' => 'nullable|string',
+                'tempat_wisata_2_rb' => 'nullable|integer',
+                'tempat_wisata_2_rs' => 'nullable|integer',
+                'tempat_wisata_2_rr' => 'nullable|integer',
+                'tempat_wisata_2_rb_harga' => 'nullable|numeric',
+                'tempat_wisata_2_rs_harga' => 'nullable|numeric',
+                'tempat_wisata_2_rr_harga' => 'nullable|numeric',
+                'tempat_wisata_3_jenis' => 'nullable|string',
+                'tempat_wisata_3_rb' => 'nullable|integer',
+                'tempat_wisata_3_rs' => 'nullable|integer',
+                'tempat_wisata_3_rr' => 'nullable|integer',
+                'tempat_wisata_3_rb_harga' => 'nullable|numeric',
+                'tempat_wisata_3_rs_harga' => 'nullable|numeric',
+                'tempat_wisata_3_rr_harga' => 'nullable|numeric',
+                // Hotel Restaurant (1-3)
+                'hotel_restaurant_1_jenis' => 'nullable|string',
+                'hotel_restaurant_1_rb' => 'nullable|integer',
+                'hotel_restaurant_1_rs' => 'nullable|integer',
+                'hotel_restaurant_1_rr' => 'nullable|integer',
+                'hotel_restaurant_1_rb_harga' => 'nullable|numeric',
+                'hotel_restaurant_1_rs_harga' => 'nullable|numeric',
+                'hotel_restaurant_1_rr_harga' => 'nullable|numeric',
+                'hotel_restaurant_2_jenis' => 'nullable|string',
+                'hotel_restaurant_2_rb' => 'nullable|integer',
+                'hotel_restaurant_2_rs' => 'nullable|integer',
+                'hotel_restaurant_2_rr' => 'nullable|integer',
+                'hotel_restaurant_2_rb_harga' => 'nullable|numeric',
+                'hotel_restaurant_2_rs_harga' => 'nullable|numeric',
+                'hotel_restaurant_2_rr_harga' => 'nullable|numeric',
+                'hotel_restaurant_3_jenis' => 'nullable|string',
+                'hotel_restaurant_3_rb' => 'nullable|integer',
+                'hotel_restaurant_3_rs' => 'nullable|integer',
+                'hotel_restaurant_3_rr' => 'nullable|integer',
+                'hotel_restaurant_3_rb_harga' => 'nullable|numeric',
+                'hotel_restaurant_3_rs_harga' => 'nullable|numeric',
+                'hotel_restaurant_3_rr_harga' => 'nullable|numeric',
+                // Kerugian fields
+                'kehilangan_total_pendapatan_jenis_fasilitas' => 'nullable|string',
+                'kehilangan_total_pendapatan_pendapatan_rata_rata' => 'nullable|string',
+                'kehilangan_total_pendapatan_waktu' => 'nullable|string',
+                'penurunan_pendapatan_jenis_fasilitas' => 'nullable|string',
+                'penurunan_pendapatan_pendapatan_rata_rata' => 'nullable|string',
+                'penurunan_pendapatan_waktu' => 'nullable|string',
+                'kenaikan_biaya_produksi_jenis_fasilitas' => 'nullable|string',
+                'kenaikan_biaya_produksi_pendapatan_rata_rata' => 'nullable|string',
             ]);
 
-            // Create new form data
-            $formData = Format15Form4::create($validated);
+            // Add default kabupaten if not provided
+            if (empty($validated['kabupaten'])) {
+                $validated['kabupaten'] = 'Papua Selatan'; // Default value
+            }
+            
+            // Map form fields to model fields
+            $mappedData = [
+                'bencana_id' => $validated['bencana_id'],
+                'kabupaten' => $validated['kabupaten'],
+                'nama_kampung' => $validated['nama_kampung'],
+                'nama_distrik' => $validated['nama_distrik'],
+                
+                // Map tempat_wisata to fasilitas_1
+                'fasilitas_1_jenis' => $validated['tempat_wisata_1_jenis'] ?? null,
+                'fasilitas_1_rb_tingkat' => $validated['tempat_wisata_1_rb'] ?? null,
+                'fasilitas_1_rs_tingkat' => $validated['tempat_wisata_1_rs'] ?? null,
+                'fasilitas_1_rr_tingkat' => $validated['tempat_wisata_1_rr'] ?? null,
+                'fasilitas_1_rb_harga' => $validated['tempat_wisata_1_rb_harga'] ?? null,
+                'fasilitas_1_rs_harga' => $validated['tempat_wisata_1_rs_harga'] ?? null,
+                'fasilitas_1_rr_harga' => $validated['tempat_wisata_1_rr_harga'] ?? null,
+                
+                // Map hotel_restaurant to fasilitas_2
+                'fasilitas_2_jenis' => $validated['hotel_restaurant_1_jenis'] ?? null,
+                'fasilitas_2_rb_tingkat' => $validated['hotel_restaurant_1_rb'] ?? null,
+                'fasilitas_2_rs_tingkat' => $validated['hotel_restaurant_1_rs'] ?? null,
+                'fasilitas_2_rr_tingkat' => $validated['hotel_restaurant_1_rr'] ?? null,
+                'fasilitas_2_rb_harga' => $validated['hotel_restaurant_1_rb_harga'] ?? null,
+                'fasilitas_2_rs_harga' => $validated['hotel_restaurant_1_rs_harga'] ?? null,
+                'fasilitas_2_rr_harga' => $validated['hotel_restaurant_1_rr_harga'] ?? null,
+                
+                // Map additional tempat_wisata to fasilitas_3
+                'fasilitas_3_jenis' => $validated['tempat_wisata_2_jenis'] ?? null,
+                'fasilitas_3_rb_tingkat' => $validated['tempat_wisata_2_rb'] ?? null,
+                'fasilitas_3_rs_tingkat' => $validated['tempat_wisata_2_rs'] ?? null,
+                'fasilitas_3_rr_tingkat' => $validated['tempat_wisata_2_rr'] ?? null,
+                'fasilitas_3_rb_harga' => $validated['tempat_wisata_2_rb_harga'] ?? null,
+                'fasilitas_3_rs_harga' => $validated['tempat_wisata_2_rs_harga'] ?? null,
+                'fasilitas_3_rr_harga' => $validated['tempat_wisata_2_rr_harga'] ?? null,
+                
+                // Map kerugian fields
+                'kerugian_1_jenis' => $validated['kehilangan_total_pendapatan_jenis_fasilitas'] ?? null,
+                'kerugian_1_rb_nilai' => is_numeric($validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] : null,
+                'kerugian_1_rs_nilai' => is_numeric($validated['kehilangan_total_pendapatan_waktu'] ?? null) ? $validated['kehilangan_total_pendapatan_waktu'] : null,
+                
+                'kerugian_2_jenis' => $validated['penurunan_pendapatan_jenis_fasilitas'] ?? null,
+                'kerugian_2_rb_nilai' => is_numeric($validated['penurunan_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['penurunan_pendapatan_pendapatan_rata_rata'] : null,
+                'kerugian_2_rs_nilai' => is_numeric($validated['penurunan_pendapatan_waktu'] ?? null) ? $validated['penurunan_pendapatan_waktu'] : null,
+                
+                'kerugian_3_jenis' => $validated['kenaikan_biaya_produksi_jenis_fasilitas'] ?? null,
+                'kerugian_3_rb_nilai' => is_numeric($validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] ?? null) ? $validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] : null,
+            ];
+            
+            // Create new form data with mapped fields
+            $formData = Format15Form4::create($mappedData);
 
             DB::commit();
 
@@ -103,7 +191,43 @@ class Format15Controller extends Controller
         $formData = Format15Form4::with('bencana')->findOrFail($id);
         $bencana = $formData->bencana;
         
-        return view('forms.form4.format15.show-format15', compact('formData', 'bencana'));
+        // Prepare data array that matches the Blade template expectations
+        $data = [
+            'nama_kampung' => $formData->nama_kampung,
+            'nama_distrik' => $formData->nama_distrik,
+            
+            // Map facility data to expected tourism facility names
+            'penginapan_jumlah' => $formData->fasilitas_1_rb_tingkat + $formData->fasilitas_1_rs_tingkat + $formData->fasilitas_1_rr_tingkat,
+            'penginapan_harga' => ($formData->fasilitas_1_rb_harga + $formData->fasilitas_1_rs_harga + $formData->fasilitas_1_rr_harga) / 3,
+            'penginapan_total' => ($formData->fasilitas_1_rb_tingkat * $formData->fasilitas_1_rb_harga) + 
+                                 ($formData->fasilitas_1_rs_tingkat * $formData->fasilitas_1_rs_harga) + 
+                                 ($formData->fasilitas_1_rr_tingkat * $formData->fasilitas_1_rr_harga),
+            
+            'restoran_jumlah' => $formData->fasilitas_2_rb_tingkat + $formData->fasilitas_2_rs_tingkat + $formData->fasilitas_2_rr_tingkat,
+            'restoran_harga' => ($formData->fasilitas_2_rb_harga + $formData->fasilitas_2_rs_harga + $formData->fasilitas_2_rr_harga) / 3,
+            'restoran_total' => ($formData->fasilitas_2_rb_tingkat * $formData->fasilitas_2_rb_harga) + 
+                               ($formData->fasilitas_2_rs_tingkat * $formData->fasilitas_2_rs_harga) + 
+                               ($formData->fasilitas_2_rr_tingkat * $formData->fasilitas_2_rr_harga),
+            
+            'objek_wisata_jumlah' => $formData->fasilitas_3_rb_tingkat + $formData->fasilitas_3_rs_tingkat + $formData->fasilitas_3_rr_tingkat,
+            'objek_wisata_harga' => ($formData->fasilitas_3_rb_harga + $formData->fasilitas_3_rs_harga + $formData->fasilitas_3_rr_harga) / 3,
+            'objek_wisata_total' => ($formData->fasilitas_3_rb_tingkat * $formData->fasilitas_3_rb_harga) + 
+                                   ($formData->fasilitas_3_rs_tingkat * $formData->fasilitas_3_rs_harga) + 
+                                   ($formData->fasilitas_3_rr_tingkat * $formData->fasilitas_3_rr_harga),
+            
+            // For pusat_info, we can use a default or leave empty
+            'pusat_info_jumlah' => 0,
+            'pusat_info_harga' => 0,
+            'pusat_info_total' => 0,
+            
+            // Map loss data to tourism loss fields
+            'jumlah_usaha_terdampak' => $formData->kerugian_1_rb_nilai ?? 0,
+            'pendapatan_harian' => $formData->kerugian_2_rb_nilai ?? 0,
+            'hari_tutup' => $formData->kerugian_3_rb_nilai ?? 0,
+            'kehilangan_wisatawan' => $formData->kerugian_4_rb_nilai ?? 0,
+        ];
+        
+        return view('forms.form4.format15.show-format15', compact('formData', 'bencana', 'data'));
     }
 
     /**
@@ -168,11 +292,111 @@ class Format15Controller extends Controller
             $formData = Format15Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
+                'kabupaten' => 'nullable|string',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // ...validation rules sesuai kebutuhan format15...
+                // Tempat Wisata (1-3)
+                'tempat_wisata_1_jenis' => 'nullable|string',
+                'tempat_wisata_1_rb' => 'nullable|integer',
+                'tempat_wisata_1_rs' => 'nullable|integer',
+                'tempat_wisata_1_rr' => 'nullable|integer',
+                'tempat_wisata_1_rb_harga' => 'nullable|numeric',
+                'tempat_wisata_1_rs_harga' => 'nullable|numeric',
+                'tempat_wisata_1_rr_harga' => 'nullable|numeric',
+                'tempat_wisata_2_jenis' => 'nullable|string',
+                'tempat_wisata_2_rb' => 'nullable|integer',
+                'tempat_wisata_2_rs' => 'nullable|integer',
+                'tempat_wisata_2_rr' => 'nullable|integer',
+                'tempat_wisata_2_rb_harga' => 'nullable|numeric',
+                'tempat_wisata_2_rs_harga' => 'nullable|numeric',
+                'tempat_wisata_2_rr_harga' => 'nullable|numeric',
+                'tempat_wisata_3_jenis' => 'nullable|string',
+                'tempat_wisata_3_rb' => 'nullable|integer',
+                'tempat_wisata_3_rs' => 'nullable|integer',
+                'tempat_wisata_3_rr' => 'nullable|integer',
+                'tempat_wisata_3_rb_harga' => 'nullable|numeric',
+                'tempat_wisata_3_rs_harga' => 'nullable|numeric',
+                'tempat_wisata_3_rr_harga' => 'nullable|numeric',
+                // Hotel Restaurant (1-3)
+                'hotel_restaurant_1_jenis' => 'nullable|string',
+                'hotel_restaurant_1_rb' => 'nullable|integer',
+                'hotel_restaurant_1_rs' => 'nullable|integer',
+                'hotel_restaurant_1_rr' => 'nullable|integer',
+                'hotel_restaurant_1_rb_harga' => 'nullable|numeric',
+                'hotel_restaurant_1_rs_harga' => 'nullable|numeric',
+                'hotel_restaurant_1_rr_harga' => 'nullable|numeric',
+                'hotel_restaurant_2_jenis' => 'nullable|string',
+                'hotel_restaurant_2_rb' => 'nullable|integer',
+                'hotel_restaurant_2_rs' => 'nullable|integer',
+                'hotel_restaurant_2_rr' => 'nullable|integer',
+                'hotel_restaurant_2_rb_harga' => 'nullable|numeric',
+                'hotel_restaurant_2_rs_harga' => 'nullable|numeric',
+                'hotel_restaurant_2_rr_harga' => 'nullable|numeric',
+                'hotel_restaurant_3_jenis' => 'nullable|string',
+                'hotel_restaurant_3_rb' => 'nullable|integer',
+                'hotel_restaurant_3_rs' => 'nullable|integer',
+                'hotel_restaurant_3_rr' => 'nullable|integer',
+                'hotel_restaurant_3_rb_harga' => 'nullable|numeric',
+                'hotel_restaurant_3_rs_harga' => 'nullable|numeric',
+                'hotel_restaurant_3_rr_harga' => 'nullable|numeric',
+                // Kerugian fields
+                'kehilangan_total_pendapatan_jenis_fasilitas' => 'nullable|string',
+                'kehilangan_total_pendapatan_pendapatan_rata_rata' => 'nullable|string',
+                'kehilangan_total_pendapatan_waktu' => 'nullable|string',
+                'penurunan_pendapatan_jenis_fasilitas' => 'nullable|string',
+                'penurunan_pendapatan_pendapatan_rata_rata' => 'nullable|string',
+                'penurunan_pendapatan_waktu' => 'nullable|string',
+                'kenaikan_biaya_produksi_jenis_fasilitas' => 'nullable|string',
+                'kenaikan_biaya_produksi_pendapatan_rata_rata' => 'nullable|string',
             ]);
-            $formData->update($validated);
+            // Map form fields to model fields
+            $mappedData = [
+                'bencana_id' => $validated['bencana_id'],
+                'kabupaten' => $validated['kabupaten'] ?? 'Papua Selatan',
+                'nama_kampung' => $validated['nama_kampung'],
+                'nama_distrik' => $validated['nama_distrik'],
+                
+                // Map tempat_wisata to fasilitas_1
+                'fasilitas_1_jenis' => $validated['tempat_wisata_1_jenis'] ?? null,
+                'fasilitas_1_rb_tingkat' => $validated['tempat_wisata_1_rb'] ?? null,
+                'fasilitas_1_rs_tingkat' => $validated['tempat_wisata_1_rs'] ?? null,
+                'fasilitas_1_rr_tingkat' => $validated['tempat_wisata_1_rr'] ?? null,
+                'fasilitas_1_rb_harga' => $validated['tempat_wisata_1_rb_harga'] ?? null,
+                'fasilitas_1_rs_harga' => $validated['tempat_wisata_1_rs_harga'] ?? null,
+                'fasilitas_1_rr_harga' => $validated['tempat_wisata_1_rr_harga'] ?? null,
+                
+                // Map hotel_restaurant to fasilitas_2
+                'fasilitas_2_jenis' => $validated['hotel_restaurant_1_jenis'] ?? null,
+                'fasilitas_2_rb_tingkat' => $validated['hotel_restaurant_1_rb'] ?? null,
+                'fasilitas_2_rs_tingkat' => $validated['hotel_restaurant_1_rs'] ?? null,
+                'fasilitas_2_rr_tingkat' => $validated['hotel_restaurant_1_rr'] ?? null,
+                'fasilitas_2_rb_harga' => $validated['hotel_restaurant_1_rb_harga'] ?? null,
+                'fasilitas_2_rs_harga' => $validated['hotel_restaurant_1_rs_harga'] ?? null,
+                'fasilitas_2_rr_harga' => $validated['hotel_restaurant_1_rr_harga'] ?? null,
+                
+                // Map additional tempat_wisata to fasilitas_3
+                'fasilitas_3_jenis' => $validated['tempat_wisata_2_jenis'] ?? null,
+                'fasilitas_3_rb_tingkat' => $validated['tempat_wisata_2_rb'] ?? null,
+                'fasilitas_3_rs_tingkat' => $validated['tempat_wisata_2_rs'] ?? null,
+                'fasilitas_3_rr_tingkat' => $validated['tempat_wisata_2_rr'] ?? null,
+                'fasilitas_3_rb_harga' => $validated['tempat_wisata_2_rb_harga'] ?? null,
+                'fasilitas_3_rs_harga' => $validated['tempat_wisata_2_rs_harga'] ?? null,
+                'fasilitas_3_rr_harga' => $validated['tempat_wisata_2_rr_harga'] ?? null,
+                
+                // Map kerugian fields
+                'kerugian_1_jenis' => $validated['kehilangan_total_pendapatan_jenis_fasilitas'] ?? null,
+                'kerugian_1_rb_nilai' => is_numeric($validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] : null,
+                'kerugian_1_rs_nilai' => is_numeric($validated['kehilangan_total_pendapatan_waktu'] ?? null) ? $validated['kehilangan_total_pendapatan_waktu'] : null,
+                
+                'kerugian_2_jenis' => $validated['penurunan_pendapatan_jenis_fasilitas'] ?? null,
+                'kerugian_2_rb_nilai' => is_numeric($validated['penurunan_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['penurunan_pendapatan_pendapatan_rata_rata'] : null,
+                'kerugian_2_rs_nilai' => is_numeric($validated['penurunan_pendapatan_waktu'] ?? null) ? $validated['penurunan_pendapatan_waktu'] : null,
+                
+                'kerugian_3_jenis' => $validated['kenaikan_biaya_produksi_jenis_fasilitas'] ?? null,
+                'kerugian_3_rb_nilai' => is_numeric($validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] ?? null) ? $validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] : null,
+            ];
+            
+            $formData->update($mappedData);
             DB::commit();
             return redirect()->route('forms.form4.list-format15', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');

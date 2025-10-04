@@ -28,10 +28,10 @@
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Informasi Sektor Lainnya</h6>
             <div class="btn-group">
-                <a href="{{ route('forms.form4.edit-format10', $report->id) }}" class="btn btn-sm btn-warning">
+                <a href="{{ route('forms.form4.format10.edit', $report->id) }}" class="btn btn-sm btn-warning">
                     <i class="fa fa-edit mr-1"></i> Edit
                 </a>
-                <a href="{{ route('forms.form4.pdf-format10', $report->id) }}" target="_blank" class="btn btn-sm btn-danger">
+                <a href="{{ route('forms.form4.format10.pdf', $report->id) }}" target="_blank" class="btn btn-sm btn-danger">
                     <i class="fa fa-file-pdf mr-1"></i> PDF
                 </a>
             </div>

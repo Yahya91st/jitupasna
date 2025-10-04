@@ -37,33 +37,64 @@ class Format12Controller extends Controller
         try {
             DB::beginTransaction();
 
-            // Validate the request
+            // Validate the basic required fields and form fields
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Format 12 specific fields - customize based on actual form requirements
-                'item_rusak_1' => 'nullable|string',
-                'jumlah_rusak_1' => 'nullable|integer',
-                'harga_satuan_1' => 'nullable|numeric',
-                'item_rusak_2' => 'nullable|string',
-                'jumlah_rusak_2' => 'nullable|integer',
-                'harga_satuan_2' => 'nullable|numeric',
-                'item_rusak_3' => 'nullable|string',
-                'jumlah_rusak_3' => 'nullable|integer',
-                'harga_satuan_3' => 'nullable|numeric',
-                'item_rusak_4' => 'nullable|string',
-                'jumlah_rusak_4' => 'nullable|integer',
-                'harga_satuan_4' => 'nullable|numeric',
-                'item_rusak_5' => 'nullable|string',
-                'jumlah_rusak_5' => 'nullable|integer',
-                'harga_satuan_5' => 'nullable|numeric',
-                'total_biaya' => 'nullable|numeric',
-                'keterangan' => 'nullable|string',
+                
+                // Tempat Pemeliharaan fields
+                'tempat_pemeliharaan_jenis_0' => 'nullable|string',
+                'tempat_pemeliharaan_unit_0' => 'nullable|integer',
+                'tempat_pemeliharaan_harga_satuan_0' => 'nullable|numeric',
+                'tempat_pemeliharaan_jenis_1' => 'nullable|string',
+                'tempat_pemeliharaan_unit_1' => 'nullable|integer',
+                'tempat_pemeliharaan_harga_satuan_1' => 'nullable|numeric',
+                'tempat_pemeliharaan_jenis_2' => 'nullable|string',
+                'tempat_pemeliharaan_unit_2' => 'nullable|integer',
+                'tempat_pemeliharaan_harga_satuan_2' => 'nullable|numeric',
+                
+                // Kapal Perahu fields
+                'kerusakan_kapal_perahu_jenis_0' => 'nullable|string',
+                'kerusakan_kapal_perahu_unit_0' => 'nullable|integer',
+                'kerusakan_kapal_perahu_harga_satuan_0' => 'nullable|numeric',
+                'kerusakan_kapal_perahu_jenis_1' => 'nullable|string',
+                'kerusakan_kapal_perahu_unit_1' => 'nullable|integer',
+                'kerusakan_kapal_perahu_harga_satuan_1' => 'nullable|numeric',
+                'kerusakan_kapal_perahu_jenis_2' => 'nullable|string',
+                'kerusakan_kapal_perahu_unit_2' => 'nullable|integer',
+                'kerusakan_kapal_perahu_harga_satuan_2' => 'nullable|numeric',
+                
+                // Additional fields from the form can be added here as needed
             ]);
 
+            // Map form fields to model's generic structure
+            // For now, we'll map the first few tempat_pemeliharaan entries to the model fields
+            $modelData = [
+                'bencana_id' => $validated['bencana_id'],
+                'nama_kampung' => $validated['nama_kampung'],
+                'nama_distrik' => $validated['nama_distrik'],
+                'item_rusak_1' => $validated['tempat_pemeliharaan_jenis_0'] ?? null,
+                'jumlah_rusak_1' => $validated['tempat_pemeliharaan_unit_0'] ?? 0,
+                'harga_satuan_1' => $validated['tempat_pemeliharaan_harga_satuan_0'] ?? 0,
+                'item_rusak_2' => $validated['tempat_pemeliharaan_jenis_1'] ?? null,
+                'jumlah_rusak_2' => $validated['tempat_pemeliharaan_unit_1'] ?? 0,
+                'harga_satuan_2' => $validated['tempat_pemeliharaan_harga_satuan_1'] ?? 0,
+                'item_rusak_3' => $validated['tempat_pemeliharaan_jenis_2'] ?? null,
+                'jumlah_rusak_3' => $validated['tempat_pemeliharaan_unit_2'] ?? 0,
+                'harga_satuan_3' => $validated['tempat_pemeliharaan_harga_satuan_2'] ?? 0,
+                'item_rusak_4' => $validated['kerusakan_kapal_perahu_jenis_0'] ?? null,
+                'jumlah_rusak_4' => $validated['kerusakan_kapal_perahu_unit_0'] ?? 0,
+                'harga_satuan_4' => $validated['kerusakan_kapal_perahu_harga_satuan_0'] ?? 0,
+                'item_rusak_5' => $validated['kerusakan_kapal_perahu_jenis_1'] ?? null,
+                'jumlah_rusak_5' => $validated['kerusakan_kapal_perahu_unit_1'] ?? 0,
+                'harga_satuan_5' => $validated['kerusakan_kapal_perahu_harga_satuan_1'] ?? 0,
+                'total_biaya' => 0, // Can be calculated from the individual items
+                'keterangan' => null,
+            ];
+
             // Create new form data
-            $formData = Format12Form4::create($validated);
+            $formData = Format12Form4::create($modelData);
 
             DB::commit();
 
@@ -103,7 +134,84 @@ class Format12Controller extends Controller
         $formData = Format12Form4::with('bencana')->findOrFail($id);
         $bencana = $formData->bencana;
         
-        return view('forms.form4.format12.show-format12', compact('formData', 'bencana'));
+        // Prepare data array that matches the Blade template expectations
+        $data = [
+            'nama_kampung' => $formData->nama_kampung,
+            'nama_distrik' => $formData->nama_distrik,
+            
+            // A. Kerusakan Sarana Budidaya - Map generic items to specific facility types
+            'kolam_ikan_jumlah' => $formData->jumlah_rusak_1 ?? 0,
+            'kolam_ikan_harga' => $formData->harga_satuan_1 ?? 0,
+            'kolam_ikan_total' => ($formData->jumlah_rusak_1 ?? 0) * ($formData->harga_satuan_1 ?? 0),
+            
+            'tambak_jumlah' => $formData->jumlah_rusak_2 ?? 0,
+            'tambak_harga' => $formData->harga_satuan_2 ?? 0,
+            'tambak_total' => ($formData->jumlah_rusak_2 ?? 0) * ($formData->harga_satuan_2 ?? 0),
+            
+            'keramba_jumlah' => $formData->jumlah_rusak_3 ?? 0,
+            'keramba_harga' => $formData->harga_satuan_3 ?? 0,
+            'keramba_total' => ($formData->jumlah_rusak_3 ?? 0) * ($formData->harga_satuan_3 ?? 0),
+            
+            'hatchery_jumlah' => $formData->jumlah_rusak_4 ?? 0,
+            'hatchery_harga' => $formData->harga_satuan_4 ?? 0,
+            'hatchery_total' => ($formData->jumlah_rusak_4 ?? 0) * ($formData->harga_satuan_4 ?? 0),
+            
+            'lainnya_jenis_sarana' => $formData->item_rusak_5 ?? 'Lainnya',
+            'lainnya_sarana_jumlah' => $formData->jumlah_rusak_5 ?? 0,
+            'lainnya_sarana_harga' => $formData->harga_satuan_5 ?? 0,
+            'lainnya_sarana_total' => ($formData->jumlah_rusak_5 ?? 0) * ($formData->harga_satuan_5 ?? 0),
+            
+            // B. Kerusakan Sarana Tangkap - Default values as not in current model
+            'perahu_motor_jumlah' => 0,
+            'perahu_motor_harga' => 0,
+            'perahu_motor_total' => 0,
+            
+            'perahu_dayung_jumlah' => 0,
+            'perahu_dayung_harga' => 0,
+            'perahu_dayung_total' => 0,
+            
+            'jaring_insang_jumlah' => 0,
+            'jaring_insang_harga' => 0,
+            'jaring_insang_total' => 0,
+            
+            'jaring_purse_seine_jumlah' => 0,
+            'jaring_purse_seine_harga' => 0,
+            'jaring_purse_seine_total' => 0,
+            
+            'alat_penangkap_lain_jumlah' => 0,
+            'alat_penangkap_lain_harga' => 0,
+            'alat_penangkap_lain_total' => 0,
+            
+            // C. Kematian/Hilangnya Hasil Perikanan - Default values as not in current model
+            'ikan_lele_jumlah' => 0,
+            'ikan_lele_harga' => 0,
+            'ikan_lele_total' => 0,
+            
+            'ikan_nila_jumlah' => 0,
+            'ikan_nila_harga' => 0,
+            'ikan_nila_total' => 0,
+            
+            'udang_jumlah' => 0,
+            'udang_harga' => 0,
+            'udang_total' => 0,
+            
+            'bandeng_jumlah' => 0,
+            'bandeng_harga' => 0,
+            'bandeng_total' => 0,
+            
+            'lainnya_jenis_ikan' => 'Lainnya',
+            'lainnya_ikan_jumlah' => 0,
+            'lainnya_ikan_harga' => 0,
+            'lainnya_ikan_total' => 0,
+            
+            // D. Dampak Ekonomi - Default values as not in current model
+            'kehilangan_pendapatan_harian' => 0,
+            'hari_tidak_melaut' => 0,
+            'biaya_sewa_alat' => 0,
+            'kenaikan_harga_pakan' => 0,
+        ];
+        
+        return view('forms.form4.format12.show-format12', compact('formData', 'bencana', 'data'));
     }
 
     /**

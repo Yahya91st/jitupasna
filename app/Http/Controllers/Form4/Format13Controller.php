@@ -103,7 +103,80 @@ class Format13Controller extends Controller
         $formData = Format13Form4::with('bencana')->findOrFail($id);
         $bencana = $formData->bencana;
         
-        return view('forms.form4.format13.show-format13', compact('formData', 'bencana'));
+        // Prepare data array that matches the Blade template expectations
+        $data = [
+            'nama_kampung' => $formData->nama_kampung,
+            'nama_distrik' => $formData->nama_distrik,
+            
+            // A. Kerusakan Bangunan Produksi - Map generic items to specific building types
+            'unit_produksi_jumlah' => $formData->jumlah_rusak_1 ?? 0,
+            'unit_produksi_luas' => 0, // Not available in current model
+            'unit_produksi_harga' => $formData->harga_satuan_1 ?? 0,
+            'unit_produksi_total' => ($formData->jumlah_rusak_1 ?? 0) * ($formData->harga_satuan_1 ?? 0),
+            
+            'gudang_jumlah' => $formData->jumlah_rusak_2 ?? 0,
+            'gudang_luas' => 0,
+            'gudang_harga' => $formData->harga_satuan_2 ?? 0,
+            'gudang_total' => ($formData->jumlah_rusak_2 ?? 0) * ($formData->harga_satuan_2 ?? 0),
+            
+            'toko_jumlah' => $formData->jumlah_rusak_3 ?? 0,
+            'toko_luas' => 0,
+            'toko_harga' => $formData->harga_satuan_3 ?? 0,
+            'toko_total' => ($formData->jumlah_rusak_3 ?? 0) * ($formData->harga_satuan_3 ?? 0),
+            
+            'lainnya_jenis_bangunan' => $formData->item_rusak_4 ?? 'Lainnya',
+            'lainnya_bangunan_jumlah' => $formData->jumlah_rusak_4 ?? 0,
+            'lainnya_bangunan_luas' => 0,
+            'lainnya_bangunan_harga' => $formData->harga_satuan_4 ?? 0,
+            'lainnya_bangunan_total' => ($formData->jumlah_rusak_4 ?? 0) * ($formData->harga_satuan_4 ?? 0),
+            
+            // B. Kerusakan Peralatan Produksi - Map to equipment types
+            'mesin_jahit_jumlah' => 0, // Default values since current model doesn't have these
+            'mesin_jahit_harga' => 0,
+            'mesin_jahit_total' => 0,
+            
+            'oven_jumlah' => 0,
+            'oven_harga' => 0,
+            'oven_total' => 0,
+            
+            'etalase_jumlah' => 0,
+            'etalase_harga' => 0,
+            'etalase_total' => 0,
+            
+            'lainnya_jenis_peralatan' => $formData->item_rusak_5 ?? 'Lainnya',
+            'lainnya_peralatan_jumlah' => $formData->jumlah_rusak_5 ?? 0,
+            'lainnya_peralatan_harga' => $formData->harga_satuan_5 ?? 0,
+            'lainnya_peralatan_total' => ($formData->jumlah_rusak_5 ?? 0) * ($formData->harga_satuan_5 ?? 0),
+            
+            // C. Kehilangan Produksi & Pendapatan - Default values as not in current model
+            'roti_produksi' => 0,
+            'roti_harga' => 0,
+            'roti_hari' => 0,
+            'roti_total' => 0,
+            
+            'pakaian_produksi' => 0,
+            'pakaian_harga' => 0,
+            'pakaian_hari' => 0,
+            'pakaian_total' => 0,
+            
+            'mebel_produksi' => 0,
+            'mebel_harga' => 0,
+            'mebel_hari' => 0,
+            'mebel_total' => 0,
+            
+            'lainnya_jenis_usaha' => 'Lainnya',
+            'lainnya_usaha_produksi' => 0,
+            'lainnya_usaha_harga' => 0,
+            'lainnya_usaha_hari' => 0,
+            'lainnya_usaha_total' => 0,
+            
+            // D. Biaya Tambahan - Default values as not in current model
+            'sewa_tempat' => 0,
+            'transportasi_bahan' => 0,
+            'alat_bantu' => 0,
+        ];
+        
+        return view('forms.form4.format13.show-format13', compact('formData', 'bencana', 'data'));
     }
 
     /**

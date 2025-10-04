@@ -619,11 +619,11 @@ Route::prefix('/forms')
             Route::get('/list-format10', [Format10Controller::class, 'list'])->name('list-format10');
 
             // Additional show and list routes for formats 4, 5, 8, 9, 10
-            Route::get('/show-format4/{id}', [Form4Controller::class, 'showFormat4'])->name('show-format4');
-            Route::get('/show-format5/{id}', [Form4Controller::class, 'showFormat5'])->name('show-format5');
-            Route::get('/show-format8/{id}', [Form4Controller::class, 'showFormat8'])->name('show-format8');
-            Route::get('/show-format9/{id}', [Form4Controller::class, 'showFormat9'])->name('show-format9');
-            Route::get('/show-format10/{id}', [Form4Controller::class, 'showFormat10'])->name('show-format10');
+            Route::get('/show-format4/{id}', [Format4Controller::class, 'show'])->name('show-format4');
+            Route::get('/show-format5/{id}', [Format5Controller::class, 'show'])->name('show-format5');
+            Route::get('/show-format8/{id}', [Format8Controller::class, 'show'])->name('show-format8');
+            Route::get('/show-format9/{id}', [Format9Controller::class, 'show'])->name('show-format9');
+            Route::get('/show-format10/{id}', [Format10Controller::class, 'show'])->name('show-format10');
         });
 
         // Form 6 (Formulir 06 - Pendataan Tingkat Rumahtangga)

@@ -221,11 +221,12 @@
                             </tbody>
                         </table>
                     </div>
-                </div>                @php 
+                </div>                
+                {{-- @php 
                     // Calculate the grand total from the section subtotals
                     $totalLoss = $totalPuing + $totalKantor + $totalArsip;
                     $grandTotal = ($totalDamage ?? 0) + $totalLoss;
-                @endphp
+                @endphp --}}
                 
                 <!-- Total Kerugian -->
                 <div class="p-4 bg-gray-50 border-t">
@@ -237,12 +238,12 @@
         @endif
 
         <!-- Grand Total -->
-        <div class="bg-primary text-white rounded-lg shadow p-4">
+        {{-- <div class="bg-primary text-white rounded-lg shadow p-4">
             <div class="text-center">
                 <h2 class="text-xl font-bold">TOTAL KESELURUHAN SEKTOR PEMERINTAHAN</h2>
                 <h3 class="text-2xl font-bold mt-2">Rp {{ number_format($grandTotal, 0, ',', '.') }}</h3>
             </div>
-        </div>
+        </div> --}}
 
     @else
         <div class="bg-white rounded-lg shadow p-6 text-center">
