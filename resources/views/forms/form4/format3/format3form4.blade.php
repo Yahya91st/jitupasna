@@ -57,13 +57,21 @@
                         ['Posyandu', 'posyandu'],
                     ] as [$label, $prefix])
                     <tr>
-                        <td class="align-middle fw-bold">{{ $label }}</td>
-                        <td><input type="number" name="{{ $prefix }}_berat" class="form-control" min="0" value="{{ old($prefix.'_berat', $data->{$prefix.'_berat'} ?? '0') }}"></td>
-                        <td><input type="number" name="{{ $prefix }}_sedang" class="form-control" min="0" value="{{ old($prefix.'_sedang', $data->{$prefix.'_sedang'} ?? '0') }}"></td>
-                        <td><input type="number" name="{{ $prefix }}_ringan" class="form-control" min="0" value="{{ old($prefix.'_ringan', $data->{$prefix.'_ringan'} ?? '0') }}"></td>
-                        <td><input type="number" name="{{ $prefix }}_rb_harga" class="form-control" min="0" step="1000" value="{{ old($prefix.'_rb_harga', $data->{$prefix.'_rb_harga'} ?? '0') }}"></td>
-                        <td><input type="number" name="{{ $prefix }}_rs_harga" class="form-control" min="0" step="1000" value="{{ old($prefix.'_rs_harga', $data->{$prefix.'_rs_harga'} ?? '0') }}"></td>
-                        <td><input type="number" name="{{ $prefix }}_rr_harga" class="form-control" min="0" step="1000" value="{{ old($prefix.'_rr_harga', $data->{$prefix.'_rr_harga'} ?? '0') }}"></td>
+                        <td class="align-middle fw-bold">{{ $label }} (Negeri)</td>
+                        <td><input type="number" name="{{ $prefix }}_rb_negeri" class="form-control" min="0" value="{{ old($prefix.'_rb_negeri', $data->{$prefix.'_rb_negeri'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_rs_negeri" class="form-control" min="0" value="{{ old($prefix.'_rs_negeri', $data->{$prefix.'_rs_negeri'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_rr_negeri" class="form-control" min="0" value="{{ old($prefix.'_rr_negeri', $data->{$prefix.'_rr_negeri'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_harga_bangunan" class="form-control" min="0" step="1000" value="{{ old($prefix.'_harga_bangunan', $data->{$prefix.'_harga_bangunan'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_harga_obat" class="form-control" min="0" step="1000" value="{{ old($prefix.'_harga_obat', $data->{$prefix.'_harga_obat'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_harga_meubelair" class="form-control" min="0" step="1000" value="{{ old($prefix.'_harga_meubelair', $data->{$prefix.'_harga_meubelair'} ?? '0') }}"></td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle fw-bold">{{ $label }} (Swasta)</td>
+                        <td><input type="number" name="{{ $prefix }}_rb_swasta" class="form-control" min="0" value="{{ old($prefix.'_rb_swasta', $data->{$prefix.'_rb_swasta'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_rs_swasta" class="form-control" min="0" value="{{ old($prefix.'_rs_swasta', $data->{$prefix.'_rs_swasta'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_rr_swasta" class="form-control" min="0" value="{{ old($prefix.'_rr_swasta', $data->{$prefix.'_rr_swasta'} ?? '0') }}"></td>
+                        <td><input type="number" name="{{ $prefix }}_harga_peralatan" class="form-control" min="0" step="1000" value="{{ old($prefix.'_harga_peralatan', $data->{$prefix.'_harga_peralatan'} ?? '0') }}"></td>
+                        <td colspan="2" class="text-muted">-</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -92,7 +100,7 @@
                     <td style="width: 35%">
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
-                            <input type="number" name="upah_harian" class="form-control" placeholder="0" value="{{ old('upah_harian', $data->upah_harian ?? '') }}">
+                            <input type="number" name="biaya_tenaga_kerja_upah" class="form-control" placeholder="0" value="{{ old('biaya_tenaga_kerja_upah', $data->biaya_tenaga_kerja_upah ?? '') }}">
                         </div>
                     </td>
                 </tr>
@@ -108,7 +116,7 @@
                     <td>
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
-                            <input type="number" name="biaya_alat_berat_tarif" class="form-control" placeholder="0" value="{{ old('biaya_alat_berat_tarif', $data->biaya_alat_berat_tarif ?? '') }}">
+                            <input type="number" name="biaya_alat_berat_harga" class="form-control" placeholder="0" value="{{ old('biaya_alat_berat_harga', $data->biaya_alat_berat_harga ?? '') }}">
                         </div>
                     </td>
                 </tr>

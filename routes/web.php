@@ -293,6 +293,7 @@ Route::prefix('/forms')
                 Route::get('/preview-pdf/{id}', [Format5Controller::class, 'previewPdf'])->name('preview-pdf');
                 Route::get('/edit/{id}', [Format5Controller::class, 'edit'])->name('edit');
                 Route::patch('/update/{id}', [Format5Controller::class, 'update'])->name('update');
+                Route::delete('/destroy/{id}', [Format5Controller::class, 'destroy'])->name('destroy');
             });
 
             // Format 6 - Clean Water and Sanitation sector (IMPLEMENTED)

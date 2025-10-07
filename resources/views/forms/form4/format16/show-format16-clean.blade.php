@@ -24,20 +24,24 @@
             <a href="{{ route('forms.form4.format16form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
                 <i class="fa fa-plus mr-2"></i> Tambah Data Baru
             </a>
-            @if($governmentReports->count() > 0)
-                <a href="{{ route('forms.form4.format16-preview-pdf', $bencana->id) }}" class="btn btn-secondary" target="_blank">
-                    <i class="fa fa-file-pdf mr-2"></i> Lihat PDF
-                </a>
-                <a href="{{ route('forms.form4.format16-pdf', $bencana->id) }}" class="btn btn-success" target="_blank">
-                    <i class="fa fa-download mr-2"></i> Unduh PDF
-                </a>
-            @endif
+            <a href="{{ route('forms.form4.list-format16', ['bencana_id' => $bencana->id]) }}" class="btn btn-info">
+                <i class="fa fa-list mr-2"></i> Daftar Laporan
+            </a>
         </div>
     </div>
     
-    @if($facilityReports->count() > 0 || $governmentReports->where('tenaga_kerja_hok', '!=', null)->count() > 0)
+    <!-- Debug Information -->
+    <div class="bg-yellow-100 p-3 mb-4 rounded">
+        <h4 class="font-bold">Debug Info:</h4>
+        <p>Form Data ID: {{ $formData->id }}</p>
+        <p>Facility Reports Count: {{ $facilityReports->count() }}</p>
+        <p>Loss Reports Count: {{ $lossReports->count() }}</p>
+        <p>Government Reports Count: {{ $governmentReports->count() }}</p>
+    </div>
+    
+    @if($facilityReports->count() > 0 || $lossReports->count() > 0)
         
-        <!-- Fasilitas Pemerintahan Section -->
+        <!-- I. PERKIRAAN KERUSAKAN FASILITAS PEMERINTAHAN -->
         @if($facilityReports->count() > 0)
             <div class="bg-white rounded-lg shadow mb-6">
                 <div class="p-4 border-b">
@@ -67,7 +71,7 @@
                             @foreach($facilityReports as $report)
                                 @php
                                     $biayaTotal = ($report->jumlah_rb * $report->harga_rb) + 
-                                                 ($report->jumlah_rs * $report->harga_rs) + 
+                                                 ($report->jumlah_rs * $report->harga_rs) +
                                                  ($report->jumlah_rr * $report->harga_rr);
                                     $totalDamage += $biayaTotal;
                                 @endphp
@@ -92,13 +96,15 @@
                 </div>
             </div>
         @endif
-          <!-- Kerugian Section -->
-        @if($lossReports && $lossReports->count() > 0)
+        
+        <!-- II. PERKIRAAN KERUGIAN SEKTOR PEMERINTAHAN -->
+        @if($lossReports->count() > 0)
             <div class="bg-white rounded-lg shadow mb-6">
                 <div class="p-4 border-b">
                     <h2 class="text-lg font-semibold">II. PERKIRAAN KERUGIAN SEKTOR PEMERINTAHAN</h2>
-                  </div>
-                  <!-- Puing Section -->
+                </div>
+                
+                <!-- 1. Biaya Pembersihan Puing -->
                 <div class="p-4 border-b">
                     <h3 class="font-medium mb-3">1. Biaya Pembersihan Puing</h3>
                     <div class="overflow-x-auto">
@@ -114,11 +120,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php 
-                                    $totalPuing = 0;
-                                @endphp
-                                
-                                @foreach($lossReports as $index => $lossItem)
+                                @php $totalPuing = 0; @endphp
+                                @foreach($lossReports as $lossItem)
                                     @php 
                                         $biayaPuing = (($lossItem->tenaga_kerja_hok ?? 0) * ($lossItem->upah_harian ?? 0)) + 
                                                      (($lossItem->alat_berat_hari ?? 0) * ($lossItem->biaya_per_hari_alat_berat ?? 0));
@@ -133,7 +136,6 @@
                                         <td class="text-right font-bold">{{ number_format($biayaPuing, 0, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
-                                
                                 <tr class="bg-gray-100 font-bold">
                                     <td colspan="5" class="text-center">SUBTOTAL BIAYA PEMBERSIHAN PUING</td>
                                     <td class="text-right">{{ number_format($totalPuing, 0, ',', '.') }}</td>
@@ -142,7 +144,8 @@
                         </table>
                     </div>
                 </div>
-                  <!-- Kantor Sementara Section -->
+                
+                <!-- 2. Biaya Kantor Sementara -->
                 <div class="p-4 border-b">
                     <h3 class="font-medium mb-3">2. Biaya Kantor Sementara</h3>
                     <div class="overflow-x-auto">
@@ -156,11 +159,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $totalKantor = 0;
-                                @endphp
-                                
-                                @foreach($lossReports as $index => $lossItem)
+                                @php $totalKantor = 0; @endphp
+                                @foreach($lossReports as $lossItem)
                                     @php
                                         $biayaKantor = ($lossItem->jumlah_unit ?? 0) * ($lossItem->biaya_sewa_per_unit ?? 0);
                                         $totalKantor += $biayaKantor;
@@ -172,7 +172,6 @@
                                         <td class="text-right font-bold">{{ number_format($biayaKantor, 0, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
-                                
                                 <tr class="bg-gray-100 font-bold">
                                     <td colspan="3" class="text-center">SUBTOTAL BIAYA KANTOR SEMENTARA</td>
                                     <td class="text-right">{{ number_format($totalKantor, 0, ',', '.') }}</td>
@@ -181,7 +180,8 @@
                         </table>
                     </div>
                 </div>
-                  <!-- Arsip Section -->
+                
+                <!-- 3. Biaya Penggantian Arsip -->
                 <div class="p-4">
                     <h3 class="font-medium mb-3">3. Biaya Penggantian Arsip</h3>
                     <div class="overflow-x-auto">
@@ -196,11 +196,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $totalArsip = 0;
-                                @endphp
-                                
-                                @foreach($lossReports as $index => $lossItem)
+                                @php $totalArsip = 0; @endphp
+                                @foreach($lossReports as $lossItem)
                                     @php
                                         $biayaArsip = ($lossItem->jumlah_arsip ?? 0) * ($lossItem->harga_satuan ?? 0);
                                         $totalArsip += $biayaArsip;
@@ -213,7 +210,6 @@
                                         <td class="text-right font-bold">{{ number_format($biayaArsip, 0, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
-                                
                                 <tr class="bg-gray-100 font-bold">
                                     <td colspan="4" class="text-center">SUBTOTAL BIAYA PENGGANTIAN ARSIP</td>
                                     <td class="text-right">{{ number_format($totalArsip, 0, ',', '.') }}</td>
@@ -221,9 +217,10 @@
                             </tbody>
                         </table>
                     </div>
-                </div>                
+                </div>
+
                 @php 
-                    // Calculate the grand total from the section subtotals
+                    // Calculate totals
                     $totalLoss = $totalPuing + $totalKantor + $totalArsip;
                     $grandTotal = ($totalDamage ?? 0) + $totalLoss;
                 @endphp
@@ -237,7 +234,7 @@
             </div>
         @endif
 
-        <!-- Grand Total -->
+        <!-- III. RINGKASAN TOTAL -->
         <div class="bg-primary text-white rounded-lg shadow p-4">
             <div class="text-center">
                 <h2 class="text-xl font-bold">TOTAL KESELURUHAN SEKTOR PEMERINTAHAN</h2>

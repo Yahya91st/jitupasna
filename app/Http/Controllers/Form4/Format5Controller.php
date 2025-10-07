@@ -91,8 +91,9 @@ class Format5Controller extends Controller
     {
         $formAgama = Format5Form4::with('bencana')->findOrFail($id);
         $bencana = $formAgama->bencana;
+        $report = $formAgama; // For compatibility with view
         
-        return view('forms.form4.format5.show-format5', compact('formAgama', 'bencana'));
+        return view('forms.form4.format5.show-format5', compact('formAgama', 'bencana', 'report'));
     }
 
     /**

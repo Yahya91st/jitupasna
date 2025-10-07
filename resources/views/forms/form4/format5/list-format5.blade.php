@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Daftar Laporan Ekonomi (Format 5)</h1>
+    <h1 class="text-2xl font-bold mb-6">Daftar Laporan Sektor Agama (Format 5)</h1>
     
     @if($bencana)
         <div class="alert alert-light-primary color-primary mb-4">
@@ -55,8 +55,8 @@
                             <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
                             <td>
                                 <a href="{{ route('forms.form4.format5.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
-                                <a href="{{ route('forms.form4.edit-format5', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('forms.form4.destroy-format5', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                <a href="{{ route('forms.form4.format5.edit', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('forms.form4.format5.destroy', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>

@@ -74,97 +74,170 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Detail Sektor Transportasi -->
-            <h5 class="font-weight-bold mt-4 mb-3">Detail Kerusakan Sektor Transportasi</h5>
-
-            <!-- Kerusakan Jalan -->
-            <div class="card mt-3">
-                <div class="card-header bg-primary text-white">
-                    <h6 class="m-0">Kerusakan Jalan</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <p class="mb-1"><strong>Ruas Jalan:</strong> {{ $formTransportasi->jalan_ruas ?? 'Tidak diisi' }}</p>
-                            <p class="mb-1"><strong>Jenis:</strong> {{ $formTransportasi->jalan_jenis ?? 'Tidak diisi' }}</p>
-                            <p class="mb-1"><strong>Tipe:</strong> {{ $formTransportasi->jalan_tipe ?? 'Tidak diisi' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p class="mb-1"><strong>Rusak Berat:</strong> {{ $formTransportasi->jalan_rusak_berat ?? 0 }} unit</p>
-                            <p class="mb-1"><strong>Rusak Sedang:</strong> {{ $formTransportasi->jalan_rusak_sedang ?? 0 }} unit</p>
-                            <p class="mb-1"><strong>Rusak Ringan:</strong> {{ $formTransportasi->jalan_rusak_ringan ?? 0 }} unit</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p class="mb-1"><strong>Harga Satuan:</strong> Rp {{ number_format($formTransportasi->jalan_harga_satuan ?? 0, 0, ',', '.') }}</p>
-                            <p class="mb-1"><strong>Biaya Perbaikan:</strong></p>
-                            <h5 class="text-primary">Rp {{ number_format($formTransportasi->jalan_biaya_perbaikan ?? 0, 0, ',', '.') }}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Kerusakan Jembatan -->
-            <div class="card mt-3">
-                <div class="card-header bg-info text-white">
-                    <h6 class="m-0">Kerusakan Jembatan</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <p class="mb-1"><strong>Nama Jembatan:</strong> {{ $formTransportasi->jembatan_nama ?? 'Tidak diisi' }}</p>
-                            <p class="mb-1"><strong>Jenis:</strong> {{ $formTransportasi->jembatan_jenis ?? 'Tidak diisi' }}</p>
-                            <p class="mb-1"><strong>Tipe:</strong> {{ $formTransportasi->jembatan_tipe ?? 'Tidak diisi' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p class="mb-1"><strong>Rusak Berat:</strong> {{ $formTransportasi->jembatan_rusak_berat ?? 0 }} unit</p>
-                            <p class="mb-1"><strong>Rusak Sedang:</strong> {{ $formTransportasi->jembatan_rusak_sedang ?? 0 }} unit</p>
-                            <p class="mb-1"><strong>Rusak Ringan:</strong> {{ $formTransportasi->jembatan_rusak_ringan ?? 0 }} unit</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p class="mb-1"><strong>Harga Satuan:</strong> Rp {{ number_format($formTransportasi->jembatan_harga_satuan ?? 0, 0, ',', '.') }}</p>
-                            <p class="mb-1"><strong>Biaya Perbaikan:</strong></p>
-                            <h5 class="text-info">Rp {{ number_format($formTransportasi->jembatan_biaya_perbaikan ?? 0, 0, ',', '.') }}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            <!-- Kerusakan Kendaraan -->
-            <div class="card mt-3">
-                <div class="card-header bg-warning text-dark">
-                    <h6 class="m-0">Kerusakan Kendaraan</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>Sedan/Minibus</h6>
-                            <p class="mb-1"><strong>Jumlah:</strong> {{ $formTransportasi->sedan_minibus_jumlah ?? 0 }}</p>
-                            <p class="mb-1"><strong>Unit:</strong> {{ $formTransportasi->sedan_minibus_unit ?? 0 }}</p>
-                            
-                            <h6 class="mt-3">Bus/Truk</h6>
-                            <p class="mb-1"><strong>Jumlah:</strong> {{ $formTransportasi->bus_truk_jumlah ?? 0 }}</p>
-                            <p class="mb-1"><strong>Unit:</strong> {{ $formTransportasi->bus_truk_unit ?? 0 }}</p>
-                            
-                            <h6 class="mt-3">Kendaraan Berat</h6>
-                            <p class="mb-1"><strong>Jumlah:</strong> {{ $formTransportasi->kendaraan_berat_jumlah ?? 0 }}</p>
-                            <p class="mb-1"><strong>Unit:</strong> {{ $formTransportasi->kendaraan_berat_unit ?? 0 }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Kapal Laut</h6>
-                            <p class="mb-1"><strong>Jumlah:</strong> {{ $formTransportasi->kapal_laut_jumlah ?? 0 }}</p>
-                            <p class="mb-1"><strong>Unit:</strong> {{ $formTransportasi->kapal_laut_unit ?? 0 }}</p>
-                            
-                            <h6 class="mt-3">Bus Air</h6>
-                            <p class="mb-1"><strong>Jumlah:</strong> {{ $formTransportasi->bus_air_jumlah ?? 0 }}</p>
-                            <p class="mb-1"><strong>Unit:</strong> {{ $formTransportasi->bus_air_unit ?? 0 }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+    
+    <!-- Data Kerusakan Jalan -->
+    @if($formTransportasi->jalan_ruas || $formTransportasi->jalan_jenis)
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="card-title mb-0">A. Kerusakan Jalan</h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 20%">Nama Ruas Jalan</th>
+                    <td>{{ $formTransportasi->jalan_ruas ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Jenis Jalan</th>
+                    <td>{{ $formTransportasi->jalan_jenis ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Tipe Jalan</th>
+                    <td>{{ $formTransportasi->jalan_tipe ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Rusak Berat</th>
+                    <td>{{ $formTransportasi->jalan_rusak_berat ?? 0 }} unit</td>
+                </tr>
+                <tr>
+                    <th>Rusak Sedang</th>
+                    <td>{{ $formTransportasi->jalan_rusak_sedang ?? 0 }} unit</td>
+                </tr>
+                <tr>
+                    <th>Rusak Ringan</th>
+                    <td>{{ $formTransportasi->jalan_rusak_ringan ?? 0 }} unit</td>
+                </tr>
+                <tr>
+                    <th>Harga Satuan</th>
+                    <td>Rp {{ number_format($formTransportasi->jalan_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <th>Biaya Perbaikan</th>
+                    <td>Rp {{ number_format($formTransportasi->jalan_biaya_perbaikan ?? 0, 0, ',', '.') }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @endif
+
+    <!-- Data Kerusakan Jembatan -->
+    @if($formTransportasi->jembatan_nama || $formTransportasi->jembatan_jenis)
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="card-title mb-0">B. Kerusakan Jembatan</h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 20%">Nama Jembatan</th>
+                    <td>{{ $formTransportasi->jembatan_nama ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Jenis Jembatan</th>
+                    <td>{{ $formTransportasi->jembatan_jenis ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Tipe Jembatan</th>
+                    <td>{{ $formTransportasi->jembatan_tipe ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Rusak Berat</th>
+                    <td>{{ $formTransportasi->jembatan_rusak_berat ?? 0 }} unit</td>
+                </tr>
+                <tr>
+                    <th>Rusak Sedang</th>
+                    <td>{{ $formTransportasi->jembatan_rusak_sedang ?? 0 }} unit</td>
+                </tr>
+                <tr>
+                    <th>Rusak Ringan</th>
+                    <td>{{ $formTransportasi->jembatan_rusak_ringan ?? 0 }} unit</td>
+                </tr>
+                <tr>
+                    <th>Harga Satuan</th>
+                    <td>Rp {{ number_format($formTransportasi->jembatan_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <th>Biaya Perbaikan</th>
+                    <td>Rp {{ number_format($formTransportasi->jembatan_biaya_perbaikan ?? 0, 0, ',', '.') }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @endif
+
+    <!-- Laporan Kendaraan -->
+    @if($vehicleReports->count() > 0)
+    <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <h2 class="text-xl font-semibold mb-4">Kerusakan Kendaraan</h2>
+        <div class="overflow-x-auto">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Jenis Kendaraan</th>
+                        <th>Moda</th>
+                        <th>Rusak Berat</th>
+                        <th>Rusak Sedang</th>
+                        <th>Rusak Ringan</th>
+                        <th>Harga Satuan</th>
+                        <th>Total Biaya</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($vehicleReports as $report)
+                    <tr>
+                        <td>{{ $report->jenis_kendaraan }}</td>
+                        <td>{{ $report->moda }}</td>
+                        <td>{{ $report->rusak_berat }}</td>
+                        <td>{{ $report->rusak_sedang }}</td>
+                        <td>{{ $report->rusak_ringan }}</td>
+                        <td>Rp {{ number_format($report->harga_satuan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($report->biaya_total, 0, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
+
+    <!-- Laporan Prasarana -->
+    @if($infrastructureReports->count() > 0)
+    <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <h2 class="text-xl font-semibold mb-4">Kerusakan Prasarana</h2>
+        <div class="overflow-x-auto">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Jenis Prasarana</th>
+                        <th>Tipe</th>
+                        <th>Luas</th>
+                        <th>Rusak Berat</th>
+                        <th>Rusak Sedang</th>
+                        <th>Rusak Ringan</th>
+                        <th>Harga Satuan</th>
+                        <th>Total Biaya</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($infrastructureReports as $report)
+                    <tr>
+                        <td>{{ $report->jenis_prasarana }}</td>
+                        <td>{{ $report->tipe_prasarana }}</td>
+                        <td>{{ $report->luas_prasarana }}</td>
+                        <td>{{ $report->rusak_berat }}</td>
+                        <td>{{ $report->rusak_sedang }}</td>
+                        <td>{{ $report->rusak_ringan }}</td>
+                        <td>Rp {{ number_format($report->harga_satuan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($report->biaya_total, 0, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
     
 </div>
 @endsection

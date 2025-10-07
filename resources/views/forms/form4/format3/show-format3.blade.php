@@ -24,7 +24,7 @@
         <strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama ?? $bencana->nama }}<br>
         <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($bencana->tanggal)->format('d F Y') }}<br>
         <strong>Lokasi:</strong> 
-        @if($bencana->desa && count($bencana->desa) > 0)
+        @if($bencana->desa && is_countable($bencana->desa) && count($bencana->desa) > 0)
             @foreach($bencana->desa as $desa)
                 {{ $desa->nama }}@if(!$loop->last), @endif
             @endforeach
@@ -36,7 +36,7 @@
 
     <h6 class="fw-bold mt-4">I. DATA SEKTOR KESEHATAN</h6>
 
-    @if(count($healthReports) > 0)
+    @if(isset($healthReports) && is_countable($healthReports) && count($healthReports) > 0)
         @foreach($healthReports as $facilityType => $reports)
         <table class="table table-bordered mt-3">
             <thead>

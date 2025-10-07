@@ -19,7 +19,7 @@
 <div class="container mt-4">
     <h5 class="text-center fw-bold">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
     <p class="fw-bold">Format 4: Sektor Perlindungan Sosial</p>
-    <form action="{{ route('forms.form4.store-format4') }}" method="POST">
+    <form action="{{ route('forms.form4.format4.store') }}" method="POST">
         @csrf
         <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}">
 

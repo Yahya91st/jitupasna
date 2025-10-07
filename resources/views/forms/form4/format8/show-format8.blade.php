@@ -15,10 +15,10 @@
             Kembali ke Form 4
         </a>
         <div class="flex gap-2">
-            <a href="{{ route('forms.form4.format8.list', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
+            <a href="{{ route('forms.form4.list-format8', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
                 <i class="fa fa-list mr-2"></i> Daftar Laporan
             </a>
-            <a href="{{ route('forms.form4.format8.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-info">
+            <a href="{{ route('forms.form4.format8form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-info">
                 <i class="fa fa-plus mr-2"></i> Tambah Data Baru
             </a>
         </div>
@@ -28,7 +28,7 @@
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Informasi Sektor Listrik</h6>
             <div class="btn-group">
-                <a href="{{ route('forms.form4.format8.edit', $formListrik->id) }}" class="btn btn-sm btn-warning">
+                <a href="{{ route('forms.form4.edit-format8', $formListrik->id) }}" class="btn btn-sm btn-warning">
                     <i class="fa fa-edit mr-1"></i> Edit
                 </a>
                 <a href="{{ route('forms.form4.format8.pdf', $formListrik->id) }}" target="_blank" class="btn btn-sm btn-danger">
