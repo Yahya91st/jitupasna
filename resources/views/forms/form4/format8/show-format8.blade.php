@@ -1,34 +1,42 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Detail Form Sektor Listrik (Format 8)</h1>
+<style>
+    .table th, .table td { padding: 0.5rem; }
+    .btn { margin: 0.25rem; }
+    h5 { text-align: center; margin-bottom: 1rem; }
+</style>
+
+<div class="container-fluid">
+    <h5>Data Format 8 - Sektor Listrik</h5>
     
     @if(session('success'))
-    <div class="alert alert-success mb-4">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    
-    <div class="mb-4 flex justify-between">
-        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
-            Kembali ke Form 4
-        </a>
-        <div class="flex gap-2">
-            <a href="{{ route('forms.form4.list-format8', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
-                <i class="fa fa-list mr-2"></i> Daftar Laporan
-            </a>
-            <a href="{{ route('forms.form4.format8form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-info">
-                <i class="fa fa-plus mr-2"></i> Tambah Data Baru
-            </a>
-        </div>
+
+    <!-- Informasi Bencana -->
+    @if($bencana)
+    <div class="alert alert-light-primary color-primary mb-4">
+        <strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama ?? $bencana->nama }}<br>
+        <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($bencana->tanggal)->format('d F Y') }}<br>
+        <strong>Lokasi:</strong> 
+        @if($bencana->desa && count($bencana->desa) > 0)
+            @foreach($bencana->desa as $desa)
+                {{ $desa->nama }}@if(!$loop->last), @endif
+            @endforeach
+        @else
+            -
+        @endif
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Informasi Sektor Listrik</h6>
             <div class="btn-group">
-                <a href="{{ route('forms.form4.edit-format8', $formListrik->id) }}" class="btn btn-sm btn-warning">
+                <a href="{{ route('forms.form4.format8.edit', $formListrik->id) }}" class="btn btn-sm btn-warning">
                     <i class="fa fa-edit mr-1"></i> Edit
                 </a>
                 <a href="{{ route('forms.form4.format8.pdf', $formListrik->id) }}" target="_blank" class="btn btn-sm btn-danger">
@@ -200,36 +208,21 @@
                 </div>
             </div>
 
-            <!-- Perkiraan Kehilangan dan Kenaikan Biaya -->
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header bg-danger text-white">
-                            <h6 class="m-0">Perkiraan Kehilangan/Penurunan Pendapatan</h6>
-                        </div>
-                        <div class="card-body">
-                            <p class="mb-1"><strong>Permintaan Listrik Sebelum:</strong> {{ number_format($formListrik->permintaan_listrik_sebelum_kwh ?? 0, 2) }} kWh</p>
-                            <p class="mb-1"><strong>Permintaan Listrik Pasca:</strong> {{ number_format($formListrik->permintaan_listrik_pasca_kwh ?? 0, 2) }} kWh</p>
-                            <p class="mb-1"><strong>Tarif per kWh:</strong> Rp {{ number_format($formListrik->tarif_listrik_per_kwh ?? 0, 0, ',', '.') }}</p>
-                            <p class="mb-1"><strong>Penurunan Pendapatan:</strong></p>
-                            <h5>Rp {{ number_format($formListrik->penurunan_pendapatan ?? 0, 0, ',', '.') }}</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header bg-warning text-dark">
-                            <h6 class="m-0">Perkiraan Kenaikan Biaya Operasional</h6>
-                        </div>
-                        <div class="card-body">
-                            <p class="mb-1"><strong>Biaya Operasional Sebelum:</strong> Rp {{ number_format($formListrik->biaya_operasional_sebelum ?? 0, 0, ',', '.') }}</p>
-                            <p class="mb-1"><strong>Biaya Operasional Pasca:</strong> Rp {{ number_format($formListrik->biaya_operasional_pasca ?? 0, 0, ',', '.') }}</p>
-                            <p class="mb-1"><strong>Kenaikan Biaya Operasional:</strong></p>
-                            <h5>Rp {{ number_format($formListrik->kenaikan_biaya_operasional ?? 0, 0, ',', '.') }}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Navigation -->
+    <div class="d-flex justify-content-between mt-4 mb-4">
+        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
+            Kembali
+        </a>
+        <div>
+            <a href="{{ route('forms.form4.format8.list', ['bencana_id' => $bencana->id]) }}" class="btn btn-info me-2">
+                Daftar Laporan
+            </a>
+            <a href="{{ route('forms.form4.format8.edit', $formListrik->id) }}" class="btn btn-warning me-2">
+                Edit Data
+            </a>
+            <a href="{{ route('forms.form4.format8.pdf', $formListrik->id) }}" class="btn btn-primary" target="_blank">
+                Unduh PDF
+            </a>
         </div>
     </div>
 </div>

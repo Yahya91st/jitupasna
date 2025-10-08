@@ -229,11 +229,11 @@
                 @endphp
                 
                 <!-- Total Kerugian -->
-                <div class="p-4 bg-gray-50 border-t">
+                <!-- <div class="p-4 bg-gray-50 border-t">
                     <div class="text-right">
                         <h3 class="font-bold text-lg">TOTAL KERUGIAN: Rp {{ number_format($totalLoss, 0, ',', '.') }}</h3>
                     </div>
-                </div>
+                </div> -->
             </div>
         @endif
 

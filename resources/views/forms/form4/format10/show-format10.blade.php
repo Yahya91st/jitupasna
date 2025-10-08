@@ -1,143 +1,130 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Detail Form Sektor Lainnya (Format 10)</h1>
+<style>
+    /* Kurangi padding pada tabel agar lebih kompak seperti format1form4 */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+</style>
+
+<div class="container mt-4">
+    <h5 class="text-center fw-bold">Detail Data Sektor Lainnya<br>Format 10</h5>
     
     @if(session('success'))
-    <div class="alert alert-success mb-4">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    
-    <div class="mb-4 flex justify-between">
-        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
-            Kembali ke Form 4
-        </a>
-        <div class="flex gap-2">
-            <a href="{{ route('forms.form4.list-format10', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
-                <i class="fa fa-list mr-2"></i> Daftar Laporan
-            </a>
-            <a href="{{ route('forms.form4.format10form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-info">
-                <i class="fa fa-plus mr-2"></i> Tambah Data Baru
-            </a>
+
+    <!-- Informasi Bencana -->
+    @if($bencana)
+    <div class="alert alert-light-primary color-primary mb-4">
+        <strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama ?? $bencana->nama }}<br>
+        <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($bencana->tanggal)->format('d F Y') }}<br>
+        <strong>Lokasi:</strong> 
+        @if($bencana->desa && count($bencana->desa) > 0)
+            @foreach($bencana->desa as $desa)
+                {{ $desa->nama }}@if(!$loop->last), @endif
+            @endforeach
+        @else
+            -
+        @endif
+    </div>
+    @endif
+
+    <!-- Identitas Lokasi -->
+    <table class="table table-bordered">
+        <tr>
+            <td style="width: 50%"><strong>NAMA KAMPUNG:</strong> {{ $report->nama_kampung ?? '-' }}</td>
+            <td><strong>NAMA DISTRIK:</strong> {{ $report->nama_distrik ?? '-' }}</td>
+        </tr>
+    </table>
+
+    <h6 class="fw-bold mt-4">I. KERUSAKAN SEKTOR LAINNYA</h6>
+
+    <!-- Kerusakan Sektor Lainnya -->
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th rowspan="2" style="width: 15%">Jenis Sektor</th>
+                    <th colspan="3">Tingkat Kerusakan</th>
+                    <th rowspan="2" style="width: 15%">Ukuran (m²)</th>
+                    <th rowspan="2" style="width: 20%">Harga Satuan</th>
+                    <th rowspan="2" style="width: 20%">Nilai Kerusakan</th>
+                </tr>
+                <tr>
+                    <th style="width: 10%">Rusak Berat</th>
+                    <th style="width: 10%">Rusak Sedang</th>
+                    <th style="width: 10%">Rusak Ringan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-start"><strong>{{ $report->jenis_sektor ?? 'Sektor Lainnya' }}</strong></td>
+                    <td>{{ $report->jumlah_rb ?? 0 }}</td>
+                    <td>{{ $report->jumlah_rs ?? 0 }}</td>
+                    <td>{{ $report->jumlah_rr ?? 0 }}</td>
+                    <td>{{ number_format($report->ukuran ?? 0, 0, ',', '.') }}</td>
+                    <td class="text-end">Rp {{ number_format($report->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                    <td class="text-end">Rp {{ number_format((($report->jumlah_rb ?? 0) * ($report->ukuran ?? 0) * ($report->harga_satuan ?? 0)) + 
+                        (($report->jumlah_rs ?? 0) * ($report->ukuran ?? 0) * ($report->harga_satuan ?? 0) * 0.3) + 
+                        (($report->jumlah_rr ?? 0) * ($report->ukuran ?? 0) * ($report->harga_satuan ?? 0) * 0.1), 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+            
+    <h6 class="fw-bold mt-4">II. DETAIL KERUGIAN</h6>
+
+    <table class="table table-bordered mt-3">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 30%">Jenis Kerugian</th>
+                <th style="width: 40%">Nilai</th>
+                <th style="width: 30%">Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>{{ $report->jenis_kerugian ?? 'Kerugian' }}</strong></td>
+                <td class="text-end">Rp {{ number_format($report->nilai_kerugian ?? 0, 0, ',', '.') }}</td>
+                <td>{{ $report->keterangan ?? '-' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Total Summary -->
+    @php
+        $totalKerusakan = $report->total_kerusakan ?? 0;
+        $totalKerugian = $report->total_kerugian ?? 0;
+        $grandTotal = $totalKerusakan + $totalKerugian;
+    @endphp
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h6 class="mb-0">REKAPITULASI TOTAL</h6>
+        </div>
+        <div class="card-body text-center">
+            <h4 class="mb-1">Rp {{ number_format($grandTotal, 0, ',', '.') }}</h4>
+            <small>Total Keseluruhan Format 10</small>
         </div>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Informasi Sektor Lainnya</h6>
-            <div class="btn-group">
-                <a href="{{ route('forms.form4.format10.edit', $report->id) }}" class="btn btn-sm btn-warning">
-                    <i class="fa fa-edit mr-1"></i> Edit
-                </a>
-                <a href="{{ route('forms.form4.format10.pdf', $report->id) }}" target="_blank" class="btn btn-sm btn-danger">
-                    <i class="fa fa-file-pdf mr-1"></i> PDF
-                </a>
-            </div>
-        </div>
-        
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th class="bg-light" style="width: 30%">Bencana</th>
-                            <td>{{ $bencana->kategori_bencana->nama }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Tanggal</th>
-                            <td>{{ $bencana->tanggal }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Kampung</th>
-                            <td>{{ $report->nama_kampung }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Distrik</th>
-                            <td>{{ $report->nama_distrik }}</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-md-6">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h6 class="font-weight-bold">Rekapitulasi:</h6>
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <p class="mb-1">Total Kerusakan:</p>
-                                    <h4 class="text-primary">Rp {{ number_format($report->total_kerusakan, 0, ',', '.') }}</h4>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="mb-1">Total Kerugian:</p>
-                                    <h4 class="text-danger">Rp {{ number_format($report->total_kerugian, 0, ',', '.') }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Detail data sesuai dengan struktur format10form4 -->
-            <h5 class="font-weight-bold mt-4 mb-3">Detail Kerusakan dan Kerugian</h5>
-
-            <!-- Tambahkan tabel-tabel sesuai dengan struktur format10form4 -->
-            <!-- Contoh tabel untuk sektor lainnya, sesuaikan dengan struktur model Format10Form4 -->
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-light">
-                        <tr class="text-center">
-                            <th rowspan="2">Jenis</th>
-                            <th colspan="3">Kerusakan</th>
-                            <th rowspan="2">Ukuran (m²)</th>
-                            <th rowspan="2">Harga Satuan (Rp)</th>
-                            <th rowspan="2">Nilai Kerusakan (Rp)</th>
-                        </tr>
-                        <tr class="text-center">
-                            <th>Rusak Berat</th>
-                            <th>Rusak Sedang</th>
-                            <th>Rusak Ringan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Sesuaikan dengan field model Format10Form4 -->
-                        <tr>
-                            <td>{{ $report->jenis_sektor ?? 'Sektor Lainnya' }}</td>
-                            <td class="text-center">{{ number_format($report->jumlah_rb ?? 0) }}</td>
-                            <td class="text-center">{{ number_format($report->jumlah_rs ?? 0) }}</td>
-                            <td class="text-center">{{ number_format($report->jumlah_rr ?? 0) }}</td>
-                            <td class="text-center">{{ number_format($report->ukuran ?? 0) }}</td>
-                            <td class="text-right">{{ number_format($report->harga_satuan ?? 0, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format(($report->jumlah_rb * $report->ukuran * $report->harga_satuan) + 
-                                ($report->jumlah_rs * $report->ukuran * $report->harga_satuan * 0.3) + 
-                                ($report->jumlah_rr * $report->ukuran * $report->harga_satuan * 0.1), 0, ',', '.') }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Tambahkan detail kerugian -->
-            <div class="mt-4">
-                <h5 class="font-weight-bold mb-3">Detail Kerugian</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Jenis Kerugian</th>
-                                <th>Nilai (Rp)</th>
-                                <th>Keterangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ $report->jenis_kerugian ?? 'Kerugian' }}</td>
-                                <td class="text-right">{{ number_format($report->nilai_kerugian ?? 0, 0, ',', '.') }}</td>
-                                <td>{{ $report->keterangan ?? '-' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <!-- Navigation -->
+    <div class="d-flex justify-content-between mt-4 mb-4">
+        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
+            Kembali
+        </a>
+        <div>
+            <a href="{{ route('forms.form4.format10.edit', $report->id) }}" class="btn btn-warning me-2">
+                Edit Data
+            </a>
+            <a href="{{ route('forms.form4.format10.pdf', $report->id) }}" class="btn btn-primary" target="_blank">
+                Unduh PDF
+            </a>
         </div>
     </div>
 </div>
