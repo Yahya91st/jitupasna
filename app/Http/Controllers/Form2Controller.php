@@ -32,50 +32,47 @@ class Form2Controller extends Controller
     /**
      * Store a newly created Surat Keputusan in database.
      */
-            public function store(Request $request)
-        {
-            $validator = Validator::make($request->all(), [
-                'bencana_id' => 'required|exists:bencana,id',
-                'nomor_surat' => 'required|string|max:255|unique:form2,nomor_surat',
-                'lokasi_menimbang' => 'required|string|max:255',
-                'pejabat_keputusan' => 'required|string|max:255',
-                'tempat_ditetapkan' => 'required|string|max:255',
-                'tanggal_ditetapkan' => 'required|string|max:255',
-                'nama_penandatangan' => 'required|string|max:255',
-                'tembusan' => 'required|string',
-            ]);
+        public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'bencana_id' => 'required|exists:bencana,id',
+            'nomor_surat' => 'required|string|max:255|unique:form2,nomor_surat',
+            'lokasi_menimbang' => 'required|string|max:255',
+            'pejabat_keputusan' => 'required|string|max:255',
+            'tempat_ditetapkan' => 'required|string|max:255',
+            'tanggal_ditetapkan' => 'required|string|max:255',
+            'nama_penandatangan' => 'required|string|max:255',
+            'tembusan' => 'required|string',
+        ]);
 
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            $validated = $validator->validated();
-
-            // Generate default values for required database fields
-            $tentang = "PEMBENTUKAN TIM KERJA PENGKAJIAN KEBUTUHAN PASCA BENCANA (PDNA) DI " . strtoupper($validated['lokasi_menimbang']);
-            
-            // Create new form2 record
-            $form = new Form2();
-            $form->nomor_surat = $validated['nomor_surat'];
-            $form->tentang = $tentang;
-            $form->lokasi = $validated['lokasi_menimbang'];
-            $form->tanggal_ditetapkan = $validated['tanggal_ditetapkan'];
-            $form->tempat_ditetapkan = $validated['tempat_ditetapkan'];
-            $form->pejabat_penandatangan = $validated['pejabat_keputusan'];
-            $form->nama_penandatangan = $validated['nama_penandatangan'];
-            $form->tim_kerja = "Tim akan ditentukan kemudian";
-            $form->tugas_tim = "Sesuai dengan diktum KEDUA";
-            $form->penanggung_jawab = $validated['pejabat_keputusan'];
-            $form->tembusan = $validated['tembusan'];
-            $form->bencana_id = $validated['bencana_id'];
-            // $form->created_by = Auth::id();
-            $form->save();
-
-            return redirect()->route('forms.form2.show', $form->id)
-                ->with('success', 'Surat Keputusan berhasil dibuat.');
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
+
+        $validated = $validator->validated();
+        
+        // Create new form2 record
+        $form = new Form2();
+        $form->nomor_surat = $validated['nomor_surat'];
+        $form->tentang =  ;
+        $form->lokasi = $validated['lokasi_menimbang'];
+        $form->tanggal_ditetapkan = $validated['tanggal_ditetapkan'];
+        $form->tempat_ditetapkan = $validated['tempat_ditetapkan'];
+        $form->pejabat_penandatangan = $validated['pejabat_keputusan'];
+        $form->nama_penandatangan = $validated['nama_penandatangan'];
+        $form->tim_kerja = "Tim akan ditentukan kemudian";
+        $form->tugas_tim = "Sesuai dengan diktum KEDUA";
+        $form->penanggung_jawab = $validated['pejabat_keputusan'];
+        $form->tembusan = $validated['tembusan'];
+        $form->bencana_id = $validated['bencana_id'];
+        // $form->created_by = Auth::id();
+        $form->save();
+
+        return redirect()->route('forms.form2.show', $form->id)
+            ->with('success', 'Surat Keputusan berhasil dibuat.');
+    }
             
     
       /**

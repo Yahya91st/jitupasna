@@ -99,7 +99,7 @@ class Format16Controller extends Controller
             }
             
             // Create new form data with validated input
-            $formData = Format16Form4::create($validated);
+             $form = Format16Form4::create($validated);
 
             DB::commit();
 
@@ -107,11 +107,11 @@ class Format16Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formData
+                    'data' =>  $form
                 ]);
             }
 
-            return redirect()->route('forms.form4.list-format16', ['bencana_id' => $formData->bencana_id])
+            return redirect()->route('forms.form4.list-format16', ['bencana_id' =>  $form->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -133,70 +133,70 @@ class Format16Controller extends Controller
      */
     public function show($id)
     {
-        $formData = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format16Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
         // Prepare facility reports (kerusakan fasilitas)
         $facilityReports = collect();
         
         // Add facility damage data if exists
-        if (!empty($formData->kantor_pemkab_berat) || !empty($formData->kantor_pemkab_sedang) || !empty($formData->kantor_pemkab_ringan)) {
+        if (!empty( $form->kantor_pemkab_berat) || !empty( $form->kantor_pemkab_sedang) || !empty( $form->kantor_pemkab_ringan)) {
             $facilityReports->push((object)[
                 'jenis_fasilitas' => 'Kantor Pemkab',
-                'jumlah_rb' => $formData->kantor_pemkab_berat ?? 0,
-                'jumlah_rs' => $formData->kantor_pemkab_sedang ?? 0,
-                'jumlah_rr' => $formData->kantor_pemkab_ringan ?? 0,
-                'harga_rb' => $formData->kantor_pemkab_rb_harga ?? 0,
-                'harga_rs' => $formData->kantor_pemkab_rs_harga ?? 0,
-                'harga_rr' => $formData->kantor_pemkab_rr_harga ?? 0,
+                'jumlah_rb' =>  $form->kantor_pemkab_berat ?? 0,
+                'jumlah_rs' =>  $form->kantor_pemkab_sedang ?? 0,
+                'jumlah_rr' =>  $form->kantor_pemkab_ringan ?? 0,
+                'harga_rb' =>  $form->kantor_pemkab_rb_harga ?? 0,
+                'harga_rs' =>  $form->kantor_pemkab_rs_harga ?? 0,
+                'harga_rr' =>  $form->kantor_pemkab_rr_harga ?? 0,
             ]);
         }
         
-        if (!empty($formData->kantor_kecamatan_berat) || !empty($formData->kantor_kecamatan_sedang) || !empty($formData->kantor_kecamatan_ringan)) {
+        if (!empty( $form->kantor_kecamatan_berat) || !empty( $form->kantor_kecamatan_sedang) || !empty( $form->kantor_kecamatan_ringan)) {
             $facilityReports->push((object)[
                 'jenis_fasilitas' => 'Kantor Kecamatan',
-                'jumlah_rb' => $formData->kantor_kecamatan_berat ?? 0,
-                'jumlah_rs' => $formData->kantor_kecamatan_sedang ?? 0,
-                'jumlah_rr' => $formData->kantor_kecamatan_ringan ?? 0,
-                'harga_rb' => $formData->kantor_kecamatan_rb_harga ?? 0,
-                'harga_rs' => $formData->kantor_kecamatan_rs_harga ?? 0,
-                'harga_rr' => $formData->kantor_kecamatan_rr_harga ?? 0,
+                'jumlah_rb' =>  $form->kantor_kecamatan_berat ?? 0,
+                'jumlah_rs' =>  $form->kantor_kecamatan_sedang ?? 0,
+                'jumlah_rr' =>  $form->kantor_kecamatan_ringan ?? 0,
+                'harga_rb' =>  $form->kantor_kecamatan_rb_harga ?? 0,
+                'harga_rs' =>  $form->kantor_kecamatan_rs_harga ?? 0,
+                'harga_rr' =>  $form->kantor_kecamatan_rr_harga ?? 0,
             ]);
         }
         
-        if (!empty($formData->kantor_dinas_berat) || !empty($formData->kantor_dinas_sedang) || !empty($formData->kantor_dinas_ringan)) {
+        if (!empty( $form->kantor_dinas_berat) || !empty( $form->kantor_dinas_sedang) || !empty( $form->kantor_dinas_ringan)) {
             $facilityReports->push((object)[
                 'jenis_fasilitas' => 'Kantor Dinas',
-                'jumlah_rb' => $formData->kantor_dinas_berat ?? 0,
-                'jumlah_rs' => $formData->kantor_dinas_sedang ?? 0,
-                'jumlah_rr' => $formData->kantor_dinas_ringan ?? 0,
-                'harga_rb' => $formData->kantor_dinas_rb_harga ?? 0,
-                'harga_rs' => $formData->kantor_dinas_rs_harga ?? 0,
-                'harga_rr' => $formData->kantor_dinas_rr_harga ?? 0,
+                'jumlah_rb' =>  $form->kantor_dinas_berat ?? 0,
+                'jumlah_rs' =>  $form->kantor_dinas_sedang ?? 0,
+                'jumlah_rr' =>  $form->kantor_dinas_ringan ?? 0,
+                'harga_rb' =>  $form->kantor_dinas_rb_harga ?? 0,
+                'harga_rs' =>  $form->kantor_dinas_rs_harga ?? 0,
+                'harga_rr' =>  $form->kantor_dinas_rr_harga ?? 0,
             ]);
         }
         
-        if (!empty($formData->kantor_vertikal_berat) || !empty($formData->kantor_vertikal_sedang) || !empty($formData->kantor_vertikal_ringan)) {
+        if (!empty( $form->kantor_vertikal_berat) || !empty( $form->kantor_vertikal_sedang) || !empty( $form->kantor_vertikal_ringan)) {
             $facilityReports->push((object)[
                 'jenis_fasilitas' => 'Kantor Instansi Vertikal',
-                'jumlah_rb' => $formData->kantor_vertikal_berat ?? 0,
-                'jumlah_rs' => $formData->kantor_vertikal_sedang ?? 0,
-                'jumlah_rr' => $formData->kantor_vertikal_ringan ?? 0,
-                'harga_rb' => $formData->kantor_vertikal_rb_harga ?? 0,
-                'harga_rs' => $formData->kantor_vertikal_rs_harga ?? 0,
-                'harga_rr' => $formData->kantor_vertikal_rr_harga ?? 0,
+                'jumlah_rb' =>  $form->kantor_vertikal_berat ?? 0,
+                'jumlah_rs' =>  $form->kantor_vertikal_sedang ?? 0,
+                'jumlah_rr' =>  $form->kantor_vertikal_ringan ?? 0,
+                'harga_rb' =>  $form->kantor_vertikal_rb_harga ?? 0,
+                'harga_rs' =>  $form->kantor_vertikal_rs_harga ?? 0,
+                'harga_rr' =>  $form->kantor_vertikal_rr_harga ?? 0,
             ]);
         }
         
-        if (!empty($formData->mebelair_berat) || !empty($formData->mebelair_sedang) || !empty($formData->mebelair_ringan)) {
+        if (!empty( $form->mebelair_berat) || !empty( $form->mebelair_sedang) || !empty( $form->mebelair_ringan)) {
             $facilityReports->push((object)[
                 'jenis_fasilitas' => 'Mebelair dan Peralatan Kantor',
-                'jumlah_rb' => $formData->mebelair_berat ?? 0,
-                'jumlah_rs' => $formData->mebelair_sedang ?? 0,
-                'jumlah_rr' => $formData->mebelair_ringan ?? 0,
-                'harga_rb' => $formData->mebelair_rb_harga ?? 0,
-                'harga_rs' => $formData->mebelair_rs_harga ?? 0,
-                'harga_rr' => $formData->mebelair_rr_harga ?? 0,
+                'jumlah_rb' =>  $form->mebelair_berat ?? 0,
+                'jumlah_rs' =>  $form->mebelair_sedang ?? 0,
+                'jumlah_rr' =>  $form->mebelair_ringan ?? 0,
+                'harga_rb' =>  $form->mebelair_rb_harga ?? 0,
+                'harga_rs' =>  $form->mebelair_rs_harga ?? 0,
+                'harga_rr' =>  $form->mebelair_rr_harga ?? 0,
             ]);
         }
         
@@ -204,22 +204,22 @@ class Format16Controller extends Controller
         $lossReports = collect();
         
         // Check if there's loss data (pembersihan puing, kantor sementara, arsip)
-        if (!empty($formData->biaya_tenaga_kerja_hok) || !empty($formData->upah_harian) || 
-            !empty($formData->biaya_alat_berat_hari) || !empty($formData->biaya_alat_berat_tarif) ||
-            !empty($formData->sewa_kantor_jumlah_unit) || !empty($formData->sewa_kantor_biaya_per_unit) ||
-            !empty($formData->restorasi_arsip_jumlah) || !empty($formData->restorasi_arsip_harga_satuan)) {
+        if (!empty( $form->biaya_tenaga_kerja_hok) || !empty( $form->upah_harian) || 
+            !empty( $form->biaya_alat_berat_hari) || !empty( $form->biaya_alat_berat_tarif) ||
+            !empty( $form->sewa_kantor_jumlah_unit) || !empty( $form->sewa_kantor_biaya_per_unit) ||
+            !empty( $form->restorasi_arsip_jumlah) || !empty( $form->restorasi_arsip_harga_satuan)) {
             
             $lossReports->push((object)[
-                'id' => $formData->id,
-                'tenaga_kerja_hok' => $formData->biaya_tenaga_kerja_hok,
-                'upah_harian' => $formData->upah_harian,
-                'alat_berat_hari' => $formData->biaya_alat_berat_hari,
-                'biaya_per_hari_alat_berat' => $formData->biaya_alat_berat_tarif,
-                'jumlah_unit' => $formData->sewa_kantor_jumlah_unit,
-                'biaya_sewa_per_unit' => $formData->sewa_kantor_biaya_per_unit,
-                'jumlah_arsip' => $formData->restorasi_arsip_jumlah,
-                'harga_satuan' => $formData->restorasi_arsip_harga_satuan,
-                'dasar_perhitungan' => $formData->dasar_perhitungan_retribusi ?? 'Berdasarkan data terdampak',
+                'id' =>  $form->id,
+                'tenaga_kerja_hok' =>  $form->biaya_tenaga_kerja_hok,
+                'upah_harian' =>  $form->upah_harian,
+                'alat_berat_hari' =>  $form->biaya_alat_berat_hari,
+                'biaya_per_hari_alat_berat' =>  $form->biaya_alat_berat_tarif,
+                'jumlah_unit' =>  $form->sewa_kantor_jumlah_unit,
+                'biaya_sewa_per_unit' =>  $form->sewa_kantor_biaya_per_unit,
+                'jumlah_arsip' =>  $form->restorasi_arsip_jumlah,
+                'harga_satuan' =>  $form->restorasi_arsip_harga_satuan,
+                'dasar_perhitungan' =>  $form->dasar_perhitungan_retribusi ?? 'Berdasarkan data terdampak',
             ]);
         }
         
@@ -227,7 +227,7 @@ class Format16Controller extends Controller
         $governmentReports = $facilityReports->merge($lossReports);
         
         return view('forms.form4.format16.show-format16', compact(
-            'formData', 
+            ' form', 
             'bencana', 
             'facilityReports', 
             'lossReports', 
@@ -254,13 +254,13 @@ class Format16Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formData = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format16Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format16.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format16.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->download('Format16_' . $formData->nama_kampung . '.pdf');
+        return $pdf->download('Format16_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -268,13 +268,13 @@ class Format16Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $formData = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format16Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format16.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format16.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format16_' . $formData->nama_kampung . '.pdf');
+        return $pdf->stream('Format16_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -294,7 +294,7 @@ class Format16Controller extends Controller
     {
         try {
             DB::beginTransaction();
-            $formData = Format16Form4::findOrFail($id);
+             $form = Format16Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'kabupaten' => 'nullable|string',
@@ -349,7 +349,7 @@ class Format16Controller extends Controller
                 // Kehilangan Pendapatan Retribusi
                 'dasar_perhitungan_retribusi' => 'nullable|string',
             ]);
-            $formData->update($validated);
+             $form->update($validated);
             DB::commit();
             return redirect()->route('forms.form4.list-format16', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');

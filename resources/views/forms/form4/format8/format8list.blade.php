@@ -59,7 +59,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($formData as $index => $report)
+                        @forelse( $form as $index => $report)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $report->nama_kampung }}</td>

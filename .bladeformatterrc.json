@@ -1,0 +1,9 @@
+{
+  "wrapAttributes": "auto",
+  "wrapLineLength": 500,
+  "indentSize": 4,
+  "endWithNewline": true,
+  "preserveNewLines": true,
+  "noMultipleEmptyLines": true,
+  "collapseSimpleTags": false
+}

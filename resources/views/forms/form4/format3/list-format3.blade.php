@@ -38,7 +38,7 @@
                 </a>
             </div>
             <div class="card-body">
-                @if($formData->isEmpty())
+                @if( $form->isEmpty())
                     <div class="alert alert-info">
                         Belum ada data laporan kesehatan untuk bencana ini.
                     </div>
@@ -55,7 +55,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($formData as $report)
+                                @foreach( $form as $report)
                                     <tr>
                                         <td>{{ $report->nama_kampung }}</td>
                                         <td>{{ $report->nama_distrik }}</td>

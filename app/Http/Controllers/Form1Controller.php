@@ -72,7 +72,7 @@ class Form1Controller extends Controller
     /**
      * List all form entries for a specific bencana
      */
-    public function listForm1(Request $request)
+    public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -81,9 +81,9 @@ class Form1Controller extends Controller
         }
         
         $bencana = Bencana::findOrFail($bencana_id);
-        $formData = Form1::where('bencana_id', $bencana_id)->latest()->get();
+         $form = Form1::where('bencana_id', $bencana_id)->latest()->get();
         
-        return view('forms.form1.list', compact('bencana', 'formData'));
+        return view('forms.form1.list', compact('bencana', 'form'));
     }
 
     /**

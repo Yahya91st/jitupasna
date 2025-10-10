@@ -25,7 +25,7 @@
     </div>
     
     <div class="bg-white rounded-lg shadow overflow-x-auto">
-        @if($pendataanList->count() > 0)
+        @if( $form->count() > 0)
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($pendataanList as $index => $data)
+                @foreach( $form as $index => $data)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $data->wilayah_bencana }}</td>
@@ -64,7 +64,7 @@
         @else
         <div class="p-6 text-center">
             <p>Belum ada data pendataan OPD yang disimpan untuk bencana ini.</p>
-            <a href="{{ route('pendataan.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary mt-4">
+            <a href="{{ route('forms.form3.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-primary mt-4">
                 <i class="fa fa-plus mr-2"></i> Tambah Data Sekarang
             </a>
         </div>

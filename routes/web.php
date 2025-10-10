@@ -196,7 +196,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form1Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form1Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form1Controller::class, 'update'])->name('update');
-            Route::get('/list-form1', [Form1Controller::class, 'listForm1'])->name('list-form1');
+            Route::get('/list-form1', [Form1Controller::class, 'list'])->name('list-form1');
             Route::get('/pdf/{id}', [Form1Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form1Controller::class, 'previewPdf'])->name('preview-pdf');
         });
@@ -607,7 +607,7 @@ Route::prefix('/forms')
             // Format 17 (Environment sector) PDF routes
             Route::get('/format17-pdf/{bencana_id}', [Form4Controller::class, 'generateFormat17Pdf'])->name('format17-pdf');
             Route::get('/format17-preview-pdf/{bencana_id]', [Form4Controller::class, 'previewFormat17Pdf'])->name('format17-preview-pdf');
-            Route::get('/list', [Form4Controller::class, 'listFormat1'])->name('list');
+            Route::get('/list', [Form4Controller::class, 'list'])->name('list');
 
             Route::get('/list-format1', [Format1Controller::class, 'list'])->name('list-format1');
             Route::get('/list-format8', [Format8Controller::class, 'list'])->name('list-format8');
@@ -634,7 +634,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form6Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form6Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form6Controller::class, 'update'])->name('update');
-            Route::get('/list', [Form6Controller::class, 'listForm6'])->name('list');
+            Route::get('/list', [Form6Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form6Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form6Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/get-rumahtangga/{id}', [Form6Controller::class, 'getRumahtangga'])->name('get-rumahtangga');
@@ -647,7 +647,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form7Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form7Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form7Controller::class, 'update'])->name('update');
-            Route::get('/list', [Form7Controller::class, 'listForm7'])->name('list');
+            Route::get('/list', [Form7Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form7Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form7Controller::class, 'previewPdf'])->name('preview-pdf');
         });
@@ -680,7 +680,7 @@ Route::prefix('/forms')
         Route::prefix('form10')->name('form10.')->group(function () {
             Route::get('/', [Form10Controller::class, 'index'])->name('index');
             Route::post('/store', [Form10Controller::class, 'store'])->name('store');
-            Route::get('/list', [Form10Controller::class, 'listForm10'])->name('list');
+            Route::get('/list', [Form10Controller::class, 'list'])->name('list');
             Route::get('/show/{id}', [Form10Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form10Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form10Controller::class, 'update'])->name('update');

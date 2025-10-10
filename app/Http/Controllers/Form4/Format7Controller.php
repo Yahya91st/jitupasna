@@ -151,12 +151,7 @@ class Format7Controller extends Controller
         $formTransportasi = Format7Form4::with('bencana')->findOrFail($id);
         $bencana = $formTransportasi->bencana;
         
-        // Initialize empty collections for vehicle and infrastructure reports
-        // These will be populated if needed in future versions
-        $vehicleReports = collect();
-        $infrastructureReports = collect();
-        
-        return view('forms.form4.format7.show-format7', compact('formTransportasi', 'bencana', 'vehicleReports', 'infrastructureReports'));
+        return view('forms.form4.format7.show-format7', compact('formTransportasi', 'bencana'));
     }
 
     /**
@@ -223,8 +218,8 @@ class Format7Controller extends Controller
     public function update(Request $request, $id)
     {
         try {
-            DB::beginTransaction();
-            $formTransportasi = Format7Form4::findOrFail($id);
+            \DB::beginTransaction();
+            $formTransportasi = \App\Models\Format7Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
@@ -246,11 +241,11 @@ class Format7Controller extends Controller
                 'harga_satuan_terminal' => 'nullable|numeric',
             ]);
             $formTransportasi->update($validated);
-            DB::commit();
+            \DB::commit();
             return redirect()->route('forms.form4.list-format7', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
-            DB::rollBack();
+            \DB::rollBack();
             return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
         }
     }
@@ -260,10 +255,10 @@ class Format7Controller extends Controller
      */
     public function destroy($id)
     {
-        $formTransportasi = Format7Form4::findOrFail($id);
+        $formTransportasi = \App\Models\Format7Form4::findOrFail($id);
         $bencana_id = $formTransportasi->bencana_id;
         $formTransportasi->delete();
-        return redirect()->route('forms.form4.list-format7', ['bencana_id' => $bencana_id])
+        return redirect()->route('forms.form4.format7.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
     }
 }

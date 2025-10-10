@@ -179,7 +179,7 @@ class Format11Controller extends Controller
             ];
 
             // Create new form data
-            $formData = Format11Form4::create($mappedData);
+             $form = Format11Form4::create($mappedData);
 
             DB::commit();
 
@@ -188,11 +188,11 @@ class Format11Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formData
+                    'data' =>  $form
                 ]);
             }
 
-            return redirect()->route('forms.form4.list-format11', ['bencana_id' => $formData->bencana_id])
+            return redirect()->route('forms.form4.list-format11', ['bencana_id' =>  $form->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -216,20 +216,20 @@ class Format11Controller extends Controller
      */
     public function show($id)
     {
-        $formData = Format11Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format11Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
         // Map model fields to expected data array structure for the view
         $data = [
-            'nama_kampung' => $formData->nama_kampung,
-            'nama_distrik' => $formData->nama_distrik,
+            'nama_kampung' =>  $form->nama_kampung,
+            'nama_distrik' =>  $form->nama_distrik,
             
             // A. Kerusakan Bangunan & Sarana Peternakan
-            'kandang_rb' => $formData->kandang_1_unit ?? 0,
-            'kandang_rs' => $formData->kandang_2_unit ?? 0,
-            'kandang_rr' => $formData->kandang_3_unit ?? 0,
+            'kandang_rb' =>  $form->kandang_1_unit ?? 0,
+            'kandang_rs' =>  $form->kandang_2_unit ?? 0,
+            'kandang_rr' =>  $form->kandang_3_unit ?? 0,
             'kandang_luas' => 100, // Default value - approximate livestock building size
-            'kandang_harga_m2' => $formData->kandang_1_harga_satuan ?? 0,
+            'kandang_harga_m2' =>  $form->kandang_1_harga_satuan ?? 0,
             
             'gudang_pakan_rb' => 0, // Not mapped to current model structure
             'gudang_pakan_rs' => 0,
@@ -243,52 +243,52 @@ class Format11Controller extends Controller
             'balai_inseminasi_luas' => 80, // Default value
             'balai_inseminasi_harga_m2' => 0,
             
-            'lainnya_jenis_bangunan' => $formData->peralatan_1_jenis ?? 'Lainnya',
-            'lainnya_bangunan_rb' => $formData->peralatan_1_unit ?? 0,
-            'lainnya_bangunan_rs' => $formData->peralatan_2_unit ?? 0,
-            'lainnya_bangunan_rr' => $formData->peralatan_3_unit ?? 0,
+            'lainnya_jenis_bangunan' =>  $form->peralatan_1_jenis ?? 'Lainnya',
+            'lainnya_bangunan_rb' =>  $form->peralatan_1_unit ?? 0,
+            'lainnya_bangunan_rs' =>  $form->peralatan_2_unit ?? 0,
+            'lainnya_bangunan_rr' =>  $form->peralatan_3_unit ?? 0,
             'lainnya_bangunan_luas' => 60, // Default value
-            'lainnya_bangunan_harga_m2' => $formData->peralatan_1_harga_satuan ?? 0,
+            'lainnya_bangunan_harga_m2' =>  $form->peralatan_1_harga_satuan ?? 0,
             
             // B. Kerusakan Peralatan
-            'mesin_pencacah_jumlah' => $formData->peralatan_1_unit ?? 0,
-            'mesin_pencacah_harga' => $formData->peralatan_1_harga_satuan ?? 0,
+            'mesin_pencacah_jumlah' =>  $form->peralatan_1_unit ?? 0,
+            'mesin_pencacah_harga' =>  $form->peralatan_1_harga_satuan ?? 0,
             
-            'mesin_pakan_jumlah' => $formData->peralatan_2_unit ?? 0,
-            'mesin_pakan_harga' => $formData->peralatan_2_harga_satuan ?? 0,
+            'mesin_pakan_jumlah' =>  $form->peralatan_2_unit ?? 0,
+            'mesin_pakan_harga' =>  $form->peralatan_2_harga_satuan ?? 0,
             
-            'alat_penampung_susu_jumlah' => $formData->peralatan_3_unit ?? 0,
-            'alat_penampung_susu_harga' => $formData->peralatan_3_harga_satuan ?? 0,
+            'alat_penampung_susu_jumlah' =>  $form->peralatan_3_unit ?? 0,
+            'alat_penampung_susu_harga' =>  $form->peralatan_3_harga_satuan ?? 0,
             
-            'lainnya_jenis_peralatan' => $formData->peralatan_3_jenis ?? 'Lainnya',
-            'lainnya_peralatan_jumlah' => $formData->peralatan_3_unit ?? 0,
-            'lainnya_peralatan_harga' => $formData->peralatan_3_harga_satuan ?? 0,
+            'lainnya_jenis_peralatan' =>  $form->peralatan_3_jenis ?? 'Lainnya',
+            'lainnya_peralatan_jumlah' =>  $form->peralatan_3_unit ?? 0,
+            'lainnya_peralatan_harga' =>  $form->peralatan_3_harga_satuan ?? 0,
             
             // C. Kematian Hewan Ternak - Map from kematian fields
-            'sapi_jumlah' => $formData->kematian_1_unit ?? 0,
-            'sapi_harga' => $formData->kematian_1_harga_satuan ?? 0,
+            'sapi_jumlah' =>  $form->kematian_1_unit ?? 0,
+            'sapi_harga' =>  $form->kematian_1_harga_satuan ?? 0,
             
-            'kambing_jumlah' => $formData->kematian_2_unit ?? 0,
-            'kambing_harga' => $formData->kematian_2_harga_satuan ?? 0,
+            'kambing_jumlah' =>  $form->kematian_2_unit ?? 0,
+            'kambing_harga' =>  $form->kematian_2_harga_satuan ?? 0,
             
-            'ayam_jumlah' => $formData->kematian_3_unit ?? 0,
-            'ayam_harga' => $formData->kematian_3_harga_satuan ?? 0,
+            'ayam_jumlah' =>  $form->kematian_3_unit ?? 0,
+            'ayam_harga' =>  $form->kematian_3_harga_satuan ?? 0,
             
-            'babi_jumlah' => $formData->kematian_4_unit ?? 0,
-            'babi_harga' => $formData->kematian_4_harga_satuan ?? 0,
+            'babi_jumlah' =>  $form->kematian_4_unit ?? 0,
+            'babi_harga' =>  $form->kematian_4_harga_satuan ?? 0,
             
-            'lainnya_jenis_ternak' => $formData->hilang_1_jenis ?? 'Lainnya',
-            'lainnya_ternak_jumlah' => $formData->hilang_1_unit ?? 0,
-            'lainnya_ternak_harga' => $formData->hilang_1_harga_satuan ?? 0,
+            'lainnya_jenis_ternak' =>  $form->hilang_1_jenis ?? 'Lainnya',
+            'lainnya_ternak_jumlah' =>  $form->hilang_1_unit ?? 0,
+            'lainnya_ternak_harga' =>  $form->hilang_1_harga_satuan ?? 0,
             
             // D. Dampak Ekonomi - Map from various fields or defaults
-            'kehilangan_pendapatan' => ($formData->produktifitas_1_unit ?? 0) * ($formData->produktifitas_1_harga_satuan ?? 0),
-            'penurunan_produksi' => $formData->produktifitas_2_unit ?? 0,
-            'kenaikan_harga_pakan' => $formData->ongkos_1_harga_satuan ?? 0,
-            'biaya_kesehatan_ternak' => $formData->ongkos_2_harga_satuan ?? 0,
+            'kehilangan_pendapatan' => ( $form->produktifitas_1_unit ?? 0) * ( $form->produktifitas_1_harga_satuan ?? 0),
+            'penurunan_produksi' =>  $form->produktifitas_2_unit ?? 0,
+            'kenaikan_harga_pakan' =>  $form->ongkos_1_harga_satuan ?? 0,
+            'biaya_kesehatan_ternak' =>  $form->ongkos_2_harga_satuan ?? 0,
         ];
         
-        return view('forms.form4.format11.show-format11', compact('formData', 'bencana', 'data'));
+        return view('forms.form4.format11.show-format11', compact(' form', 'bencana', 'data'));
     }
 
     /**
@@ -310,13 +310,13 @@ class Format11Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formData = Format11Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format11Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format11.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format11.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->download('Format11_' . $formData->nama_kampung . '.pdf');
+        return $pdf->download('Format11_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -324,13 +324,13 @@ class Format11Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $formData = Format11Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format11Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format11.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format11.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format11_' . $formData->nama_kampung . '.pdf');
+        return $pdf->stream('Format11_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -350,14 +350,14 @@ class Format11Controller extends Controller
     {
         try {
             DB::beginTransaction();
-            $formData = Format11Form4::findOrFail($id);
+             $form = Format11Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
                 // ...validation rules sesuai kebutuhan format11...
             ]);
-            $formData->update($validated);
+             $form->update($validated);
             DB::commit();
             return redirect()->route('forms.form4.list-format11', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');

@@ -261,7 +261,7 @@ class Form7Controller extends Controller
     /**
      * Display a listing of FGD.
      */
-    public function listForm7(Request $request)
+    public function list(Request $request)
     {
         $bencana_id = $request->query('bencana_id');
         $query = Fgd::with('bencana');

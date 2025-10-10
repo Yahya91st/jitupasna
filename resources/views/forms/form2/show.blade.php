@@ -50,39 +50,16 @@
                 <h5 class="text-center">{{ strtoupper($form->pejabat_penandatangan) }}</h5>
             </div>
               <div class="mb-4">
-                @php
-                    // Parsing dasar hukum
-                    $menimbang_text = "";
-                    $mengingat_text = "";
-                    
-                    if (count($parts) > 1) {
-                        $tmp = explode("Mengingat:", $parts[1]);
-                        $menimbang_text = trim($tmp[0]);
-                        $mengingat_text = isset($tmp[1]) ? trim($tmp[1]) : "";
-                    }
-                    
-                    // Use Tim Kerja and Tugas Tim from model fields directly
-                    $tim_kerja_text = $form->tim_kerja;
-                    $tugas_tim_text = $form->tugas_tim;
-                    $penanggung_jawab = $form->penanggung_jawab;
-                    $tembusan = $form->tembusan;
-                @endphp
                 
                 <div class="row mb-3">
                     <div class="col-2">
                         <strong>Menimbang:</strong>
-                    </div>
-                    <div class="col-10">
-                        {!! nl2br(e($menimbang_text)) !!}
                     </div>
                 </div>
                 
                 <div class="row mb-5">
                     <div class="col-2">
                         <strong>Mengingat:</strong>
-                    </div>
-                    <div class="col-10">
-                        {!! nl2br(e($mengingat_text)) !!}
                     </div>
                 </div>
             </div>
@@ -98,9 +75,6 @@
                     </div>
                     <div class="col-10">
                         <p>Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana dengan susunan tim sebagai berikut:</p>
-                        <div class="pl-4">
-                            {!! nl2br(e($tim_kerja_text)) !!}
-                        </div>
                     </div>
                 </div>
                 
@@ -110,18 +84,12 @@
                     </div>
                     <div class="col-10">
                         <p>Tim sebagaimana dimaksud dalam Diktum KESATU mempunyai tugas sebagai berikut:</p>
-                        <div class="pl-4">
-                            {!! nl2br(e($tugas_tim_text)) !!}
-                        </div>
                     </div>
                 </div>
                 
                 <div class="row mb-3">
                     <div class="col-2">
                         <strong>KETIGA:</strong>
-                    </div>
-                    <div class="col-10">
-                        <p>Dalam melaksanakan tugasnya, Tim bertanggung jawab kepada {{ $penanggung_jawab }}.</p>
                     </div>
                 </div>
                 
@@ -148,9 +116,6 @@
             
             <div class="mt-5">
                 <p><strong>Tembusan:</strong></p>
-                <div class="pl-4">
-                    {!! nl2br(e($tembusan)) !!}
-                </div>
             </div>
         </div>
     </div>

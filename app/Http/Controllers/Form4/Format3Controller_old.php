@@ -253,9 +253,9 @@ class Format3Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
         
         // Get form data for this disaster
-        $formData = Format3Form4::where('bencana_id', $bencana_id)->get();
+         $form = Format3Form4::where('bencana_id', $bencana_id)->get();
         
-        return view('forms.form4.format3.list-format3', compact('bencana', 'formData'));
+        return view('forms.form4.format3.list-format3', compact('bencana', ' form'));
     }
 
     /**

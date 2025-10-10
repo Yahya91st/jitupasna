@@ -104,17 +104,8 @@ class Format4Controller extends Controller
                 'biaya_pelatihan_darurat' => 'nullable|numeric',
             ]);
 
-            // Use validated data and filter by fillable fields
+            // Calculate totals before saving
             $data = $request->only((new \App\Models\Format4Form4)->getFillable());
-            
-            // Convert empty strings to null for better handling
-            foreach ($data as $key => $value) {
-                if ($value === '' || $value === '0' || $value === 0) {
-                    $data[$key] = null;
-                } elseif (is_numeric($value)) {
-                    $data[$key] = $value;
-                }
-            }
             
             // Calculate kerusakan (damage) - only for building damage
             $kerusakan_bangunan = $this->calculateKerusakanBangunan($data);
@@ -291,15 +282,6 @@ class Format4Controller extends Controller
                 'biaya_pendampingan_psikososial' => 'nullable|numeric',
                 'biaya_pelatihan_darurat' => 'nullable|numeric',
             ]);
-            
-            // Convert empty strings to null for better handling
-            foreach ($validated as $key => $value) {
-                if ($value === '' || $value === '0' || $value === 0) {
-                    $validated[$key] = null;
-                } elseif (is_numeric($value)) {
-                    $validated[$key] = $value;
-                }
-            }
             
             // Calculate totals before updating
             $validated['total_kerusakan'] = $this->calculateKerusakanBangunan($validated) + $this->calculateKerugianItems($validated);

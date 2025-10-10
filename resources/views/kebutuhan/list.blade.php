@@ -76,8 +76,8 @@
                         
                         // Determine which form this table belongs to
                         $formKey = null;
-                        foreach ($tables as $key => $formData) {
-                            foreach ($formData['tables'] as $tableInfo) {
+                        foreach ($tables as $key =>  $form) {
+                            foreach ( $form['tables'] as $tableInfo) {
                                 if ($tableInfo['name'] === $tableName) {
                                     $formKey = $key;
                                     break 2;
@@ -215,25 +215,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($tables as $formKey => $formData)
+                        @foreach($tables as $formKey =>  $form)
                             @php
                                 $isFirstRow = true;
-                                $rowCount = count($formData['tables']);
+                                $rowCount = count( $form['tables']);
                                 $rowCount = $rowCount > 0 ? $rowCount : 1;
                             @endphp
                             
-                            @if(empty($formData['tables']))
+                            @if(empty( $form['tables']))
                                 <tr>
-                                    <td>{{ $formData['name'] }}</td>
+                                    <td>{{  $form['name'] }}</td>
                                     <td>-</td>
-                                    <td>{{ $formData['description'] }}</td>
+                                    <td>{{  $form['description'] }}</td>
                                     <td>-</td>
                                 </tr>
                             @else
-                                @foreach($formData['tables'] as $index => $table)
+                                @foreach( $form['tables'] as $index => $table)
                                     <tr>
                                         @if($isFirstRow)
-                                            <td rowspan="{{ $rowCount }}">{{ $formData['name'] }}</td>
+                                            <td rowspan="{{ $rowCount }}">{{  $form['name'] }}</td>
                                             @php $isFirstRow = false; @endphp
                                         @endif
                                         <td>{{ $table['name'] }}</td>

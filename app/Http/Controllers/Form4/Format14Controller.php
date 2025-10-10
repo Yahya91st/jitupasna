@@ -165,7 +165,7 @@ class Format14Controller extends Controller
             }
 
             // Create new form data with properly mapped field names
-            $formData = Format14Form4::create($modelData);
+             $form = Format14Form4::create($modelData);
 
             DB::commit();
 
@@ -174,11 +174,11 @@ class Format14Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formData
+                    'data' =>  $form
                 ]);
             }
 
-            return redirect()->route('forms.form4.list-format14', ['bencana_id' => $formData->bencana_id])
+            return redirect()->route('forms.form4.list-format14', ['bencana_id' =>  $form->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -202,78 +202,78 @@ class Format14Controller extends Controller
      */
     public function show($id)
     {
-        $formData = Format14Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format14Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
         // Prepare data array that matches the Blade template expectations
         $data = [
-            'nama_kampung' => $formData->nama_kampung,
-            'nama_distrik' => $formData->nama_distrik,
+            'nama_kampung' =>  $form->nama_kampung,
+            'nama_distrik' =>  $form->nama_distrik,
             
             // A. Kerusakan Fisik - Map tempat usaha to building types
-            'toko_kecil_jumlah' => ($formData->tempatusaha_1_rb_jumlah ?? 0) + ($formData->tempatusaha_1_rs_jumlah ?? 0) + ($formData->tempatusaha_1_rr_jumlah ?? 0),
+            'toko_kecil_jumlah' => ( $form->tempatusaha_1_rb_jumlah ?? 0) + ( $form->tempatusaha_1_rs_jumlah ?? 0) + ( $form->tempatusaha_1_rr_jumlah ?? 0),
             'toko_kecil_luas' => 0, // Not available in model
-            'toko_kecil_harga' => (($formData->tempatusaha_1_rb_harga ?? 0) + ($formData->tempatusaha_1_rs_harga ?? 0) + ($formData->tempatusaha_1_rr_harga ?? 0)) / 3,
-            'toko_kecil_total' => (($formData->tempatusaha_1_rb_jumlah ?? 0) * ($formData->tempatusaha_1_rb_harga ?? 0)) + 
-                                 (($formData->tempatusaha_1_rs_jumlah ?? 0) * ($formData->tempatusaha_1_rs_harga ?? 0)) + 
-                                 (($formData->tempatusaha_1_rr_jumlah ?? 0) * ($formData->tempatusaha_1_rr_harga ?? 0)),
+            'toko_kecil_harga' => (( $form->tempatusaha_1_rb_harga ?? 0) + ( $form->tempatusaha_1_rs_harga ?? 0) + ( $form->tempatusaha_1_rr_harga ?? 0)) / 3,
+            'toko_kecil_total' => (( $form->tempatusaha_1_rb_jumlah ?? 0) * ( $form->tempatusaha_1_rb_harga ?? 0)) + 
+                                 (( $form->tempatusaha_1_rs_jumlah ?? 0) * ( $form->tempatusaha_1_rs_harga ?? 0)) + 
+                                 (( $form->tempatusaha_1_rr_jumlah ?? 0) * ( $form->tempatusaha_1_rr_harga ?? 0)),
             
-            'kios_pasar_jumlah' => ($formData->tempatusaha_2_rb_jumlah ?? 0) + ($formData->tempatusaha_2_rs_jumlah ?? 0) + ($formData->tempatusaha_2_rr_jumlah ?? 0),
+            'kios_pasar_jumlah' => ( $form->tempatusaha_2_rb_jumlah ?? 0) + ( $form->tempatusaha_2_rs_jumlah ?? 0) + ( $form->tempatusaha_2_rr_jumlah ?? 0),
             'kios_pasar_luas' => 0,
-            'kios_pasar_harga' => (($formData->tempatusaha_2_rb_harga ?? 0) + ($formData->tempatusaha_2_rs_harga ?? 0) + ($formData->tempatusaha_2_rr_harga ?? 0)) / 3,
-            'kios_pasar_total' => (($formData->tempatusaha_2_rb_jumlah ?? 0) * ($formData->tempatusaha_2_rb_harga ?? 0)) + 
-                                 (($formData->tempatusaha_2_rs_jumlah ?? 0) * ($formData->tempatusaha_2_rs_harga ?? 0)) + 
-                                 (($formData->tempatusaha_2_rr_jumlah ?? 0) * ($formData->tempatusaha_2_rr_harga ?? 0)),
+            'kios_pasar_harga' => (( $form->tempatusaha_2_rb_harga ?? 0) + ( $form->tempatusaha_2_rs_harga ?? 0) + ( $form->tempatusaha_2_rr_harga ?? 0)) / 3,
+            'kios_pasar_total' => (( $form->tempatusaha_2_rb_jumlah ?? 0) * ( $form->tempatusaha_2_rb_harga ?? 0)) + 
+                                 (( $form->tempatusaha_2_rs_jumlah ?? 0) * ( $form->tempatusaha_2_rs_harga ?? 0)) + 
+                                 (( $form->tempatusaha_2_rr_jumlah ?? 0) * ( $form->tempatusaha_2_rr_harga ?? 0)),
             
-            'grosir_jumlah' => ($formData->tempatusaha_3_rb_jumlah ?? 0) + ($formData->tempatusaha_3_rs_jumlah ?? 0) + ($formData->tempatusaha_3_rr_jumlah ?? 0),
+            'grosir_jumlah' => ( $form->tempatusaha_3_rb_jumlah ?? 0) + ( $form->tempatusaha_3_rs_jumlah ?? 0) + ( $form->tempatusaha_3_rr_jumlah ?? 0),
             'grosir_luas' => 0,
-            'grosir_harga' => (($formData->tempatusaha_3_rb_harga ?? 0) + ($formData->tempatusaha_3_rs_harga ?? 0) + ($formData->tempatusaha_3_rr_harga ?? 0)) / 3,
-            'grosir_total' => (($formData->tempatusaha_3_rb_jumlah ?? 0) * ($formData->tempatusaha_3_rb_harga ?? 0)) + 
-                             (($formData->tempatusaha_3_rs_jumlah ?? 0) * ($formData->tempatusaha_3_rs_harga ?? 0)) + 
-                             (($formData->tempatusaha_3_rr_jumlah ?? 0) * ($formData->tempatusaha_3_rr_harga ?? 0)),
+            'grosir_harga' => (( $form->tempatusaha_3_rb_harga ?? 0) + ( $form->tempatusaha_3_rs_harga ?? 0) + ( $form->tempatusaha_3_rr_harga ?? 0)) / 3,
+            'grosir_total' => (( $form->tempatusaha_3_rb_jumlah ?? 0) * ( $form->tempatusaha_3_rb_harga ?? 0)) + 
+                             (( $form->tempatusaha_3_rs_jumlah ?? 0) * ( $form->tempatusaha_3_rs_harga ?? 0)) + 
+                             (( $form->tempatusaha_3_rr_jumlah ?? 0) * ( $form->tempatusaha_3_rr_harga ?? 0)),
             
             // Additional building type from peralatan_1
-            'lainnya_jenis_bangunan' => $formData->peralatan_1_jenis ?? 'Lainnya',
-            'lainnya_bangunan_jumlah' => ($formData->peralatan_1_rb_jumlah ?? 0) + ($formData->peralatan_1_rs_jumlah ?? 0) + ($formData->peralatan_1_rr_jumlah ?? 0),
+            'lainnya_jenis_bangunan' =>  $form->peralatan_1_jenis ?? 'Lainnya',
+            'lainnya_bangunan_jumlah' => ( $form->peralatan_1_rb_jumlah ?? 0) + ( $form->peralatan_1_rs_jumlah ?? 0) + ( $form->peralatan_1_rr_jumlah ?? 0),
             'lainnya_bangunan_luas' => 0,
-            'lainnya_bangunan_harga' => (($formData->peralatan_1_rb_harga ?? 0) + ($formData->peralatan_1_rs_harga ?? 0) + ($formData->peralatan_1_rr_harga ?? 0)) / 3,
-            'lainnya_bangunan_total' => (($formData->peralatan_1_rb_jumlah ?? 0) * ($formData->peralatan_1_rb_harga ?? 0)) + 
-                                       (($formData->peralatan_1_rs_jumlah ?? 0) * ($formData->peralatan_1_rs_harga ?? 0)) + 
-                                       (($formData->peralatan_1_rr_jumlah ?? 0) * ($formData->peralatan_1_rr_harga ?? 0)),
+            'lainnya_bangunan_harga' => (( $form->peralatan_1_rb_harga ?? 0) + ( $form->peralatan_1_rs_harga ?? 0) + ( $form->peralatan_1_rr_harga ?? 0)) / 3,
+            'lainnya_bangunan_total' => (( $form->peralatan_1_rb_jumlah ?? 0) * ( $form->peralatan_1_rb_harga ?? 0)) + 
+                                       (( $form->peralatan_1_rs_jumlah ?? 0) * ( $form->peralatan_1_rs_harga ?? 0)) + 
+                                       (( $form->peralatan_1_rr_jumlah ?? 0) * ( $form->peralatan_1_rr_harga ?? 0)),
             
             // B. Kerusakan Barang Dagangan - Map barang dagangan to goods types
-            'beras_jumlah' => ($formData->barangdagangan_1_rb_jumlah ?? 0) + ($formData->barangdagangan_1_rs_jumlah ?? 0) + ($formData->barangdagangan_1_rr_jumlah ?? 0),
-            'beras_harga' => (($formData->barangdagangan_1_rb_harga ?? 0) + ($formData->barangdagangan_1_rs_harga ?? 0) + ($formData->barangdagangan_1_rr_harga ?? 0)) / 3,
-            'beras_total' => (($formData->barangdagangan_1_rb_jumlah ?? 0) * ($formData->barangdagangan_1_rb_harga ?? 0)) + 
-                            (($formData->barangdagangan_1_rs_jumlah ?? 0) * ($formData->barangdagangan_1_rs_harga ?? 0)) + 
-                            (($formData->barangdagangan_1_rr_jumlah ?? 0) * ($formData->barangdagangan_1_rr_harga ?? 0)),
+            'beras_jumlah' => ( $form->barangdagangan_1_rb_jumlah ?? 0) + ( $form->barangdagangan_1_rs_jumlah ?? 0) + ( $form->barangdagangan_1_rr_jumlah ?? 0),
+            'beras_harga' => (( $form->barangdagangan_1_rb_harga ?? 0) + ( $form->barangdagangan_1_rs_harga ?? 0) + ( $form->barangdagangan_1_rr_harga ?? 0)) / 3,
+            'beras_total' => (( $form->barangdagangan_1_rb_jumlah ?? 0) * ( $form->barangdagangan_1_rb_harga ?? 0)) + 
+                            (( $form->barangdagangan_1_rs_jumlah ?? 0) * ( $form->barangdagangan_1_rs_harga ?? 0)) + 
+                            (( $form->barangdagangan_1_rr_jumlah ?? 0) * ( $form->barangdagangan_1_rr_harga ?? 0)),
             
-            'minyak_jumlah' => ($formData->barangdagangan_2_rb_jumlah ?? 0) + ($formData->barangdagangan_2_rs_jumlah ?? 0) + ($formData->barangdagangan_2_rr_jumlah ?? 0),
-            'minyak_harga' => (($formData->barangdagangan_2_rb_harga ?? 0) + ($formData->barangdagangan_2_rs_harga ?? 0) + ($formData->barangdagangan_2_rr_harga ?? 0)) / 3,
-            'minyak_total' => (($formData->barangdagangan_2_rb_jumlah ?? 0) * ($formData->barangdagangan_2_rb_harga ?? 0)) + 
-                             (($formData->barangdagangan_2_rs_jumlah ?? 0) * ($formData->barangdagangan_2_rs_harga ?? 0)) + 
-                             (($formData->barangdagangan_2_rr_jumlah ?? 0) * ($formData->barangdagangan_2_rr_harga ?? 0)),
+            'minyak_jumlah' => ( $form->barangdagangan_2_rb_jumlah ?? 0) + ( $form->barangdagangan_2_rs_jumlah ?? 0) + ( $form->barangdagangan_2_rr_jumlah ?? 0),
+            'minyak_harga' => (( $form->barangdagangan_2_rb_harga ?? 0) + ( $form->barangdagangan_2_rs_harga ?? 0) + ( $form->barangdagangan_2_rr_harga ?? 0)) / 3,
+            'minyak_total' => (( $form->barangdagangan_2_rb_jumlah ?? 0) * ( $form->barangdagangan_2_rb_harga ?? 0)) + 
+                             (( $form->barangdagangan_2_rs_jumlah ?? 0) * ( $form->barangdagangan_2_rs_harga ?? 0)) + 
+                             (( $form->barangdagangan_2_rr_jumlah ?? 0) * ( $form->barangdagangan_2_rr_harga ?? 0)),
             
-            'pakaian_jumlah' => ($formData->barangdagangan_3_rb_jumlah ?? 0) + ($formData->barangdagangan_3_rs_jumlah ?? 0) + ($formData->barangdagangan_3_rr_jumlah ?? 0),
-            'pakaian_harga' => (($formData->barangdagangan_3_rb_harga ?? 0) + ($formData->barangdagangan_3_rs_harga ?? 0) + ($formData->barangdagangan_3_rr_harga ?? 0)) / 3,
-            'pakaian_total' => (($formData->barangdagangan_3_rb_jumlah ?? 0) * ($formData->barangdagangan_3_rb_harga ?? 0)) + 
-                              (($formData->barangdagangan_3_rs_jumlah ?? 0) * ($formData->barangdagangan_3_rs_harga ?? 0)) + 
-                              (($formData->barangdagangan_3_rr_jumlah ?? 0) * ($formData->barangdagangan_3_rr_harga ?? 0)),
+            'pakaian_jumlah' => ( $form->barangdagangan_3_rb_jumlah ?? 0) + ( $form->barangdagangan_3_rs_jumlah ?? 0) + ( $form->barangdagangan_3_rr_jumlah ?? 0),
+            'pakaian_harga' => (( $form->barangdagangan_3_rb_harga ?? 0) + ( $form->barangdagangan_3_rs_harga ?? 0) + ( $form->barangdagangan_3_rr_harga ?? 0)) / 3,
+            'pakaian_total' => (( $form->barangdagangan_3_rb_jumlah ?? 0) * ( $form->barangdagangan_3_rb_harga ?? 0)) + 
+                              (( $form->barangdagangan_3_rs_jumlah ?? 0) * ( $form->barangdagangan_3_rs_harga ?? 0)) + 
+                              (( $form->barangdagangan_3_rr_jumlah ?? 0) * ( $form->barangdagangan_3_rr_harga ?? 0)),
             
             // Electronics from peralatan_2
-            'elektronik_jumlah' => ($formData->peralatan_2_rb_jumlah ?? 0) + ($formData->peralatan_2_rs_jumlah ?? 0) + ($formData->peralatan_2_rr_jumlah ?? 0),
-            'elektronik_harga' => (($formData->peralatan_2_rb_harga ?? 0) + ($formData->peralatan_2_rs_harga ?? 0) + ($formData->peralatan_2_rr_harga ?? 0)) / 3,
-            'elektronik_total' => (($formData->peralatan_2_rb_jumlah ?? 0) * ($formData->peralatan_2_rb_harga ?? 0)) + 
-                                 (($formData->peralatan_2_rs_jumlah ?? 0) * ($formData->peralatan_2_rs_harga ?? 0)) + 
-                                 (($formData->peralatan_2_rr_jumlah ?? 0) * ($formData->peralatan_2_rr_harga ?? 0)),
+            'elektronik_jumlah' => ( $form->peralatan_2_rb_jumlah ?? 0) + ( $form->peralatan_2_rs_jumlah ?? 0) + ( $form->peralatan_2_rr_jumlah ?? 0),
+            'elektronik_harga' => (( $form->peralatan_2_rb_harga ?? 0) + ( $form->peralatan_2_rs_harga ?? 0) + ( $form->peralatan_2_rr_harga ?? 0)) / 3,
+            'elektronik_total' => (( $form->peralatan_2_rb_jumlah ?? 0) * ( $form->peralatan_2_rb_harga ?? 0)) + 
+                                 (( $form->peralatan_2_rs_jumlah ?? 0) * ( $form->peralatan_2_rs_harga ?? 0)) + 
+                                 (( $form->peralatan_2_rr_jumlah ?? 0) * ( $form->peralatan_2_rr_harga ?? 0)),
             
             // Other goods from peralatan_3
-            'lainnya_jenis_barang' => $formData->peralatan_3_jenis ?? 'Lainnya',
-            'lainnya_barang_jumlah' => ($formData->peralatan_3_rb_jumlah ?? 0) + ($formData->peralatan_3_rs_jumlah ?? 0) + ($formData->peralatan_3_rr_jumlah ?? 0),
-            'lainnya_barang_harga' => (($formData->peralatan_3_rb_harga ?? 0) + ($formData->peralatan_3_rs_harga ?? 0) + ($formData->peralatan_3_rr_harga ?? 0)) / 3,
-            'lainnya_barang_total' => (($formData->peralatan_3_rb_jumlah ?? 0) * ($formData->peralatan_3_rb_harga ?? 0)) + 
-                                     (($formData->peralatan_3_rs_jumlah ?? 0) * ($formData->peralatan_3_rs_harga ?? 0)) + 
-                                     (($formData->peralatan_3_rr_jumlah ?? 0) * ($formData->peralatan_3_rr_harga ?? 0)),
+            'lainnya_jenis_barang' =>  $form->peralatan_3_jenis ?? 'Lainnya',
+            'lainnya_barang_jumlah' => ( $form->peralatan_3_rb_jumlah ?? 0) + ( $form->peralatan_3_rs_jumlah ?? 0) + ( $form->peralatan_3_rr_jumlah ?? 0),
+            'lainnya_barang_harga' => (( $form->peralatan_3_rb_harga ?? 0) + ( $form->peralatan_3_rs_harga ?? 0) + ( $form->peralatan_3_rr_harga ?? 0)) / 3,
+            'lainnya_barang_total' => (( $form->peralatan_3_rb_jumlah ?? 0) * ( $form->peralatan_3_rb_harga ?? 0)) + 
+                                     (( $form->peralatan_3_rs_jumlah ?? 0) * ( $form->peralatan_3_rs_harga ?? 0)) + 
+                                     (( $form->peralatan_3_rr_jumlah ?? 0) * ( $form->peralatan_3_rr_harga ?? 0)),
             
             // C. Kehilangan Pendapatan - Default values as not in current model
             'jumlah_pelaku_usaha' => 0,
@@ -281,7 +281,7 @@ class Format14Controller extends Controller
             'lama_tidak_operasi' => 0,
         ];
         
-        return view('forms.form4.format14.show-format14', compact('formData', 'bencana', 'data'));
+        return view('forms.form4.format14.show-format14', compact(' form', 'bencana', 'data'));
     }
 
     /**
@@ -305,7 +305,7 @@ class Format14Controller extends Controller
     {
         try {
             DB::beginTransaction();
-            $formData = Format14Form4::findOrFail($id);
+             $form = Format14Form4::findOrFail($id);
             
             // Validate with actual form field names
             $validated = $request->validate([
@@ -435,7 +435,7 @@ class Format14Controller extends Controller
             }
             
             // Update with properly mapped field names
-            $formData->update($modelData);
+             $form->update($modelData);
             DB::commit();
             return redirect()->route('forms.form4.list-format14', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
@@ -476,13 +476,13 @@ class Format14Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formData = Format14Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format14Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format14.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format14.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->download('Format14_' . $formData->nama_kampung . '.pdf');
+        return $pdf->download('Format14_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -490,12 +490,12 @@ class Format14Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $formData = Format14Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format14Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format14.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format14.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format14_' . $formData->nama_kampung . '.pdf');
+        return $pdf->stream('Format14_' .  $form->nama_kampung . '.pdf');
     }
 }

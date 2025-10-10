@@ -63,8 +63,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(count($formData) > 0)
-                            @foreach($formData as $index => $item)
+                        @if(count( $form) > 0)
+                            @foreach( $form as $index => $item)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->sektor }} / {{ $item->sub_sektor }}</td>

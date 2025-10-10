@@ -26,7 +26,7 @@
     </div>
     
     <div class="bg-white rounded-lg shadow overflow-x-auto">
-        @if($formData->count() > 0)
+        @if( $form->count() > 0)
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -39,7 +39,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($formData as $index => $data)
+                @foreach( $form as $index => $data)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $data->nomor_surat }}</td>

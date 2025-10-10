@@ -164,9 +164,9 @@ class Format6Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
         
         // Get form data for this disaster
-        $formData = Format6Form4::where('bencana_id', $bencana_id)->get();
-        $reports = $formData; // For compatibility with the view
-        return view('forms.form4.format6.list-format6', compact('bencana', 'formData', 'reports'));
+         $form = Format6Form4::where('bencana_id', $bencana_id)->get();
+        $reports =  $form; // For compatibility with the view
+        return view('forms.form4.format6.list-format6', compact('bencana', ' form', 'reports'));
     }
 
     /**

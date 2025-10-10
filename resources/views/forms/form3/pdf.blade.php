@@ -49,10 +49,10 @@
     <h1>FORMULIR 3 - PENDATAAN KE OPD</h1>
     
     <div class="header-info">
-        <p><strong>Bencana:</strong> {{ $pendataan->bencana->kategori_bencana->nama }}</p>
-        <p><strong>Tanggal Kejadian:</strong> {{ $pendataan->bencana->tanggal }}</p>
+        <p><strong>Bencana:</strong> {{  $form->bencana->kategori_bencana->nama }}</p>
+        <p><strong>Tanggal Kejadian:</strong> {{  $form->bencana->tanggal }}</p>
         <p><strong>Lokasi:</strong> 
-            @foreach($pendataan->bencana->desa as $desa)
+            @foreach( $form->bencana->desa as $desa)
                 {{ $desa->nama }}@if(!$loop->last), @endif
             @endforeach
         </p>
@@ -62,7 +62,7 @@
     <h2>1. DATA DASAR SEBELUM BENCANA</h2>
     
     <h3>Wilayah Bencana</h3>
-    <p>{{ $pendataan->wilayah_bencana }}</p>
+    <p>{{  $form->wilayah_bencana }}</p>
     
     <h3>Penduduk-Wilayah</h3>
     <table>
@@ -72,9 +72,9 @@
             <th>Jumlah Rumah Tangga</th>
         </tr>
         <tr>
-            <td>{{ number_format($pendataan->jumlah_laki_laki) }} orang</td>
-            <td>{{ number_format($pendataan->jumlah_perempuan) }} orang</td>
-            <td>{{ number_format($pendataan->jumlah_rumah_tangga) }} RT</td>
+            <td>{{ number_format( $form->jumlah_laki_laki) }} orang</td>
+            <td>{{ number_format( $form->jumlah_perempuan) }} orang</td>
+            <td>{{ number_format( $form->jumlah_rumah_tangga) }} RT</td>
         </tr>
     </table>
     
@@ -86,59 +86,59 @@
         </tr>
         <tr>
             <td>Rumah Sakit</td>
-            <td>{{ number_format($pendataan->jumlah_rumah_sakit) }}</td>
+            <td>{{ number_format( $form->jumlah_rumah_sakit) }}</td>
         </tr>
         <tr>
             <td>PUSKESMAS</td>
-            <td>{{ number_format($pendataan->jumlah_puskesmas) }}</td>
+            <td>{{ number_format( $form->jumlah_puskesmas) }}</td>
         </tr>
         <tr>
             <td>POSYANDU</td>
-            <td>{{ number_format($pendataan->jumlah_posyandu) }}</td>
+            <td>{{ number_format( $form->jumlah_posyandu) }}</td>
         </tr>
         <tr>
             <td>Dokter</td>
-            <td>{{ number_format($pendataan->jumlah_dokter) }}</td>
+            <td>{{ number_format( $form->jumlah_dokter) }}</td>
         </tr>
         <tr>
             <td>Paramedis</td>
-            <td>{{ number_format($pendataan->jumlah_paramedis) }}</td>
+            <td>{{ number_format( $form->jumlah_paramedis) }}</td>
         </tr>
         <tr>
             <td>Bidan</td>
-            <td>{{ number_format($pendataan->jumlah_bidan) }}</td>
+            <td>{{ number_format( $form->jumlah_bidan) }}</td>
         </tr>
         <tr>
             <td>Kunjungan PUSKESMAS</td>
-            <td>{{ number_format($pendataan->jumlah_kunjungan_puskesmas) }}</td>
+            <td>{{ number_format( $form->jumlah_kunjungan_puskesmas) }}</td>
         </tr>
         <tr>
             <td>Balita</td>
-            <td>{{ number_format($pendataan->jumlah_balita) }}</td>
+            <td>{{ number_format( $form->jumlah_balita) }}</td>
         </tr>
         <tr>
             <td>Balita Gizi Buruk</td>
-            <td>{{ number_format($pendataan->jumlah_balita_gizi_buruk) }}</td>
+            <td>{{ number_format( $form->jumlah_balita_gizi_buruk) }}</td>
         </tr>
         <tr>
             <td>Balita Gizi Kurang</td>
-            <td>{{ number_format($pendataan->jumlah_balita_gizi_kurang) }}</td>
+            <td>{{ number_format( $form->jumlah_balita_gizi_kurang) }}</td>
         </tr>
         <tr>
             <td>Manula</td>
-            <td>{{ number_format($pendataan->jumlah_manula) }}</td>
+            <td>{{ number_format( $form->jumlah_manula) }}</td>
         </tr>
         <tr>
             <td>Penerima JPS Kesehatan</td>
-            <td>{{ number_format($pendataan->jumlah_penerima_jps_kesehatan) }}</td>
+            <td>{{ number_format( $form->jumlah_penerima_jps_kesehatan) }}</td>
         </tr>
         <tr>
             <td>Rumah dengan Air Bersih</td>
-            <td>{{ number_format($pendataan->jumlah_rumah_air_bersih) }}</td>
+            <td>{{ number_format( $form->jumlah_rumah_air_bersih) }}</td>
         </tr>
         <tr>
             <td>Rumah dengan Jamban</td>
-            <td>{{ number_format($pendataan->jumlah_rumah_jamban) }}</td>
+            <td>{{ number_format( $form->jumlah_rumah_jamban) }}</td>
         </tr>
     </table>
     
@@ -152,15 +152,15 @@
         </tr>
         <tr>
             <td>Pasar</td>
-            <td>{{ number_format($pendataan->jumlah_pasar) }}</td>
+            <td>{{ number_format( $form->jumlah_pasar) }}</td>
         </tr>
         <tr>
             <td>Koperasi</td>
-            <td>{{ number_format($pendataan->jumlah_koperasi) }}</td>
+            <td>{{ number_format( $form->jumlah_koperasi) }}</td>
         </tr>
         <tr>
             <td>Tempat Wisata</td>
-            <td>{{ number_format($pendataan->jumlah_tempat_wisata) }}</td>
+            <td>{{ number_format( $form->jumlah_tempat_wisata) }}</td>
         </tr>
     </table>
     
@@ -168,13 +168,13 @@
     <h2>2. DATA SEKUNDER AKIBAT BENCANA</h2>
     
     <h3>Sejarah Bencana di Masa Lalu</h3>
-    <p>{{ $pendataan->sejarah_bencana ?: 'Tidak ada data' }}</p>
+    <p>{{  $form->sejarah_bencana ?: 'Tidak ada data' }}</p>
     
     <h3>Kronologis Kejadian Bencana Saat Ini</h3>
-    <p>{{ $pendataan->kronologis_bencana ?: 'Tidak ada data' }}</p>
+    <p>{{  $form->kronologis_bencana ?: 'Tidak ada data' }}</p>
     
     <h3>Wilayah Terdampak</h3>
-    <p>{{ $pendataan->wilayah_terdampak ?: 'Tidak ada data' }}</p>
+    <p>{{  $form->wilayah_terdampak ?: 'Tidak ada data' }}</p>
     
     <h3>Jumlah Korban</h3>
     <table>
@@ -184,14 +184,14 @@
             <th>Mengungsi</th>
         </tr>
         <tr>
-            <td>{{ number_format($pendataan->jumlah_korban_meninggal) }} orang</td>
-            <td>{{ number_format($pendataan->jumlah_korban_luka) }} orang</td>
-            <td>{{ number_format($pendataan->jumlah_korban_mengungsi) }} orang</td>
+            <td>{{ number_format( $form->jumlah_korban_meninggal) }} orang</td>
+            <td>{{ number_format( $form->jumlah_korban_luka) }} orang</td>
+            <td>{{ number_format( $form->jumlah_korban_mengungsi) }} orang</td>
         </tr>
     </table>
     
     <h3>Kerusakan dan Kerugian</h3>
-    <p>{{ $pendataan->kerusakan_kerugian ?: 'Tidak ada data' }}</p>
+    <p>{{  $form->kerusakan_kerugian ?: 'Tidak ada data' }}</p>
     
     <!-- 3. DATA SEKUNDER AKIBAT BENCANA (KHUSUS) -->
     <h2>3. DATA SEKUNDER AKIBAT BENCANA (KHUSUS)</h2>
@@ -204,15 +204,15 @@
         </tr>
         <tr>
             <td>Gangguan Ekonomi</td>
-            <td>{{ $pendataan->pertanian_gangguan_ekonomi ?: 'Tidak ada data' }}</td>
+            <td>{{  $form->pertanian_gangguan_ekonomi ?: 'Tidak ada data' }}</td>
         </tr>
         <tr>
             <td>Produk Pertanian Terdampak</td>
-            <td>{{ $pendataan->pertanian_produk_terdampak ?: 'Tidak ada data' }}</td>
+            <td>{{  $form->pertanian_produk_terdampak ?: 'Tidak ada data' }}</td>
         </tr>
         <tr>
             <td>Pemulihan yang Dibutuhkan</td>
-            <td>{{ $pendataan->pertanian_pemulihan ?: 'Tidak ada data' }}</td>
+            <td>{{  $form->pertanian_pemulihan ?: 'Tidak ada data' }}</td>
         </tr>
     </table>
     

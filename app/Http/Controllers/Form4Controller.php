@@ -33,7 +33,7 @@ use App\Models\Bencana;
 use App\Models\FormPerumahan;
 use App\Models\EnvironmentalReport;
 use App\Models\GovernmentReport;
-use App\Models\FormData;
+use App\Models\ form;
 use App\Models\Format10Form4;
 use App\Models\Format11Form4;
 use App\Models\Format12Form4;
@@ -919,7 +919,7 @@ class Form4Controller extends Controller
     /**
      * List Format 9 (Telecommunications sector) data
      */
-    public function listFormat9(Request $request)
+    public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -1011,7 +1011,7 @@ class Form4Controller extends Controller
     /**
      * List all form data for a bencana
      */
-    public function listFormat1(Request $request)
+    public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -1020,9 +1020,9 @@ class Form4Controller extends Controller
         }
         
         $bencana = Bencana::findOrFail($bencana_id);
-        $formData = FormPerumahan::where('bencana_id', $bencana_id)->latest()->get();
+         $form = FormPerumahan::where('bencana_id', $bencana_id)->latest()->get();
         
-        return view('forms.form4.format1.format1list', compact('bencana', 'formData'));
+        return view('forms.form4.format1.format1list', compact('bencana', ' form'));
     }
 
     /**

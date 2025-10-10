@@ -151,7 +151,7 @@ class Format15Controller extends Controller
             ];
             
             // Create new form data with mapped fields
-            $formData = Format15Form4::create($mappedData);
+             $form = Format15Form4::create($mappedData);
 
             DB::commit();
 
@@ -160,11 +160,11 @@ class Format15Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formData
+                    'data' =>  $form
                 ]);
             }
 
-            return redirect()->route('forms.form4.list-format15', ['bencana_id' => $formData->bencana_id])
+            return redirect()->route('forms.form4.list-format15', ['bencana_id' =>  $form->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -188,32 +188,32 @@ class Format15Controller extends Controller
      */
     public function show($id)
     {
-        $formData = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format15Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
         // Prepare data array that matches the Blade template expectations
         $data = [
-            'nama_kampung' => $formData->nama_kampung,
-            'nama_distrik' => $formData->nama_distrik,
+            'nama_kampung' =>  $form->nama_kampung,
+            'nama_distrik' =>  $form->nama_distrik,
             
             // Map facility data to expected tourism facility names
-            'penginapan_jumlah' => $formData->fasilitas_1_rb_tingkat + $formData->fasilitas_1_rs_tingkat + $formData->fasilitas_1_rr_tingkat,
-            'penginapan_harga' => ($formData->fasilitas_1_rb_harga + $formData->fasilitas_1_rs_harga + $formData->fasilitas_1_rr_harga) / 3,
-            'penginapan_total' => ($formData->fasilitas_1_rb_tingkat * $formData->fasilitas_1_rb_harga) + 
-                                 ($formData->fasilitas_1_rs_tingkat * $formData->fasilitas_1_rs_harga) + 
-                                 ($formData->fasilitas_1_rr_tingkat * $formData->fasilitas_1_rr_harga),
+            'penginapan_jumlah' =>  $form->fasilitas_1_rb_tingkat +  $form->fasilitas_1_rs_tingkat +  $form->fasilitas_1_rr_tingkat,
+            'penginapan_harga' => ( $form->fasilitas_1_rb_harga +  $form->fasilitas_1_rs_harga +  $form->fasilitas_1_rr_harga) / 3,
+            'penginapan_total' => ( $form->fasilitas_1_rb_tingkat *  $form->fasilitas_1_rb_harga) + 
+                                 ( $form->fasilitas_1_rs_tingkat *  $form->fasilitas_1_rs_harga) + 
+                                 ( $form->fasilitas_1_rr_tingkat *  $form->fasilitas_1_rr_harga),
             
-            'restoran_jumlah' => $formData->fasilitas_2_rb_tingkat + $formData->fasilitas_2_rs_tingkat + $formData->fasilitas_2_rr_tingkat,
-            'restoran_harga' => ($formData->fasilitas_2_rb_harga + $formData->fasilitas_2_rs_harga + $formData->fasilitas_2_rr_harga) / 3,
-            'restoran_total' => ($formData->fasilitas_2_rb_tingkat * $formData->fasilitas_2_rb_harga) + 
-                               ($formData->fasilitas_2_rs_tingkat * $formData->fasilitas_2_rs_harga) + 
-                               ($formData->fasilitas_2_rr_tingkat * $formData->fasilitas_2_rr_harga),
+            'restoran_jumlah' =>  $form->fasilitas_2_rb_tingkat +  $form->fasilitas_2_rs_tingkat +  $form->fasilitas_2_rr_tingkat,
+            'restoran_harga' => ( $form->fasilitas_2_rb_harga +  $form->fasilitas_2_rs_harga +  $form->fasilitas_2_rr_harga) / 3,
+            'restoran_total' => ( $form->fasilitas_2_rb_tingkat *  $form->fasilitas_2_rb_harga) + 
+                               ( $form->fasilitas_2_rs_tingkat *  $form->fasilitas_2_rs_harga) + 
+                               ( $form->fasilitas_2_rr_tingkat *  $form->fasilitas_2_rr_harga),
             
-            'objek_wisata_jumlah' => $formData->fasilitas_3_rb_tingkat + $formData->fasilitas_3_rs_tingkat + $formData->fasilitas_3_rr_tingkat,
-            'objek_wisata_harga' => ($formData->fasilitas_3_rb_harga + $formData->fasilitas_3_rs_harga + $formData->fasilitas_3_rr_harga) / 3,
-            'objek_wisata_total' => ($formData->fasilitas_3_rb_tingkat * $formData->fasilitas_3_rb_harga) + 
-                                   ($formData->fasilitas_3_rs_tingkat * $formData->fasilitas_3_rs_harga) + 
-                                   ($formData->fasilitas_3_rr_tingkat * $formData->fasilitas_3_rr_harga),
+            'objek_wisata_jumlah' =>  $form->fasilitas_3_rb_tingkat +  $form->fasilitas_3_rs_tingkat +  $form->fasilitas_3_rr_tingkat,
+            'objek_wisata_harga' => ( $form->fasilitas_3_rb_harga +  $form->fasilitas_3_rs_harga +  $form->fasilitas_3_rr_harga) / 3,
+            'objek_wisata_total' => ( $form->fasilitas_3_rb_tingkat *  $form->fasilitas_3_rb_harga) + 
+                                   ( $form->fasilitas_3_rs_tingkat *  $form->fasilitas_3_rs_harga) + 
+                                   ( $form->fasilitas_3_rr_tingkat *  $form->fasilitas_3_rr_harga),
             
             // For pusat_info, we can use a default or leave empty
             'pusat_info_jumlah' => 0,
@@ -221,13 +221,13 @@ class Format15Controller extends Controller
             'pusat_info_total' => 0,
             
             // Map loss data to tourism loss fields
-            'jumlah_usaha_terdampak' => $formData->kerugian_1_rb_nilai ?? 0,
-            'pendapatan_harian' => $formData->kerugian_2_rb_nilai ?? 0,
-            'hari_tutup' => $formData->kerugian_3_rb_nilai ?? 0,
-            'kehilangan_wisatawan' => $formData->kerugian_4_rb_nilai ?? 0,
+            'jumlah_usaha_terdampak' =>  $form->kerugian_1_rb_nilai ?? 0,
+            'pendapatan_harian' =>  $form->kerugian_2_rb_nilai ?? 0,
+            'hari_tutup' =>  $form->kerugian_3_rb_nilai ?? 0,
+            'kehilangan_wisatawan' =>  $form->kerugian_4_rb_nilai ?? 0,
         ];
         
-        return view('forms.form4.format15.show-format15', compact('formData', 'bencana', 'data'));
+        return view('forms.form4.format15.show-format15', compact(' form', 'bencana', 'data'));
     }
 
     /**
@@ -249,13 +249,13 @@ class Format15Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formData = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format15Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format15.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format15.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->download('Format15_' . $formData->nama_kampung . '.pdf');
+        return $pdf->download('Format15_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -263,13 +263,13 @@ class Format15Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $formData = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format15Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format15.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format15.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format15_' . $formData->nama_kampung . '.pdf');
+        return $pdf->stream('Format15_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -289,7 +289,7 @@ class Format15Controller extends Controller
     {
         try {
             DB::beginTransaction();
-            $formData = Format15Form4::findOrFail($id);
+             $form = Format15Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'kabupaten' => 'nullable|string',
@@ -396,7 +396,7 @@ class Format15Controller extends Controller
                 'kerugian_3_rb_nilai' => is_numeric($validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] ?? null) ? $validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] : null,
             ];
             
-            $formData->update($mappedData);
+             $form->update($mappedData);
             DB::commit();
             return redirect()->route('forms.form4.list-format15', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');

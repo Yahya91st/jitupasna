@@ -33,7 +33,7 @@
     <!-- Debug Information -->
     <div class="bg-yellow-100 p-3 mb-4 rounded">
         <h4 class="font-bold">Debug Info:</h4>
-        <p>Form Data ID: {{ $formData->id }}</p>
+        <p>Form Data ID: {{  $form->id }}</p>
         <p>Facility Reports Count: {{ $facilityReports->count() }}</p>
         <p>Loss Reports Count: {{ $lossReports->count() }}</p>
         <p>Government Reports Count: {{ $governmentReports->count() }}</p>

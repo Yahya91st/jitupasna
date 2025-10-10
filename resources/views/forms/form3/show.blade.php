@@ -10,29 +10,29 @@
     </div>
     @endif      <div class="mb-4 flex justify-between">
         <div class="flex gap-2">
-            <a href="{{ route('forms.form3.list', ['bencana_id' => $pendataan->bencana->id]) }}" class="btn btn-secondary">
+            <a href="{{ route('forms.form3.list', ['bencana_id' => $form->bencana->id]) }}" class="btn btn-secondary">
                 <i class="fa fa-arrow-left mr-2"></i> Kembali ke Daftar
             </a>
-            <a href="{{ route('forms.index', ['bencana_id' => $pendataan->bencana->id]) }}" class="btn btn-outline-secondary">
+            <a href="{{ route('forms.index', ['bencana_id' => $form->bencana->id]) }}" class="btn btn-outline-secondary">
                 <i class="fa fa-list mr-2"></i> Daftar Form
             </a>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('forms.form3.preview-pdf', $pendataan->id) }}" class="btn btn-info" target="_blank">
+            <a href="{{ route('forms.form3.preview-pdf', $form->id) }}" class="btn btn-info" target="_blank">
                 <i class="fa fa-eye mr-2"></i> Lihat PDF
             </a>
-            <a href="{{ route('forms.form3.pdf', $pendataan->id) }}" class="btn btn-primary" target="_blank">
+            <a href="{{ route('forms.form3.pdf', $form->id) }}" class="btn btn-primary" target="_blank">
                 <i class="fa fa-download mr-2"></i> Unduh PDF
             </a>
         </div>
     </div>
     
-    @if($pendataan->bencana)
+    @if($form->bencana)
         <div class="alert alert-light-primary color-primary mb-4">
-            <p><strong>Bencana:</strong> {{ $pendataan->bencana->kategori_bencana->nama }}</p>
-            <p><strong>Tanggal:</strong> {{ $pendataan->bencana->tanggal }}</p>
+            <p><strong>Bencana:</strong> {{ $form->bencana->kategori_bencana->nama }}</p>
+            <p><strong>Tanggal:</strong> {{ $form->bencana->tanggal }}</p>
             <p><strong>Lokasi:</strong> 
-                @foreach($pendataan->bencana->desa as $desa)
+                @foreach($form->bencana->desa as $desa)
                     {{ $desa->nama }}@if(!$loop->last), @endif
                 @endforeach
             </p>
@@ -45,7 +45,7 @@
         
         <div class="mb-6">
             <h3 class="text-lg font-medium mb-2">Wilayah Bencana</h3>
-            <p>{{ $pendataan->wilayah_bencana }}</p>
+            <p>{{ $form->wilayah_bencana }}</p>
         </div>
         
         <div class="mb-6">
@@ -53,15 +53,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <p class="font-medium">Jumlah Laki-laki:</p>
-                    <p>{{ number_format($pendataan->jumlah_laki_laki) }} orang</p>
+                    <p>{{ number_format($form->jumlah_laki_laki) }} orang</p>
                 </div>
                 <div>
                     <p class="font-medium">Jumlah Perempuan:</p>
-                    <p>{{ number_format($pendataan->jumlah_perempuan) }} orang</p>
+                    <p>{{ number_format($form->jumlah_perempuan) }} orang</p>
                 </div>
                 <div>
                     <p class="font-medium">Jumlah Rumah Tangga:</p>
-                    <p>{{ number_format($pendataan->jumlah_rumah_tangga) }} RT</p>
+                    <p>{{ number_format($form->jumlah_rumah_tangga) }} RT</p>
                 </div>
             </div>
         </div>
@@ -76,17 +76,17 @@
         
         <div class="mb-4">
             <h3 class="text-lg font-medium mb-2">Sejarah Bencana di Masa Lalu</h3>
-            <p>{{ $pendataan->sejarah_bencana }}</p>
+            <p>{{ $form->sejarah_bencana }}</p>
         </div>
         
         <div class="mb-4">
             <h3 class="text-lg font-medium mb-2">Kronologis Kejadian Bencana Saat Ini</h3>
-            <p>{{ $pendataan->kronologis_bencana }}</p>
+            <p>{{ $form->kronologis_bencana }}</p>
         </div>
         
         <div class="mb-4">
             <h3 class="text-lg font-medium mb-2">Wilayah Terdampak</h3>
-            <p>{{ $pendataan->wilayah_terdampak }}</p>
+            <p>{{ $form->wilayah_terdampak }}</p>
         </div>
         
         <div class="mb-4">
@@ -94,22 +94,22 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <p class="font-medium">Meninggal:</p>
-                    <p>{{ number_format($pendataan->jumlah_korban_meninggal) }} orang</p>
+                    <p>{{ number_format($form->jumlah_korban_meninggal) }} orang</p>
                 </div>
                 <div>
                     <p class="font-medium">Luka-luka:</p>
-                    <p>{{ number_format($pendataan->jumlah_korban_luka) }} orang</p>
+                    <p>{{ number_format($form->jumlah_korban_luka) }} orang</p>
                 </div>
                 <div>
                     <p class="font-medium">Mengungsi:</p>
-                    <p>{{ number_format($pendataan->jumlah_korban_mengungsi) }} orang</p>
+                    <p>{{ number_format($form->jumlah_korban_mengungsi) }} orang</p>
                 </div>
             </div>
         </div>
         
         <div class="mb-4">
             <h3 class="text-lg font-medium mb-2">Kerusakan dan Kerugian</h3>
-            <p>{{ $pendataan->kerusakan_kerugian }}</p>
+            <p>{{ $form->kerusakan_kerugian }}</p>
         </div>
     </div>
     
@@ -124,15 +124,15 @@
             <h3 class="text-lg font-medium mb-2">Bidang Pertanian</h3>
             <div class="mb-2">
                 <p class="font-medium">Gangguan Ekonomi:</p>
-                <p>{{ $pendataan->pertanian_gangguan_ekonomi ?: 'Tidak ada data' }}</p>
+                <p>{{ $form->pertanian_gangguan_ekonomi ?: 'Tidak ada data' }}</p>
             </div>
             <div class="mb-2">
                 <p class="font-medium">Produk Terdampak:</p>
-                <p>{{ $pendataan->pertanian_produk_terdampak ?: 'Tidak ada data' }}</p>
+                <p>{{ $form->pertanian_produk_terdampak ?: 'Tidak ada data' }}</p>
             </div>
             <div class="mb-2">
                 <p class="font-medium">Pemulihan yang Dibutuhkan:</p>
-                <p>{{ $pendataan->pertanian_pemulihan ?: 'Tidak ada data' }}</p>
+                <p>{{ $form->pertanian_pemulihan ?: 'Tidak ada data' }}</p>
             </div>
         </div>
         

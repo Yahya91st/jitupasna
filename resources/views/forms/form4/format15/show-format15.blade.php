@@ -36,8 +36,8 @@
     <!-- Identitas Lokasi -->
     <table class="table table-bordered">
         <tr>
-            <td style="width: 50%"><strong>NAMA KAMPUNG:</strong> {{ $formData->nama_kampung ?? '-' }}</td>
-            <td><strong>NAMA DISTRIK:</strong> {{ $formData->nama_distrik ?? '-' }}</td>
+            <td style="width: 50%"><strong>NAMA KAMPUNG:</strong> {{  $form->nama_kampung ?? '-' }}</td>
+            <td><strong>NAMA DISTRIK:</strong> {{  $form->nama_distrik ?? '-' }}</td>
         </tr>
     </table>
 
@@ -56,41 +56,41 @@
             <tbody>
                 @php
                     // Fasilitas 1 (Penginapan)
-                    $fasilitas1_total_jumlah = ($formData->fasilitas_1_rb_tingkat ?? 0) + ($formData->fasilitas_1_rs_tingkat ?? 0) + ($formData->fasilitas_1_rr_tingkat ?? 0);
-                    $fasilitas1_avg_harga = (($formData->fasilitas_1_rb_harga ?? 0) + ($formData->fasilitas_1_rs_harga ?? 0) + ($formData->fasilitas_1_rr_harga ?? 0)) / 3;
-                    $fasilitas1_total_biaya = (($formData->fasilitas_1_rb_tingkat ?? 0) * ($formData->fasilitas_1_rb_harga ?? 0)) + 
-                                             (($formData->fasilitas_1_rs_tingkat ?? 0) * ($formData->fasilitas_1_rs_harga ?? 0)) + 
-                                             (($formData->fasilitas_1_rr_tingkat ?? 0) * ($formData->fasilitas_1_rr_harga ?? 0));
+                    $fasilitas1_total_jumlah = ( $form->fasilitas_1_rb_tingkat ?? 0) + ( $form->fasilitas_1_rs_tingkat ?? 0) + ( $form->fasilitas_1_rr_tingkat ?? 0);
+                    $fasilitas1_avg_harga = (( $form->fasilitas_1_rb_harga ?? 0) + ( $form->fasilitas_1_rs_harga ?? 0) + ( $form->fasilitas_1_rr_harga ?? 0)) / 3;
+                    $fasilitas1_total_biaya = (( $form->fasilitas_1_rb_tingkat ?? 0) * ( $form->fasilitas_1_rb_harga ?? 0)) + 
+                                             (( $form->fasilitas_1_rs_tingkat ?? 0) * ( $form->fasilitas_1_rs_harga ?? 0)) + 
+                                             (( $form->fasilitas_1_rr_tingkat ?? 0) * ( $form->fasilitas_1_rr_harga ?? 0));
                     
                     // Fasilitas 2 (Restoran)
-                    $fasilitas2_total_jumlah = ($formData->fasilitas_2_rb_tingkat ?? 0) + ($formData->fasilitas_2_rs_tingkat ?? 0) + ($formData->fasilitas_2_rr_tingkat ?? 0);
-                    $fasilitas2_avg_harga = (($formData->fasilitas_2_rb_harga ?? 0) + ($formData->fasilitas_2_rs_harga ?? 0) + ($formData->fasilitas_2_rr_harga ?? 0)) / 3;
-                    $fasilitas2_total_biaya = (($formData->fasilitas_2_rb_tingkat ?? 0) * ($formData->fasilitas_2_rb_harga ?? 0)) + 
-                                             (($formData->fasilitas_2_rs_tingkat ?? 0) * ($formData->fasilitas_2_rs_harga ?? 0)) + 
-                                             (($formData->fasilitas_2_rr_tingkat ?? 0) * ($formData->fasilitas_2_rr_harga ?? 0));
+                    $fasilitas2_total_jumlah = ( $form->fasilitas_2_rb_tingkat ?? 0) + ( $form->fasilitas_2_rs_tingkat ?? 0) + ( $form->fasilitas_2_rr_tingkat ?? 0);
+                    $fasilitas2_avg_harga = (( $form->fasilitas_2_rb_harga ?? 0) + ( $form->fasilitas_2_rs_harga ?? 0) + ( $form->fasilitas_2_rr_harga ?? 0)) / 3;
+                    $fasilitas2_total_biaya = (( $form->fasilitas_2_rb_tingkat ?? 0) * ( $form->fasilitas_2_rb_harga ?? 0)) + 
+                                             (( $form->fasilitas_2_rs_tingkat ?? 0) * ( $form->fasilitas_2_rs_harga ?? 0)) + 
+                                             (( $form->fasilitas_2_rr_tingkat ?? 0) * ( $form->fasilitas_2_rr_harga ?? 0));
                     
                     // Fasilitas 3 (Objek Wisata)
-                    $fasilitas3_total_jumlah = ($formData->fasilitas_3_rb_tingkat ?? 0) + ($formData->fasilitas_3_rs_tingkat ?? 0) + ($formData->fasilitas_3_rr_tingkat ?? 0);
-                    $fasilitas3_avg_harga = (($formData->fasilitas_3_rb_harga ?? 0) + ($formData->fasilitas_3_rs_harga ?? 0) + ($formData->fasilitas_3_rr_harga ?? 0)) / 3;
-                    $fasilitas3_total_biaya = (($formData->fasilitas_3_rb_tingkat ?? 0) * ($formData->fasilitas_3_rb_harga ?? 0)) + 
-                                             (($formData->fasilitas_3_rs_tingkat ?? 0) * ($formData->fasilitas_3_rs_harga ?? 0)) + 
-                                             (($formData->fasilitas_3_rr_tingkat ?? 0) * ($formData->fasilitas_3_rr_harga ?? 0));
+                    $fasilitas3_total_jumlah = ( $form->fasilitas_3_rb_tingkat ?? 0) + ( $form->fasilitas_3_rs_tingkat ?? 0) + ( $form->fasilitas_3_rr_tingkat ?? 0);
+                    $fasilitas3_avg_harga = (( $form->fasilitas_3_rb_harga ?? 0) + ( $form->fasilitas_3_rs_harga ?? 0) + ( $form->fasilitas_3_rr_harga ?? 0)) / 3;
+                    $fasilitas3_total_biaya = (( $form->fasilitas_3_rb_tingkat ?? 0) * ( $form->fasilitas_3_rb_harga ?? 0)) + 
+                                             (( $form->fasilitas_3_rs_tingkat ?? 0) * ( $form->fasilitas_3_rs_harga ?? 0)) + 
+                                             (( $form->fasilitas_3_rr_tingkat ?? 0) * ( $form->fasilitas_3_rr_harga ?? 0));
                 @endphp
                 
                 <tr>
-                    <td class="text-start"><strong>{{ $formData->fasilitas_1_jenis ?? 'Penginapan / Homestay' }}</strong></td>
+                    <td class="text-start"><strong>{{  $form->fasilitas_1_jenis ?? 'Penginapan / Homestay' }}</strong></td>
                     <td>{{ $fasilitas1_total_jumlah }}</td>
                     <td class="text-end">Rp {{ number_format($fasilitas1_avg_harga, 0, ',', '.') }}</td>
                     <td class="text-end">Rp {{ number_format($fasilitas1_total_biaya, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td class="text-start"><strong>{{ $formData->fasilitas_2_jenis ?? 'Restoran / Warung Wisata' }}</strong></td>
+                    <td class="text-start"><strong>{{  $form->fasilitas_2_jenis ?? 'Restoran / Warung Wisata' }}</strong></td>
                     <td>{{ $fasilitas2_total_jumlah }}</td>
                     <td class="text-end">Rp {{ number_format($fasilitas2_avg_harga, 0, ',', '.') }}</td>
                     <td class="text-end">Rp {{ number_format($fasilitas2_total_biaya, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td class="text-start"><strong>{{ $formData->fasilitas_3_jenis ?? 'Objek Wisata (Pantai, Situs, dll)' }}</strong></td>
+                    <td class="text-start"><strong>{{  $form->fasilitas_3_jenis ?? 'Objek Wisata (Pantai, Situs, dll)' }}</strong></td>
                     <td>{{ $fasilitas3_total_jumlah }}</td>
                     <td class="text-end">Rp {{ number_format($fasilitas3_avg_harga, 0, ',', '.') }}</td>
                     <td class="text-end">Rp {{ number_format($fasilitas3_total_biaya, 0, ',', '.') }}</td>
@@ -110,20 +110,20 @@
         </thead>
         <tbody>
             <tr>
-                <td><strong>{{ $formData->kerugian_1_jenis ?? 'Jumlah Usaha Pariwisata Terdampak' }}</strong></td>
-                <td class="text-center">{{ $formData->kerugian_1_rb_nilai ?? ($formData->kerugian_1_rs_nilai ?? 0) }} unit</td>
+                <td><strong>{{  $form->kerugian_1_jenis ?? 'Jumlah Usaha Pariwisata Terdampak' }}</strong></td>
+                <td class="text-center">{{  $form->kerugian_1_rb_nilai ?? ( $form->kerugian_1_rs_nilai ?? 0) }} unit</td>
             </tr>
             <tr>
-                <td><strong>{{ $formData->kerugian_2_jenis ?? 'Rata-rata Pendapatan Harian' }}</strong></td>
-                <td class="text-end">Rp {{ number_format($formData->kerugian_2_rb_nilai ?? ($formData->kerugian_2_rs_nilai ?? 0), 0, ',', '.') }}</td>
+                <td><strong>{{  $form->kerugian_2_jenis ?? 'Rata-rata Pendapatan Harian' }}</strong></td>
+                <td class="text-end">Rp {{ number_format( $form->kerugian_2_rb_nilai ?? ( $form->kerugian_2_rs_nilai ?? 0), 0, ',', '.') }}</td>
             </tr>
             <tr>
-                <td><strong>{{ $formData->kerugian_3_jenis ?? 'Jumlah Hari Tutup Operasi' }}</strong></td>
-                <td class="text-center">{{ $formData->kerugian_3_rb_nilai ?? ($formData->kerugian_3_rs_nilai ?? 0) }} hari</td>
+                <td><strong>{{  $form->kerugian_3_jenis ?? 'Jumlah Hari Tutup Operasi' }}</strong></td>
+                <td class="text-center">{{  $form->kerugian_3_rb_nilai ?? ( $form->kerugian_3_rs_nilai ?? 0) }} hari</td>
             </tr>
             <tr>
-                <td><strong>{{ $formData->kerugian_4_jenis ?? 'Kehilangan Wisatawan' }}</strong></td>
-                <td class="text-center">{{ $formData->kerugian_4_rb_nilai ?? ($formData->kerugian_4_rs_nilai ?? 0) }} orang</td>
+                <td><strong>{{  $form->kerugian_4_jenis ?? 'Kehilangan Wisatawan' }}</strong></td>
+                <td class="text-center">{{  $form->kerugian_4_rb_nilai ?? ( $form->kerugian_4_rs_nilai ?? 0) }} orang</td>
             </tr>
         </tbody>
     </table>
@@ -131,10 +131,10 @@
     <!-- Total Summary -->
     @php
         $totalKerusakan = $fasilitas1_total_biaya + $fasilitas2_total_biaya + $fasilitas3_total_biaya;
-        $totalKerugian = ($formData->kerugian_1_rb_nilai ?? 0) + ($formData->kerugian_1_rs_nilai ?? 0) +
-                        ($formData->kerugian_2_rb_nilai ?? 0) + ($formData->kerugian_2_rs_nilai ?? 0) +
-                        ($formData->kerugian_3_rb_nilai ?? 0) + ($formData->kerugian_3_rs_nilai ?? 0) +
-                        ($formData->kerugian_4_rb_nilai ?? 0) + ($formData->kerugian_4_rs_nilai ?? 0);
+        $totalKerugian = ( $form->kerugian_1_rb_nilai ?? 0) + ( $form->kerugian_1_rs_nilai ?? 0) +
+                        ( $form->kerugian_2_rb_nilai ?? 0) + ( $form->kerugian_2_rs_nilai ?? 0) +
+                        ( $form->kerugian_3_rb_nilai ?? 0) + ( $form->kerugian_3_rs_nilai ?? 0) +
+                        ( $form->kerugian_4_rb_nilai ?? 0) + ( $form->kerugian_4_rs_nilai ?? 0);
         $grandTotal = $totalKerusakan + $totalKerugian;
     @endphp
 

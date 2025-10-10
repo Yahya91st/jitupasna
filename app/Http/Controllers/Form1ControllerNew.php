@@ -73,9 +73,9 @@ class Form1ControllerNew extends Controller
 
         //mencari lalu memilih data dari form1 yang punya 
         //$bencana_id yang sama dan diurutkan dari yang paling baru
-        $formData=Form1::where('bencana_id',$bencana_id)->latest()->get();
+         $form=Form1::where('bencana_id',$bencana_id)->latest()->get();
         
-        return view('forms.form1.list',compact('bencana', 'formData'));
+        return view('forms.form1.list',compact('bencana', ' form'));
     }
 
     //fungsi untuk menampilkan view show
@@ -86,7 +86,7 @@ class Form1ControllerNew extends Controller
     }
 
 
-    //aku tidak terlalu tahu $id ini, mungkin terfokus ke 1 formData
+    //aku tidak terlalu tahu $id ini, mungkin terfokus ke 1  form
     public function generatePDF($id) 
     {
         //mencari data yang dikirim menggunakan id

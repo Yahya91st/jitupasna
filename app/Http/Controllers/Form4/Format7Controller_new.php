@@ -116,9 +116,9 @@ class Format7Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
         
         // Get form data for this disaster
-        $formData = Format7Form4::where('bencana_id', $bencana_id)->get();
+         $form = Format7Form4::where('bencana_id', $bencana_id)->get();
         
-        return view('forms.form4.format7.format7list', compact('bencana', 'formData'));
+        return view('forms.form4.format7.format7list', compact('bencana', ' form'));
     }
 
     /**

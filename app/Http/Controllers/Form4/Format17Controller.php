@@ -134,7 +134,7 @@ class Format17Controller extends Controller
             ]);
 
             // Create new form data
-            $formData = Format17Form4::create($validated);
+             $form = Format17Form4::create($validated);
 
             DB::commit();
 
@@ -143,11 +143,11 @@ class Format17Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formData
+                    'data' =>  $form
                 ]);
             }
 
-            return redirect()->route('forms.form4.list-format17', ['bencana_id' => $formData->bencana_id])
+            return redirect()->route('forms.form4.list-format17', ['bencana_id' =>  $form->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -171,8 +171,8 @@ class Format17Controller extends Controller
      */
     public function show($id)
     {
-        $formData = Format17Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format17Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
         // Prepare damage reports (kerusakan) data as arrays
         $damageReports = [
@@ -183,45 +183,45 @@ class Format17Controller extends Controller
         
         // Process Ekosistem Darat
         for ($i = 1; $i <= 3; $i++) {
-            if (!empty($formData->{"ekosistem_darat_{$i}_jenis"})) {
+            if (!empty( $form->{"ekosistem_darat_{$i}_jenis"})) {
                 $damageReports['darat'][] = (object)[
-                    'jenis_kerusakan' => $formData->{"ekosistem_darat_{$i}_jenis"},
-                    'rb' => $formData->{"ekosistem_darat_{$i}_rb"} ?? 0,
-                    'rs' => $formData->{"ekosistem_darat_{$i}_rs"} ?? 0,
-                    'rr' => $formData->{"ekosistem_darat_{$i}_rr"} ?? 0,
-                    'harga_rb' => $formData->{"ekosistem_darat_{$i}_rb_harga"} ?? 0,
-                    'harga_rs' => $formData->{"ekosistem_darat_{$i}_rs_harga"} ?? 0,
-                    'harga_rr' => $formData->{"ekosistem_darat_{$i}_rr_harga"} ?? 0,
+                    'jenis_kerusakan' =>  $form->{"ekosistem_darat_{$i}_jenis"},
+                    'rb' =>  $form->{"ekosistem_darat_{$i}_rb"} ?? 0,
+                    'rs' =>  $form->{"ekosistem_darat_{$i}_rs"} ?? 0,
+                    'rr' =>  $form->{"ekosistem_darat_{$i}_rr"} ?? 0,
+                    'harga_rb' =>  $form->{"ekosistem_darat_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' =>  $form->{"ekosistem_darat_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' =>  $form->{"ekosistem_darat_{$i}_rr_harga"} ?? 0,
                 ];
             }
         }
         
         // Process Ekosistem Laut
         for ($i = 1; $i <= 3; $i++) {
-            if (!empty($formData->{"ekosistem_laut_{$i}_jenis"})) {
+            if (!empty( $form->{"ekosistem_laut_{$i}_jenis"})) {
                 $damageReports['laut'][] = (object)[
-                    'jenis_kerusakan' => $formData->{"ekosistem_laut_{$i}_jenis"},
-                    'rb' => $formData->{"ekosistem_laut_{$i}_rb"} ?? 0,
-                    'rs' => $formData->{"ekosistem_laut_{$i}_rs"} ?? 0,
-                    'rr' => $formData->{"ekosistem_laut_{$i}_rr"} ?? 0,
-                    'harga_rb' => $formData->{"ekosistem_laut_{$i}_rb_harga"} ?? 0,
-                    'harga_rs' => $formData->{"ekosistem_laut_{$i}_rs_harga"} ?? 0,
-                    'harga_rr' => $formData->{"ekosistem_laut_{$i}_rr_harga"} ?? 0,
+                    'jenis_kerusakan' =>  $form->{"ekosistem_laut_{$i}_jenis"},
+                    'rb' =>  $form->{"ekosistem_laut_{$i}_rb"} ?? 0,
+                    'rs' =>  $form->{"ekosistem_laut_{$i}_rs"} ?? 0,
+                    'rr' =>  $form->{"ekosistem_laut_{$i}_rr"} ?? 0,
+                    'harga_rb' =>  $form->{"ekosistem_laut_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' =>  $form->{"ekosistem_laut_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' =>  $form->{"ekosistem_laut_{$i}_rr_harga"} ?? 0,
                 ];
             }
         }
         
         // Process Ekosistem Udara
         for ($i = 1; $i <= 3; $i++) {
-            if (!empty($formData->{"ekosistem_udara_{$i}_jenis"})) {
+            if (!empty( $form->{"ekosistem_udara_{$i}_jenis"})) {
                 $damageReports['udara'][] = (object)[
-                    'jenis_kerusakan' => $formData->{"ekosistem_udara_{$i}_jenis"},
-                    'rb' => $formData->{"ekosistem_udara_{$i}_rb"} ?? 0,
-                    'rs' => $formData->{"ekosistem_udara_{$i}_rs"} ?? 0,
-                    'rr' => $formData->{"ekosistem_udara_{$i}_rr"} ?? 0,
-                    'harga_rb' => $formData->{"ekosistem_udara_{$i}_rb_harga"} ?? 0,
-                    'harga_rs' => $formData->{"ekosistem_udara_{$i}_rs_harga"} ?? 0,
-                    'harga_rr' => $formData->{"ekosistem_udara_{$i}_rr_harga"} ?? 0,
+                    'jenis_kerusakan' =>  $form->{"ekosistem_udara_{$i}_jenis"},
+                    'rb' =>  $form->{"ekosistem_udara_{$i}_rb"} ?? 0,
+                    'rs' =>  $form->{"ekosistem_udara_{$i}_rs"} ?? 0,
+                    'rr' =>  $form->{"ekosistem_udara_{$i}_rr"} ?? 0,
+                    'harga_rb' =>  $form->{"ekosistem_udara_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' =>  $form->{"ekosistem_udara_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' =>  $form->{"ekosistem_udara_{$i}_rr_harga"} ?? 0,
                 ];
             }
         }
@@ -235,16 +235,16 @@ class Format17Controller extends Controller
         
         // Process Kerugian data (based on validation fields)
         for ($i = 1; $i <= 3; $i++) {
-            if (!empty($formData->{"kerugian_{$i}_jenis"})) {
+            if (!empty( $form->{"kerugian_{$i}_jenis"})) {
                 $lossReports['kehilangan_jasa_lingkungan'][] = (object)[
-                    'jenis' => $formData->{"kerugian_{$i}_jenis"},
+                    'jenis' =>  $form->{"kerugian_{$i}_jenis"},
                     'dasar_perhitungan' => 'Berdasarkan perhitungan standar',
-                    'rb' => $formData->{"kerugian_{$i}_rb"} ?? 0,
-                    'rs' => $formData->{"kerugian_{$i}_rs"} ?? 0,
-                    'rr' => $formData->{"kerugian_{$i}_rr"} ?? 0,
-                    'harga_rb' => $formData->{"kerugian_{$i}_rb_harga"} ?? 0,
-                    'harga_rs' => $formData->{"kerugian_{$i}_rs_harga"} ?? 0,
-                    'harga_rr' => $formData->{"kerugian_{$i}_rr_harga"} ?? 0,
+                    'rb' =>  $form->{"kerugian_{$i}_rb"} ?? 0,
+                    'rs' =>  $form->{"kerugian_{$i}_rs"} ?? 0,
+                    'rr' =>  $form->{"kerugian_{$i}_rr"} ?? 0,
+                    'harga_rb' =>  $form->{"kerugian_{$i}_rb_harga"} ?? 0,
+                    'harga_rs' =>  $form->{"kerugian_{$i}_rs_harga"} ?? 0,
+                    'harga_rr' =>  $form->{"kerugian_{$i}_rr_harga"} ?? 0,
                 ];
             }
         }
@@ -278,7 +278,7 @@ class Format17Controller extends Controller
         $grandTotal = $totalKerusakan + $totalKerugian;
         
         return view('forms.form4.format17.show-format17', compact(
-            'formData', 
+            ' form', 
             'bencana', 
             'damageReports', 
             'lossReports',
@@ -305,7 +305,7 @@ class Format17Controller extends Controller
     {
         try {
             DB::beginTransaction();
-            $formData = Format17Form4::findOrFail($id);
+             $form = Format17Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
@@ -400,7 +400,7 @@ class Format17Controller extends Controller
                 'kerugian_3_rr_harga' => 'nullable|numeric',
                 'total_kerusakan' => 'nullable|numeric',
             ]);
-            $formData->update($validated);
+             $form->update($validated);
             DB::commit();
             return redirect()->route('forms.form4.list-format17', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
@@ -441,13 +441,13 @@ class Format17Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formData = Format17Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format17Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format17.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format17.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->download('Format17_' . $formData->nama_kampung . '.pdf');
+        return $pdf->download('Format17_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -455,12 +455,12 @@ class Format17Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $formData = Format17Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format17Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format17.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format17.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format17_' . $formData->nama_kampung . '.pdf');
+        return $pdf->stream('Format17_' .  $form->nama_kampung . '.pdf');
     }
 }

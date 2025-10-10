@@ -105,8 +105,8 @@ class KebutuhanController extends Controller
         $relationshipData = [];
         $numericColumns = [];
         
-        foreach ($tables as $formKey => $formData) {
-            foreach ($formData['tables'] as $tableInfo) {
+        foreach ($tables as $formKey =>  $form) {
+            foreach ( $form['tables'] as $tableInfo) {
                 $tableName = $tableInfo['name'];
                 if (Schema::hasTable($tableName)) {
                     $tableColumns = Schema::getColumnListing($tableName);
@@ -243,7 +243,7 @@ class KebutuhanController extends Controller
         $kerugian = Kerugian::where('bencana_id', $id)->with('bencana')->get();
         
         // Get data from Form3
-        $pendataan = Pendataan::where('bencana_id', $id)->first();
+         $form = Pendataan::where('bencana_id', $id)->first();
         
         // Get data from Form4 tables
         $perumahan = Format1Form4::where('bencana_id', $id)->get();

@@ -122,7 +122,7 @@ class Form10Controller extends Controller
     /**
      * Display a listing of Analisa
      */
-    public function listForm10(Request $request)
+    public function list(Request $request)
     {
         $bencana_id = $request->query('bencana_id');
         $query = Form10::with('bencana');

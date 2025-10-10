@@ -63,7 +63,7 @@ class Format13Controller extends Controller
             ]);
 
             // Create new form data
-            $formData = Format13Form4::create($validated);
+             $form = Format13Form4::create($validated);
 
             DB::commit();
 
@@ -72,11 +72,11 @@ class Format13Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formData
+                    'data' =>  $form
                 ]);
             }
 
-            return redirect()->route('forms.form4.list-format13', ['bencana_id' => $formData->bencana_id])
+            return redirect()->route('forms.form4.list-format13', ['bencana_id' =>  $form->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -100,35 +100,35 @@ class Format13Controller extends Controller
      */
     public function show($id)
     {
-        $formData = Format13Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format13Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
         // Prepare data array that matches the Blade template expectations
         $data = [
-            'nama_kampung' => $formData->nama_kampung,
-            'nama_distrik' => $formData->nama_distrik,
+            'nama_kampung' =>  $form->nama_kampung,
+            'nama_distrik' =>  $form->nama_distrik,
             
             // A. Kerusakan Bangunan Produksi - Map generic items to specific building types
-            'unit_produksi_jumlah' => $formData->jumlah_rusak_1 ?? 0,
+            'unit_produksi_jumlah' =>  $form->jumlah_rusak_1 ?? 0,
             'unit_produksi_luas' => 0, // Not available in current model
-            'unit_produksi_harga' => $formData->harga_satuan_1 ?? 0,
-            'unit_produksi_total' => ($formData->jumlah_rusak_1 ?? 0) * ($formData->harga_satuan_1 ?? 0),
+            'unit_produksi_harga' =>  $form->harga_satuan_1 ?? 0,
+            'unit_produksi_total' => ( $form->jumlah_rusak_1 ?? 0) * ( $form->harga_satuan_1 ?? 0),
             
-            'gudang_jumlah' => $formData->jumlah_rusak_2 ?? 0,
+            'gudang_jumlah' =>  $form->jumlah_rusak_2 ?? 0,
             'gudang_luas' => 0,
-            'gudang_harga' => $formData->harga_satuan_2 ?? 0,
-            'gudang_total' => ($formData->jumlah_rusak_2 ?? 0) * ($formData->harga_satuan_2 ?? 0),
+            'gudang_harga' =>  $form->harga_satuan_2 ?? 0,
+            'gudang_total' => ( $form->jumlah_rusak_2 ?? 0) * ( $form->harga_satuan_2 ?? 0),
             
-            'toko_jumlah' => $formData->jumlah_rusak_3 ?? 0,
+            'toko_jumlah' =>  $form->jumlah_rusak_3 ?? 0,
             'toko_luas' => 0,
-            'toko_harga' => $formData->harga_satuan_3 ?? 0,
-            'toko_total' => ($formData->jumlah_rusak_3 ?? 0) * ($formData->harga_satuan_3 ?? 0),
+            'toko_harga' =>  $form->harga_satuan_3 ?? 0,
+            'toko_total' => ( $form->jumlah_rusak_3 ?? 0) * ( $form->harga_satuan_3 ?? 0),
             
-            'lainnya_jenis_bangunan' => $formData->item_rusak_4 ?? 'Lainnya',
-            'lainnya_bangunan_jumlah' => $formData->jumlah_rusak_4 ?? 0,
+            'lainnya_jenis_bangunan' =>  $form->item_rusak_4 ?? 'Lainnya',
+            'lainnya_bangunan_jumlah' =>  $form->jumlah_rusak_4 ?? 0,
             'lainnya_bangunan_luas' => 0,
-            'lainnya_bangunan_harga' => $formData->harga_satuan_4 ?? 0,
-            'lainnya_bangunan_total' => ($formData->jumlah_rusak_4 ?? 0) * ($formData->harga_satuan_4 ?? 0),
+            'lainnya_bangunan_harga' =>  $form->harga_satuan_4 ?? 0,
+            'lainnya_bangunan_total' => ( $form->jumlah_rusak_4 ?? 0) * ( $form->harga_satuan_4 ?? 0),
             
             // B. Kerusakan Peralatan Produksi - Map to equipment types
             'mesin_jahit_jumlah' => 0, // Default values since current model doesn't have these
@@ -143,10 +143,10 @@ class Format13Controller extends Controller
             'etalase_harga' => 0,
             'etalase_total' => 0,
             
-            'lainnya_jenis_peralatan' => $formData->item_rusak_5 ?? 'Lainnya',
-            'lainnya_peralatan_jumlah' => $formData->jumlah_rusak_5 ?? 0,
-            'lainnya_peralatan_harga' => $formData->harga_satuan_5 ?? 0,
-            'lainnya_peralatan_total' => ($formData->jumlah_rusak_5 ?? 0) * ($formData->harga_satuan_5 ?? 0),
+            'lainnya_jenis_peralatan' =>  $form->item_rusak_5 ?? 'Lainnya',
+            'lainnya_peralatan_jumlah' =>  $form->jumlah_rusak_5 ?? 0,
+            'lainnya_peralatan_harga' =>  $form->harga_satuan_5 ?? 0,
+            'lainnya_peralatan_total' => ( $form->jumlah_rusak_5 ?? 0) * ( $form->harga_satuan_5 ?? 0),
             
             // C. Kehilangan Produksi & Pendapatan - Default values as not in current model
             'roti_produksi' => 0,
@@ -176,7 +176,7 @@ class Format13Controller extends Controller
             'alat_bantu' => 0,
         ];
         
-        return view('forms.form4.format13.show-format13', compact('formData', 'bencana', 'data'));
+        return view('forms.form4.format13.show-format13', compact(' form', 'bencana', 'data'));
     }
 
     /**
@@ -196,7 +196,7 @@ class Format13Controller extends Controller
     {
         try {
             DB::beginTransaction();
-            $formData = Format13Form4::findOrFail($id);
+             $form = Format13Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
@@ -219,7 +219,7 @@ class Format13Controller extends Controller
                 'total_biaya' => 'nullable|numeric',
                 'keterangan' => 'nullable|string',
             ]);
-            $formData->update($validated);
+             $form->update($validated);
             DB::commit();
             return redirect()->route('forms.form4.list-format13', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
@@ -260,13 +260,13 @@ class Format13Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formData = Format13Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format13Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format13.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format13.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->download('Format13_' . $formData->nama_kampung . '.pdf');
+        return $pdf->download('Format13_' .  $form->nama_kampung . '.pdf');
     }
 
     /**
@@ -274,12 +274,12 @@ class Format13Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $formData = Format13Form4::with('bencana')->findOrFail($id);
-        $bencana = $formData->bencana;
+         $form = Format13Form4::with('bencana')->findOrFail($id);
+        $bencana =  $form->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format13.pdf', compact('formData', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format13.pdf', compact(' form', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format13_' . $formData->nama_kampung . '.pdf');
+        return $pdf->stream('Format13_' .  $form->nama_kampung . '.pdf');
     }
 }
