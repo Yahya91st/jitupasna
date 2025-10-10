@@ -20,7 +20,6 @@ class Form2 extends Model
         'tempat_ditetapkan',
         'pejabat_penandatangan',
         'nama_penandatangan',
-        'dasar_hukum',
         // 'keputusan',
         'tim_kerja',
         'tugas_tim',

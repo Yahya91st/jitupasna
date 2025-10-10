@@ -56,14 +56,12 @@
             <div class="card-body">
                 
                 <p class="text-center">
-                    <input type="text" name="kop_surat" value="{{ $kop_surat ?? 'Kop Surat BNPB (atau BPBD)' }}" class="form-input" style="width: 80%; text-align: center; font-style: italic;">
+                    Kop Surat BNPB (atau BPBD)
                 </p>    
                 <p>
                     <span class="form-label">Nomor</span>: 
                     <input type="text" name="nomor_surat" value="{{ $nomor_surat ?? '' }}" placeholder="Nomor" class="form-input" style="width: 20%;">, 
                     <input type="date" name="nomor_surat_date" value="{{ $nomor_surat_date ?? '' }}" onchange="formatDate(this)" class="form-input" style="width: 25%;">
-                    {{-- <input type="hidden" name="nomor_surat_part2" value="{{ $nomor_surat_part2 ?? '' }}">  --}}
-                    {{-- <input type="text" name="nomor_surat_part3" value="{{ $nomor_surat_part3 ?? '' }}" placeholder="Tahun" class="form-input" style="width: 20%;"> --}}
                 </p>
 
                 <p>

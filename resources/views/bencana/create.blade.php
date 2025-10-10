@@ -150,22 +150,6 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="last-name-column">Lattitude</label>
-                                            <input type="number" id="last-name-column" class="form-control" placeholder=""
-                                                name="latitude" step="0.00000001">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="last-name-column">longitude</label>
-                                            <input type="number" id="last-name-column" class="form-control" placeholder=""
-                                                name="longitude" step="0.00000001">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
                                             <label for="company-column">Deskripsi</label>
                                             <div id="full"></div>
                                             <input type="hidden" name="deskripsi" id="deskripsi">

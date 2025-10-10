@@ -21,7 +21,7 @@ class KategoriBencanaSeeder extends Seeder
             'deskripsi' => 'Kejadian di mana air menutupi area yang biasanya kering, seperti akibat hujan deras atau meluapnya sungai.',
         ]);
         KategoriBencana::firstOrCreate([
-            'nama' => 'Banjir Bandaang',
+            'nama' => 'Banjir Bandang',
             'deskripsi' => 'Jenis banjir yang terjadi secara mendadak dan ekstrem, biasanya disebabkan oleh hujan deras dalam waktu singkat, terutama di daerah pegunungan atau lereng bukit',
         ]);
         KategoriBencana::firstOrCreate([

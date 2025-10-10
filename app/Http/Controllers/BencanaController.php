@@ -98,8 +98,6 @@ class BencanaController extends Controller
                 'tanggal' => 'required',
                 'kecamatan_id' => 'required',
                 'desa_ids' => 'array',
-                'latitude' => 'nullable',
-                'longitude' => 'nullable',
                 'deskripsi' => 'nullable',
                 'gambar' => 'nullable',
             ]);
@@ -126,8 +124,6 @@ class BencanaController extends Controller
                 'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
                 'tanggal' => $bencaRules['tanggal'],
                 'kecamatan_id' => $bencaRules['kecamatan_id'],
-                'latitude' => $bencaRules['latitude'],
-                'longitude' => $bencaRules['longitude'],
                 'deskripsi' => $bencaRules['deskripsi'],
                 'gambar' => $filename,
             ]);
@@ -213,8 +209,6 @@ class BencanaController extends Controller
                 'tanggal' => 'required',
                 // 'kecamatan_id' => 'required',
                 // 'desa_ids' => 'array',
-                'latitude' => 'nullable',
-                'longitude' => 'nullable',
                 'deskripsi' => 'nullable',
                 'gambar' => 'nullable',
             ]);
@@ -248,8 +242,6 @@ class BencanaController extends Controller
                 'kategori_bencana_id' => $bencaRules['kategori_bencana_id'],
                 'tanggal' => $bencaRules['tanggal'],
                 // 'kecamatan_id' => $bencaRules['kecamatan_id'],
-                'latitude' => $bencaRules['latitude'],
-                'longitude' => $bencaRules['longitude'],
                 'deskripsi' => $bencaRules['deskripsi'],
                 'gambar' => $filename,
             ]);

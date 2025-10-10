@@ -90,7 +90,8 @@ class Form2Controller extends Controller
 
     /**
      * Display a listing of Surat Keputusan.
-     */    public function list(Request $request)
+     */    
+    public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -130,12 +131,7 @@ class Form2Controller extends Controller
     {
         try {
             $form = Form2::findOrFail($id);
-            
-            // Parse dasar_hukum back to menimbang and mengingat for form fields
-            $dasar_hukum_parts = explode("Mengingat:", $form2->dasar_hukum);
-            $menimbang = trim(str_replace("Menimbang:", "", $dasar_hukum_parts[0]));
-            $mengingat = isset($dasar_hukum_parts[1]) ? trim($dasar_hukum_parts[1]) : "";
-            
+                        
             return view('forms.form2.edit', compact('form2', 'menimbang', 'mengingat'));
         } catch (\Exception $e) {
             return back()->with('error', 'Surat Keputusan tidak ditemukan.');
@@ -163,9 +159,6 @@ class Form2Controller extends Controller
                 'penanggung_jawab' => 'required|string|max:255',
                 'tembusan' => 'required|string',
             ]);
-
-            // Combine menimbang and mengingat to update dasar_hukum field
-            $dasar_hukum = "Menimbang:\n{$validated['menimbang']}\n\nMengingat:\n{$validated['mengingat']}";
             
             // Update form2 record
             $form->update([
@@ -174,7 +167,6 @@ class Form2Controller extends Controller
                 'lokasi' => $validated['lokasi'],
                 'tanggal_ditetapkan' => $validated['tanggal_ditetapkan'],
                 'pejabat_penandatangan' => $validated['pejabat_penandatangan'],
-                'dasar_hukum' => $dasar_hukum,
                 'tim_kerja' => $validated['tim_kerja'],
                 'tugas_tim' => $validated['tugas_tim'],
                 'penanggung_jawab' => $validated['penanggung_jawab'],

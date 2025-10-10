@@ -149,25 +149,6 @@
                                             </div>
                                         </div>
                                     </div> --}}
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="last-name-column">Lattitude</label>
-                                                <input type="number" id="last-name-column" class="form-control"
-                                                    placeholder="" name="latitude" step="0.00000001"
-                                                    value="{{ $bencana->latitude }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="last-name-column">longitude</label>
-                                                <input type="number" id="last-name-column" class="form-control"
-                                                    placeholder="" name="longitude" step="0.00000001"
-                                                    value="{{ $bencana->longitude }}">
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="row">
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">

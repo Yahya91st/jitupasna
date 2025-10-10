@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('tempat_ditetapkan');
             $table->string('pejabat_penandatangan');
             $table->string('nama_penandatangan');
-            $table->text('dasar_hukum');
             // $table->text('keputusan');
             $table->text('tim_kerja');
             $table->text('tugas_tim');

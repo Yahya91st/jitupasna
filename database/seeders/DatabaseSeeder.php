@@ -17,12 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         // Call the RoleSeeder
         $this->call(RoleSeeder::class);
+        $this->call(BencanaSeeder::class);
         
-        // User::factory(10)->create();
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $this->call(KategoriKerusakanSeeder::class);
         $this->call(KategoriBencanaSeeder::class);
         $this->call(KategoriBangunanSeeder::class);

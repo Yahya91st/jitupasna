@@ -17,9 +17,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->integer('kategori_bencana_id');
             $table->integer('kecamatan_id');
-            $table->decimal('latitude', 10, 8)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
-            $table->date('gambar')->nullable();
+            $table->text('gambar')->nullable();
             $table->text('deskripsi')->nullable();
             $table->timestamps();
         });

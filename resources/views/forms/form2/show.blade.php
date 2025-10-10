@@ -10,13 +10,13 @@
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <div class="float-end">
-                    <a href="{{ route('forms.form2.edit', $form2Data->id) }}" class="btn btn-warning">
+                    <a href="{{ route('forms.form2.edit', $form->id) }}" class="btn btn-warning">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
-                    <a href="{{ route('forms.form2.preview-pdf', $form2Data->id) }}" class="btn btn-info" target="_blank">
+                    <a href="{{ route('forms.form2.preview-pdf', $form->id) }}" class="btn btn-info" target="_blank">
                         <i class="bi bi-eye"></i> Pratinjau PDF
                     </a>
-                    <a href="{{ route('forms.form2.pdf', $form2Data->id) }}" class="btn btn-primary">
+                    <a href="{{ route('forms.form2.pdf', $form->id) }}" class="btn btn-primary">
                         <i class="bi bi-download"></i> Unduh PDF
                     </a>
                 </div>
@@ -39,21 +39,19 @@
     <div class="card">
         <div class="card-body p-5">
             <div class="text-center mb-5">
-                <h4>KEPUTUSAN {{ strtoupper($form2Data->pejabat_penandatangan) }}</h4>
-                <h4>NOMOR: {{ $form2Data->nomor_surat }}</h4>
+                <h4>KEPUTUSAN {{ strtoupper($form->pejabat_penandatangan) }}</h4>
+                <h4>NOMOR: {{ $form->nomor_surat }}</h4>
                 <h4>TENTANG</h4>
-                <h4>{{ strtoupper($form2Data->tentang) }}</h4>
-                <h4>DI {{ strtoupper($form2Data->lokasi) }}</h4>
+                <h4>{{ strtoupper($form->tentang) }}</h4>
+                <h4>DI {{ strtoupper($form->lokasi) }}</h4>
             </div>
             
             <div class="mb-4">
-                <h5 class="text-center">{{ strtoupper($form2Data->pejabat_penandatangan) }}</h5>
+                <h5 class="text-center">{{ strtoupper($form->pejabat_penandatangan) }}</h5>
             </div>
               <div class="mb-4">
                 @php
                     // Parsing dasar hukum
-                    $dasar_hukum = $form2Data->dasar_hukum;
-                    $parts = explode("Menimbang:", $dasar_hukum);
                     $menimbang_text = "";
                     $mengingat_text = "";
                     
@@ -64,10 +62,10 @@
                     }
                     
                     // Use Tim Kerja and Tugas Tim from model fields directly
-                    $tim_kerja_text = $form2Data->tim_kerja;
-                    $tugas_tim_text = $form2Data->tugas_tim;
-                    $penanggung_jawab = $form2Data->penanggung_jawab;
-                    $tembusan = $form2Data->tembusan;
+                    $tim_kerja_text = $form->tim_kerja;
+                    $tugas_tim_text = $form->tugas_tim;
+                    $penanggung_jawab = $form->penanggung_jawab;
+                    $tembusan = $form->tembusan;
                 @endphp
                 
                 <div class="row mb-3">
@@ -141,8 +139,8 @@
                 <div class="col-6"></div>
                 <div class="col-6 text-center">
                     <p>Ditetapkan di : ...........................</p>
-                    <p>pada tanggal : {{ $form2Data->tanggal_ditetapkan }}</p>
-                    <p class="mb-5"><strong>{{ $form2Data->pejabat_penandatangan }}</strong></p>
+                    <p>pada tanggal : {{ $form->tanggal_ditetapkan }}</p>
+                    <p class="mb-5"><strong>{{ $form->pejabat_penandatangan }}</strong></p>
                     <p><u>...................................</u></p>
                     <p>NIP. ...........................</p>
                 </div>
@@ -158,7 +156,7 @@
     </div>
     
     <div class="mt-3">
-        <a href="{{ route('forms.index', ['bencana_id' => $form2Data->bencana_id]) }}" class="btn btn-secondary">
+        <a href="{{ route('forms.index', ['bencana_id' => $form->bencana_id]) }}" class="btn btn-secondary">
             <i class="bi bi-arrow-left"></i> Kembali ke Daftar Form
         </a>
     </div>

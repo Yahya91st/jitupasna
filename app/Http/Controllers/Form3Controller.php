@@ -13,17 +13,16 @@ class Form3Controller extends Controller
     /**
      * Display the form for creating a new Form3.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bencana = null;
-        $bencana_id = request()->get('bencana_id');
+        $bencana_id = $request->input('bencana_id');
         
-        if ($bencana_id) {
-            $bencana = Bencana::with('desa', 'kategori_bencana')->findOrFail($bencana_id);
-        } else {
-            // If no bencana_id is provided, redirect to bencana selection page
+        // Redirect to bencana selection if no bencana_id is provided
+        if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
+          // Get bencana details
+        $bencana = Bencana::findOrFail($bencana_id);
         
         return view('forms.form3.form3', compact('bencana'));
     }
@@ -88,21 +87,18 @@ class Form3Controller extends Controller
      *
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\View\View
      */
-    public function list()
+    public function list(Request $request)
     {
-        $bencana = null;
-        $pendataanList = collect();
+        $bencana_id = $request->input('bencana_id');
         
-        if (request()->has('bencana_id')) {
-            $bencana_id = request()->get('bencana_id');
-            $bencana = Bencana::with('desa', 'kategori_bencana')->find($bencana_id);
-            
-            if ($bencana) {
-                $form3List = Form3::where('bencana_id', $bencana_id)->get();
-            }
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
         }
         
-        return view('forms.form3.list', compact('bencana', 'form3List'));
+        $bencana = Bencana::findOrFail($bencana_id);
+        $form = Form2::where('bencana_id', $bencana_id)->latest()->get();
+        
+        return view('forms.form2.list', compact('bencana', 'form'));
     }
 
     /**
