@@ -15,6 +15,7 @@ class Form1Controller extends Controller
      */    
     public function index(Request $request)
     {
+
         $bencana_id = $request->input('bencana_id');
         
         // Redirect to bencana selection if no bencana_id is provided
@@ -61,7 +62,8 @@ class Form1Controller extends Controller
     }
 
     /**
-     * Display a specific form entry     */    public function show($id)
+     * Display a specific form entry     */    
+    public function show($id)
     {
         $form = Form1::with(['bencana'])->findOrFail($id);
         return view('forms.form1.show', compact('form'));
@@ -86,13 +88,16 @@ class Form1Controller extends Controller
 
     /**
      * Generate PDF for form data
-     */    public function generatePdf($id)
+     */    
+    public function generatePdf($id)
     {
         $form = Form1::with(['bencana'])->findOrFail($id);
         
         $pdf = Pdf::loadView('forms.form1.pdf', compact('form'));
         return $pdf->download('Formulir_01_PDNA_' . $form->id . '.pdf');
-    }    /**
+    }   
+
+    /**
      * Preview PDF without downloading
      */    
     public function previewPdf($id)
@@ -100,17 +105,17 @@ class Form1Controller extends Controller
         $form = Form1::with(['bencana'])->findOrFail($id);
         
         // Ensure date fields are Carbon instances
-        if (!empty($form->tanggal_surat) && !$form->tanggal_surat instanceof \Carbon\Carbon) {
-            $form->tanggal_surat = \Carbon\Carbon::parse($form->tanggal_surat);
-        }
+        // if (!empty($form->tanggal_surat) && !$form->tanggal_surat instanceof \Carbon\Carbon) {
+        //     $form->tanggal_surat = \Carbon\Carbon::parse($form->tanggal_surat);
+        // }
         
-        if (!empty($form->hari_tanggal) && !$form->hari_tanggal instanceof \Carbon\Carbon) {
-            $form->hari_tanggal = \Carbon\Carbon::parse($form->hari_tanggal);
-        }
+        // if (!empty($form->hari_tanggal) && !$form->hari_tanggal instanceof \Carbon\Carbon) {
+        //     $form->hari_tanggal = \Carbon\Carbon::parse($form->hari_tanggal);
+        // }
         
-        if (!empty($form->bencana->tanggal) && !$form->bencana->tanggal instanceof \Carbon\Carbon) {
-            $form->bencana->tanggal = \Carbon\Carbon::parse($form->bencana->tanggal);
-        }
+        // if (!empty($form->bencana->tanggal) && !$form->bencana->tanggal instanceof \Carbon\Carbon) {
+        //     $form->bencana->tanggal = \Carbon\Carbon::parse($form->bencana->tanggal);
+        // }
         
         $pdf = Pdf::loadView('forms.form1.pdf', compact('form'));
         return $pdf->stream('Formulir_01_PDNA_' . $form->id . '.pdf');
@@ -167,5 +172,6 @@ class Form1Controller extends Controller
                 ->with('success', 'Formulir berhasil diperbarui.');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }    }
+        }    
+    }
 }

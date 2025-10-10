@@ -19,9 +19,7 @@ class Format7Controller extends Controller
         $bencana_id = $request->input('bencana_id');
         
         // Redirect to bencana selection if no bencana_id is provided
-        if (!$bencana_id) {
-            return redirect()->route('bencana.index', ['source' => 'forms']);
-        }
+        if (!$bencana_id) {            return redirect()->route('bencana.index', ['source' => 'forms']);        }
         
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);

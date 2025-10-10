@@ -208,7 +208,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form2Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form2Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form2Controller::class, 'update'])->name('update');
-            Route::get('/list', [Form2Controller::class, 'listForm2'])->name('list');
+            Route::get('/list', [Form2Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form2Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form2Controller::class, 'previewPdf'])->name('preview-pdf');
         });
@@ -743,38 +743,38 @@ Route::prefix('rekap')
 
         // Auto-sync routes
         Route::post('/sync-all', [RekapController::class, 'syncAll'])->name('sync-all');
-    });
+        });
 
-Route::get('/form4/format2', [\App\Http\Controllers\Form4\Format2Controller::class, 'index'])->name('forms.form4.index-format2');
-Route::get('/form4/format2/pdf/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format2');
-Route::get('/form4/format4', [\App\Http\Controllers\Form4\Format4Controller::class, 'index'])->name('forms.form4.index-format4');
-Route::get('/form4/format4/pdf/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'generatePdf'])->name('forms.form4.pdf-format4');
+        Route::get('/form4/format2', [\App\Http\Controllers\Form4\Format2Controller::class, 'index'])->name('forms.form4.index-format2');
+        Route::get('/form4/format2/pdf/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format2');
+        Route::get('/form4/format4', [\App\Http\Controllers\Form4\Format4Controller::class, 'index'])->name('forms.form4.index-format4');
+        Route::get('/form4/format4/pdf/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'generatePdf'])->name('forms.form4.pdf-format4');
 
-Route::get('/forms/form4/format1/edit/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'edit'])->name('forms.form4.format1.edit');
-Route::patch('/forms/form4/format1/update/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'update'])->name('forms.form4.format1.update');
-Route::delete('/forms/form4/format1/destroy/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'destroy'])->name('forms.form4.format1.destroy');
+        Route::get('/forms/form4/format1/edit/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'edit'])->name('forms.form4.format1.edit');
+        Route::patch('/forms/form4/format1/update/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'update'])->name('forms.form4.format1.update');
+        Route::delete('/forms/form4/format1/destroy/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'destroy'])->name('forms.form4.format1.destroy');
 
-Route::get('/forms/form4/format2/edit/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'edit'])->name('forms.form4.format2.edit');
-Route::delete('/forms/form4/format2/destroy/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'destroy'])->name('forms.form4.format2.destroy');
-Route::patch('/forms/form4/format2/update/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'update'])->name('forms.form4.format2.update');
+        Route::get('/forms/form4/format2/edit/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'edit'])->name('forms.form4.format2.edit');
+        Route::delete('/forms/form4/format2/destroy/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'destroy'])->name('forms.form4.format2.destroy');
+        Route::patch('/forms/form4/format2/update/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'update'])->name('forms.form4.format2.update');
 
-Route::get('/forms/form4/format3/pdf/{id}', [\App\Http\Controllers\Form4\Format3Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format3');
-Route::get('/forms/form4/format1/pdf/{id]', [\App\Http\Controllers\Form4\Format1Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format1');
+        Route::get('/forms/form4/format3/pdf/{id}', [\App\Http\Controllers\Form4\Format3Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format3');
+        Route::get('/forms/form4/format1/pdf/{id]', [\App\Http\Controllers\Form4\Format1Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format1');
 
-Route::delete('/forms/form4/destroy-format6/{id}', [\App\Http\Controllers\Form4\Format6Controller::class, 'destroy'])->name('forms.form4.destroy-format6');
-Route::delete('/forms/form4/destroy/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'destroy'])->name('forms.form4.destroy-format4');
-Route::get('/forms/form4/format4/pdf/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format4');
+        Route::delete('/forms/form4/destroy-format6/{id}', [\App\Http\Controllers\Form4\Format6Controller::class, 'destroy'])->name('forms.form4.destroy-format6');
+        Route::delete('/forms/form4/destroy/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'destroy'])->name('forms.form4.destroy-format4');
+        Route::get('/forms/form4/format4/pdf/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format4');
 
-require __DIR__ . '/auth.php';
+        require __DIR__ . '/auth.php';
 
 
-Route::middleware(['auth', 'role:admin,super-admin'])->group(function () {
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-});
+        Route::middleware(['auth', 'role:admin,super-admin'])->group(function () {
+            Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+            Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        });
 
-// Untuk super-admin create admin
-Route::middleware(['auth', 'role:super-admin'])->group(function () {
-    Route::get('/admins/create', [UserController::class, 'createAdmin'])->name('admins.create');
-    Route::post('/admins', [UserController::class, 'storeAdmin'])->name('admins.store');
-});
+        // Untuk super-admin create admin
+        Route::middleware(['auth', 'role:super-admin'])->group(function () {
+            Route::get('/admins/create', [UserController::class, 'createAdmin'])->name('admins.create');
+            Route::post('/admins', [UserController::class, 'storeAdmin'])->name('admins.store');
+        });

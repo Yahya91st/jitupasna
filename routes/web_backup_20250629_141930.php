@@ -156,7 +156,7 @@ Route::prefix('/forms')->middleware(['auth', 'verified'])->name('forms.')->group
         Route::get('/show/{id}', [Form2Controller::class, 'show'])->name('show');
         Route::get('/edit/{id}', [Form2Controller::class, 'edit'])->name('edit');
         Route::patch('/update/{id}', [Form2Controller::class, 'update'])->name('update');
-        Route::get('/list', [Form2Controller::class, 'listForm2'])->name('list');
+        Route::get('/list', [Form2Controller::class, 'list'])->name('list');
         Route::get('/pdf/{id}', [Form2Controller::class, 'generatePdf'])->name('pdf');
         Route::get('/preview-pdf/{id}', [Form2Controller::class, 'previewPdf'])->name('preview-pdf');
     });

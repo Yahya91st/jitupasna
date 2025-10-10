@@ -53,49 +53,22 @@
 </head>
 <body>
     <div class="header">
-        <h3>KEPUTUSAN {{ strtoupper($keputusan->pejabat_penandatangan) }}</h3>
-        <h3>NOMOR: {{ $keputusan->nomor_surat }}</h3>
+        <h3>KEPUTUSAN {{ strtoupper($form->pejabat_penandatangan) }}</h3>
+        <h3>NOMOR: {{ $form->nomor_surat }}</h3>
         <h3>TENTANG</h3>
-        <h3>{{ strtoupper($keputusan->tentang) }}</h3>
-        <h3>DI {{ strtoupper($keputusan->lokasi) }}</h3>
+        <h3>{{ strtoupper($form->tentang) }}</h3>
+        <h3>DI {{ strtoupper($form->lokasi) }}</h3>
     </div>
     
     <div class="content">
         <div class="text-center">
-            <h4>{{ strtoupper($keputusan->pejabat_penandatangan) }}</h4>
+            <h4>{{ strtoupper($form->pejabat_penandatangan) }}</h4>
         </div>
-        
-        @php
-            // Parsing dasar hukum
-            $dasar_hukum = $keputusan->dasar_hukum;
-            $parts = explode("MENIMBANG:\n", $dasar_hukum);
-            $menimbang_text = "";
-            if (count($parts) > 1) {
-                $tmp = explode("\n\nMENGINGAT:", $parts[1]);
-                $menimbang_text = $tmp[0];
-                $mengingat_text = $tmp[1] ?? "";
-            }
-            
-            // Parsing keputusan
-            $keputusan_text = $keputusan->keputusan;
-            $parts = explode("TIM KERJA:\n", $keputusan_text);
-            $tim_kerja_text = "";
-            if (count($parts) > 1) {
-                $tmp = explode("\n\nTUGAS TIM:", $parts[1]);
-                $tim_kerja_text = $tmp[0];
-                $tugas_tim_parts = explode("\n\nPENANGGUNG JAWAB:", $tmp[1] ?? "");
-                $tugas_tim_text = $tugas_tim_parts[0];
-                $penanggung_jawab_parts = explode("\n\nTEMBUSAN:", $tugas_tim_parts[1] ?? "");
-                $penanggung_jawab = $penanggung_jawab_parts[0];
-                $tembusan = $penanggung_jawab_parts[1] ?? "";
-            }
-        @endphp
         
         <div class="mb-3">
             <table width="100%">
                 <tr>
                     <td width="15%" valign="top"><strong>Menimbang:</strong></td>
-                    <td width="85%">{!! nl2br(e($menimbang_text)) !!}</td>
                 </tr>
             </table>
         </div>
@@ -104,7 +77,6 @@
             <table width="100%">
                 <tr>
                     <td width="15%" valign="top"><strong>Mengingat:</strong></td>
-                    <td width="85%">{!! nl2br(e($mengingat_text)) !!}</td>
                 </tr>
             </table>
         </div>
@@ -120,7 +92,6 @@
                     <td width="85%">
                         <p>Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana dengan susunan tim sebagai berikut:</p>
                         <div style="margin-left: 20px;">
-                            {!! nl2br(e($tim_kerja_text)) !!}
                         </div>
                     </td>
                 </tr>
@@ -134,7 +105,6 @@
                     <td width="85%">
                         <p>Tim sebagaimana dimaksud dalam Diktum KESATU mempunyai tugas sebagai berikut:</p>
                         <div style="margin-left: 20px;">
-                            {!! nl2br(e($tugas_tim_text)) !!}
                         </div>
                     </td>
                 </tr>
@@ -146,7 +116,7 @@
                 <tr>
                     <td width="15%" valign="top"><strong>KETIGA:</strong></td>
                     <td width="85%">
-                        <p>Dalam melaksanakan tugasnya, Tim bertanggung jawab kepada {{ $penanggung_jawab }}.</p>
+                        <p>Dalam melaksanakan tugasnya, Tim bertanggung jawab kepada ... .</p>
                     </td>
                 </tr>
             </table>
@@ -166,8 +136,8 @@
     
     <div class="signature">
         <p>Ditetapkan di : ...........................</p>
-        <p>pada tanggal : {{ \Carbon\Carbon::parse($keputusan->tanggal_ditetapkan)->locale('id')->isoFormat('D MMMM Y') }}</p>
-        <p class="mb-5"><strong>{{ $keputusan->pejabat_penandatangan }}</strong></p>
+        <p>pada tanggal : {{ $form->tanggal_ditetapkan}}</p>
+        <p class="mb-5"><strong>{{ $form->pejabat_penandatangan }}</strong></p>
         <p><u>...................................</u></p>
         <p>NIP. ...........................</p>
     </div>
@@ -175,7 +145,6 @@
     <div class="footer">
         <p><strong>Tembusan:</strong></p>
         <div style="margin-left: 20px;">
-            {!! nl2br(e($tembusan)) !!}
         </div>
     </div>
 </body>

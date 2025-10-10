@@ -47,13 +47,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($keputusan as $index => $data)
+                        @forelse($form as $index => $data)                        
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $data->nomor_surat }}</td>
                             <td>{{ $data->lokasi }}</td>
                             <td>{{ $data->nama_bencana }}</td>
-                            <td>{{ \Carbon\Carbon::parse($data->tanggal_ditetapkan)->format('d F Y') }}</td>                            <td>
+                            <td>{{ $data->tanggal_ditetapkan ?? '-' }}</td>     
+                            <td>                           
                                 <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
                                     <a href="{{ route('forms.form2.show', $data->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
                                         <i class="bi bi-eye"></i> Detail
