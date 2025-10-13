@@ -2,24 +2,102 @@
 
 @section('content')
 <style>
-    /* Global table styles */
+    /* Container & Layout - Konsisten dengan Form1 & Form6 */
+    .container {
+        max-width: 1000px;
+        font-family: 'Times New Roman', serif;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Header Styling */
+    .document-title {
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .document-title h5 {
+        margin: 0.5rem 0;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .document-title h5:first-child {
+        color: #0066cc;
+        margin-bottom: 0.3rem;
+    }
+
+    /* Card Styling */
+    .card {
+        background: white;
+        border: none;
+        box-shadow: none;
+    }
+
+    .card-body {
+        padding: 20px 0;
+    }
+
+    /* Typography */
+    p {
+        margin-bottom: 0.8em;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    /* Section Headers */
+    .section-header {
+        background: #f9f9f9;
+        color: #333;
+        font-weight: 600;
+        padding: 10px 15px;
+        margin: 20px 0 15px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    /* Table Styling */
     .form-table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 20px;
-        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
     }
     
     .form-table th {
-        background-color: #f8f9fa;
-        font-weight: bold;
+        background-color: #f9f9f9;
+        font-weight: 600;
         text-align: center;
-        padding: 8px;
+        padding: 12px 8px;
+        border: 1px solid #ddd;
+        color: #333;
     }
     
     .form-table td {
-        padding: 8px;
+        padding: 12px 8px;
         vertical-align: top;
+        border: 1px solid #ddd;
+    }
+
+    .form-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+    
+    .form-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .form-table tbody tr:hover {
+        background-color: rgba(0, 102, 204, 0.05);
+        transition: background-color 0.2s ease;
     }
     
     .form-table ul {
@@ -62,45 +140,60 @@
         width: 60%;
     }
     
-    /* Section headers */
-    .section-header {
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-    
     /* Form container */
     .form-container {
         max-width: 1000px;
         font-family: "Times New Roman", serif;
-        line-height: 1.5;
+        line-height: 1.6;
         padding-bottom: 20px;
     }
     
     /* Divider */
     .section-divider {
         margin: 30px 0;
-        border-top: 1px solid #dee2e6;
+        border-top: 1px solid #ddd;
     }
     
-    /* Form input styles */
+    /* Form Inputs */
     .form-input {
+        background: transparent;
         border: none;
-        border-bottom: 1px dotted #999;
+        border-bottom: 1px dotted #333;
+        font-family: 'Times New Roman', serif;
+        font-size: 14px;
+        color: inherit;
         outline: none;
-        background-color: transparent;
-        width: 100%;
-        min-width: 150px;
-        font-family: "Times New Roman", serif;
+        padding: 2px 4px;
+        transition: border-color 0.3s ease;
         line-height: 1.5;
+    }
+
+    .form-input:focus {
+        border-bottom-color: #0066cc;
+        background-color: rgba(0, 102, 204, 0.05);
+    }
+
+    textarea.form-input {
+        resize: vertical;
+        min-height: 60px;
+        border: 1px dotted #333;
+        padding: 8px;
+        line-height: 1.5;
+        border-radius: 3px;
+    }
+    
+    textarea.form-input:focus {
+        border-color: #0066cc;
+        background-color: rgba(0, 102, 204, 0.05);
     }
     
     .form-label {
         display: inline-block;
         width: 160px;
-        font-weight: normal;
+        font-weight: 500;
         vertical-align: top;
         margin-right: 5px;
+        color: #333;
     }
     
     /* Answer cell styles */
@@ -108,19 +201,10 @@
         position: relative;
     }
     
-    .three-column-table td:nth-child(3):after {
-        content: '';
-        position: absolute;
-        bottom: 5px;
-        left: 8px;
-        right: 8px;
-        border-bottom: 1px dotted #999;
-    }
-    
     /* Dotted line for form fields */
     .dotted-line {
         display: inline-block;
-        border-bottom: 1px dotted #999;
+        border-bottom: 1px dotted #333;
         min-width: 300px;
         height: 1.2em;
         vertical-align: bottom;
@@ -134,6 +218,95 @@
     .form-list-item:last-child {
         margin-bottom: 0;
     }
+
+    /* Button Styling */
+    .btn {
+        margin: 0 5px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-family: 'Times New Roman', serif;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-info {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    /* Action buttons container */
+    .d-flex {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+        
+        .form-table {
+            font-size: 12px;
+        }
+        
+        .form-input {
+            font-size: 12px;
+        }
+        
+        .btn {
+            margin: 2px;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        .btn {
+            display: none !important;
+        }
+        
+        .container {
+            box-shadow: none;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        body {
+            font-size: 12pt;
+            line-height: 1.4;
+        }
+    }
 </style>
 
 <form method="POST" action="{{ route('forms.form3.store') }}">
@@ -141,28 +314,29 @@
 <input type="hidden" name="form_type" value="form3">
 <input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
 
-<div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
-    <div class="text-center mb-4">
+<div class="container" style="max-width: 1000px; font-family: Times New Roman, serif;">    
+    <!-- Document Header -->
+    <div class="document-title">
         <h5><strong>Formulir 03</strong></h5>
         <h5>Pendataan ke OPD</h5>
     </div>
+    
     <div class="card">
         <div class="card-body">
             <h6 class="section-header">1. Formulir Isian Data Dasar Sebelum Bencana</h6>
             <p>
                 <span class="form-label">Wilayah bencana</span>
                 <span>Kab/kota/kecamatan: </span>
-                <span class="dotted-line"><input type="text" class="form-input" style="width: 300px;"></span>
+                <input type="text" class="form-input" style="width: 300px;" name="wilayah_bencana">
             </p>
             
-            <table class="table table-bordered form-table three-column-table" border="1">
+            <table class="form-table three-column-table">
                 <thead class="text-center">
                     <tr>
                         <th>Kategori</th>
                         <th>Sub-Kategori</th>
                         <th>Jawaban</th>
                     </tr>
-
                 </thead>
                 <tbody>
                     <!-- Penduduk-Wilayah -->
@@ -267,7 +441,7 @@
             <div class="section-divider"></div>
             
             <h6 class="section-header">2. Formulir Isian Data Sekunder Akibat Bencana (Umum)</h6>
-            <table class="table table-bordered form-table two-column-table" border="1">
+            <table class="form-table two-column-table">
                 <thead class="text-center">
                     <tr>
                         <th>Pertanyaan</th>
@@ -310,18 +484,18 @@
             
             <h6 class="section-header">3. Formulir Isian Data Sekunder Akibat Bencana (Khusus)</h6>
             <p><strong>Satuan Kerja Perangkat Daerah</strong></p>
-            <table class="table table-bordered form-table" border="1">
+            <table class="form-table">
                 <tr>
                     <td style="width: 30%;">Nama OPD</td>
-                    <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);"></td>
+                    <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_1"></td>
                 </tr>
                 <tr>
                     <td>Tgl/Bln/Thn</td>
-                    <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);"></td>
+                    <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_1"></td>
                 </tr>
             </table>
             
-            <table class="table table-bordered form-table" style="margin-top: 20px; border: 1px solid #dee2e6;" border="1">
+            <table class="form-table" style="margin-top: 20px;">
                 <thead class="text-center">
                     <tr>
                         <th style="width: 5%;">No</th>
@@ -334,11 +508,11 @@
                         <td>
                             <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong>
                             <ul>
-                                <li class="form-list-item">Pertanian pangan dan sayuran: <input type="text" class="form-input" style="width: 300px;"></li>
-                                <li class="form-list-item">Peternakan: <input type="text" class="form-input" style="width: 300px;"></li>
-                                <li class="form-list-item">Perikanan: <input type="text" class="form-input" style="width: 300px;"></li>
-                                <li class="form-list-item">Perkebunan: <input type="text" class="form-input" style="width: 300px;"></li>
-                                <li class="form-list-item">Lainnya: <input type="text" class="form-input" style="width: 300px;"></li>
+                                <li class="form-list-item">Pertanian pangan dan sayuran: <input type="text" class="form-input" style="width: 300px;" name="rt_pertanian"></li>
+                                <li class="form-list-item">Peternakan: <input type="text" class="form-input" style="width: 300px;" name="rt_peternakan"></li>
+                                <li class="form-list-item">Perikanan: <input type="text" class="form-input" style="width: 300px;" name="rt_perikanan"></li>
+                                <li class="form-list-item">Perkebunan: <input type="text" class="form-input" style="width: 300px;" name="rt_perkebunan"></li>
+                                <li class="form-list-item">Lainnya: <input type="text" class="form-input" style="width: 300px;" name="rt_lainnya"></li>
                             </ul>
                         </td>
                     </tr>
@@ -347,11 +521,11 @@
                         <td>
                             <strong>Bentuk gangguan kegiatan ekonomi, pada:</strong>
                             <ul>
-                                <li class="form-list-item">Pertanian pangan dan sayuran: berupa <input type="text" class="form-input" style="width: 250px;"></li>
-                                <li class="form-list-item">Peternakan: berupa <input type="text" class="form-input" style="width: 250px;"></li>
-                                <li class="form-list-item">Perikanan: berupa <input type="text" class="form-input" style="width: 250px;"></li>
-                                <li class="form-list-item">Perkebunan: berupa <input type="text" class="form-input" style="width: 250px;"></li>
-                                <li class="form-list-item">Lainnya: berupa <input type="text" class="form-input" style="width: 250px;"></li>
+                                <li class="form-list-item">Pertanian pangan dan sayuran: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_pertanian"></li>
+                                <li class="form-list-item">Peternakan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_peternakan"></li>
+                                <li class="form-list-item">Perikanan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_perikanan"></li>
+                                <li class="form-list-item">Perkebunan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_perkebunan"></li>
+                                <li class="form-list-item">Lainnya: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_lainnya"></li>
                             </ul>
                         </td>
                     </tr>
@@ -360,17 +534,17 @@
                         <td>
                             <div class="mb-3">
                                 <strong>Jenis produk pertanian lokal khas yang terkena dampak bencana:</strong><br>
-                                <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
+                                <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="produk_pertanian_terdampak"></textarea>
                             </div>
                             
                             <div class="mb-3">
                                 <strong>Seberapa berat dampak bencana terhadap produk tersebut:</strong><br>
-                                <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
+                                <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="dampak_produk_pertanian"></textarea>
                             </div>
                             
                             <div>
                                 <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut:</strong><br>
-                                <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
+                                <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="pemulihan_produk_pertanian"></textarea>
                             </div>
                         </td>
                     </tr>
@@ -406,20 +580,19 @@
         <h6 class="section-header">4. Formulir Lanjutan: Satuan Kerja Perangkat Daerah</h6>
 
         <p><strong>SATUAN KERJA PERANGKAT DAERAH</strong></p>
-        <table class="table table-bordered form-table" border="1">
+        <table class="form-table">
             <tr>
                 <td style="width: 30%;">Nama OPD</td>
-                <td>: ………………………………………………………………………………………………………………………………………<br>
-                    <em>(OPD yang terkait dengan Bidang Non Pertanian: Perdagangan, Perindustrian, Koperasi, Usaha Kecil Menengah dll)</em>
+                <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_2" placeholder="OPD yang terkait dengan Bidang Non Pertanian: Perdagangan, Perindustrian, Koperasi, Usaha Kecil Menengah dll">
                 </td>
             </tr>
             <tr>
                 <td>Tgl/Bln/Thn</td>
-                <td>: ………………………………………………………………………………………………………………………………………</td>
+                <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_2"></td>
             </tr>
         </table>
 
-        <table class="table table-bordered form-table" border="1" style="margin-top: 20px;">
+        <table class="form-table" style="margin-top: 20px;">
             <thead class="text-center">
                 <tr>
                     <th style="width: 5%;">NO</th>
@@ -492,20 +665,19 @@
         <div class="section-divider"></div>
 
                 <p><strong>SATUAN KERJA PERANGKAT DAERAH</strong></p>
-                <table class="table table-bordered form-table" border="1">
+                <table class="form-table">
                     <tr>
                         <td style="width: 30%;">Nama OPD</td>
-                        <td>: ………………………………………………………………………………………………………………………………………<br>
-                            <em>(OPD yang terkait dengan Bidang Sosial dan Keagamaan)</em>
+                        <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_sosial" placeholder="OPD yang terkait dengan Bidang Sosial dan Keagamaan">
                         </td>
                     </tr>
                     <tr>
                         <td>Tgl/Bln/Thn</td>
-                        <td>: ………………………………………………………………………………………………………………………………………</td>
+                        <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_sosial"></td>
                     </tr>
                 </table>
 
-                <table class="table table-bordered form-table" border="1" style="margin-top: 20px;">
+                <table class="form-table" style="margin-top: 20px;">
                     <thead class="text-center">
                         <tr>
                             <th style="width: 5%;">NO</th>

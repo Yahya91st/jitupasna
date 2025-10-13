@@ -5,210 +5,271 @@
     <title>Surat Permohonan Keterlibatan dalam PDNA</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.5;
-            font-size: 12pt;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.2;
+            font-size: 9pt;
+            margin: 0.8cm;
+            color: #333;
         }
-        .header {
+        
+        .document-title {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #ddd;
         }
-        .header img {
-            width: 100px;
-            height: auto;
-        }
-        .header h2, .header h3 {
-            margin: 5px 0;
-        }
-        .info-surat {
-            margin-bottom: 20px;
-        }
-        .info-surat table {
-            width: 100%;
-        }
-        .info-surat td {
-            padding: 2px 0;
-            vertical-align: top;
-        }
-        .tujuan {
-            margin-bottom: 20px;
-        }
-        .isi-surat {
-            text-align: justify;
-            margin-bottom: 30px;
-        }
-        .table-konsolidasi {
-            width: 70%;
-            margin-left: 30px;
-            margin-bottom: 20px;
-        }
-        .table-konsolidasi td:first-child {
-            width: 150px;
-        }
-        .ttd {
-            float: right;
-            width: 40%;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .ttd .nama {
-            margin-top: 70px;
+        
+        .document-title h5 {
+            margin: 0.1rem 0;
             font-weight: bold;
-            text-decoration: underline;
+            color: #333;
+            font-size: 10pt;
         }
-        .clear {
-            clear: both;
+        
+        .document-title h5:first-child {
+            color: #0066cc;
+            margin-bottom: 0.1rem;
+            font-size: 9pt;
         }
-        .tembusan {
-            margin-top: 50px;
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 6px;
+            padding: 3px;
+            background: #f9f9f9;
+            border-radius: 2px;
         }
-        .page-break {
-            page-break-after: always;
+
+        .letter-header p {
+            margin: 0;
+            font-weight: 600;
+            color: #333;
+            font-size: 9pt;
         }
+        
+        .form-section {
+            margin-bottom: 4px;
+        }
+        
+        .form-label {
+            display: inline-block;
+            width: 100px;
+            vertical-align: top;
+            font-weight: 500;
+            color: #333;
+            font-size: 9pt;
+        }
+        
+        .form-indent {
+            margin-left: 105px;
+        }
+        
+        .meeting-details {
+            margin: 4px 0;
+        }
+        
+        .signature-section {
+            text-align: right;
+            margin: 8px 40px 8px 0;
+        }
+        
+        .signature-content {
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        
+        .signature-name {
+            text-align: center;
+            font-weight: bold;
+            width: 150px;
+            margin-top: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1px;
+        }
+        
+        .tembusan-section {
+            margin-top: 8px;
+        }
+        
         @page {
-            margin: 2cm;
+            margin: 0.8cm;
+            size: A4;
+        }
+        
+        /* Ensure single page */
+        .page-break {
+            display: none;
+        }
+        
+        p {
+            margin-bottom: 0.2em;
+            text-align: justify;
+            line-height: 1.1;
+            font-size: 9pt;
+        }
+        
+        /* Compact spacing for meeting details */
+        .meeting-details p {
+            margin-bottom: 0.1em;
+        }
+        
+        /* Compact tembusan */
+        .tembusan-section p {
+            margin-bottom: 0.05em;
+            font-size: 8pt;
         }
     </style>
 </head>
 <body>
-    <!-- Kop Surat -->
-    <div class="header">
-        <!-- <img src="{{ public_path('assets/images/logo_bnpb.png') }}" alt="Logo BNPB"> -->
-        <h2>BADAN NASIONAL PENANGGULANGAN BENCANA</h2>
-        <p>Jl. Pramuka No. 38, Jakarta Timur 13120<br>
-        Telepon: (021) 29827793, Fax: (021) 21281200<br>
-        Website: https://bnpb.go.id</p>
-        <hr>
+    <!-- Document Header -->
+    <div class="document-title">
+        <h5><strong>Formulir 01</strong></h5>
+        <h5>Surat Permohonan Keterlibatan dalam Pengkajian Kebutuhan Pascabencana (PDNA)</h5>
     </div>
     
-    <!-- Informasi Surat -->
-    <div class="info-surat">
-        <table>
-            <tr>                <td width="80">Nomor</td>
-                <td width="10">:</td>
-                <td>
-                    {{ $form->nomor_surat ?? '-'}} 
-                </td>
-                <td style="text-align: right;">
-                    {{ $form->tanggal_surat 
-                        ? ($form->tanggal_surat instanceof \Carbon\Carbon 
-                            ? $form->tanggal_surat->format('d F Y') 
-                            : (\Carbon\Carbon::parse($form->tanggal_surat)->format('d F Y'))) 
-                        : '-' 
-                    }}                
-                </td>
-            </tr>
-            <tr>
-                <td>Sifat</td>
-                <td>:</td>
-                <td colspan="2">
-                    {{ $form->sifat ?? '-'}}
-                </td>
-            </tr>
-            <tr>
-                <td>Lampiran</td>
-                <td>:</td>
-                <td colspan="2">
-                    {{ $form->lampiran ?: '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td>Perihal</td>
-                <td>:</td>
-                <td colspan="2">
-                    {{ $form->perihal ?? '-'}}
-                </td>
-            </tr>
-        </table>
+    <!-- Letter Header -->
+    <div class="letter-header">
+        <p><strong>Kop Surat BNPB (atau BPBD)</strong></p>
     </div>
     
-    <!-- Tujuan Surat -->
-    <div class="tujuan">
+    <!-- Letter Details -->
+    <div class="form-section">
         <p>
-            Kepada Yth.<br>
-            {{ $form->kepada ?? '-'}}<br>
-            di tempat
+            <span class="form-label">Nomor</span>: {{ $form->nomor_surat ?? '...........................' }}
+            @if($form->nomor_surat_date)
+                , {{ \Carbon\Carbon::parse($form->nomor_surat_date)->format('d F Y') }}
+            @endif
+        </p>
+        
+        <p>
+            <span class="form-label">Sifat</span>: {{ $form->sifat ?? 'Segera' }}
+        </p>
+        
+        <p>
+            <span class="form-label">Lampiran</span>: {{ $form->lampiran ?? '-' }}{{ $form->lampiran ? ' lembar' : '' }}
+        </p>
+        
+        <p>
+            <span class="form-label">Perihal</span>: Permohonan Keterlibatan dalam<br>
+            <span class="form-indent">Pengkajian Kebutuhan Pascabencana (PDNA)</span><br>
+            <span class="form-indent">di {{ $form->lokasi_pdna ?? '.....' }}</span>
         </p>
     </div>
     
-    <!-- Isi Surat -->
-    <div class="isi-surat">        
-        <p>Dengan hormat,
-    </p>
+    <!-- Recipient Section -->
+    <div class="form-section">
+        <p style="margin-bottom: 0.2em; margin-top: 0.5em;">
+            <span class="form-label" style="margin-bottom: 4px; display: block; margin-left: 105px;">
+                <strong>Kepada Yth</strong>
+            </span>
+            <span class="form-indent">{{ $form->kepada_jabatan ?? 'Direktur ........ Kementerian/lembaga.....' }}</span>
+            @if(!$form->kepada_jabatan)
+                <br><span class="form-indent">(atau Kepala OPD .... )</span>
+            @endif
+            <br>
+            <span class="form-indent">di {{ $form->lokasi_pdna ?? '................' }}</span>
+        </p>
+    </div>
+
+    <!-- Letter Content -->
+    <div class="form-section">
+        <p style="text-align: justify; margin-bottom: 0.2em;">
+            Berkenaan dengan akan diadakannya Pengkajian Kebutuhan 
+            Pascabencana (PDNA) di <strong>{{ $form->lokasi_pdna ?? '................' }}</strong>, bersama ini kami memohon 
+            keterlibatan perwakilan resmi instansi Bapak/Ibu dalam kegiatan tersebut.
+        </p>
         
-        <p>Berdasarkan kejadian bencana 
-            {{ $form->bencana->kategori_bencana->nama ?? '-' }} 
-            yang terjadi pada tanggal 
-            {{ $form->bencana->tanggal instanceof \Carbon\Carbon ? $form->bencana->tanggal->format('d F Y') : \Carbon\Carbon::parse($form->bencana->tanggal)->format('d F Y') ?? '-'}} 
-            di 
-        @foreach($form->bencana->desa ?? [] as $desa)
-            {{ $desa->nama ?? '-' }}
-        @endforeach, 
-        serta dalam rangka melaksanakan koordinasi pemulihan pasca bencana, bersama ini kami sampaikan hal-hal sebagai berikut:</p>
-        
-        <p>BNPB akan melaksanakan pengkajian kebutuhan pasca bencana (PDNA) di 
-            {{ $form->lokasi_pdna ?? '-'}}
-            . Sehubungan dengan hal tersebut, kami mohon kesediaan Saudara untuk menugaskan perwakilan resmi dari 
-            {{ $form->kepada ?? '-'}} 
-            untuk hadir dalam kegiatan konsolidasi awal PDNA yang akan dilaksanakan pada:</p>
-          <table class="table-konsolidasi">
-            <tr>
-                <td>Hari/Tanggal</td>
-                <td>: 
-                    {{ $form->hari_tanggal ?? '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td>Waktu</td>
-                <td>: 
-                    {{ \Carbon\Carbon::parse($form->waktu)->format('H:i') ?? '-' }}
-                     WIB</td>
-            </tr>
-            <tr>
-                <td>Tempat</td>
-                <td>: 
-                    {{ $form->tempat ?? '-'}}
-                </td>
-            </tr>
-            <tr>
-                <td>Agenda</td>
-                <td>: 
-                    {{ $form->agenda ?? '-'}}
-                </td>
-            </tr>
-        </table>
-        
-        <p>Mengingat pentingnya hal tersebut, kami mengharapkan kehadiran perwakilan dari 
-            {{ $form->kepada ?? '-'}} 
-            untuk berkontribusi dalam kegiatan PDNA ini.</p>
-        
-        <p>Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+        <p style="margin-bottom: 0.2em;">
+            Untuk konsolidasi awal, mohon kiranya perwakilan resmi instansi 
+            Bapak/Ibu dapat hadir pada pertemuan yang akan diadakan pada:
+        </p>
     </div>
     
-    <!-- Tanda Tangan -->
-    <div class="ttd">
+    <!-- Meeting Details -->
+    <div class="meeting-details">
         <p>
-            {{ $form->jabatan_penandatangan ?? '-'}}
+            <span class="form-label">Hari/tanggal</span>: {{ $form->hari_tanggal ?? '................................' }}
         </p>
-        <div class="nama">
-            {{ $form->nama_penandatangan ?? '-'}}
+        
+        <p>
+            <span class="form-label">Waktu</span>: {{ $form->waktu ?? '................................' }}
+        </p>
+        
+        <p>
+            <span class="form-label">Tempat</span>: {{ $form->tempat ?? '................................' }}
+        </p>
+        
+        <p>
+            <span class="form-label">Agenda</span>: 
+            @if($form->agenda)
+                @php
+                    $agenda_lines = explode("\n", $form->agenda);
+                    $formatted_agenda = [];
+                    foreach($agenda_lines as $line) {
+                        $line = trim($line);
+                        if($line) {
+                            // Jika tidak dimulai dengan dash atau nomor, tambahkan dash
+                            if(!preg_match('/^[-•\d]/', $line)) {
+                                $line = '- ' . $line;
+                            }
+                            $formatted_agenda[] = $line;
+                        }
+                    }
+                @endphp
+                @foreach($formatted_agenda as $index => $line)
+                    @if($index == 0)
+                        {{ $line }}
+                    @else
+                        <br><span style="margin-left: 105px;">{{ $line }}</span>
+                    @endif
+                @endforeach
+            @else
+                - Konsolidasi awal<br>
+                <span style="margin-left: 105px;">- Persiapan Pengkajian Kebutuhan Pascabencana (PDNA)</span>
+            @endif
+        </p>
+    </div>
+    
+    <div class="form-section">
+        <p>Demikian atas kerjasamanya diucapkan terima kasih.</p>
+    </div>
+    
+    <!-- Signature Section -->
+    <div class="signature-section">
+        <div style="text-align: left; margin-bottom: 4px; margin-top: 0.5em;">
+            <strong>Deputi Rehabilitasi dan Rekonstruksi BNPB</strong><br>
+            <strong>(atau Kepala Pelaksana Harian BPBD...)</strong>
+        </div>
+
+        <div style="text-align: right; margin-top: 1em;">
+            <div style="text-align: center; margin-right: 1em;">
+                <strong>{{ $form->nama_penandatangan ?? 'Nama Jelas' }}</strong>
+            </div>
         </div>
     </div>
     
-    <div class="clear"></div>
-    
-    <!-- Tembusan -->
-    @if(!empty($form->tembusan))
-    <div class="tembusan">
-        <p>Tembusan:</p>
-        <ol>
-            @foreach(explode("\n", $form->tembusan) as $tujuan)
-                <li>
-                    <li>{{ $tujuan ?: '-' }}</li>
-                </li>
+    <!-- Copy Recipients -->
+    <div class="tembusan-section">
+        <p style="font-size: 9pt;"><strong>Tembusan Yth.</strong></p>
+        @if(!empty($form->tembusan))
+            @php
+                $tembusan_lines = explode("\n", $form->tembusan);
+                $counter = 1;
+            @endphp
+            @foreach($tembusan_lines as $line)
+                @if(trim($line) && $counter <= 4)
+                    <p style="margin-left: 15px; margin-bottom: 0.05em; font-size: 8pt;">
+                        {{ $counter }}. {{ trim(str_replace(['1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ', '8. ', '9. '], '', $line)) }}
+                    </p>
+                    @php $counter++; @endphp
+                @endif
             @endforeach
-        </ol>
+        @else
+            <p style="margin-left: 15px; margin-bottom: 0.05em; font-size: 8pt;">1. Kepala BNPB (atau Kepala Daerah)</p>
+            <p style="margin-left: 15px; margin-bottom: 0.05em; font-size: 8pt;">2. Menteri........./Kepala Lembaga..... (atau Kepala OPD ....)</p>
+            <p style="margin-left: 15px; margin-bottom: 0.05em; font-size: 8pt;">3. Rektor ..... (Perguruan Tinggi)</p>
+            <p style="margin-left: 15px; margin-bottom: 0.05em; font-size: 8pt;">4. Direktur/Manager/Koordinator .... (Organisasi Kemasyarakatan dan Dunia Usaha)</p>
+        @endif
     </div>
-    @endif
 </body>
 </html>
