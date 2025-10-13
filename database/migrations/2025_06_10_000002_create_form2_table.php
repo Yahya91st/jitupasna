@@ -15,15 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('bencana_id');
             $table->string('nomor_surat')->unique();
-            $table->string('tentang');
             $table->string('lokasi');
             $table->string('tanggal_ditetapkan'); // Changed to string for formatted date
             $table->string('tempat_ditetapkan');
             $table->string('pejabat_penandatangan');
             $table->string('nama_penandatangan');
             // $table->text('keputusan');
-            $table->text('tim_kerja');
-            $table->text('tugas_tim');
             $table->string('penanggung_jawab');
             $table->text('tembusan');
             // $table->foreignId('created_by')->nullable()->constrained('users');

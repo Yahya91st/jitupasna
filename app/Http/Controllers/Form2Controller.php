@@ -56,14 +56,11 @@ class Form2Controller extends Controller
         // Create new form2 record
         $form = new Form2();
         $form->nomor_surat = $validated['nomor_surat'];
-        $form->tentang =  ;
         $form->lokasi = $validated['lokasi_menimbang'];
         $form->tanggal_ditetapkan = $validated['tanggal_ditetapkan'];
         $form->tempat_ditetapkan = $validated['tempat_ditetapkan'];
         $form->pejabat_penandatangan = $validated['pejabat_keputusan'];
         $form->nama_penandatangan = $validated['nama_penandatangan'];
-        $form->tim_kerja = "Tim akan ditentukan kemudian";
-        $form->tugas_tim = "Sesuai dengan diktum KEDUA";
         $form->penanggung_jawab = $validated['pejabat_keputusan'];
         $form->tembusan = $validated['tembusan'];
         $form->bencana_id = $validated['bencana_id'];
@@ -145,14 +142,11 @@ class Form2Controller extends Controller
             
             $validated = $request->validate([
                 'nomor_surat' => 'required|string|max:255|unique:form2,nomor_surat,' . $id,
-                'tentang' => 'required|string|max:255',
                 'lokasi' => 'required|string|max:255',
                 'tanggal_ditetapkan' => 'required|date',
                 'pejabat_penandatangan' => 'required|string|max:255',
                 'menimbang' => 'required|string',
                 'mengingat' => 'required|string',
-                'tim_kerja' => 'required|string',
-                'tugas_tim' => 'required|string',
                 'penanggung_jawab' => 'required|string|max:255',
                 'tembusan' => 'required|string',
             ]);
@@ -160,12 +154,9 @@ class Form2Controller extends Controller
             // Update form2 record
             $form->update([
                 'nomor_surat' => $validated['nomor_surat'],
-                'tentang' => $validated['tentang'],
                 'lokasi' => $validated['lokasi'],
                 'tanggal_ditetapkan' => $validated['tanggal_ditetapkan'],
                 'pejabat_penandatangan' => $validated['pejabat_penandatangan'],
-                'tim_kerja' => $validated['tim_kerja'],
-                'tugas_tim' => $validated['tugas_tim'],
                 'penanggung_jawab' => $validated['penanggung_jawab'],
                 'tembusan' => $validated['tembusan'],
                 'updated_by' => Auth::id()
