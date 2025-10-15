@@ -270,11 +270,17 @@ class Form12Controller extends Controller
     /**
      * Delete the specified IndeksBiaya from database
      */
-    public function deleteIndeks($id)
+    public function destroy($id)
     {
-        $indeksBiaya = IndeksBiaya::findOrFail($id);
-        $indeksBiaya->delete();
-        
-        return redirect()->route('forms.form12.indeks')->with('success', 'Data indeks biaya berhasil dihapus.');
+        try {
+            $form12 = Form12::findOrFail($id);
+            $bencana_id = $form12->bencana_id;
+            $form12->delete();
+            
+            return redirect()->route('forms.form12.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 12 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

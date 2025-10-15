@@ -174,4 +174,17 @@ class Form1Controller extends Controller
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }    
     }
+    public function destroy($id)
+    {
+        try {
+            $form = Form1::findOrFail($id);
+            $bencana_id = $form->bencana_id;
+            $form->delete();
+            
+            return redirect()->route('forms.form1.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 1 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }

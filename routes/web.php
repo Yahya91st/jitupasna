@@ -647,6 +647,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form7Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form7Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form7Controller::class, 'update'])->name('update');
+            Route::delete('/destroy/{id}', [Form7Controller::class, 'destroy'])->name('destroy');
             Route::get('/list', [Form7Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form7Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form7Controller::class, 'previewPdf'])->name('preview-pdf');

@@ -159,4 +159,18 @@ class Form10Controller extends Controller
         $pdf->setPaper('a4', 'landscape');
         return $pdf->stream('formulir-10-analisa-' . $form10->id . '.pdf');
     }
+
+    public function destroy($id)
+    {
+        try {
+            $form9 = Form9::findOrFail($id);
+            $bencana_id = $form9->bencana_id;
+            $form9->delete();
+            
+            return redirect()->route('forms.form9.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 9 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }

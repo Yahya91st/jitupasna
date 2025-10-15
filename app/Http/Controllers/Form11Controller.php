@@ -184,4 +184,18 @@ class Form11Controller extends Controller
         $form11 = Form11::with('bencana')->findOrFail($id);
         return view('forms.form11.pdf', compact('form11'));
     }
+
+    public function destroy($id)
+    {
+        try {
+            $form11 = Form11::findOrFail($id);
+            $bencana_id = $form11->bencana_id;
+            $form11->delete();
+            
+            return redirect()->route('forms.form11.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 11 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }

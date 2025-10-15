@@ -41,7 +41,7 @@ class Form7Controller extends Controller
             'tanggal' => 'required|date',
             'jarak_bencana' => 'required|integer|min:0',
             'tempat_sesi' => 'required|string|max:255',
-            'jumlah_peserta' => 'required|integer|min:1',
+            'jumlah_peserta' => 'required|integer|min:7',
             'jumlah_perempuan' => 'required|integer|min:0',
             'jumlah_laki_laki' => 'required|integer|min:0',
             'komposisi_peserta' => 'required|string',
@@ -110,27 +110,27 @@ class Form7Controller extends Controller
             $resikoKerentanan = implode("\n\n", $resikoKerentananPoints);
         }
         
-        $Form7 = new Form7();
-        $Form7->bencana_id = $request->bencana_id;
-        $Form7->desa_kelurahan = $request->desa_kelurahan;
-        $Form7->kecamatan = $request->kecamatan;
-        $Form7->kabupaten = $request->kabupaten;
-        $Form7->tanggal = $request->tanggal;
-        $Form7->jarak_bencana = $request->jarak_bencana;
-        $Form7->tempat_sesi = $request->tempat_sesi;
-        $Form7->jumlah_peserta = $request->jumlah_peserta;
-        $Form7->jumlah_perempuan = $request->jumlah_perempuan;
-        $Form7->jumlah_laki_laki = $request->jumlah_laki_laki;
-        $Form7->komposisi_peserta = $request->komposisi_peserta;
-        $Form7->fasilitator = $request->fasilitator;
-        $Form7->pencatat = $request->pencatat;
-        $Form7->akses_hak = $aksesHak;
-        $Form7->fungsi_pranata = $fungsiPranata;
-        $Form7->resiko_kerentanan = $resikoKerentanan;
-        $Form7->created_by = Auth::id();
-        $Form7->save();
+        $form = new Form7();
+        $form->bencana_id = $request->bencana_id;
+        $form->desa_kelurahan = $request->desa_kelurahan;
+        $form->kecamatan = $request->kecamatan;
+        $form->kabupaten = $request->kabupaten;
+        $form->tanggal = $request->tanggal;
+        $form->jarak_bencana = $request->jarak_bencana;
+        $form->tempat_sesi = $request->tempat_sesi;
+        $form->jumlah_peserta = $request->jumlah_peserta;
+        $form->jumlah_perempuan = $request->jumlah_perempuan;
+        $form->jumlah_laki_laki = $request->jumlah_laki_laki;
+        $form->komposisi_peserta = $request->komposisi_peserta;
+        $form->fasilitator = $request->fasilitator;
+        $form->pencatat = $request->pencatat;
+        $form->akses_hak = $aksesHak;
+        $form->fungsi_pranata = $fungsiPranata;
+        $form->resiko_kerentanan = $resikoKerentanan;
+        $form->created_by = Auth::id();
+        $form->save();
 
-        return redirect()->route('forms.form7.show', $Form7->id)->with('success', 'Data Form7 berhasil disimpan.');
+        return redirect()->route('forms.form7.show', $form->id)->with('success', 'Data Form7 berhasil disimpan.');
     }
     
     /**
@@ -138,8 +138,44 @@ class Form7Controller extends Controller
      */
     public function show($id)
     {
-        $Form7 = Form7::with('bencana')->findOrFail($id);
-        return view('forms.form7.show', compact('Form7'));
+        $form = Form7::with('bencana')->findOrFail($id);
+        return view('forms.form7.show', compact('form'));
+    }
+    
+    /**
+     * Display a listing of Form7.
+     */
+    public function list(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'forms']);
+        }
+        
+        $bencana = Bencana::findOrFail($bencana_id);
+         $form = Form7::where('bencana_id', $bencana_id)->latest()->get();
+        
+        return view('forms.form7.list', compact('bencana', 'form'));
+    }
+
+    /**
+     * Generate PDF document from Form7.
+     */
+    public function generatePdf($id)
+    {
+        $form = Form7::with('bencana')->findOrFail($id);
+        $pdf = PDF::loadView('forms.Form7.pdf', compact('Form'));
+        return $pdf->download('formulir-07-Form7-' . $form->id . '.pdf');
+    }
+    
+    /**
+     * Preview PDF document from Form7.
+     */
+    public function previewPdf($id)
+    {
+        $form = Form7::with('bencana')->findOrFail($id);
+        return view('forms.Form7.pdf', compact('form'));
     }
     
     /**
@@ -147,9 +183,9 @@ class Form7Controller extends Controller
      */
     public function edit($id)
     {
-        $Form7 = Form7::findOrFail($id);
+        $form = Form7::findOrFail($id);
         $bencana = Bencana::all();
-        return view('forms.form7.edit', compact('Form7', 'bencana'));
+        return view('forms.form7.edit', compact('form', 'bencana'));
     }
     
     /**
@@ -157,7 +193,7 @@ class Form7Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Form7 = Form7::findOrFail($id);
+        $form = Form7::findOrFail($id);
         
         $validator = Validator::make($request->all(), [
             'bencana_id' => 'required|exists:bencana,id',
@@ -236,60 +272,47 @@ class Form7Controller extends Controller
             $resikoKerentanan = implode("\n\n", $resikoKerentananPoints);
         }
 
-        $Form7->bencana_id = $request->bencana_id;
-        $Form7->desa_kelurahan = $request->desa_kelurahan;
-        $Form7->kecamatan = $request->kecamatan;
-        $Form7->kabupaten = $request->kabupaten;
-        $Form7->tanggal = $request->tanggal;
-        $Form7->jarak_bencana = $request->jarak_bencana;
-        $Form7->tempat_sesi = $request->tempat_sesi;
-        $Form7->jumlah_peserta = $request->jumlah_peserta;
-        $Form7->jumlah_perempuan = $request->jumlah_perempuan;
-        $Form7->jumlah_laki_laki = $request->jumlah_laki_laki;
-        $Form7->komposisi_peserta = $request->komposisi_peserta;
-        $Form7->fasilitator = $request->fasilitator;
-        $Form7->pencatat = $request->pencatat;
-        $Form7->akses_hak = $aksesHak;
-        $Form7->fungsi_pranata = $fungsiPranata;
-        $Form7->resiko_kerentanan = $resikoKerentanan;
-        $Form7->updated_by = Auth::id();
-        $Form7->save();
+        $form->bencana_id = $request->bencana_id;
+        $form->desa_kelurahan = $request->desa_kelurahan;
+        $form->kecamatan = $request->kecamatan;
+        $form->kabupaten = $request->kabupaten;
+        $form->tanggal = $request->tanggal;
+        $form->jarak_bencana = $request->jarak_bencana;
+        $form->tempat_sesi = $request->tempat_sesi;
+        $form->jumlah_peserta = $request->jumlah_peserta;
+        $form->jumlah_perempuan = $request->jumlah_perempuan;
+        $form->jumlah_laki_laki = $request->jumlah_laki_laki;
+        $form->komposisi_peserta = $request->komposisi_peserta;
+        $form->fasilitator = $request->fasilitator;
+        $form->pencatat = $request->pencatat;
+        $form->akses_hak = $aksesHak;
+        $form->fungsi_pranata = $fungsiPranata;
+        $form->resiko_kerentanan = $resikoKerentanan;
+        $form->updated_by = Auth::id();
+        $form->save();
 
-        return redirect()->route('forms.form7.show', $Form7->id)->with('success', 'Data Form7 berhasil diperbarui.');
+        return redirect()->route('forms.form7.show', $form->id)->with('success', 'Data Form7 berhasil diperbarui.');
     }
     
+    
+    
+    
     /**
-     * Display a listing of Form7.
+     * Remove the specified Form7 from storage.
      */
-    public function list(Request $request)
+    
+
+    public function destroy($id)
     {
-        $bencana_id = $request->query('bencana_id');
-        $query = Form7::with('bencana');
-        
-        if ($bencana_id) {
-            $query->where('bencana_id', $bencana_id);
+        try {
+            $form = Form7::findOrFail($id);
+            $bencana_id = $form->bencana_id;
+            $form->delete();
+            
+            return redirect()->route('forms.form7.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 7 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-        
-        $Form7s = $query->orderBy('created_at', 'desc')->paginate(10);
-        return view('forms.Form7.list', compact('Form7s'));
-    }
-    
-    /**
-     * Generate PDF document from Form7.
-     */
-    public function generatePdf($id)
-    {
-        $Form7 = Form7::with('bencana')->findOrFail($id);
-        $pdf = PDF::loadView('forms.Form7.pdf', compact('Form7'));
-        return $pdf->download('formulir-07-Form7-' . $Form7->id . '.pdf');
-    }
-    
-    /**
-     * Preview PDF document from Form7.
-     */
-    public function previewPdf($id)
-    {
-        $Form7 = Form7::with('bencana')->findOrFail($id);
-        return view('forms.Form7.pdf', compact('Form7'));
     }
 }

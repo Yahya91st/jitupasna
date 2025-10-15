@@ -33,7 +33,7 @@ class Form6Controller extends Controller
      */
     public function store(Request $request)
     {      
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'bencana_id' => 'required|exists:bencana,id',
 
             // Pengumpulan data
@@ -235,5 +235,19 @@ class Form6Controller extends Controller
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }    
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $form = Form6::findOrFail($id);
+            $bencana_id = $form->bencana_id;
+            $form->delete();
+            
+            return redirect()->route('forms.form6.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 6 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

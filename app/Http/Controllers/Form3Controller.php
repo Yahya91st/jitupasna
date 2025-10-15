@@ -152,4 +152,18 @@ class Form3Controller extends Controller
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }    
     }
+
+    public function destroy($id)
+    {
+        try {
+            $form = Form3::findOrFail($id);
+            $bencana_id = $form->bencana_id;
+            $form->delete();
+            
+            return redirect()->route('forms.form3.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 3 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }

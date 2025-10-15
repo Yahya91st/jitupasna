@@ -179,4 +179,18 @@ class Form9Controller extends Controller
             return back()->with('error', 'Terjadi kesalahan saat menampilkan pratinjau PDF: ' . $e->getMessage());
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            $form8 = Form9::findOrFail($id);
+            $bencana_id = $form8->bencana_id;
+            $form8->delete();
+            
+            return redirect()->route('forms.form9.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 9 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }

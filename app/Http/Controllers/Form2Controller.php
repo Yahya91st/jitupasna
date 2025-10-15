@@ -32,7 +32,7 @@ class Form2Controller extends Controller
     /**
      * Store a newly created Surat Keputusan in database.
      */
-        public function store(Request $request)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'bencana_id' => 'required|exists:bencana,id',
@@ -167,6 +167,19 @@ class Form2Controller extends Controller
         } catch (\Exception $e) {
             Log::error('Error updating keputusan: ' . $e->getMessage());
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+    public function destroy($id)
+    {
+        try {
+            $form = Form2::findOrFail($id);
+            $bencana_id = $form->bencana_id;
+            $form->delete();
+            
+            return redirect()->route('forms.form2.list', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data Form 2 berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
     
