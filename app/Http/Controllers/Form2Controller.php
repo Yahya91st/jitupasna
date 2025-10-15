@@ -162,7 +162,7 @@ class Form2Controller extends Controller
                 'updated_by' => Auth::id()
             ]);
             
-            return redirect()->route('forms.form2.show', $form2->id)
+            return redirect()->route('forms.form2.show', $form->id)
                 ->with('success', 'Surat Keputusan berhasil diperbarui.');
         } catch (\Exception $e) {
             Log::error('Error updating keputusan: ' . $e->getMessage());

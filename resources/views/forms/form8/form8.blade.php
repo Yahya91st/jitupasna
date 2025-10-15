@@ -2,76 +2,224 @@
 
 @section('content')
 <style>        
-    .form-table {
+     /* Container & Layout - Kombinasi Form3 & Form6 */
+    * {
+        font-family: 'Times New Roman', serif;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+        color: #333;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Header Styling - Dari Form6 */
+    .form-header {
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .form-header h5 {
+        margin: 0.5rem 0;
+        font-weight: bold;
+        color: #333;
+    }
 
+    .form-header h5:first-child {
+        color: #0066cc;
+        margin-bottom: 0.3rem;
+    }
+    
+    /* Table Styling - Kombinasi Form3 & Form6 */
+    .form-table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 20px;
         font-size: 13px;
-    }
-      .form-table th, .form-table td {
-        border: 1px solid #000;
-        padding: 8px;
-        text-align: left;
-        vertical-align: top;
-    }
-      .form-table th {
-        font-weight: bold;
-        text-align: center;
-    }
-    .table-header {
-        background-color: var(--bs-secondary) !important;
-        color: white !important;
-        text-align: center;
-        font-weight: bold;
-    }
-    .form-container {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 20px;
-        background: white;
-    }
-      .form-header {
-        text-align: center;
-        margin-bottom: 25px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #000;
-    }
-      .form-title {
-        font-size: 20px;
-        font-weight: bold;
-        margin: 5px 0;
-        text-transform: uppercase;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
     }
     
-    .form-subtitle {
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: 5px;
+    .form-table th, .form-table td {
+        border: 1px solid #333;
+        padding: 6px 4px;
+        text-align: center;
+        vertical-align: middle;
+        word-wrap: break-word;
+        font-size: 11px;
+        line-height: 1.3;
+    }
+    
+    .form-table th {
+        background-color: #f9f9f9;
+        font-weight: 600;
+        text-align: center;
+        color: #333;
+    }
+    
+    .form-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+    
+    .form-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-    }
-    #addRowBtn:hover {
-        background-color: #45a049;
-    }
-      .data-row td {
-        height: 28px;
-    }
-      [contenteditable="true"]:focus {
-        outline: 2px solid #4CAF50;
-        background-color: #f8f8f8;
+    .form-table tbody tr:hover {
+        background-color: rgba(0, 102, 204, 0.05);
+        transition: background-color 0.2s ease;
     }
     
-    [contenteditable="true"]:hover:not(:focus) {
-        background-color: #f0f0f0;
+    .table-header {
+        background-color: white !important;
+        color: #333 !important;
+        text-align: center;
+        font-weight: bold;
+        border: 1px solid #333;
+        padding: 6px 4px;
+        font-size: 11px;
+        line-height: 1.2;
+        vertical-align: middle;
     }
     
-    .editing {
-        background-color: #e8f5e9 !important;
+    /* Data row styling */
+    .data-row td {
+        padding: 6px 4px;
+        font-size: 11px;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #333;
+        min-height: 25px;
     }
-      @media print {
+    
+    .data-row td:first-child {
+        font-weight: bold;
+        background-color: #f9f9f9;
+    }
+    
+    .data-row td[contenteditable="true"] {
+        cursor: text;
+        background-color: white;
+        transition: background-color 0.2s ease;
+    }
+    
+    .data-row td[contenteditable="true"]:hover {
+        background-color: #f0f8ff;
+    }
+    
+    .data-row td[contenteditable="true"]:focus {
+        background-color: #e6f3ff;
+        outline: 2px solid #0066cc;
+        outline-offset: -2px;
+    }
+    
+    /* Total row styling */
+    .total-row {
+        font-weight: bold;
+        text-align: center;
+        background-color: #e9ecef !important;
+        border-top: 2px solid #333;
+    }
+    
+    .total-row td {
+        background-color: #e9ecef !important;
+        font-weight: 700;
+        color: #333;
+        border: 1px solid #333;
+        padding: 8px 4px;
+        font-size: 12px;
+    }
+    
+    /* Button Styling - Kombinasi Form3 & Form6 */
+    .form-button {
+        margin: 0 5px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-family: 'Times New Roman', serif;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .form-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+    }
+    
+    .btn-info {
+        background: #17a2b8;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    /* Action buttons container - Dari Form3 */
+    .d-flex {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .container {
+            max-width: 100%;
+            padding: 10px;
+        }
+        
+        .form-table {
+            font-size: 11px;
+        }
+        
+        .form-table th, .form-table td {
+            padding: 4px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .form-table {
+            font-size: 10px;
+        }
+        
+        .form-button {
+            margin: 2px;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+    }
+    
+    /* Print Styles */
+    @media print {
         .form-table {
             page-break-inside: auto;
-            border: 2.5px solid #000 !important;
+            border: 2px solid #000 !important;
         }
         
         .form-table tr {
@@ -81,22 +229,35 @@
         
         .form-table td, 
         .form-table th {
-            border: 1.5px solid #000 !important;
+            border: 1px solid #000 !important;
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
         }
         
         .form-table thead th {
             background-color: #b3b3b3 !important;
-            border-bottom: 2.5px solid #000 !important;
-        }
-          .total-row td {
-            border-top: 2.5px solid #000 !important;
-            border-bottom: 2.5px solid #000 !important;
+            border-bottom: 2px solid #000 !important;
         }
         
-        #addRowBtn, .no-print {
+        .total-row td {
+            border-top: 2px solid #000 !important;
+            border-bottom: 2px solid #000 !important;
+            background-color: #e9ecef !important;
+        }
+        
+        .form-button {
             display: none !important;
+        }
+        
+        .container {
+            box-shadow: none;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        body {
+            font-size: 12pt;
+            line-height: 1.4;
         }
     }
 </style>
@@ -107,29 +268,27 @@
 <input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
 
 <div class="container">    
-    <div class="text-center mb-4">
+    <!-- Document Header - Style dari Form6 -->
+    <div class="form-header">
         <h5><strong>Formulir 08</strong></h5>
         <h5>Formulir Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian</h5>
-    </div>
-    <div style="margin-top: 10px; margin-bottom: 20px; text-align: left;">
-        <button id="addRowBtn" type="button" style="background-color: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold;">+ Tambah Baris</button>
     </div>
     
     <table class="form-table">
         <thead>
             <tr>
-                <th class="table-header" rowspan="3" style="width: 3%;">No</th>
-                <th class="table-header" rowspan="3" style="width: 10%;">Sektor/Sub Sektor</th>
-                <th class="table-header" rowspan="3" style="width: 15%;">Komponen Kerusakan dan Kerugian</th>
-                <th class="table-header" rowspan="3" style="width: 10%;">Lokasi</th>                
-                <th class="table-header" colspan="3">Data Kerusakan</th>
-                <th class="table-header" colspan="3">Harga Satuan (Rp.)</th>
-                <th class="table-header" colspan="3">Nilai Kerusakan (Damage)</th>
-                <th class="table-header" rowspan="3" style="width: 8%;">Perkiraan Kerugian (Losses)</th>
-                <th class="table-header" rowspan="3" style="width: 8%;">Kerusakan + Kerugian</th>
-                <th class="table-header" rowspan="3" style="width: 8%;">Kebutuhan</th>
+                <th class="table-header" rowspan="2" style="width: 3%;">No</th>
+                <th class="table-header" rowspan="2" style="width: 12%;">Sektor/Sub Sektor</th>
+                <th class="table-header" rowspan="2" style="width: 15%;">Komponen Kerusakan dan Kerugian</th>
+                <th class="table-header" rowspan="2" style="width: 10%;">Lokasi</th>                
+                <th class="table-header" colspan="3" style="width: 12%;">Data Kerusakan</th>
+                <th class="table-header" colspan="3" style="width: 12%;">Harga Satuan (Rp.)</th>
+                <th class="table-header" colspan="3" style="width: 12%;">Nilai Kerusakan (Damage)</th>
+                <th class="table-header" rowspan="2" style="width: 8%;">Perkiraan Kerugian (Losses)</th>
+                <th class="table-header" rowspan="2" style="width: 8%;">Kerusakan + Kerugian</th>
+                <th class="table-header" rowspan="2" style="width: 8%;">Kebutuhan</th>
             </tr>            
-            <tr class="text-center">
+            <tr>
                 <th class="table-header" style="width: 4%;">RB</th>
                 <th class="table-header" style="width: 4%;">RS</th>
                 <th class="table-header" style="width: 4%;">RR</th>
@@ -142,8 +301,9 @@
             </tr>
         </thead>        
         <tbody id="tableBody">            
+            @for ($i = 1; $i <= 15; $i++)
             <tr class="data-row">
-                <td style="text-align: center;">1</td>
+                <td style="text-align: center;">{{ $i }}</td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -151,10 +311,11 @@
                     <td contenteditable="true"></td>
                 @endfor
             </tr>
-            <tr class="total-row" style="font-weight: bold; text-align: center; background-color: #d1d1d1;">
-                <td colspan="4">Jumlah Total</td>
+            @endfor
+            <tr class="total-row">
+                <td colspan="4" style="text-align: center; font-weight: bold;">JUMLAH</td>
                 @for ($j = 0; $j < 12; $j++)
-                    <td>&nbsp;</td>
+                    <td style="text-align: center;">&nbsp;</td>
                 @endfor
             </tr>
         </tbody>    
@@ -176,18 +337,10 @@
     </div>    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const addRowBtn = document.getElementById('addRowBtn');
-            const tableBody = document.getElementById('tableBody');
-            
             // Function to setup event listeners for a row
             function setupRowListeners(row) {
                 const cells = row.querySelectorAll('[contenteditable="true"]');
                 cells.forEach(cell => {
-                    cell.addEventListener('input', function() {
-                        // Add any validation or calculation logic here if needed
-                        // For example, if you need to calculate sums, etc.
-                    });
-                    
                     // Add focus/blur events for better UI
                     cell.addEventListener('focus', function() {
                         this.classList.add('editing');
@@ -199,40 +352,10 @@
                 });
             }
             
-            // Setup listeners for initial row
-            const initialRows = tableBody.querySelectorAll('.data-row');
-            initialRows.forEach(row => {
+            // Setup listeners for all rows
+            const allRows = document.querySelectorAll('.data-row');
+            allRows.forEach(row => {
                 setupRowListeners(row);
-            });
-            
-            addRowBtn.addEventListener('click', function() {
-                // Get current number of data rows (excluding the total row)
-                const dataRows = tableBody.querySelectorAll('.data-row');
-                const rowCount = dataRows.length + 1;
-                
-                // Create new row
-                const newRow = document.createElement('tr');
-                newRow.className = 'data-row';
-                
-                // Create number cell
-                const numberCell = document.createElement('td');
-                numberCell.style.textAlign = 'center';
-                numberCell.textContent = rowCount;
-                newRow.appendChild(numberCell);
-                
-                // Create 15 editable cells (4 columns + 3x3 data columns + 3 extra columns)
-                for (let i = 0; i < 15; i++) {
-                    const cell = document.createElement('td');
-                    cell.contentEditable = 'true';
-                    newRow.appendChild(cell);
-                }
-                
-                // Insert the new row before the total row
-                const totalRow = tableBody.querySelector('.total-row');
-                tableBody.insertBefore(newRow, totalRow);
-                
-                // Setup listeners for the new row
-                setupRowListeners(newRow);
             });
         });
         
