@@ -638,6 +638,9 @@ Route::prefix('/forms')
             Route::get('/pdf/{id}', [Form6Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form6Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/get-rumahtangga/{id}', [Form6Controller::class, 'getRumahtangga'])->name('get-rumahtangga');
+            
+            // Route untuk contoh PDF (dengan data dummy dari controller)
+            Route::get('/contoh-pdf', [Form6Controller::class, 'contohPdf'])->name('contoh-pdf');
         });
 
         // Form 7 (Formulir 07 - Diskusi Kelompok Terfokus (FGD))

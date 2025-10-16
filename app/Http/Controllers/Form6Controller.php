@@ -165,24 +165,11 @@ class Form6Controller extends Controller
     public function previewPdf($id)
     {
         $form = Form6::with(['bencana'])->findOrFail($id);
-        
-        // Ensure date fields are Carbon instances
-        // if (!empty($form->tanggal_surat) && !$form->tanggal_surat instanceof \Carbon\Carbon) {
-        //     $form->tanggal_surat = \Carbon\Carbon::parse($form->tanggal_surat);
-        // }
-        
-        // if (!empty($form->hari_tanggal) && !$form->hari_tanggal instanceof \Carbon\Carbon) {
-        //     $form->hari_tanggal = \Carbon\Carbon::parse($form->hari_tanggal);
-        // }
-        
-        // if (!empty($form->bencana->tanggal) && !$form->bencana->tanggal instanceof \Carbon\Carbon) {
-        //     $form->bencana->tanggal = \Carbon\Carbon::parse($form->bencana->tanggal);
-        // }
-        
+                
         $pdf = Pdf::loadView('forms.form6.pdf', compact('form'));
         return $pdf->stream('Formulir_06_PDNA_' . $form->id . '.pdf');
     }
-    
+
     /**
      * Show the form for editing the specified form.
      */
@@ -249,5 +236,73 @@ class Form6Controller extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Generate contoh PDF dengan data dummy
+     */
+    public function contohPdf()
+    {
+        // Data dummy untuk contoh formulir
+        $form = (object) [
+            // Pengumpulan Data
+            'enumerator' => 'Budi Santoso',
+            'tgl_wawancara' => '2025-10-15',
+            'paraf_enum' => 'BS',
+            'data_entry' => 'Siti Nurhaliza',
+            'tgl_entry' => '2025-10-15',
+            'paraf_entry' => 'SN',
+            
+            // Informasi Umum
+            'responden' => 'l',
+            'umur' => '41_50',
+            'nama' => 'Ahmad Wijaya',
+            'desa' => 'Sukamaju',
+            'kecamatan' => 'Cianjur',
+            'kabupaten' => 'Cianjur',
+            'pendidikan' => 'slta',
+            'krt_perempuan' => 'tidak',
+            'jumlah_anggota' => '3_5',
+            'jumlah_anak' => '2',
+            'jumlah_balita' => '1',
+            'tipe_hunian' => 'tumpangan',
+            
+            // Pertanyaan (gunakan array untuk checkbox yang bisa multiple)
+            'nafkah_pre' => ['suami', 'istri'],
+            'nafkah_post' => ['suami'],
+            'sumber_penghasilan' => ['pertanian', 'dagang', 'jasa'],
+            'penghasilan_hilang' => 'ada',
+            'bantuan_pencaharian' => ['modal', 'pasar'],
+            'cadangan' => ['tabungan', 'barang'],
+            'dukungan_cadangan' => ['koperasi', 'pinjaman'],
+            'perlindungan' => 'sama',
+            'bantuan_perlindungan' => ['penyuluhan', 'polisi'],
+            'masalah_rumah' => ['rusak'],
+            'tindakan_rumah' => ['stimulus', 'teknis'],
+            'perkiraan_tinggal' => 'rumah_asal',
+            'cara_makanan' => ['bantuan', 'cadangan'],
+            'dukungan_pangan' => ['langsung'],
+            'masalah_air' => ['kurang'],
+            'dukungan_air' => ['sedia', 'simpan'],
+            'pelayanan_kesehatan' => 'tidak',
+            'perbaikan_kesehatan' => ['obat', 'medis'],
+            'sekolah_terganggu' => 'ya',
+            'dukungan_pendidikan' => ['alat', 'biaya'],
+            'agama_terganggu' => 'tidak',
+            'dukungan_agama' => ['stimulus'],
+            'pencegahan' => ['info', 'latih'],
+            'kelompok_butuh' => ['anak', 'lansia'],
+            
+            // Penghasilan
+            'penghasilan_suami' => 'Rp 3.000.000',
+            'bidang_suami' => 'Pertanian',
+            'penghasilan_istri' => 'Rp 1.500.000',
+            'bidang_istri' => 'Dagang',
+            'penghasilan_lainnya' => '-',
+            'bidang_lainnya' => '-',
+        ];
+        
+        $pdf = Pdf::loadView('forms.form6.contoh_form6_pdf', compact('form'));
+        return $pdf->stream('Contoh_Formulir_06_PDNA.pdf');
     }
 }

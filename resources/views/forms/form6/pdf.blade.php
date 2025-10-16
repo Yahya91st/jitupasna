@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,95 +13,121 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
             width: 100%;
             padding: 20px 0;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
         }
-        .header h2, .header h3 {
+
+        .header h2,
+        .header h3 {
             margin: 5px 0;
         }
+
         .header h2 {
             font-size: 18px;
         }
+
         .header h3 {
             font-size: 16px;
         }
+
         .content {
             margin-bottom: 20px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #333;
         }
-        th, td {
+
+        th,
+        td {
             padding: 8px;
             text-align: left;
             font-size: 12px;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         .label {
             font-weight: bold;
             width: 30%;
         }
+
         .value {
             width: 70%;
         }
+
         .section {
             margin-bottom: 20px;
         }
+
         .section-title {
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 10px;
             text-decoration: underline;
         }
+
         .footer {
             margin-top: 30px;
             text-align: right;
             padding-right: 50px;
         }
+
         .signature {
             margin-top: 50px;
             font-weight: bold;
         }
+
         .images {
             width: 100%;
             margin-bottom: 20px;
         }
+
         .image-container {
             width: 32%;
             display: inline-block;
             text-align: center;
             vertical-align: top;
         }
+
         .image-container img {
             max-width: 100%;
             height: auto;
             max-height: 150px;
             border: 1px solid #ddd;
         }
+
         .image-caption {
             margin-top: 5px;
             font-size: 11px;
             text-align: center;
         }
+
         .page-break {
             page-break-after: always;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -222,32 +249,32 @@
                         <td class="label">Status Bantuan</td>
                         <td class="value">{{ $rumahtangga->status_bantuan }}</td>
                     </tr>
-                    @if($rumahtangga->status_bantuan == 'Ya')
-                    <tr>
-                        <td class="label">Jenis Bantuan</td>
-                        <td class="value">{{ $rumahtangga->jenis_bantuan }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Nominal/Nilai Bantuan</td>
-                        <td class="value">Rp {{ number_format($rumahtangga->nominal_bantuan, 0, ',', '.') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Pemberi Bantuan</td>
-                        <td class="value">{{ $rumahtangga->pemberi_bantuan }}</td>
-                    </tr>
+                    @if ($rumahtangga->status_bantuan == 'Ya')
+                        <tr>
+                            <td class="label">Jenis Bantuan</td>
+                            <td class="value">{{ $rumahtangga->jenis_bantuan }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Nominal/Nilai Bantuan</td>
+                            <td class="value">Rp {{ number_format($rumahtangga->nominal_bantuan, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Pemberi Bantuan</td>
+                            <td class="value">{{ $rumahtangga->pemberi_bantuan }}</td>
+                        </tr>
                     @endif
                 </table>
             </div>
 
-            @if($rumahtangga->keterangan_tambahan)
-            <div class="section">
-                <div class="section-title">G. KETERANGAN TAMBAHAN</div>
-                <table>
-                    <tr>
-                        <td>{{ $rumahtangga->keterangan_tambahan }}</td>
-                    </tr>
-                </table>
-            </div>
+            @if ($rumahtangga->keterangan_tambahan)
+                <div class="section">
+                    <div class="section-title">G. KETERANGAN TAMBAHAN</div>
+                    <table>
+                        <tr>
+                            <td>{{ $rumahtangga->keterangan_tambahan }}</td>
+                        </tr>
+                    </table>
+                </div>
             @endif
 
             <div class="section page-break">
@@ -278,4 +305,5 @@
         </div>
     </div>
 </body>
+
 </html>
