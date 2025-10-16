@@ -315,4 +315,36 @@ class Form7Controller extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+    public function contohPdf()
+    {
+        // Data dummy untuk contoh formulir
+    $form = (object) [
+        'desa_kelurahan' => 'Sukamaju',
+        'kecamatan' => 'Cianjur',
+        'kabupaten' => 'Cianjur',
+        'tanggal' => '2025-10-16',
+        'jarak_bencana' => '3 km',
+        'tempat_sesi' => 'Balai Desa Sukamaju',
+        'desa_sesi' => 'Sukamaju',
+        'kec_sesi' => 'Cianjur',
+        'jumlah_peserta' => 15,
+        'jumlah_perempuan' => 7,
+        'jumlah_laki_laki' => 8,
+        'komposisi_peserta' => 'Petani, Ibu Rumah Tangga, Guru, Tokoh Masyarakat, Pemuda',
+        'fasilitator' => 'Budi Santoso',
+        'pencatat' => 'Siti Nurhaliza',
+        'paraf_fasilitator' => 'BS',
+        'paraf_pencatat' => 'SN',
+        'persiapan_pra_fgd' => true,
+        'pembagian_tugas' => true,
+        'koordinasi_pengantar' => true,
+        'pembahasan' => true,
+        'pendalaman_tanya_jawab' => false,
+        'penyimpulan_penutupan' => true,
+
+        ];
+        
+        $pdf = Pdf::loadView('forms.form7.contoh_form7_pdf', compact('form'));
+        return $pdf->stream('Contoh_Formulir_07_PDNA.pdf');
+    }
 }

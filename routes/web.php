@@ -654,6 +654,8 @@ Route::prefix('/forms')
             Route::get('/list', [Form7Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form7Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form7Controller::class, 'previewPdf'])->name('preview-pdf');
+            Route::get('/contoh-pdf', [Form7Controller::class, 'contohPdf'])->name('contoh-pdf');
+
         });
 
         // Form 8 (Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian)
