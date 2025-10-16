@@ -41,24 +41,6 @@ return new class extends Migration
             });
         }
 
-        // Foreign keys for form_perumahan table
-        // if (Schema::hasTable('form_perumahan')) {
-        //     Schema::table('form_perumahan', function (Blueprint $table) {
-        //         if (Schema::hasColumn('form_perumahan', 'bencana_id')) {
-        //             $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-        //         }
-        //     });
-        // }
-
-        // Foreign keys for kerugian table
-        // if (Schema::hasTable('kerugian')) {
-        //     Schema::table('kerugian', function (Blueprint $table) {
-        //         if (Schema::hasColumn('kerugian', 'bencana_id')) {
-        //             $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-        //         }
-        //     });
-        // }
-
         // Foreign keys for wilayah_bencana table
         if (Schema::hasTable('wilayah_bencana')) {
             Schema::table('wilayah_bencana', function (Blueprint $table) {
@@ -67,97 +49,54 @@ return new class extends Migration
                 }
             });
         }
-
-        // Foreign keys for education_reports table
-        if (Schema::hasTable('education_reports')) {
-            Schema::table('education_reports', function (Blueprint $table) {
-                if (Schema::hasColumn('education_reports', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for health_reports table
-        if (Schema::hasTable('health_reports')) {
-            Schema::table('health_reports', function (Blueprint $table) {
-                if (Schema::hasColumn('health_reports', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for government_reports table
-        if (Schema::hasTable('government_reports')) {
-            Schema::table('government_reports', function (Blueprint $table) {
-                if (Schema::hasColumn('government_reports', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for transportation_reports table
-        if (Schema::hasTable('transportation_reports')) {
-            Schema::table('transportation_reports', function (Blueprint $table) {
-                if (Schema::hasColumn('transportation_reports', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for environmental_reports table
-        if (Schema::hasTable('environmental_reports')) {
-            Schema::table('environmental_reports', function (Blueprint $table) {
-                if (Schema::hasColumn('environmental_reports', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
         // Foreign keys for form1 table
-        // if (Schema::hasTable('form1')) {
-        //     Schema::table('form1', function (Blueprint $table) {
-        //         if (Schema::hasColumn('form1', 'bencana_id')) {
-        //             $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-        //         }
-        //     });
-        // }
-
-        // Foreign keys for keputusan table
-        if (Schema::hasTable('keputusan')) {
-            Schema::table('keputusan', function (Blueprint $table) {
-                if (Schema::hasColumn('keputusan', 'bencana_id')) {
+        if (Schema::hasTable('form1')) {
+            Schema::table('form1', function (Blueprint $table) {
+                if (Schema::hasColumn('form1', 'bencana_id')) {
                     $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
                 }
             });
         }
-
-        // Foreign keys for pendataan table
-        if (Schema::hasTable('pendataan')) {
-            Schema::table('pendataan', function (Blueprint $table) {
-                if (Schema::hasColumn('pendataan', 'bencana_id')) {
+        // Foreign keys for form2 table
+        if (Schema::hasTable('form2')) {
+            Schema::table('form2', function (Blueprint $table) {
+                if (Schema::hasColumn('form2', 'bencana_id')) {
                     $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
                 }
             });
         }
-
-        // Foreign keys for rumahtangga table
-        if (Schema::hasTable('rumahtangga')) {
-            Schema::table('rumahtangga', function (Blueprint $table) {
-                if (Schema::hasColumn('rumahtangga', 'bencana_id')) {
+        // Foreign keys for form3 table
+        if (Schema::hasTable('form3')) {
+            Schema::table('form3', function (Blueprint $table) {
+                if (Schema::hasColumn('form3', 'bencana_id')) {
                     $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
                 }
             });
         }
-
-        // Foreign keys for fgd table
-        if (Schema::hasTable('fgd')) {
-            Schema::table('fgd', function (Blueprint $table) {
-                if (Schema::hasColumn('fgd', 'bencana_id')) {
+        // Foreign keys for form6 table
+        if (Schema::hasTable('form6')) {
+            Schema::table('form6', function (Blueprint $table) {
+                if (Schema::hasColumn('form6', 'bencana_id')) {
                     $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
                 }
             });
         }
-
+        // Foreign keys for form7 table
+        if (Schema::hasTable('form7')) {
+            Schema::table('form7', function (Blueprint $table) {
+                if (Schema::hasColumn('form7', 'bencana_id')) {
+                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
+                }
+            });
+        }
+        // Foreign keys for form8 table
+        if (Schema::hasTable('form8')) {
+            Schema::table('form8', function (Blueprint $table) {
+                if (Schema::hasColumn('form8', 'bencana_id')) {
+                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
+                }
+            });
+        }
         // Foreign keys for form9 table
         if (Schema::hasTable('form9')) {
             Schema::table('form9', function (Blueprint $table) {
@@ -167,64 +106,26 @@ return new class extends Migration
             });
         }
 
-        // Foreign keys for analisa table
-        if (Schema::hasTable('analisa')) {
-            Schema::table('analisa', function (Blueprint $table) {
-                if (Schema::hasColumn('analisa', 'bencana_id')) {
+        // Foreign keys for form10 table
+        if (Schema::hasTable('form10')) {
+            Schema::table('form10', function (Blueprint $table) {
+                if (Schema::hasColumn('form10', 'bencana_id')) {
                     $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
                 }
             });
         }
-
-        // Foreign keys for anggaran table
-        if (Schema::hasTable('anggaran')) {
-            Schema::table('anggaran', function (Blueprint $table) {
-                if (Schema::hasColumn('anggaran', 'bencana_id')) {
+        // Foreign keys for form11 table
+        if (Schema::hasTable('form11')) {
+            Schema::table('form11', function (Blueprint $table) {
+                if (Schema::hasColumn('form11', 'bencana_id')) {
                     $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
                 }
             });
         }
-
-        // Foreign keys for form_data table
-        if (Schema::hasTable('form_data')) {
-            Schema::table('form_data', function (Blueprint $table) {
-                if (Schema::hasColumn('form_data', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for format1_form4s table
-        if (Schema::hasTable('format1_form4s')) {
-            Schema::table('format1_form4s', function (Blueprint $table) {
-                if (Schema::hasColumn('format1_form4s', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for format5_form4s table
-        if (Schema::hasTable('format5_form4s')) {
-            Schema::table('format5_form4s', function (Blueprint $table) {
-                if (Schema::hasColumn('format5_form4s', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for format6_form4s table
-        if (Schema::hasTable('format6_form4s')) {
-            Schema::table('format6_form4s', function (Blueprint $table) {
-                if (Schema::hasColumn('format6_form4s', 'bencana_id')) {
-                    $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
-                }
-            });
-        }
-
-        // Foreign keys for format7_form4s table
-        if (Schema::hasTable('format7_form4s')) {
-            Schema::table('format7_form4s', function (Blueprint $table) {
-                if (Schema::hasColumn('format7_form4s', 'bencana_id')) {
+        // Foreign keys for form12 table
+        if (Schema::hasTable('form12')) {
+            Schema::table('form12', function (Blueprint $table) {
+                if (Schema::hasColumn('form12', 'bencana_id')) {
                     $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
                 }
             });

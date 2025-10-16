@@ -131,7 +131,8 @@
         color: #000;
     }
     
-    /* Checkbox Styling */
+    /* Radio Button Styling */
+    input[type="radio"],
     input[type="checkbox"] {
         transform: scale(1.1);
         margin-right: 0.5rem;
@@ -350,11 +351,11 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="responden_l" id="resp_l">
+                                <input type="radio" name="responden" value="l" id="resp_l">
                                 <label for="resp_l">Laki-laki</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="responden_p" id="resp_p">
+                                <input type="radio" name="responden" value="p" id="resp_p">
                                 <label for="resp_p">Perempuan</label>
                             </div>
                         </div>
@@ -365,23 +366,23 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="umur_20" id="umur1">
+                                <input type="radio" name="umur" value="20" id="umur1">
                                 <label for="umur1">≤ 20 tahun</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="umur_21_30" id="umur2">
+                                <input type="radio" name="umur" value="21_30" id="umur2">
                                 <label for="umur2">21-30 tahun</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="umur_31_40" id="umur3">
+                                <input type="radio" name="umur" value="31_40" id="umur3">
                                 <label for="umur3">31-40 tahun</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="umur_41_50" id="umur4">
+                                <input type="radio" name="umur" value="41_50" id="umur4">
                                 <label for="umur4">41-50 tahun</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="umur_50plus" id="umur5">
+                                <input type="radio" name="umur" value="50plus" id="umur5">
                                 <label for="umur5">> 50 tahun</label>
                             </div>
                         </div>
@@ -409,19 +410,19 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="pend_sd" id="pend1">
+                                <input type="radio" name="pendidikan" value="sd" id="pend1">
                                 <label for="pend1">SD</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="pend_sltp" id="pend2">
+                                <input type="radio" name="pendidikan" value="sltp" id="pend2">
                                 <label for="pend2">SLTP</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="pend_slta" id="pend3">
+                                <input type="radio" name="pendidikan" value="slta" id="pend3">
                                 <label for="pend3">SLTA</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="pend_pt" id="pend4">
+                                <input type="radio" name="pendidikan" value="pt" id="pend4">
                                 <label for="pend4">Perguruan Tinggi</label>
                             </div>
                         </div>
@@ -432,11 +433,11 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="krt_p_ya" id="krt1">
+                                <input type="radio" name="krt_perempuan" value="ya" id="krt1">
                                 <label for="krt1">Ya</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="krt_p_tidak" id="krt2">
+                                <input type="radio" name="krt_perempuan" value="tidak" id="krt2">
                                 <label for="krt2">Tidak</label>
                             </div>
                         </div>
@@ -447,15 +448,15 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="anggota_3" id="anggota1">
+                                <input type="radio" name="jumlah_anggota" value="3" id="anggota1">
                                 <label for="anggota1">≤ 3 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="anggota_3_5" id="anggota2">
+                                <input type="radio" name="jumlah_anggota" value="3_5" id="anggota2">
                                 <label for="anggota2">3-5 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="anggota_5plus" id="anggota3">
+                                <input type="radio" name="jumlah_anggota" value="5plus" id="anggota3">
                                 <label for="anggota3">> 5 orang</label>
                             </div>
                         </div>
@@ -466,19 +467,19 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="anak_1" id="anak1">
+                                <input type="radio" name="jumlah_anak" value="1" id="anak1">
                                 <label for="anak1">1 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="anak_2" id="anak2">
+                                <input type="radio" name="jumlah_anak" value="2" id="anak2">
                                 <label for="anak2">2 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="anak_3" id="anak3">
+                                <input type="radio" name="jumlah_anak" value="3" id="anak3">
                                 <label for="anak3">3 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="anak_3plus" id="anak4">
+                                <input type="radio" name="jumlah_anak" value="3plus" id="anak4">
                                 <label for="anak4">> 3 orang</label>
                             </div>
                         </div>
@@ -489,19 +490,19 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="balita_1" id="balita1">
+                                <input type="radio" name="jumlah_balita" value="1" id="balita1">
                                 <label for="balita1">1 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="balita_2" id="balita2">
+                                <input type="radio" name="jumlah_balita" value="2" id="balita2">
                                 <label for="balita2">2 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="balita_3" id="balita3">
+                                <input type="radio" name="jumlah_balita" value="3" id="balita3">
                                 <label for="balita3">3 orang</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="balita_3plus" id="balita4">
+                                <input type="radio" name="jumlah_balita" value="3plus" id="balita4">
                                 <label for="balita4">> 3 orang</label>
                             </div>
                         </div>
@@ -512,27 +513,27 @@
                     <td>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" name="hunian_sendiri" id="hunian1">
+                                <input type="radio" name="tipe_hunian" value="sendiri" id="hunian1">
                                 <label for="hunian1">Rumah tinggal sendiri</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="hunian_tumpangan" id="hunian2">
+                                <input type="radio" name="tipe_hunian" value="tumpangan" id="hunian2">
                                 <label for="hunian2">Rumah tumpangan</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="hunian_huntara" id="hunian3">
+                                <input type="radio" name="tipe_hunian" value="huntara" id="hunian3">
                                 <label for="hunian3">Huntara</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="hunian_pengungsian" id="hunian4">
+                                <input type="radio" name="tipe_hunian" value="pengungsian" id="hunian4">
                                 <label for="hunian4">Pengungsian</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="hunian_fasum" id="hunian5">
+                                <input type="radio" name="tipe_hunian" value="fasum" id="hunian5">
                                 <label for="hunian5">Fasilitas umum</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" name="hunian_lain" id="hunian6">
+                                <input type="radio" name="tipe_hunian" value="lain" id="hunian6">
                                 <label for="hunian6">Lain-lain</label>
                             </div>
                         </div>
@@ -650,11 +651,11 @@
                         <td class="answer-cell">
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="penghasilan_hilang_ada" id="penghasilan1">
+                                    <input type="radio" name="penghasilan_hilang" value="ada" id="penghasilan1">
                                     <label for="penghasilan1">Ada</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="penghasilan_hilang_tidak" id="penghasilan2">
+                                    <input type="radio" name="penghasilan_hilang" value="tidak" id="penghasilan2">
                                     <label for="penghasilan2">Tidak</label>
                                 </div>
                             </div>
@@ -728,15 +729,15 @@
                         <td class="answer-cell">
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="perlindungan_meningkat" id="perlindungan1">
+                                    <input type="radio" name="perlindungan" value="meningkat" id="perlindungan1">
                                     <label for="perlindungan1">Meningkat</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="perlindungan_menurun" id="perlindungan2">
+                                    <input type="radio" name="perlindungan" value="menurun" id="perlindungan2">
                                     <label for="perlindungan2">Menurun</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="perlindungan_sama" id="perlindungan3">
+                                    <input type="radio" name="perlindungan" value="sama" id="perlindungan3">
                                     <label for="perlindungan3">Sama saja</label>
                                 </div>
                             </div>
@@ -831,15 +832,15 @@
                         <td class="answer-cell">
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="perkiraan_rumah_asal" id="perkiraan1">
+                                    <input type="radio" name="perkiraan_tinggal" value="rumah_asal" id="perkiraan1">
                                     <label for="perkiraan1">Di rumah asal</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="perkiraan_desa_asal" id="perkiraan2">
+                                    <input type="radio" name="perkiraan_tinggal" value="desa_asal" id="perkiraan2">
                                     <label for="perkiraan2">Di desa asal</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="perkiraan_tempat_lain" id="perkiraan3">
+                                    <input type="radio" name="perkiraan_tinggal" value="tempat_lain" id="perkiraan3">
                                     <label for="perkiraan3">Di tempat lain:</label>
                                     <input type="text" name="perkiraan_tempat_lain_text" class="inline-input" style="width: 50%;" placeholder="Sebutkan tempat">
                                 </div>
@@ -952,11 +953,11 @@
                         <td class="answer-cell">
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="kesehatan_memadai" id="kesehatan1">
+                                    <input type="radio" name="pelayanan_kesehatan" value="memadai" id="kesehatan1">
                                     <label for="kesehatan1">Memadai</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="kesehatan_tidak" id="kesehatan2">
+                                    <input type="radio" name="pelayanan_kesehatan" value="tidak" id="kesehatan2">
                                     <label for="kesehatan2">Tidak memadai</label>
                                 </div>
                             </div>
@@ -1001,11 +1002,11 @@
                         <td class="answer-cell">
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="sekolah_terganggu_ya" id="sekolah1">
+                                    <input type="radio" name="sekolah_terganggu" value="ya" id="sekolah1">
                                     <label for="sekolah1">Ya</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="sekolah_terganggu_tidak" id="sekolah2">
+                                    <input type="radio" name="sekolah_terganggu" value="tidak" id="sekolah2">
                                     <label for="sekolah2">Tidak</label>
                                 </div>
                             </div>
@@ -1054,11 +1055,11 @@
                         <td class="answer-cell">
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="agama_terganggu_ya" id="agama1">
+                                    <input type="radio" name="agama_terganggu" value="ya" id="agama1">
                                     <label for="agama1">Ya</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="agama_terganggu_tidak" id="agama2">
+                                    <input type="radio" name="agama_terganggu" value="tidak" id="agama2">
                                     <label for="agama2">Tidak</label>
                                 </div>
                             </div>

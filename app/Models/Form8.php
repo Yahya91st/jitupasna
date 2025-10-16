@@ -13,8 +13,7 @@ class Form8 extends Model
 
     protected $fillable = [
         'bencana_id',
-        'sektor',
-        'sub_sektor',
+        'sektor_sub_sektor',
         'komponen_kerusakan',
         'lokasi',
         

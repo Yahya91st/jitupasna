@@ -104,19 +104,6 @@ class Form1Controller extends Controller
     {
         $form = Form1::with(['bencana'])->findOrFail($id);
         
-        // Ensure date fields are Carbon instances
-        // if (!empty($form->tanggal_surat) && !$form->tanggal_surat instanceof \Carbon\Carbon) {
-        //     $form->tanggal_surat = \Carbon\Carbon::parse($form->tanggal_surat);
-        // }
-        
-        // if (!empty($form->hari_tanggal) && !$form->hari_tanggal instanceof \Carbon\Carbon) {
-        //     $form->hari_tanggal = \Carbon\Carbon::parse($form->hari_tanggal);
-        // }
-        
-        // if (!empty($form->bencana->tanggal) && !$form->bencana->tanggal instanceof \Carbon\Carbon) {
-        //     $form->bencana->tanggal = \Carbon\Carbon::parse($form->bencana->tanggal);
-        // }
-        
         $pdf = Pdf::loadView('forms.form1.pdf', compact('form'));
         return $pdf->stream('Formulir_01_PDNA_' . $form->id . '.pdf');
     }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('form12', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('bencana_id');
 
             $table->string('sektor')->nullable();
             $table->string('komponen_kebutuhan')->nullable();
@@ -23,8 +24,6 @@ return new class extends Migration
             $table->decimal('harga_satuan', 15, 2)->nullable()->default(0);
             $table->decimal('jumlah', 15, 2)->nullable()->default(0);
             $table->text('keterangan')->nullable();
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

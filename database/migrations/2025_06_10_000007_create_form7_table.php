@@ -29,8 +29,6 @@ return new class extends Migration
             $table->text('akses_hak')->nullable();
             $table->text('fungsi_pranata')->nullable();
             $table->text('resiko_kerentanan')->nullable();
-            $table->foreignId('created_by')->nullable()->constrained('users');
-            $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

@@ -18,7 +18,6 @@ class Form12Controller extends Controller
     public function index(Request $request)
     {
         $bencana_id = $request->query('bencana_id');
-        $bencana = null;
         
         if ($bencana_id) {
             $bencana = Bencana::find($bencana_id);

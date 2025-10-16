@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bencana;
 use App\Models\Desa;
-use App\Models\KategoriBencana;
+use App\Models\Bencana;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
+use App\Models\KategoriBencana;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class BencanaController extends Controller
@@ -145,7 +146,7 @@ class BencanaController extends Controller
             // } catch (\Throwable $th) {
             //     DB::rollBack();
             //     // Menyimpan error ke log dan mengembalikan ke halaman sebelumnya dengan error message
-            //     \Log::error('Error storing bencana: ' . $th->getMessage());
+            //     Log::error('Error storing bencana: ' . $th->getMessage());
 
             //     return redirect()->back()->with('error', $th->getMessage());
             // }
@@ -251,7 +252,7 @@ class BencanaController extends Controller
             return redirect()->route('bencana.index')->with('success', 'Data bencana berhasil diperbarui');
         } catch (\Throwable $th) {
             DB::rollBack();
-            \Log::error('Error updating bencana: ' . $th->getMessage());
+            Log::error('Error updating bencana: ' . $th->getMessage());
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
         // } catch (\Illuminate\Validation\ValidationException $e) {

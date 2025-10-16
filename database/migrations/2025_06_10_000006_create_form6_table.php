@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('form6', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('bencana_id');
             
             // Pengumpulan data
             $table->string('enumerator')->nullable();
@@ -89,7 +90,6 @@ return new class extends Migration
             $table->string('bidang_lainnya')->nullable();
             
             // Relation to Bencana
-            $table->foreignId('bencana_id')->constrained('bencana')->onDelete('cascade');
             $table->timestamps();
         });
     }

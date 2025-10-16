@@ -143,7 +143,7 @@ class Form6Controller extends Controller
         }
         
         $bencana = Bencana::findOrFail($bencana_id);
-         $form = Form6::where('bencana_id', $bencana_id)->latest()->get();
+        $form = Form6::where('bencana_id', $bencana_id)->latest()->get();
         
         return view('forms.form6.list', compact('bencana', 'form'));
     }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('form9', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('bencana_id');
 
             $table->integer('pertanyaan_no')->nullable();
             $table->integer('jawaban_index')->nullable();

@@ -196,7 +196,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form1Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form1Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form1Controller::class, 'update'])->name('update');
-            Route::get('/list-form1', [Form1Controller::class, 'list'])->name('list-form1');
+            Route::get('/list', [Form1Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form1Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form1Controller::class, 'previewPdf'])->name('preview-pdf');
         });
@@ -660,7 +660,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form8Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form8Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form8Controller::class, 'update'])->name('update');
-            Route::get('/list-penilaian', [Form8Controller::class, 'listPenilaian'])->name('listPenilaian');
+            Route::get('/list', [Form8Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form8Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form8Controller::class, 'previewPdf'])->name('preview-pdf');
         });
