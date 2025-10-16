@@ -668,6 +668,7 @@ Route::prefix('/forms')
             Route::get('/list', [Form8Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form8Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form8Controller::class, 'previewPdf'])->name('preview-pdf');
+            Route::get('/contoh-pdf', [Form8Controller::class, 'contohPdf'])->name('contoh-pdf');
         });
 
         // Form9 (Pengolahan Data dan Kuesioner)
@@ -680,6 +681,7 @@ Route::prefix('/forms')
             Route::patch('/update/{id}', [Form9Controller::class, 'update'])->name('update');
             Route::get('/pdf/{id}', [Form9Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form9Controller::class, 'previewPdf'])->name('preview-pdf');
+            Route::get('/contoh-pdf', [Form9Controller::class, 'contohPdf'])->name('contoh-pdf');
         });
 
         // Form10 (Analisa Data Akibat terhadap Akses, Fungsi, dan Resiko)
@@ -692,6 +694,7 @@ Route::prefix('/forms')
             Route::patch('/update/{id}', [Form10Controller::class, 'update'])->name('update');
             Route::get('/pdf/{id}', [Form10Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form10Controller::class, 'previewPdf'])->name('preview-pdf');
+            Route::get('/contoh-pdf', [Form10Controller::class, 'contohPdf'])->name('contoh-pdf');
         });
 
         // Form11 (Rekapitulasi Kebutuhan Pascabencana)
@@ -704,6 +707,7 @@ Route::prefix('/forms')
             Route::patch('/update/{id}', [Form11Controller::class, 'update'])->name('update');
             Route::get('/pdf/{id}', [Form11Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form11Controller::class, 'previewPdf'])->name('previewPdf');
+            Route::get('/contoh-pdf', [Form11Controller::class, 'contohPdf'])->name('contoh-pdf');
         });
 
         // Form12 (Standar Penyusunan Kegiatan dan Anggaran untuk PKPB)

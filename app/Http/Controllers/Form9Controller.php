@@ -193,4 +193,10 @@ class Form9Controller extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+    public function contohPdf()
+    {
+
+        $pdf = Pdf::loadView('forms.form9.contoh_form9_pdf', []);
+        return $pdf->stream('Contoh_Formulir_09_PDNA.pdf');
+    }
 }

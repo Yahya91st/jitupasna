@@ -198,4 +198,10 @@ class Form11Controller extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+    public function contohPdf()
+    {
+
+        $pdf = Pdf::loadView('forms.form11.contoh_form11_pdf', []);
+        return $pdf->stream('Contoh_Formulir_11_PDNA.pdf');
+    }
 }

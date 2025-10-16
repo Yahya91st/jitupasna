@@ -203,4 +203,45 @@ class form8Controller extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-}
+public function contohPdf()
+{
+    $form = [
+        [
+            'sektor' => 'Pendidikan',
+            'komponen' => 'Gedung SD',
+            'lokasi' => 'Desa Sukamaju',
+            'rb_kerusakan' => 2,
+            'rs_kerusakan' => 1,
+            'rr_kerusakan' => 0,
+            'rb_harga' => 50000000,
+            'rs_harga' => 30000000,
+            'rr_harga' => 0,
+            'rb_nilai' => 100000000,
+            'rs_nilai' => 30000000,
+            'rr_nilai' => 0,
+            'kerugian' => 20000000,
+            'total' => 150000000,
+            'kebutuhan' => 160000000,
+        ],
+        [
+            'sektor' => 'Kesehatan',
+            'komponen' => 'Puskesmas',
+            'lokasi' => 'Desa Sukamaju',
+            'rb_kerusakan' => 1,
+            'rs_kerusakan' => 0,
+            'rr_kerusakan' => 1,
+            'rb_harga' => 80000000,
+            'rs_harga' => 0,
+            'rr_harga' => 40000000,
+            'rb_nilai' => 80000000,
+            'rs_nilai' => 0,
+            'rr_nilai' => 40000000,
+            'kerugian' => 10000000,
+            'total' => 130000000,
+            'kebutuhan' => 140000000,
+        ],
+        // Tambah data lain sesuai kebutuhan
+    ];
+        $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', compact('form'));
+        return $pdf->stream('Contoh_Formulir_08_PDNA.pdf');
+}}
