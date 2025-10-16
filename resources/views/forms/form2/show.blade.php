@@ -38,84 +38,282 @@
 
     <div class="card">
         <div class="card-body p-5">
-            <div class="text-center mb-5">
-                <h4>KEPUTUSAN {{ strtoupper($form->pejabat_penandatangan) }}</h4>
-                <h4>NOMOR: {{ $form->nomor_surat }}</h4>
-                <h4>TENTANG</h4>
-                <h4>{{ strtoupper($form->tentang) }}</h4>
-                <h4>DI {{ strtoupper($form->lokasi) }}</h4>
-            </div>
-            
-            <div class="mb-4">
-                <h5 class="text-center">{{ strtoupper($form->pejabat_penandatangan) }}</h5>
-            </div>
-              <div class="mb-4">
+            <style>
+                .form-document {
+                    font-family: 'Times New Roman', serif;
+                    line-height: 1.4;
+                    color: #000;
+                    max-width: 800px;
+                    margin: 0 auto;
+                }
                 
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <strong>Menimbang:</strong>
-                    </div>
-                </div>
+                .document-header {
+                    text-align: center;
+                    margin-bottom: 25px;
+                    border-bottom: 2px solid #000;
+                    padding-bottom: 15px;
+                }
                 
-                <div class="row mb-5">
-                    <div class="col-2">
-                        <strong>Mengingat:</strong>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mb-4">
-                <h5>MEMUTUSKAN:</h5>
-            </div>
-            
-            <div class="mb-4">
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <strong>KESATU:</strong>
-                    </div>
-                    <div class="col-10">
-                        <p>Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana dengan susunan tim sebagai berikut:</p>
-                    </div>
-                </div>
+                .document-header h4 {
+                    font-size: 14pt;
+                    font-weight: bold;
+                    margin: 5px 0;
+                    text-transform: uppercase;
+                }
                 
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <strong>KEDUA:</strong>
-                    </div>
-                    <div class="col-10">
-                        <p>Tim sebagaimana dimaksud dalam Diktum KESATU mempunyai tugas sebagai berikut:</p>
-                    </div>
-                </div>
+                .document-header .subtitle {
+                    font-size: 12pt;
+                    font-weight: normal;
+                    margin: 3px 0;
+                }
                 
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <strong>KETIGA:</strong>
-                    </div>
-                </div>
+                .decree-title {
+                    text-align: center;
+                    margin: 25px 0;
+                }
                 
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <strong>KEEMPAT:</strong>
-                    </div>
-                    <div class="col-10">
-                        <p>Keputusan ini mulai berlaku pada tanggal ditetapkan.</p>
+                .decree-title h3 {
+                    font-size: 16pt;
+                    font-weight: bold;
+                    margin: 8px 0;
+                    text-transform: uppercase;
+                }
+                
+                .pejabat-name {
+                    text-align: center;
+                    margin: 20px 0;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    font-size: 12pt;
+                }
+                
+                .section {
+                    margin: 15px 0;
+                }
+                
+                .section-label {
+                    font-weight: bold;
+                    margin-bottom: 8px;
+                    font-size: 11pt;
+                }
+                
+                .section-content {
+                    margin-left: 20px;
+                    text-align: justify;
+                }
+                
+                .section-content p {
+                    margin: 5px 0;
+                    text-indent: 0;
+                    font-size: 11pt;
+                }
+                
+                .memutuskan {
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 13pt;
+                    margin: 20px 0;
+                    text-transform: uppercase;
+                }
+                
+                .diktum {
+                    margin: 12px 0;
+                }
+                
+                .diktum-label {
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                    text-transform: uppercase;
+                    font-size: 11pt;
+                    display: inline-block;
+                    width: 80px;
+                }
+                
+                .diktum-content {
+                    display: inline-block;
+                    vertical-align: top;
+                    width: calc(100% - 90px);
+                    text-align: justify;
+                    font-size: 11pt;
+                }
+                
+                .diktum-content p {
+                    margin: 3px 0;
+                }
+                
+                .diktum-list {
+                    margin-left: 20px;
+                    margin-top: 8px;
+                }
+                
+                .diktum-list p {
+                    margin: 3px 0;
+                }
+                
+                .signature-section {
+                    margin-top: 40px;
+                }
+                
+                .signature-left {
+                    text-align: left;
+                    margin-bottom: 15px;
+                    font-size: 11pt;
+                }
+                
+                .signature-right {
+                    text-align: center;
+                    margin-left: 60%;
+                    font-size: 11pt;
+                }
+                
+                .signature-space {
+                    height: 60px;
+                    margin: 20px 0;
+                }
+                
+                .signature-name {
+                    border-bottom: 1px solid #000;
+                    padding-bottom: 5px;
+                    margin-bottom: 8px;
+                    font-weight: bold;
+                }
+                
+                .tembusan {
+                    margin-top: 30px;
+                }
+                
+                .tembusan-title {
+                    font-weight: bold;
+                    margin-bottom: 8px;
+                    font-size: 11pt;
+                }
+                
+                .tembusan-list {
+                    margin-left: 20px;
+                }
+                
+                .tembusan-list p {
+                    margin: 3px 0;
+                    font-size: 11pt;
+                }
+            </style>
+            
+            <div class="form-document">
+                <!-- Header Formulir -->
+                <div class="document-header">
+                    <h4>Formulir 02</h4>
+                    <div class="subtitle">Surat Keputusan Pembentukan Tim Kerja</div>
+                    <div class="subtitle">Pengkajian Kebutuhan Pasca Bencana (PDNA)</div>
+                </div>
+
+                <!-- Header Surat Keputusan -->
+                <div class="decree-title">
+                    <h3>Surat Keputusan</h3>
+                    <div class="subtitle">No: {{ $form->nomor_surat ?? '................' }}</div>
+                    <br>
+                    <h3>Tentang</h3>
+                    <br>
+                    <h3>{{ strtoupper($form->tentang ?? 'PEMBENTUKAN TIM KERJA PENGKAJIAN KEBUTUHAN') }}</h3>
+                    <h3>{{ strtoupper($form->lokasi ?? 'PASCA BENCANA (PDNA) DI ..............') }}</h3>
+                </div>
+
+                <!-- Nama Pejabat -->
+                <div class="pejabat-name">
+                    {{ strtoupper($form->pejabat_penandatangan ?? 'DEPUTI REHABILITASI DAN REKONSTRUKSI BNPB') }}
+                </div>
+
+                <!-- Bagian Menimbang -->
+                <div class="section">
+                    <div class="section-label">Menimbang</div>
+                    <div class="section-content">
+                        <p>a. bahwa dalam rangka perencanaan rehabilitasi dan rekonstruksi pascabencana di {{ $form->lokasi ?? '...........' }}, perlu dilaksanakan pengkajian kebutuhan pascabencana;</p>
+                        <p>b. bahwa untuk melaksanakan pengkajian kebutuhan pasca bencana perlu dibentuk tim kerja pengkajian kebutuhan pascabencana;</p>
+                        <p>c. bahwa untuk maksud tersebut huruf b, perlu ditetapkan dengan Keputusan {{ $form->pejabat_penandatangan ?? 'Deputi Rehabilitasi dan Rekonstruksi BNPB' }};</p>
                     </div>
                 </div>
-            </div>
-            
-            <div class="row mt-5">
-                <div class="col-6"></div>
-                <div class="col-6 text-center">
-                    <p>Ditetapkan di : ...........................</p>
-                    <p>pada tanggal : {{ $form->tanggal_ditetapkan }}</p>
-                    <p class="mb-5"><strong>{{ $form->pejabat_penandatangan }}</strong></p>
-                    <p><u>...................................</u></p>
-                    <p>NIP. ...........................</p>
+
+                <!-- Bagian Mengingat -->
+                <div class="section">
+                    <div class="section-label">Mengingat</div>
+                    <div class="section-content">
+                        <p>a. Undang-Undang no. 24 tahun 2007 tentang Penanggulangan Bencana;</p>
+                        <p>b. Peraturan Pemerintah no. 21 tahun 2008 tentang Penyelenggaraan Penanggulangan Bencana;</p>
+                        <p>c. Peraturan Kepala BNPB no. 17 tahun 2010 tentang Pedoman Umum Rehabilitasi dan Rekonstruksi;</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="mt-5">
-                <p><strong>Tembusan:</strong></p>
+
+                <!-- Memutuskan -->
+                <div class="memutuskan">MEMUTUSKAN</div>
+
+                <div class="section">
+                    <div class="section-label">Menetapkan</div>
+                </div>
+
+                <!-- Diktum Pertama -->
+                <div class="diktum">
+                    <div class="diktum-label">PERTAMA</div>
+                    <div class="diktum-content">
+                        <p>: Membentuk Tim Kerja Pengkajian Kebutuhan Pascabencana di {{ $form->lokasi ?? '...........' }}, dengan susunan personil sebagaimana terdapat pada lampiran keputusan ini.</p>
+                    </div>
+                </div>
+
+                <!-- Diktum Kedua -->
+                <div class="diktum">
+                    <div class="diktum-label">KEDUA</div>
+                    <div class="diktum-content">
+                        <p>: Tim dimaksud diktum pertama mempunyai tugas sebagai berikut:</p>
+                        <div class="diktum-list">
+                            <p>1. Melakukan perencanaan dan persiapan pelaksanaan pengkajian kebutuhan pascabencana.</p>
+                            <p>2. Melakukan pengumpulan data.</p>
+                            <p>3. Melakukan pengolahan dan analisis data.</p>
+                            <p>4. Menyusun laporan pengkajian kebutuhan pascabencana.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diktum Ketiga -->
+                <div class="diktum">
+                    <div class="diktum-label">KETIGA</div>
+                    <div class="diktum-content">
+                        <p>: Tim Kerja dalam melaksanakan tugasnya bertanggung jawab kepada {{ $form->pejabat_penandatangan ?? 'Deputi Rehabilitasi dan Rekonstruksi BNPB' }}.</p>
+                    </div>
+                </div>
+
+                <!-- Diktum Keempat -->
+                <div class="diktum">
+                    <div class="diktum-label">KEEMPAT</div>
+                    <div class="diktum-content">
+                        <p>: Keputusan ini berlaku sejak tanggal ditetapkan, apabila dikemudian hari terdapat kekeliruan dalam penetapan ini akan diperbaiki sebagaimana mestinya.</p>
+                    </div>
+                </div>
+
+                <!-- Bagian Tanda Tangan -->
+                <div class="signature-section">
+                    <div class="signature-left">
+                        <p>Ditetapkan di: {{ $form->lokasi ?? '...............' }}</p>
+                        <p>Pada tanggal: {{ $form->tanggal_ditetapkan ?? '...............' }}</p>
+                    </div>
+                    
+                    <div class="signature-right">
+                        <p><strong>{{ strtoupper($form->pejabat_penandatangan ?? 'Deputi Rehabilitasi dan Rekonstruksi BNPB') }}</strong></p>
+                        
+                        <div class="signature-space"></div>
+                        
+                        <div class="signature-name">
+                            <strong>{{ $form->nama_penandatangan ?? '...............................' }}</strong>
+                        </div>
+                        <p>NIP. {{ $form->nip_penandatangan ?? '...............................' }}</p>
+                    </div>
+                </div>
+
+                <!-- Tembusan -->
+                <div class="tembusan">
+                    <div class="tembusan-title">Tembusan Yth.</div>
+                    <div class="tembusan-list">
+                        <p>1. Kepala BNPB (atau Kepala Daerah...)</p>
+                        <p>2. Menteri..... Kepala Lembaga..... (atau Kepala OPD...)</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,142 +1,337 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Detail Pendataan OPD</h1>
-    
+<div class="page-heading">
+    <div class="page-title mb-4">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Detail Form 3 - Pendataan OPD</h3>
+                <p class="text-subtitle text-muted">Data Dasar dan Sekunder Akibat Bencana</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <div class="float-end">
+                    <a href="{{ route('forms.form3.edit', $form->id) }}" class="btn btn-warning">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                    <a href="{{ route('forms.form3.preview-pdf', $form->id) }}" class="btn btn-info" target="_blank">
+                        <i class="bi bi-eye"></i> Pratinjau PDF
+                    </a>
+                    <a href="{{ route('forms.form3.pdf', $form->id) }}" class="btn btn-primary">
+                        <i class="bi bi-download"></i> Unduh PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if(session('success'))
-    <div class="alert alert-success mb-4">
+    <div class="alert alert-success">
         {{ session('success') }}
     </div>
-    @endif      <div class="mb-4 flex justify-between">
-        <div class="flex gap-2">
-            <a href="{{ route('forms.form3.list', ['bencana_id' => $form->bencana->id]) }}" class="btn btn-secondary">
-                <i class="fa fa-arrow-left mr-2"></i> Kembali ke Daftar
-            </a>
-            <a href="{{ route('forms.index', ['bencana_id' => $form->bencana->id]) }}" class="btn btn-outline-secondary">
-                <i class="fa fa-list mr-2"></i> Daftar Form
-            </a>
-        </div>
-        <div class="flex gap-2">
-            <a href="{{ route('forms.form3.preview-pdf', $form->id) }}" class="btn btn-info" target="_blank">
-                <i class="fa fa-eye mr-2"></i> Lihat PDF
-            </a>
-            <a href="{{ route('forms.form3.pdf', $form->id) }}" class="btn btn-primary" target="_blank">
-                <i class="fa fa-download mr-2"></i> Unduh PDF
-            </a>
-        </div>
-    </div>
-    
-    @if($form->bencana)
-        <div class="alert alert-light-primary color-primary mb-4">
-            <p><strong>Bencana:</strong> {{ $form->bencana->kategori_bencana->nama }}</p>
-            <p><strong>Tanggal:</strong> {{ $form->bencana->tanggal }}</p>
-            <p><strong>Lokasi:</strong> 
-                @foreach($form->bencana->desa as $desa)
-                    {{ $desa->nama }}@if(!$loop->last), @endif
-                @endforeach
-            </p>
-        </div>
     @endif
-    
-    <!-- Data Dasar Sebelum Bencana -->
-    <div class="bg-white p-6 rounded-lg shadow mb-6">
-        <h2 class="text-xl font-semibold mb-4">1. DATA DASAR SEBELUM BENCANA</h2>
-        
-        <div class="mb-6">
-            <h3 class="text-lg font-medium mb-2">Wilayah Bencana</h3>
-            <p>{{ $form->wilayah_bencana }}</p>
-        </div>
-        
-        <div class="mb-6">
-            <h3 class="text-lg font-medium mb-2">Penduduk-Wilayah</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <p class="font-medium">Jumlah Laki-laki:</p>
-                    <p>{{ number_format($form->jumlah_laki_laki) }} orang</p>
+
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    <div class="card">
+        <div class="card-body p-5">
+            <style>
+                .form-document {
+                    font-family: 'Times New Roman', serif;
+                    line-height: 1.3;
+                    color: #000;
+                    max-width: 900px;
+                    margin: 0 auto;
+                }
+                
+                .document-header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    border-bottom: 2px solid #000;
+                    padding-bottom: 12px;
+                }
+                
+                .document-title {
+                    font-size: 16pt;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    margin: 0 0 8px 0;
+                    letter-spacing: 1px;
+                }
+                
+                .document-subtitle {
+                    font-size: 12pt;
+                    font-weight: normal;
+                    margin: 0;
+                }
+                
+                .header-info {
+                    margin-bottom: 20px;
+                    background-color: #f8f9fa;
+                    padding: 12px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                }
+                
+                .header-info p {
+                    margin: 5px 0;
+                    font-size: 11pt;
+                }
+                
+                .section-header {
+                    font-size: 12pt;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    background-color: #e9ecef;
+                    padding: 10px;
+                    margin: 20px 0 15px 0;
+                    border: 1px solid #000;
+                    text-align: center;
+                }
+                
+                .subsection-header {
+                    font-size: 11pt;
+                    font-weight: bold;
+                    margin: 15px 0 8px 0;
+                    padding: 8px;
+                    background-color: #f8f9fa;
+                    border-left: 3px solid #000;
+                }
+                
+                .document-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 10px 0;
+                    font-size: 10pt;
+                }
+                
+                .document-table, .document-table th, .document-table td {
+                    border: 1px solid #000;
+                }
+                
+                .document-table th {
+                    background-color: #e9ecef;
+                    font-weight: bold;
+                    text-align: center;
+                    padding: 8px 6px;
+                    font-size: 10pt;
+                }
+                
+                .document-table td {
+                    padding: 6px;
+                    text-align: left;
+                    vertical-align: top;
+                }
+                
+                .text-content {
+                    margin: 8px 0;
+                    padding: 8px;
+                    background-color: #f8f9fa;
+                    border: 1px solid #ddd;
+                    font-size: 11pt;
+                    min-height: 25px;
+                    border-radius: 4px;
+                }
+                
+                .number-cell {
+                    text-align: right;
+                    padding-right: 12px;
+                    font-weight: 500;
+                }
+                
+                .btn-actions {
+                    margin-top: 20px;
+                    text-align: center;
+                }
+            </style>
+            
+            <div class="form-document">
+                <!-- Header Formulir -->
+                <div class="document-header">
+                    <div class="document-title">Formulir 3 - Pendataan Ke OPD</div>
+                    <div class="document-subtitle">Data Dasar dan Sekunder Akibat Bencana</div>
                 </div>
-                <div>
-                    <p class="font-medium">Jumlah Perempuan:</p>
-                    <p>{{ number_format($form->jumlah_perempuan) }} orang</p>
+                
+                <!-- Info Bencana -->
+                <div class="header-info">
+                    <p><strong>Bencana:</strong> {{ $form->bencana->kategori_bencana->nama }}</p>
+                    <p><strong>Tanggal Kejadian:</strong> {{ $form->bencana->tanggal }}</p>
+                    <p><strong>Lokasi:</strong> 
+                        @foreach($form->bencana->desa as $desa)
+                            {{ $desa->nama }}@if(!$loop->last), @endif
+                        @endforeach
+                    </p>
                 </div>
-                <div>
-                    <p class="font-medium">Jumlah Rumah Tangga:</p>
-                    <p>{{ number_format($form->jumlah_rumah_tangga) }} RT</p>
-                </div>
+                
+                <!-- 1. DATA DASAR SEBELUM BENCANA -->
+                <div class="section-header">1. Data Dasar Sebelum Bencana</div>
+                
+                <div class="subsection-header">Wilayah Bencana</div>
+                <div class="text-content">{{ $form->wilayah_bencana ?: 'Tidak ada data' }}</div>
+                
+                <div class="subsection-header">Penduduk-Wilayah</div>
+                <table class="document-table">
+                    <tr>
+                        <th>Jumlah Laki-laki</th>
+                        <th>Jumlah Perempuan</th>
+                        <th>Jumlah Rumah Tangga</th>
+                    </tr>
+                    <tr>
+                        <td class="number-cell">{{ number_format($form->jumlah_laki_laki) }} orang</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_perempuan) }} orang</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_rumah_tangga) }} RT</td>
+                    </tr>
+                </table>
+                
+                <div class="subsection-header">Kesehatan</div>
+                <table class="document-table">
+                    <tr>
+                        <th>Kategori</th>
+                        <th>Jumlah</th>
+                    </tr>
+                    <tr>
+                        <td>Rumah Sakit</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_rumah_sakit) }}</td>
+                    </tr>
+                    <tr>
+                        <td>PUSKESMAS</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_puskesmas) }}</td>
+                    </tr>
+                    <tr>
+                        <td>POSYANDU</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_posyandu) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Dokter</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_dokter) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Paramedis</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_paramedis) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Bidan</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_bidan) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kunjungan PUSKESMAS</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_kunjungan_puskesmas) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Balita</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_balita) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Balita Gizi Buruk</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_balita_gizi_buruk) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Balita Gizi Kurang</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_balita_gizi_kurang) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Manula</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_manula) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Penerima JPS Kesehatan</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_penerima_jps_kesehatan) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rumah dengan Air Bersih</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_rumah_air_bersih) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rumah dengan Jamban</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_rumah_jamban) }}</td>
+                    </tr>
+                </table>
+                
+                <div class="subsection-header">Ekonomi</div>
+                <table class="document-table">
+                    <tr>
+                        <th>Kategori</th>
+                        <th>Jumlah</th>
+                    </tr>
+                    <tr>
+                        <td>Pasar</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_pasar) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Koperasi</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_koperasi) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Tempat Wisata</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_tempat_wisata) }}</td>
+                    </tr>
+                </table>
+                
+                <!-- 2. DATA SEKUNDER AKIBAT BENCANA -->
+                <div class="section-header">2. Data Sekunder Akibat Bencana</div>
+                
+                <div class="subsection-header">Sejarah Bencana di Masa Lalu</div>
+                <div class="text-content">{{ $form->sejarah_bencana ?: 'Tidak ada data' }}</div>
+                
+                <div class="subsection-header">Kronologis Kejadian Bencana Saat Ini</div>
+                <div class="text-content">{{ $form->kronologis_bencana ?: 'Tidak ada data' }}</div>
+                
+                <div class="subsection-header">Wilayah Terdampak</div>
+                <div class="text-content">{{ $form->wilayah_terdampak ?: 'Tidak ada data' }}</div>
+                
+                <div class="subsection-header">Jumlah Korban</div>
+                <table class="document-table">
+                    <tr>
+                        <th>Meninggal</th>
+                        <th>Luka-luka</th>
+                        <th>Mengungsi</th>
+                    </tr>
+                    <tr>
+                        <td class="number-cell">{{ number_format($form->jumlah_korban_meninggal) }} orang</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_korban_luka) }} orang</td>
+                        <td class="number-cell">{{ number_format($form->jumlah_korban_mengungsi) }} orang</td>
+                    </tr>
+                </table>
+                
+                <div class="subsection-header">Kerusakan dan Kerugian</div>
+                <div class="text-content">{{ $form->kerusakan_kerugian ?: 'Tidak ada data' }}</div>
+                
+                <!-- 3. DATA SEKUNDER AKIBAT BENCANA (KHUSUS) -->
+                <div class="section-header">3. Data Sekunder Akibat Bencana (Khusus)</div>
+                
+                <div class="subsection-header">Bidang Pertanian</div>
+                <table class="document-table">
+                    <tr>
+                        <th>Aspek</th>
+                        <th>Keterangan</th>
+                    </tr>
+                    <tr>
+                        <td>Gangguan Ekonomi</td>
+                        <td>{{ $form->pertanian_gangguan_ekonomi ?: 'Tidak ada data' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Produk Pertanian Terdampak</td>
+                        <td>{{ $form->pertanian_produk_terdampak ?: 'Tidak ada data' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pemulihan yang Dibutuhkan</td>
+                        <td>{{ $form->pertanian_pemulihan ?: 'Tidak ada data' }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
-        
-        <!-- Add other sections here with similar structure -->
-        <!-- For brevity, I'm not including all sections in this template -->
     </div>
     
-    <!-- Data Sekunder Akibat Bencana -->
-    <div class="bg-white p-6 rounded-lg shadow mb-6">
-        <h2 class="text-xl font-semibold mb-4">2. DATA SEKUNDER AKIBAT BENCANA</h2>
-        
-        <div class="mb-4">
-            <h3 class="text-lg font-medium mb-2">Sejarah Bencana di Masa Lalu</h3>
-            <p>{{ $form->sejarah_bencana }}</p>
-        </div>
-        
-        <div class="mb-4">
-            <h3 class="text-lg font-medium mb-2">Kronologis Kejadian Bencana Saat Ini</h3>
-            <p>{{ $form->kronologis_bencana }}</p>
-        </div>
-        
-        <div class="mb-4">
-            <h3 class="text-lg font-medium mb-2">Wilayah Terdampak</h3>
-            <p>{{ $form->wilayah_terdampak }}</p>
-        </div>
-        
-        <div class="mb-4">
-            <h3 class="text-lg font-medium mb-2">Jumlah Korban</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <p class="font-medium">Meninggal:</p>
-                    <p>{{ number_format($form->jumlah_korban_meninggal) }} orang</p>
-                </div>
-                <div>
-                    <p class="font-medium">Luka-luka:</p>
-                    <p>{{ number_format($form->jumlah_korban_luka) }} orang</p>
-                </div>
-                <div>
-                    <p class="font-medium">Mengungsi:</p>
-                    <p>{{ number_format($form->jumlah_korban_mengungsi) }} orang</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="mb-4">
-            <h3 class="text-lg font-medium mb-2">Kerusakan dan Kerugian</h3>
-            <p>{{ $form->kerusakan_kerugian }}</p>
-        </div>
-    </div>
-    
-    <!-- Data Sekunder Akibat Bencana (Khusus) -->
-    <div class="bg-white p-6 rounded-lg shadow mb-6">
-        <h2 class="text-xl font-semibold mb-4">3. DATA SEKUNDER AKIBAT BENCANA (KHUSUS)</h2>
-        
-        <!-- Sectoral impacts - these could be expanded based on how detailed you want to show them -->
-        <!-- For brevity, I'm showing just a few examples -->
-        
-        <div class="mb-6">
-            <h3 class="text-lg font-medium mb-2">Bidang Pertanian</h3>
-            <div class="mb-2">
-                <p class="font-medium">Gangguan Ekonomi:</p>
-                <p>{{ $form->pertanian_gangguan_ekonomi ?: 'Tidak ada data' }}</p>
-            </div>
-            <div class="mb-2">
-                <p class="font-medium">Produk Terdampak:</p>
-                <p>{{ $form->pertanian_produk_terdampak ?: 'Tidak ada data' }}</p>
-            </div>
-            <div class="mb-2">
-                <p class="font-medium">Pemulihan yang Dibutuhkan:</p>
-                <p>{{ $form->pertanian_pemulihan ?: 'Tidak ada data' }}</p>
-            </div>
-        </div>
-        
-        <!-- Add other sectors with similar structure -->
+    <div class="mt-3">
+        <a href="{{ route('forms.form3.list', ['bencana_id' => $form->bencana->id]) }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Kembali ke Daftar Form 3
+        </a>
+        <a href="{{ route('forms.index', ['bencana_id' => $form->bencana->id]) }}" class="btn btn-outline-secondary">
+            <i class="bi bi-list"></i> Daftar Semua Form
+        </a>
     </div>
 </div>
 @endsection
