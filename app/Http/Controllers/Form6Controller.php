@@ -153,10 +153,10 @@ class Form6Controller extends Controller
      */    
     public function generatePdf($id)
     {
-        $form = Form6::with(['bencana'])->findOrFail($id);
+        $rumahtangga = Form6::with(['bencana'])->findOrFail($id);
         
-        $pdf = Pdf::loadView('forms.form6.pdf', compact('form'));
-        return $pdf->download('Formulir_06_PDNA_' . $form->id . '.pdf');
+        $pdf = Pdf::loadView('forms.form6.pdf', compact('rumahtangga'));
+        return $pdf->download('Formulir_06_PDNA_' . $rumahtangga->id . '.pdf');
     }   
 
     /**
@@ -164,10 +164,10 @@ class Form6Controller extends Controller
      */    
     public function previewPdf($id)
     {
-        $form = Form6::with(['bencana'])->findOrFail($id);
+        $rumahtangga = Form6::with(['bencana'])->findOrFail($id);
                 
-        $pdf = Pdf::loadView('forms.form6.pdf', compact('form'));
-        return $pdf->stream('Formulir_06_PDNA_' . $form->id . '.pdf');
+        $pdf = Pdf::loadView('forms.form6.pdf', compact('rumahtangga'));
+        return $pdf->stream('Formulir_06_PDNA_' . $rumahtangga->id . '.pdf');
     }
 
     /**

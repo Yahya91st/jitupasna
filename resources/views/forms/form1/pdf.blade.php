@@ -236,14 +236,14 @@
     
     <!-- Signature Section -->
     <div class="signature-section">
-        <div style="text-align: left; margin-bottom: 4px; margin-top: 0.5em;">
-            <strong>Deputi Rehabilitasi dan Rekonstruksi BNPB</strong><br>
-            <strong>(atau Kepala Pelaksana Harian BPBD...)</strong>
-        </div>
-
-        <div style="text-align: right; margin-top: 1em;">
-            <div style="text-align: center; margin-right: 1em;">
-                <strong>{{ $form->nama_penandatangan ?? 'Nama Jelas' }}</strong>
+        <div style="text-align: right; margin-top: 0.5em; margin-right: 0;">
+            <div style="text-align: center; width: 200px; margin-left: auto;">
+                <strong>Deputi Rehabilitasi dan Rekonstruksi BNPB</strong><br>
+                <strong>(atau Kepala Pelaksana Harian BPBD...)</strong>
+                
+                <div style="margin-top: 3em;">
+                    <strong>{{ $form->nama_penandatangan ?? 'Nama Jelas' }}</strong>
+                </div>
             </div>
         </div>
     </div>
