@@ -28,8 +28,6 @@ class Form7 extends Model
         'akses_hak',
         'fungsi_pranata',
         'resiko_kerentanan',
-        'created_by',
-        'updated_by',
     ];
 
     protected $casts = [

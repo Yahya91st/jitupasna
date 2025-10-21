@@ -127,7 +127,6 @@ class Form7Controller extends Controller
         $form->akses_hak = $aksesHak;
         $form->fungsi_pranata = $fungsiPranata;
         $form->resiko_kerentanan = $resikoKerentanan;
-        $form->created_by = Auth::id();
         $form->save();
 
         return redirect()->route('forms.form7.show', $form->id)->with('success', 'Data Form7 berhasil disimpan.');
