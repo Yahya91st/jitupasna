@@ -125,8 +125,8 @@
         background-color: rgba(0, 102, 204, 0.05);
     }
     
-    /* Checkbox Styling - Dari Form6 */
-    .checkbox-group {
+    /* Radio Button Styling - Updated from Checkbox */
+    .radio-group {
         display: flex;
         flex-wrap: wrap;
         gap: 0.8rem;
@@ -134,7 +134,7 @@
         padding: 0.3rem 0;
     }
     
-    .checkbox-item {
+    .radio-item {
         display: flex;
         align-items: center;
         margin-right: 1.2rem;
@@ -142,7 +142,7 @@
         white-space: nowrap;
     }
     
-    .checkbox-item label {
+    .radio-item label {
         margin: 0;
         font-weight: 500;
         cursor: pointer;
@@ -150,7 +150,7 @@
         color: #333;
     }
     
-    input[type="checkbox"] {
+    input[type="radio"] {
         transform: scale(1.1);
         margin-right: 0.5rem;
         margin-left: 0.2rem;
@@ -267,7 +267,7 @@
             font-size: 12px;
         }
         
-        .checkbox-group {
+        .radio-group {
             flex-direction: column;
             align-items: flex-start;
         }
@@ -457,13 +457,13 @@
                                 <td width="5%">1.</td>
                                 <td width="70%">Persiapan pra-FGD:</td>
                                 <td width="25%">
-                                    <div class="checkbox-group">
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="prep_ya" name="checklist[persiapan][]" value="ya">
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" id="prep_ya" name="checklist[persiapan]" value="ya">
                                             <label for="prep_ya"> Ya</label>
                                         </div>
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="prep_tidak" name="checklist[persiapan][]" value="tidak">
+                                        <div class="radio-item">
+                                            <input type="radio" id="prep_tidak" name="checklist[persiapan]" value="tidak">
                                             <label for="prep_tidak"> Tidak</label>
                                         </div>
                                     </div>
@@ -473,13 +473,13 @@
                                 <td>2.</td>
                                 <td>Pembagian tugas pelaksana</td>
                                 <td>
-                                    <div class="checkbox-group">
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="tugas_ya" name="checklist[tugas][]" value="ya">
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" id="tugas_ya" name="checklist[tugas]" value="ya">
                                             <label for="tugas_ya"> Ya</label>
                                         </div>
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="tugas_tidak" name="checklist[tugas][]" value="tidak">
+                                        <div class="radio-item">
+                                            <input type="radio" id="tugas_tidak" name="checklist[tugas]" value="tidak">
                                             <label for="tugas_tidak"> Tidak</label>
                                         </div>
                                     </div>
@@ -489,13 +489,13 @@
                                 <td>3.</td>
                                 <td>Perkenalan dan pengantar</td>
                                 <td>
-                                    <div class="checkbox-group">
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="perkenalan_ya" name="checklist[perkenalan][]" value="ya">
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" id="perkenalan_ya" name="checklist[perkenalan]" value="ya">
                                             <label for="perkenalan_ya"> Ya</label>
                                         </div>
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="perkenalan_tidak" name="checklist[perkenalan][]" value="tidak">
+                                        <div class="radio-item">
+                                            <input type="radio" id="perkenalan_tidak" name="checklist[perkenalan]" value="tidak">
                                             <label for="perkenalan_tidak"> Tidak</label>
                                         </div>
                                     </div>
@@ -505,13 +505,13 @@
                                 <td>4.</td>
                                 <td>Pembahasan</td>
                                 <td>
-                                    <div class="checkbox-group">
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="pembahasan_ya" name="checklist[pembahasan][]" value="ya">
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" id="pembahasan_ya" name="checklist[pembahasan]" value="ya">
                                             <label for="pembahasan_ya"> Ya</label>
                                         </div>
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="pembahasan_tidak" name="checklist[pembahasan][]" value="tidak">
+                                        <div class="radio-item">
+                                            <input type="radio" id="pembahasan_tidak" name="checklist[pembahasan]" value="tidak">
                                             <label for="pembahasan_tidak"> Tidak</label>
                                         </div>
                                     </div>
@@ -521,13 +521,13 @@
                                 <td>5.</td>
                                 <td>Pendalaman/Tanya jawab</td>
                                 <td>
-                                    <div class="checkbox-group">
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="tanya_ya" name="checklist[tanya_jawab][]" value="ya">
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" id="tanya_ya" name="checklist[tanya_jawab]" value="ya">
                                             <label for="tanya_ya"> Ya</label>
                                         </div>
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="tanya_tidak" name="checklist[tanya_jawab][]" value="tidak">
+                                        <div class="radio-item">
+                                            <input type="radio" id="tanya_tidak" name="checklist[tanya_jawab]" value="tidak">
                                             <label for="tanya_tidak"> Tidak</label>
                                         </div>
                                     </div>
@@ -537,13 +537,13 @@
                                 <td>6.</td>
                                 <td>Penyimpulan dan penutupan</td>
                                 <td>
-                                    <div class="checkbox-group">
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="penutupan_ya" name="checklist[penutupan][]" value="ya">
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" id="penutupan_ya" name="checklist[penutupan]" value="ya">
                                             <label for="penutupan_ya"> Ya</label>
                                         </div>
-                                        <div class="checkbox-item">
-                                            <input type="checkbox" id="penutupan_tidak" name="checklist[penutupan][]" value="tidak">
+                                        <div class="radio-item">
+                                            <input type="radio" id="penutupan_tidak" name="checklist[penutupan]" value="tidak">
                                             <label for="penutupan_tidak"> Tidak</label>
                                         </div>
                                     </div>
@@ -705,34 +705,7 @@
             }
         });
 
-        // Checkbox mutual exclusion (only one per row)
-        const checkboxPairs = [
-            ['prep_ya', 'prep_tidak'],
-            ['tugas_ya', 'tugas_tidak'], 
-            ['perkenalan_ya', 'perkenalan_tidak'],
-            ['pembahasan_ya', 'pembahasan_tidak'],
-            ['tanya_ya', 'tanya_tidak'],
-            ['penutupan_ya', 'penutupan_tidak']
-        ];
-
-        checkboxPairs.forEach(([yaId, tidakId]) => {
-            const yaCheckbox = document.getElementById(yaId);
-            const tidakCheckbox = document.getElementById(tidakId);
-            
-            if (yaCheckbox && tidakCheckbox) {
-                yaCheckbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        tidakCheckbox.checked = false;
-                    }
-                });
-                
-                tidakCheckbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        yaCheckbox.checked = false;
-                    }
-                });
-            }
-        });
+        // Radio buttons automatically handle mutual exclusion - no additional JavaScript needed
     });
 
     function resetForm() {
