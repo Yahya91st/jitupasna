@@ -224,15 +224,15 @@
                                     <a href="{{ route('forms.form6.list') }}" class="btn btn-custom btn-back me-2">
                                         <i class="bi bi-arrow-left me-1"></i> Kembali
                                     </a>
-                                    <a href="{{ route('forms.form6.edit', $rumahtangga->id) }}" class="btn btn-custom btn-edit">
+                                    <a href="{{ route('forms.form6.edit', $form->id) }}" class="btn btn-custom btn-edit">
                                         <i class="bi bi-pencil me-1"></i> Edit
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route('forms.form6.pdf', $rumahtangga->id) }}" class="btn btn-custom btn-pdf me-2" target="_blank">
+                                    <a href="{{ route('forms.form6.pdf', $form->id) }}" class="btn btn-custom btn-pdf me-2" target="_blank">
                                         <i class="bi bi-file-pdf me-1"></i> Download PDF
                                     </a>
-                                    <a href="{{ route('forms.form6.preview-pdf', $rumahtangga->id) }}" class="btn btn-custom btn-preview" target="_blank">
+                                    <a href="{{ route('forms.form6.preview-pdf', $form->id) }}" class="btn btn-custom btn-preview" target="_blank">
                                         <i class="bi bi-eye me-1"></i> Preview PDF
                                     </a>
                                 </div>
@@ -250,15 +250,15 @@
                                     <table class="detail-table">
                                         <tr>
                                             <th>Nama Bencana</th>
-                                            <td>{{ $rumahtangga->bencana->nama_bencana }}</td>
+                                            <td>{{ $form->bencana->nama_bencana }}</td>
                                         </tr>
                                         <tr>
                                             <th>Tanggal Bencana</th>
-                                            <td>{{ $rumahtangga->bencana->tanggal }}</td>
+                                            <td>{{ $form->bencana->tanggal }}</td>
                                         </tr>
                                         <tr>
                                             <th>Lokasi Bencana</th>
-                                            <td>{{ $rumahtangga->bencana->lokasi }}</td>
+                                            <td>{{ $form->bencana->lokasi }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -273,19 +273,19 @@
                                     <table class="detail-table">
                                         <tr>
                                             <th>Nama Kepala Keluarga</th>
-                                            <td>{{ $rumahtangga->nama_kk }}</td>
+                                            <td>{{ $form->nama_kk }}</td>
                                         </tr>
                                         <tr>
                                             <th>NIK</th>
-                                            <td>{{ $rumahtangga->nik_kk }}</td>
+                                            <td>{{ $form->nik_kk }}</td>
                                         </tr>
                                         <tr>
                                             <th>Jumlah Anggota Keluarga</th>
-                                            <td>{{ $rumahtangga->jumlah_anggota }} orang</td>
+                                            <td>{{ $form->jumlah_anggota }} orang</td>
                                         </tr>
                                         <tr>
                                             <th>No. HP/Telepon</th>
-                                            <td>{{ $rumahtangga->nomor_hp }}</td>
+                                            <td>{{ $form->nomor_hp }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -303,15 +303,15 @@
                                             <table class="detail-table">
                                                 <tr>
                                                     <th>Dusun/Lingkungan</th>
-                                                    <td>{{ $rumahtangga->dusun }}</td>
+                                                    <td>{{ $form->dusun }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Desa/Kelurahan</th>
-                                                    <td>{{ $rumahtangga->desa }}</td>
+                                                    <td>{{ $form->desa }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Kabupaten/Kota</th>
-                                                    <td>{{ $rumahtangga->kabupaten }}</td>
+                                                    <td>{{ $form->kabupaten }}</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -319,15 +319,15 @@
                                             <table class="detail-table">
                                                 <tr>
                                                     <th>RT/RW</th>
-                                                    <td>{{ $rumahtangga->rt }}/{{ $rumahtangga->rw }}</td>
+                                                    <td>{{ $form->rt }}/{{ $form->rw }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Kecamatan</th>
-                                                    <td>{{ $rumahtangga->kecamatan }}</td>
+                                                    <td>{{ $form->kecamatan }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Provinsi</th>
-                                                    <td>{{ $rumahtangga->provinsi }}</td>
+                                                    <td>{{ $form->provinsi }}</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -345,23 +345,23 @@
                                     <table class="detail-table">
                                         <tr>
                                             <th>Status Rumah</th>
-                                            <td>{{ $rumahtangga->status_rumah }}</td>
+                                            <td>{{ $form->status_rumah }}</td>
                                         </tr>
                                         <tr>
                                             <th>Status Hunian Pasca Bencana</th>
-                                            <td>{{ $rumahtangga->status_hunian }}</td>
+                                            <td>{{ $form->status_hunian }}</td>
                                         </tr>
                                         <tr>
                                             <th>Kategori Kerusakan</th>
                                             <td>
-                                                @if($rumahtangga->kategori_kerusakan == 'Rusak Berat')
-                                                    <span class="badge badge-danger">{{ $rumahtangga->kategori_kerusakan }}</span>
-                                                @elseif($rumahtangga->kategori_kerusakan == 'Rusak Sedang')
-                                                    <span class="badge badge-warning">{{ $rumahtangga->kategori_kerusakan }}</span>
-                                                @elseif($rumahtangga->kategori_kerusakan == 'Rusak Ringan')
-                                                    <span class="badge badge-info">{{ $rumahtangga->kategori_kerusakan }}</span>
+                                                @if($form->kategori_kerusakan == 'Rusak Berat')
+                                                    <span class="badge badge-danger">{{ $form->kategori_kerusakan }}</span>
+                                                @elseif($form->kategori_kerusakan == 'Rusak Sedang')
+                                                    <span class="badge badge-warning">{{ $form->kategori_kerusakan }}</span>
+                                                @elseif($form->kategori_kerusakan == 'Rusak Ringan')
+                                                    <span class="badge badge-info">{{ $form->kategori_kerusakan }}</span>
                                                 @else
-                                                    <span class="badge badge-success">{{ $rumahtangga->kategori_kerusakan }}</span>
+                                                    <span class="badge badge-success">{{ $form->kategori_kerusakan }}</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -379,25 +379,25 @@
                                         <tr>
                                             <th>Status Bantuan</th>
                                             <td>
-                                                @if($rumahtangga->status_bantuan == 'Ya')
+                                                @if($form->status_bantuan == 'Ya')
                                                     <span class="badge badge-success">Sudah Menerima Bantuan</span>
                                                 @else
                                                     <span class="badge badge-secondary">Belum Menerima Bantuan</span>
                                                 @endif
                                             </td>
                                         </tr>
-                                        @if($rumahtangga->status_bantuan == 'Ya')
+                                        @if($form->status_bantuan == 'Ya')
                                         <tr>
                                             <th>Jenis Bantuan</th>
-                                            <td>{{ $rumahtangga->jenis_bantuan }}</td>
+                                            <td>{{ $form->jenis_bantuan }}</td>
                                         </tr>
                                         <tr>
                                             <th>Nominal/Nilai Bantuan</th>
-                                            <td>Rp {{ number_format($rumahtangga->nominal_bantuan, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($form->nominal_bantuan, 0, ',', '.') }}</td>
                                         </tr>
                                         <tr>
                                             <th>Pemberi Bantuan</th>
-                                            <td>{{ $rumahtangga->pemberi_bantuan }}</td>
+                                            <td>{{ $form->pemberi_bantuan }}</td>
                                         </tr>
                                         @endif
                                     </table>
@@ -415,26 +415,26 @@
                                         <div class="col-md-4">
                                             <div class="border-start border-4 border-primary ps-3 mb-3">
                                                 <h6 class="fw-bold text-primary">Kebutuhan Material</h6>
-                                                <p class="mb-0">{{ $rumahtangga->kebutuhan_material ?: 'Tidak ada' }}</p>
+                                                <p class="mb-0">{{ $form->kebutuhan_material ?: 'Tidak ada' }}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="border-start border-4 border-success ps-3 mb-3">
                                                 <h6 class="fw-bold text-success">Kebutuhan SDM</h6>
-                                                <p class="mb-0">{{ $rumahtangga->kebutuhan_sdm ?: 'Tidak ada' }}</p>
+                                                <p class="mb-0">{{ $form->kebutuhan_sdm ?: 'Tidak ada' }}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="border-start border-4 border-danger ps-3 mb-3">
                                                 <h6 class="fw-bold text-danger">Estimasi Kebutuhan Dana</h6>
-                                                <p class="mb-0">Rp {{ number_format($rumahtangga->kebutuhan_dana, 0, ',', '.') }}</p>
+                                                <p class="mb-0">Rp {{ number_format($form->kebutuhan_dana, 0, ',', '.') }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                    @if($rumahtangga->keterangan_tambahan)
+                    </div>                    @if($form->keterangan_tambahan)
                     <div class="row mt-4">
                         <div class="col-md-12">
                             <div class="card card-data">
@@ -443,7 +443,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="p-3 bg-light rounded">
-                                        <p class="mb-0">{{ $rumahtangga->keterangan_tambahan }}</p>
+                                        <p class="mb-0">{{ $form->keterangan_tambahan }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -460,7 +460,7 @@
                                         <div class="col-md-4">
                                             <div class="img-wrapper">
                                                 <div class="img-container" id="img-rumah">
-                                                    <img src="{{ asset('storage/' . $rumahtangga->foto_rumah) }}" class="img-fluid" alt="Foto Rumah">
+                                                    <img src="{{ asset('storage/' . $form->foto_rumah) }}" class="img-fluid" alt="Foto Rumah">
                                                 </div>
                                                 <p class="img-caption">Foto Rumah/Bangunan</p>
                                             </div>
@@ -468,7 +468,7 @@
                                         <div class="col-md-4">
                                             <div class="img-wrapper">
                                                 <div class="img-container" id="img-ktp">
-                                                    <img src="{{ asset('storage/' . $rumahtangga->foto_ktp) }}" class="img-fluid" alt="Foto KTP">
+                                                    <img src="{{ asset('storage/' . $form->foto_ktp) }}" class="img-fluid" alt="Foto KTP">
                                                 </div>
                                                 <p class="img-caption">Foto KTP Kepala Keluarga</p>
                                             </div>
@@ -476,7 +476,7 @@
                                         <div class="col-md-4">
                                             <div class="img-wrapper">
                                                 <div class="img-container" id="img-kk">
-                                                    <img src="{{ asset('storage/' . $rumahtangga->foto_kk) }}" class="img-fluid" alt="Foto KK">
+                                                    <img src="{{ asset('storage/' . $form->foto_kk) }}" class="img-fluid" alt="Foto KK">
                                                 </div>
                                                 <p class="img-caption">Foto Kartu Keluarga</p>
                                             </div>
@@ -507,20 +507,20 @@
                                                     <i class="bi bi-person-plus fs-3 text-primary"></i>
                                                 </div>
                                                 <div>
-                                                    <h6 class="mb-0">Dibuat Oleh: <strong>{{ $rumahtangga->createdBy->name ?? 'Unknown' }}</strong></h6>
-                                                    <small class="text-muted">{{ $rumahtangga->created_at->format('d-m-Y H:i') }}</small>
+                                                    <h6 class="mb-0">Dibuat Oleh: <strong>{{ $form->createdBy->name ?? 'Unknown' }}</strong></h6>
+                                                    <small class="text-muted">{{ $form->created_at->format('d-m-Y H:i') }}</small>
                                                 </div>
                                             </div>
                                         </div>
-                                        @if($rumahtangga->updated_by)
+                                        @if($form->updated_by)
                                         <div class="col-md-6">
                                             <div class="d-flex align-items-center p-3 bg-light rounded mb-3">
                                                 <div class="me-3">
                                                     <i class="bi bi-pencil-square fs-3 text-success"></i>
                                                 </div>
                                                 <div>
-                                                    <h6 class="mb-0">Diperbarui Oleh: <strong>{{ $rumahtangga->updatedBy->name ?? 'Unknown' }}</strong></h6>
-                                                    <small class="text-muted">{{ $rumahtangga->updated_at->format('d-m-Y H:i') }}</small>
+                                                    <h6 class="mb-0">Diperbarui Oleh: <strong>{{ $form->updatedBy->name ?? 'Unknown' }}</strong></h6>
+                                                    <small class="text-muted">{{ $form->updated_at->format('d-m-Y H:i') }}</small>
                                                 </div>
                                             </div>
                                         </div>

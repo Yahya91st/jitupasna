@@ -1,6 +1,20 @@
 @extends('layouts.main')
 
 @section('content')
+
+    @if ($bencana)
+        <div class="alert alert-light-primary color-primary mb-4">
+            <p>Bencana: {{ $bencana->kategori_bencana->nama }}</p>
+            <p>Tanggal: {{ $bencana->tanggal }}</p>
+            <p>Lokasi:
+                @foreach ($bencana->desa as $desa)
+                    {{ $desa->nama }}@if (!$loop->last)
+                        ,
+                    @endif
+                @endforeach
+            </p>
+        </div>
+    @endif
     <div class="page-heading">
         <div class="page-title mb-4">
             <h3>Daftar Data Pendataan Tingkat Rumahtangga (Form 6)</h3>
@@ -41,30 +55,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($form as $index => $rumahtangga)
+                                    @forelse($form as $index => $data)
                                         <tr>
-                                            <td>{{ $index + $form->firstItem() }}</td>
-                                            <td>{{ $rumahtangga->created_at->format('d-m-Y') }}</td>
-                                            <td>{{ $rumahtangga->bencana->nama_bencana }}</td>
-                                            <td>{{ $rumahtangga->nama_kk }}</td>
-                                            <td>{{ $rumahtangga->nik_kk }}</td>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $data->created_at->format('d-m-Y') }}</td>
+                                            <td>{{ $data->bencana->nama_bencana }}</td>
+                                            <td>{{ $data->nama_kk }}</td>
+                                            <td>{{ $data->nik_kk }}</td>
                                             <td>
-                                                {{ $rumahtangga->dusun }}, RT {{ $rumahtangga->rt }}/RW {{ $rumahtangga->rw }},
-                                                {{ $rumahtangga->desa }}, {{ $rumahtangga->kecamatan }}, {{ $rumahtangga->kabupaten }}
+                                                {{ $data->dusun }}, RT {{ $data->rt }}/RW {{ $data->rw }},
+                                                {{ $data->desa }}, {{ $data->kecamatan }}, {{ $data->kabupaten }}
                                             </td>
                                             <td>
-                                                @if ($rumahtangga->kategori_kerusakan == 'Rusak Berat')
-                                                    <span class="badge badge-danger">{{ $rumahtangga->kategori_kerusakan }}</span>
-                                                @elseif($rumahtangga->kategori_kerusakan == 'Rusak Sedang')
-                                                    <span class="badge badge-warning">{{ $rumahtangga->kategori_kerusakan }}</span>
-                                                @elseif($rumahtangga->kategori_kerusakan == 'Rusak Ringan')
-                                                    <span class="badge badge-info">{{ $rumahtangga->kategori_kerusakan }}</span>
+                                                @if ($data->kategori_kerusakan == 'Rusak Berat')
+                                                    <span class="badge badge-danger">{{ $data->kategori_kerusakan }}</span>
+                                                @elseif($data->kategori_kerusakan == 'Rusak Sedang')
+                                                    <span class="badge badge-warning">{{ $data->kategori_kerusakan }}</span>
+                                                @elseif($data->kategori_kerusakan == 'Rusak Ringan')
+                                                    <span class="badge badge-info">{{ $data->kategori_kerusakan }}</span>
                                                 @else
-                                                    <span class="badge badge-success">{{ $rumahtangga->kategori_kerusakan }}</span>
+                                                    <span class="badge badge-success">{{ $data->kategori_kerusakan }}</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($rumahtangga->status_bantuan == 'Ya')
+                                                @if ($data->status_bantuan == 'Ya')
                                                     <span class="badge badge-success">Sudah Menerima Bantuan</span>
                                                 @else
                                                     <span class="badge badge-secondary">Belum Menerima Bantuan</span>
@@ -72,16 +86,16 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
-                                                    <a href="{{ route('forms.form6.show', $rumahtangga->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
+                                                    <a href="{{ route('forms.form6.show', $data->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
                                                         <i class="fa fa-eye"></i> Detail
                                                     </a>
-                                                    <a href="{{ route('forms.form6.edit', $rumahtangga->id) }}" class="btn btn-sm btn-warning" title="Edit">
+                                                    <a href="{{ route('forms.form6.edit', $data->id) }}" class="btn btn-sm btn-warning" title="Edit">
                                                         <i class="fa fa-edit"></i> Edit
                                                     </a>
-                                                    <a href="{{ route('forms.form6.preview-pdf', $rumahtangga->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
+                                                    <a href="{{ route('forms.form6.preview-pdf', $data->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
                                                         <i class="fa fa-search"></i> Lihat PDF
                                                     </a>
-                                                    <a href="{{ route('forms.form6.pdf', $rumahtangga->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
+                                                    <a href="{{ route('forms.form6.pdf', $data->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
                                                         <i class="fa fa-download"></i> Unduh PDF
                                                     </a>
                                                 </div>
