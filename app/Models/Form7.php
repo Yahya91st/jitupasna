@@ -25,9 +25,33 @@ class Form7 extends Model
         'komposisi_peserta',
         'fasilitator',
         'pencatat',
-        'akses_hak',
-        'fungsi_pranata',
-        'resiko_kerentanan',
+
+        // Checklist Persiapan
+        'persiapan_pra_fgd'  ,
+        'pembagian_tugas_pelaksana'  ,
+        'perkenalan_pengantar'  ,
+        'pembahasan'  ,
+        'pendalaman_tanya_jawab'  ,
+        'penyimpulan_penutupan'  ,
+
+        // A. Akses Hak
+        'akses_hak_bekerja'  ,
+        'akses_hak_jamsos'  ,
+        'akses_hak_perlindungan' ,  
+        'akses_hak_kesehatan'  ,
+        'akses_hak_pendidikan'  ,
+
+        // B. Fungsi Pranata
+        'fungsi_pranata_sosial'  ,
+        'fungsi_pranata_ekonomi'  ,
+        'fungsi_pranata_agama'  ,
+        'fungsi_pranata_pemerintahan' , 
+
+        // C. Resiko Kerentanan
+        'resiko_kerentanan_sosial'  ,
+        'resiko_kerentanan_ekonomi'  ,
+        'resiko_kerentanan_geografis' , 
+
     ];
 
     protected $casts = [

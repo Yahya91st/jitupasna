@@ -36,33 +36,46 @@
             margin-bottom: 0.3rem;
         }
 
-        /* Table Styling - Kombinasi Form3 & Form6 */
         .form-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 13px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            overflow: hidden;
+            font-size: 10px;
+            table-layout: fixed;
         }
 
         .form-table th,
         .form-table td {
+            padding: 2px 2px;
             border: 1px solid #333;
-            padding: 6px 4px;
             text-align: center;
             vertical-align: middle;
-            word-wrap: break-word;
-            font-size: 11px;
-            line-height: 1.3;
+            word-break: break-word;
         }
 
         .form-table th {
-            background-color: #f9f9f9;
-            font-weight: 600;
-            text-align: center;
-            color: #333;
+            font-size: 10px;
+        }
+
+        .form-table input[type="text"] {
+            width: 100%;
+            font-size: 10px;
+            padding: 2px 2px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 900px) {
+
+            .form-table,
+            .form-table th,
+            .form-table td {
+                font-size: 8px;
+                padding: 1px 1px;
+            }
+
+            .form-table input[type="text"] {
+                font-size: 8px;
+                padding: 1px 1px;
+            }
         }
 
         .form-table tbody tr:nth-child(odd) {
@@ -275,62 +288,64 @@
                 <h5><strong>Formulir 08</strong></h5>
                 <h5>Formulir Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian</h5>
             </div>
-
-            <table class="form-table">
-                <thead>
-                    <tr>
-                        <th class="table-header" rowspan="2" style="width: 3%;">No</th>
-                        <th class="table-header" rowspan="2" style="width: 12%;">Sektor/Sub Sektor</th>
-                        <th class="table-header" rowspan="2" style="width: 15%;">Komponen Kerusakan dan Kerugian</th>
-                        <th class="table-header" rowspan="2" style="width: 10%;">Lokasi</th>
-                        <th class="table-header" colspan="3" style="width: 12%;">Data Kerusakan</th>
-                        <th class="table-header" colspan="3" style="width: 12%;">Harga Satuan (Rp.)</th>
-                        <th class="table-header" colspan="3" style="width: 12%;">Nilai Kerusakan (Damage)</th>
-                        <th class="table-header" rowspan="2" style="width: 8%;">Perkiraan Kerugian (Losses)</th>
-                        <th class="table-header" rowspan="2" style="width: 8%;">Kerusakan + Kerugian</th>
-                        <th class="table-header" rowspan="2" style="width: 8%;">Kebutuhan</th>
-                    </tr>
-                    <tr>
-                        <th class="table-header" style="width: 4%;">RB</th>
-                        <th class="table-header" style="width: 4%;">RS</th>
-                        <th class="table-header" style="width: 4%;">RR</th>
-                        <th class="table-header" style="width: 4%;">RB</th>
-                        <th class="table-header" style="width: 4%;">RS</th>
-                        <th class="table-header" style="width: 4%;">RR</th>
-                        <th class="table-header" style="width: 4%;">RB</th>
-                        <th class="table-header" style="width: 4%;">RS</th>
-                        <th class="table-header" style="width: 4%;">RR</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    @for ($i = 1; $i <= 15; $i++)
-                        <tr class="data-row">
-                            <td style="text-align: center;">{{ $i }}</td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
+            <div class="table-responsive-custom" style="overflow-x:auto; width:100%;">
+                <table class="form-table">
+                    <thead>
+                        <tr>
+                            <th class="table-header" rowspan="2" style="width: 3%;">No</th>
+                            <th class="table-header" rowspan="2" style="width: 12%;">Sektor/Sub Sektor</th>
+                            <th class="table-header" rowspan="2" style="width: 15%;">Komponen Kerusakan dan Kerugian</th>
+                            <th class="table-header" rowspan="2" style="width: 10%;">Lokasi</th>
+                            <th class="table-header" colspan="3" style="width: 12%;">Data Kerusakan</th>
+                            <th class="table-header" colspan="3" style="width: 12%;">Harga Satuan (Rp.)</th>
+                            <th class="table-header" colspan="3" style="width: 12%;">Nilai Kerusakan (Damage)</th>
+                            <th class="table-header" rowspan="2" style="width: 8%;">Perkiraan Kerugian (Losses)</th>
+                            <th class="table-header" rowspan="2" style="width: 8%;">Kerusakan + Kerugian</th>
+                            <th class="table-header" rowspan="2" style="width: 8%;">Kebutuhan</th>
                         </tr>
-                    @endfor
-                    <tr class="total-row">
-                        <td colspan="4" style="text-align: center; font-weight: bold;">JUMLAH</td>
-                        @for ($j = 0; $j < 12; $j++)
-                            <td style="text-align: center;">&nbsp;</td>
+                        <tr>
+                            <th class="table-header" style="width: 4%;">RB</th>
+                            <th class="table-header" style="width: 4%;">RS</th>
+                            <th class="table-header" style="width: 4%;">RR</th>
+                            <th class="table-header" style="width: 4%;">RB</th>
+                            <th class="table-header" style="width: 4%;">RS</th>
+                            <th class="table-header" style="width: 4%;">RR</th>
+                            <th class="table-header" style="width: 4%;">RB</th>
+                            <th class="table-header" style="width: 4%;">RS</th>
+                            <th class="table-header" style="width: 4%;">RR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @for ($i = 1; $i <= 15; $i++)
+                            <tr class="data-row">
+                                <td style="text-align: center;">{{ $i }}</td>
+                                <td><input type="text" name="sektor/subsektor_{{ $i }}" id="sektor_subsektor_{{ $i }}"></td>
+                                <td><input type="text" name="komponen_kerusakan_dan_kerugian_{{ $i }}" id="komponen_kerusakan_dan_kerugian_{{ $i }}"></td>
+                                <td><input type="text" name="lokasi_{{ $i }}" id="lokasi_{{ $i }}"></td>
+                                <td><input type="text" name="data_kerusakan_rb_{{ $i }}" id="data_kerusakan_rb_{{ $i }}"></td>
+                                <td><input type="text" name="data_kerusakan_rs_{{ $i }}" id="data_kerusakan_rs_{{ $i }}"></td>
+                                <td><input type="text" name="data_kerusakan_rr_{{ $i }}" id="data_kerusakan_rr_{{ $i }}"></td>
+                                <td><input type="text" name="harga_satuan_rb_{{ $i }}" id="harga_satuan_rb_{{ $i }}"></td>
+                                <td><input type="text" name="harga_satuan_rs_{{ $i }}" id="harga_satuan_rs_{{ $i }}"></td>
+                                <td><input type="text" name="harga_satuan_rr_{{ $i }}" id="harga_satuan_rr_{{ $i }}"></td>
+                                <td><input type="text" name="nilai_kerusakan_rb_{{ $i }}" id="nilai_kerusakan_rb_{{ $i }}"></td>
+                                <td><input type="text" name="nilai_kerusakan_rs_{{ $i }}" id="nilai_kerusakan_rs_{{ $i }}"></td>
+                                <td><input type="text" name="nilai_kerusakan_rr_{{ $i }}" id="nilai_kerusakan_rr_{{ $i }}"></td>
+                                <td><input type="text" name="perkiraan_kerugian_{{ $i }}" id="perkiraan_kerugian_{{ $i }}"></td>
+                                <td><input type="text" name="jumlah_kerusakan_kerugian_{{ $i }}" id="jumlah_kerusakan_kerugian_{{ $i }}"></td>
+                                <td><input type="text" name="kebutuhan_{{ $i }}" id="kebutuhan_{{ $i }}"></td>
+                            </tr>
                         @endfor
-                    </tr>
-                </tbody>
-            </table>
+                        <tr class="total-row">
+                            <td colspan="4" style="text-align: center; font-weight: bold;">JUMLAH</td>
+                            @for ($j = 0; $j < 12; $j++)
+                                <td style="text-align: center;">&nbsp;</td>
+                            @endfor
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <!-- Tombol Aksi -->
             <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
                 <button type="submit" class="btn btn-success">

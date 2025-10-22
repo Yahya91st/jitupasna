@@ -1,249 +1,249 @@
 @extends('layouts.main')
 
 @section('content')
-<style>
-    .document-container {
-        background: #fff;
-        padding: 20px;
-        margin: 20px auto;
-        max-width: 1200px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        font-family: 'Times New Roman', serif;
-        line-height: 1.3;
-        color: #000;
-        font-size: 14px;
-    }
-    
-    .document-header {
-        text-align: center;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #000;
-        padding-bottom: 15px;
-    }
-    
-    .document-title {
-        font-size: 18px;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin: 0 0 5px 0;
-        letter-spacing: 1px;
-    }
-    
-    .document-subtitle {
-        font-size: 16px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .form-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        font-size: 12px;
-    }
-
-    .form-table th,
-    .form-table td {
-        border: 1px solid #000;
-        padding: 6px;
-        text-align: left;
-        vertical-align: top;
-    }
-
-    .form-table th {
-        background-color: #e9ecef;
-        font-weight: bold;
-        text-align: center;
-        color: #000;
-    }
-
-    .table-header {
-        background-color: #6c757d !important;
-        color: white !important;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    .kategori {
-        background-color: #f8f9fa;
-        font-weight: bold;
-        text-align: center;
-        vertical-align: middle;
-        width: 120px;
-        min-width: 120px;
-        line-height: 1.2;
-        padding: 8px 4px;
-    }
-
-    .form-table input {
-        width: 100%;
-        border: none;
-        background: transparent;
-        padding: 2px;
-        font-size: 11px;
-        font-family: 'Times New Roman', serif;
-    }
-
-    .form-table input:focus {
-        outline: 2px solid #0066cc;
-        background-color: #f8f9fa;
-        border-radius: 2px;
-    }
-
-    .form-table input:hover:not(:focus) {
-        background-color: #f0f0f0;
-    }
-
-    .form-table input[readonly] {
-        background-color: #e9ecef;
-        color: #6c757d;
-        font-weight: bold;
-    }
-
-    .instruction-box {
-        background: #e3f2fd;
-        border: 1px solid #2196f3;
-        border-radius: 5px;
-        padding: 15px;
-        margin: 20px 0;
-        text-align: center;
-        font-style: italic;
-        color: #1976d2;
-    }
-
-    .btn-custom {
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-    }
-    
-    .btn-success-custom {
-        background: #28a745;
-        color: white;
-    }
-    
-    .btn-success-custom:hover {
-        background: #218838;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .btn-warning-custom {
-        background: #ffc107;
-        color: #000;
-    }
-    
-    .btn-warning-custom:hover {
-        background: #e0a800;
-        color: #000;
-        text-decoration: none;
-    }
-    
-    .btn-info-custom {
-        background: #17a2b8;
-        color: white;
-    }
-    
-    .btn-info-custom:hover {
-        background: #138496;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .btn-secondary-custom {
-        background: #6c757d;
-        color: white;
-    }
-    
-    .btn-secondary-custom:hover {
-        background: #545b62;
-        color: white;
-        text-decoration: none;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        margin: 30px 0;
-        flex-wrap: wrap;
-    }
-
-    .highlight-row {
-        background-color: #fff3cd !important;
-        transition: background-color 0.3s ease;
-    }
-
-    .clickable-row {
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    .clickable-row:hover {
-        background-color: #f8f9fa;
-    }
-
-    @media print {
+    <style>
         .document-container {
-            box-shadow: none;
+            background: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.3;
+            color: #000;
+            font-size: 14px;
+        }
+
+        .document-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+
+        .document-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0 0 5px 0;
+            letter-spacing: 1px;
+        }
+
+        .document-subtitle {
+            font-size: 16px;
+            font-weight: bold;
             margin: 0;
-            padding: 15px;
         }
-        
+
         .form-table {
-            page-break-inside: auto;
-            border: 2px solid #000 !important;
-            font-size: 10px;
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
         }
 
-        .form-table tr {
-            page-break-inside: avoid;
-            page-break-after: auto;
+        .form-table th,
+        .form-table td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: left;
+            vertical-align: top;
         }
 
-        .form-table td,
         .form-table th {
-            border: 1px solid #000 !important;
-            print-color-adjust: exact;
-            -webkit-print-color-adjust: exact;
-            padding: 4px;
-        }
-
-        .form-table thead th {
-            background-color: #e9ecef !important;
-            border-bottom: 2px solid #000 !important;
-        }
-
-        .kategori {
-            background-color: #f8f9fa !important;
+            background-color: #e9ecef;
+            font-weight: bold;
+            text-align: center;
+            color: #000;
         }
 
         .table-header {
             background-color: #6c757d !important;
             color: white !important;
+            text-align: center;
+            font-weight: bold;
         }
 
-        .action-buttons,
-        .instruction-box,
-        .no-print {
-            display: none !important;
+        .kategori {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+            width: 120px;
+            min-width: 120px;
+            line-height: 1.2;
+            padding: 8px 4px;
         }
-        
+
         .form-table input {
-            border: none !important;
-            background: transparent !important;
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 2px;
+            font-size: 11px;
+            font-family: 'Times New Roman', serif;
         }
-    }
-</style>
+
+        .form-table input:focus {
+            outline: 2px solid #0066cc;
+            background-color: #f8f9fa;
+            border-radius: 2px;
+        }
+
+        .form-table input:hover:not(:focus) {
+            background-color: #f0f0f0;
+        }
+
+        .form-table input[readonly] {
+            background-color: #e9ecef;
+            color: #6c757d;
+            font-weight: bold;
+        }
+
+        .instruction-box {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-style: italic;
+            color: #1976d2;
+        }
+
+        .btn-custom {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-success-custom {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success-custom:hover {
+            background: #218838;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-warning-custom {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-warning-custom:hover {
+            background: #e0a800;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .btn-info-custom {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-info-custom:hover {
+            background: #138496;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-secondary-custom {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary-custom:hover {
+            background: #545b62;
+            color: white;
+            text-decoration: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .highlight-row {
+            background-color: #fff3cd !important;
+            transition: background-color 0.3s ease;
+        }
+
+        .clickable-row {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .clickable-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        @media print {
+            .document-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 15px;
+            }
+
+            .form-table {
+                page-break-inside: auto;
+                border: 2px solid #000 !important;
+                font-size: 10px;
+            }
+
+            .form-table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            .form-table td,
+            .form-table th {
+                border: 1px solid #000 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                padding: 4px;
+            }
+
+            .form-table thead th {
+                background-color: #e9ecef !important;
+                border-bottom: 2px solid #000 !important;
+            }
+
+            .kategori {
+                background-color: #f8f9fa !important;
+            }
+
+            .table-header {
+                background-color: #6c757d !important;
+                color: white !important;
+            }
+
+            .action-buttons,
+            .instruction-box,
+            .no-print {
+                display: none !important;
+            }
+
+            .form-table input {
+                border: none !important;
+                background: transparent !important;
+            }
+        }
+    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -252,13 +252,13 @@
             tableRows.forEach(row => {
                 row.classList.add('clickable-row');
             });
-            
+
             // Update all inputs to have proper styling and placeholders
             const allInputs = document.querySelectorAll('.form-table input');
             allInputs.forEach(input => {
                 // Remove inline styles
                 input.removeAttribute('style');
-                
+
                 // Add placeholders based on input type and name
                 if (input.name.includes('kegiatan')) {
                     input.placeholder = 'Masukkan kegiatan...';
@@ -274,7 +274,7 @@
                     input.placeholder = 'Keterangan...';
                 }
             });
-            
+
             // Reference table calculations
             const volumeInputs = document.querySelectorAll('input[name$="_volume"]');
             const priceInputs = document.querySelectorAll('input[name$="_harga"]');
@@ -331,34 +331,34 @@
                 row.addEventListener('click', function() {
                     // Remove highlight from other rows
                     tableRows.forEach(r => r.classList.remove('highlight-row'));
-                    
+
                     // Add highlight to clicked row
                     this.classList.add('highlight-row');
-                    
+
                     // Get data from the clicked row
                     const cells = this.querySelectorAll('td');
-                    
+
                     // Show notification
                     showNotification('Baris dipilih! Data siap untuk digunakan.', 'success');
-                    
+
                     // Optional: You can add more functionality here
                     // like populating a separate form or modal
                 });
-                
+
                 // Add hover effect
                 row.addEventListener('mouseenter', function() {
                     if (!this.classList.contains('highlight-row')) {
                         this.style.backgroundColor = '#e3f2fd';
                     }
                 });
-                
+
                 row.addEventListener('mouseleave', function() {
                     if (!this.classList.contains('highlight-row')) {
                         this.style.backgroundColor = '';
                     }
                 });
             });
-            
+
             // Function to show notifications
             function showNotification(message, type = 'info') {
                 // Create notification element
@@ -369,9 +369,9 @@
                     ${message}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 `;
-                
+
                 document.body.appendChild(notification);
-                
+
                 // Auto remove after 3 seconds
                 setTimeout(() => {
                     if (notification.parentNode) {
@@ -382,13 +382,13 @@
         });
     </script>
 
-    @if(session('success'))
+    @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
-    @if(session('error'))
+    @if (session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
@@ -615,15 +615,6 @@
                         <td><input type="number" name="lintas_bantuan_jumlah" readonly style="width: 100%; border: none;"></td>
                         <td><input type="text" name="lintas_bantuan_keterangan" style="width: 100%; border: none;"></td>
                     </tr>
-                    <tr>
-                        <td>Pengurangan Resiko</td>
-                        <td><input type="text" name="lintas_resiko2_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_resiko2_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_resiko2_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_resiko2_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_resiko2_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_resiko2_keterangan" style="width: 100%; border: none;"></td>
-                    </tr>
                 </tbody>
             </table>
 
@@ -655,11 +646,11 @@
         function resetForm() {
             if (confirm('Apakah Anda yakin ingin mereset semua data form?\n\nSemua data yang telah diisi akan hilang dan tidak dapat dikembalikan.')) {
                 document.querySelector('form').reset();
-                
+
                 // Remove highlights from rows
                 const highlightedRows = document.querySelectorAll('.highlight-row');
                 highlightedRows.forEach(row => row.classList.remove('highlight-row'));
-                
+
                 // Show success notification
                 showNotification('Form berhasil direset!', 'warning');
             }
@@ -672,7 +663,7 @@
             loadingMsg.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
             loadingMsg.textContent = 'Mempersiapkan dokumen untuk dicetak...';
             document.body.appendChild(loadingMsg);
-            
+
             setTimeout(() => {
                 window.print();
                 loadingMsg.remove();
@@ -686,7 +677,7 @@
             loadingMsg.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
             loadingMsg.textContent = 'Mempersiapkan preview...';
             document.body.appendChild(loadingMsg);
-            
+
             setTimeout(() => {
                 // Create preview window
                 const previewWindow = window.open('', '_blank', 'width=1000,height=700,scrollbars=yes,resizable=yes');
@@ -792,7 +783,7 @@
                 loadingMsg.remove();
             }, 500);
         }
-        
+
         // Function to show notifications (if not already defined)
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
@@ -802,9 +793,9 @@
                 ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
-            
+
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.remove();

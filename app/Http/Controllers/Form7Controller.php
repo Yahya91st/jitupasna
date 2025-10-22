@@ -41,73 +41,43 @@ class Form7Controller extends Controller
             'tanggal' => 'required|date',
             'jarak_bencana' => 'required|integer|min:0',
             'tempat_sesi' => 'required|string|max:255',
-            'jumlah_peserta' => 'required|integer|min:7',
+            'jumlah_peserta' => 'required|integer|min:0',
             'jumlah_perempuan' => 'required|integer|min:0',
             'jumlah_laki_laki' => 'required|integer|min:0',
             'komposisi_peserta' => 'required|string',
             'fasilitator' => 'required|string|max:255',
             'pencatat' => 'required|string|max:255',
+            
+            // Checklist Persiapan
+            'persiapan_pra_fgd' =>  'required|boolean',
+            'pembagian_tugas_pelaksana' =>  'required|boolean',
+            'perkenalan_pengantar' =>  'required|boolean',
+            'pembahasan' =>  'required|boolean',
+            'pendalaman_tanya_jawab' =>  'required|boolean',
+            'penyimpulan_penutupan' =>  'required|boolean',
+
+            // A. Akses Hak
+            'akses_hak_bekerja' =>  'required|string',
+            'akses_hak_jamsos' =>  'required|string',
+            'akses_hak_perlindungan' =>  'required|string',
+            'akses_hak_kesehatan' =>  'required|string',
+            'akses_hak_pendidikan' =>  'required|string',
+
+            // B. Fungsi Pranata
+            'fungsi_pranata_sosial' =>  'required|string',
+            'fungsi_pranata_ekonomi' =>  'required|string',
+            'fungsi_pranata_agama' =>  'required|string',
+            'fungsi_pranata_pemerintahan' =>  'required|string',
+
+            // C. Resiko Kerentanan
+            'resiko_kerentanan_sosial' =>  'required|string',
+            'resiko_kerentanan_ekonomi' =>  'required|string',
+            'resiko_kerentanan_geografis' =>  'required|string',
+
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-        }
-        
-        // Process akses_hak details
-        $aksesHak = '';
-        if ($request->has('pertanyaan') && isset($request->pertanyaan['akses_hak'])) {
-            $aksesHakPoints = [];
-            if (isset($request->pertanyaan['akses_hak']['bekerja']) && !empty($request->pertanyaan['akses_hak']['bekerja'])) {
-                $aksesHakPoints[] = "Bekerja: " . $request->pertanyaan['akses_hak']['bekerja'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['jaminan_sosial']) && !empty($request->pertanyaan['akses_hak']['jaminan_sosial'])) {
-                $aksesHakPoints[] = "Jaminan Sosial: " . $request->pertanyaan['akses_hak']['jaminan_sosial'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['perlindungan_keluarga']) && !empty($request->pertanyaan['akses_hak']['perlindungan_keluarga'])) {
-                $aksesHakPoints[] = "Perlindungan Keluarga: " . $request->pertanyaan['akses_hak']['perlindungan_keluarga'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['pelayanan_kesehatan']) && !empty($request->pertanyaan['akses_hak']['pelayanan_kesehatan'])) {
-                $aksesHakPoints[] = "Pelayanan Kesehatan: " . $request->pertanyaan['akses_hak']['pelayanan_kesehatan'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['pendidikan']) && !empty($request->pertanyaan['akses_hak']['pendidikan'])) {
-                $aksesHakPoints[] = "Pendidikan: " . $request->pertanyaan['akses_hak']['pendidikan'];
-            }
-            $aksesHak = implode("\n\n", $aksesHakPoints);
-        }
-        
-        // Process fungsi_pranata details
-        $fungsiPranata = '';
-        if ($request->has('pertanyaan') && isset($request->pertanyaan['fungsi_pranata'])) {
-            $fungsiPranataPoints = [];
-            if (isset($request->pertanyaan['fungsi_pranata']['sosial']) && !empty($request->pertanyaan['fungsi_pranata']['sosial'])) {
-                $fungsiPranataPoints[] = "Pranata Sosial: " . $request->pertanyaan['fungsi_pranata']['sosial'];
-            }
-            if (isset($request->pertanyaan['fungsi_pranata']['ekonomi']) && !empty($request->pertanyaan['fungsi_pranata']['ekonomi'])) {
-                $fungsiPranataPoints[] = "Pranata Ekonomi: " . $request->pertanyaan['fungsi_pranata']['ekonomi'];
-            }
-            if (isset($request->pertanyaan['fungsi_pranata']['agama']) && !empty($request->pertanyaan['fungsi_pranata']['agama'])) {
-                $fungsiPranataPoints[] = "Pranata Agama: " . $request->pertanyaan['fungsi_pranata']['agama'];
-            }
-            if (isset($request->pertanyaan['fungsi_pranata']['pemerintahan']) && !empty($request->pertanyaan['fungsi_pranata']['pemerintahan'])) {
-                $fungsiPranataPoints[] = "Pranata Pemerintahan: " . $request->pertanyaan['fungsi_pranata']['pemerintahan'];
-            }
-            $fungsiPranata = implode("\n\n", $fungsiPranataPoints);
-        }
-        
-        // Process resiko_kerentanan details
-        $resikoKerentanan = '';
-        if ($request->has('pertanyaan') && isset($request->pertanyaan['resiko_kerentanan'])) {
-            $resikoKerentananPoints = [];
-            if (isset($request->pertanyaan['resiko_kerentanan']['sosial']) && !empty($request->pertanyaan['resiko_kerentanan']['sosial'])) {
-                $resikoKerentananPoints[] = "Kerentanan Sosial: " . $request->pertanyaan['resiko_kerentanan']['sosial'];
-            }
-            if (isset($request->pertanyaan['resiko_kerentanan']['ekonomi']) && !empty($request->pertanyaan['resiko_kerentanan']['ekonomi'])) {
-                $resikoKerentananPoints[] = "Kerentanan Ekonomi: " . $request->pertanyaan['resiko_kerentanan']['ekonomi'];
-            }
-            if (isset($request->pertanyaan['resiko_kerentanan']['geografis']) && !empty($request->pertanyaan['resiko_kerentanan']['geografis'])) {
-                $resikoKerentananPoints[] = "Kerentanan Geografis: " . $request->pertanyaan['resiko_kerentanan']['geografis'];
-            }
-            $resikoKerentanan = implode("\n\n", $resikoKerentananPoints);
         }
         
         $form = new Form7();
@@ -124,9 +94,30 @@ class Form7Controller extends Controller
         $form->komposisi_peserta = $request->komposisi_peserta;
         $form->fasilitator = $request->fasilitator;
         $form->pencatat = $request->pencatat;
-        $form->akses_hak = $aksesHak;
-        $form->fungsi_pranata = $fungsiPranata;
-        $form->resiko_kerentanan = $resikoKerentanan;
+
+        $form->persiapan_pra_fgd = $request->persiapan_pra_fgd;
+        $form->pembagian_tugas_pelaksana = $request->pembagian_tugas_pelaksana;
+        $form->perkenalan_pengantar = $request->perkenalan_pengantar;
+        $form->pembahasan = $request->pembahasan;
+        $form->pendalaman_tanya_jawab = $request->pendalaman_tanya_jawab;
+        $form->penyimpulan_penutupan = $request->penyimpulan_penutupan;
+
+        // Diskusi
+        $form->akses_hak_bekerja = $request->akses_hak_bekerja;
+        $form->akses_hak_jamsos = $request->akses_hak_jamsos;
+        $form->akses_hak_perlindungan = $request->akses_hak_perlindungan;
+        $form->akses_hak_kesehatan = $request->akses_hak_kesehatan;
+        $form->akses_hak_pendidikan = $request->akses_hak_pendidikan;
+
+        $form->fungsi_pranata_sosial = $request->fungsi_pranata_sosial;
+        $form->fungsi_pranata_ekonomi = $request->fungsi_pranata_ekonomi;
+        $form->fungsi_pranata_agama = $request->fungsi_pranata_agama;
+        $form->fungsi_pranata_pemerintahan = $request->fungsi_pranata_pemerintahan;
+
+        $form->resiko_kerentanan_sosial = $request->resiko_kerentanan_sosial;
+        $form->resiko_kerentanan_ekonomi = $request->resiko_kerentanan_ekonomi;
+        $form->resiko_kerentanan_geografis = $request->resiko_kerentanan_geografis;
+
         $form->save();
 
         return redirect()->route('forms.form7.show', $form->id)->with('success', 'Data Form7 berhasil disimpan.');
@@ -164,7 +155,7 @@ class Form7Controller extends Controller
     public function generatePdf($id)
     {
         $form = Form7::with('bencana')->findOrFail($id);
-        $pdf = PDF::loadView('forms.Form7.pdf', compact('Form'));
+        $pdf = PDF::loadView('forms.Form7.pdf', compact('form'));
         return $pdf->download('formulir-07-Form7-' . $form->id . '.pdf');
     }
     
@@ -208,69 +199,39 @@ class Form7Controller extends Controller
             'komposisi_peserta' => 'required|string',
             'fasilitator' => 'required|string|max:255',
             'pencatat' => 'required|string|max:255',
+
+            // Checklist Persiapan
+            'persiapan_pra_fgd' =>  'required|boolean',
+            'pembagian_tugas_pelaksana' =>  'required|boolean',
+            'perkenalan_pengantar' =>  'required|boolean',
+            'pembahasan' =>  'required|boolean',
+            'pendalaman_tanya_jawab' =>  'required|boolean',
+            'penyimpulan_penutupan' =>  'required|boolean',
+
+            // A. Akses Hak
+            'akses_hak_bekerja' =>  'required|string',
+            'akses_hak_jamsos' =>  'required|string',
+            'akses_hak_perlindungan' =>  'required|string',
+            'akses_hak_kesehatan' =>  'required|string',
+            'akses_hak_pendidikan' =>  'required|string',
+
+            // B. Fungsi Pranata
+            'fungsi_pranata_sosial' =>  'required|string',
+            'fungsi_pranata_ekonomi' =>  'required|string',
+            'fungsi_pranata_agama' =>  'required|string',
+            'fungsi_pranata_pemerintahan' =>  'required|string',
+
+            // C. Resiko Kerentanan
+            'resiko_kerentanan_sosial' =>  'required|string',
+            'resiko_kerentanan_ekonomi' =>  'required|string',
+            'resiko_kerentanan_geografis' =>  'required|string',
+
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
         
-        // Process akses_hak details
-        $aksesHak = '';
-        if ($request->has('pertanyaan') && isset($request->pertanyaan['akses_hak'])) {
-            $aksesHakPoints = [];
-            if (isset($request->pertanyaan['akses_hak']['bekerja']) && !empty($request->pertanyaan['akses_hak']['bekerja'])) {
-                $aksesHakPoints[] = "Bekerja: " . $request->pertanyaan['akses_hak']['bekerja'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['jaminan_sosial']) && !empty($request->pertanyaan['akses_hak']['jaminan_sosial'])) {
-                $aksesHakPoints[] = "Jaminan Sosial: " . $request->pertanyaan['akses_hak']['jaminan_sosial'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['perlindungan_keluarga']) && !empty($request->pertanyaan['akses_hak']['perlindungan_keluarga'])) {
-                $aksesHakPoints[] = "Perlindungan Keluarga: " . $request->pertanyaan['akses_hak']['perlindungan_keluarga'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['pelayanan_kesehatan']) && !empty($request->pertanyaan['akses_hak']['pelayanan_kesehatan'])) {
-                $aksesHakPoints[] = "Pelayanan Kesehatan: " . $request->pertanyaan['akses_hak']['pelayanan_kesehatan'];
-            }
-            if (isset($request->pertanyaan['akses_hak']['pendidikan']) && !empty($request->pertanyaan['akses_hak']['pendidikan'])) {
-                $aksesHakPoints[] = "Pendidikan: " . $request->pertanyaan['akses_hak']['pendidikan'];
-            }
-            $aksesHak = implode("\n\n", $aksesHakPoints);
-        }
-        
-        // Process fungsi_pranata details
-        $fungsiPranata = '';
-        if ($request->has('pertanyaan') && isset($request->pertanyaan['fungsi_pranata'])) {
-            $fungsiPranataPoints = [];
-            if (isset($request->pertanyaan['fungsi_pranata']['sosial']) && !empty($request->pertanyaan['fungsi_pranata']['sosial'])) {
-                $fungsiPranataPoints[] = "Pranata Sosial: " . $request->pertanyaan['fungsi_pranata']['sosial'];
-            }
-            if (isset($request->pertanyaan['fungsi_pranata']['ekonomi']) && !empty($request->pertanyaan['fungsi_pranata']['ekonomi'])) {
-                $fungsiPranataPoints[] = "Pranata Ekonomi: " . $request->pertanyaan['fungsi_pranata']['ekonomi'];
-            }
-            if (isset($request->pertanyaan['fungsi_pranata']['agama']) && !empty($request->pertanyaan['fungsi_pranata']['agama'])) {
-                $fungsiPranataPoints[] = "Pranata Agama: " . $request->pertanyaan['fungsi_pranata']['agama'];
-            }
-            if (isset($request->pertanyaan['fungsi_pranata']['pemerintahan']) && !empty($request->pertanyaan['fungsi_pranata']['pemerintahan'])) {
-                $fungsiPranataPoints[] = "Pranata Pemerintahan: " . $request->pertanyaan['fungsi_pranata']['pemerintahan'];
-            }
-            $fungsiPranata = implode("\n\n", $fungsiPranataPoints);
-        }
-        
-        // Process resiko_kerentanan details
-        $resikoKerentanan = '';
-        if ($request->has('pertanyaan') && isset($request->pertanyaan['resiko_kerentanan'])) {
-            $resikoKerentananPoints = [];
-            if (isset($request->pertanyaan['resiko_kerentanan']['sosial']) && !empty($request->pertanyaan['resiko_kerentanan']['sosial'])) {
-                $resikoKerentananPoints[] = "Kerentanan Sosial: " . $request->pertanyaan['resiko_kerentanan']['sosial'];
-            }
-            if (isset($request->pertanyaan['resiko_kerentanan']['ekonomi']) && !empty($request->pertanyaan['resiko_kerentanan']['ekonomi'])) {
-                $resikoKerentananPoints[] = "Kerentanan Ekonomi: " . $request->pertanyaan['resiko_kerentanan']['ekonomi'];
-            }
-            if (isset($request->pertanyaan['resiko_kerentanan']['geografis']) && !empty($request->pertanyaan['resiko_kerentanan']['geografis'])) {
-                $resikoKerentananPoints[] = "Kerentanan Geografis: " . $request->pertanyaan['resiko_kerentanan']['geografis'];
-            }
-            $resikoKerentanan = implode("\n\n", $resikoKerentananPoints);
-        }
-
         $form->bencana_id = $request->bencana_id;
         $form->desa_kelurahan = $request->desa_kelurahan;
         $form->kecamatan = $request->kecamatan;
@@ -284,9 +245,30 @@ class Form7Controller extends Controller
         $form->komposisi_peserta = $request->komposisi_peserta;
         $form->fasilitator = $request->fasilitator;
         $form->pencatat = $request->pencatat;
-        $form->akses_hak = $aksesHak;
-        $form->fungsi_pranata = $fungsiPranata;
-        $form->resiko_kerentanan = $resikoKerentanan;
+
+        $form->persiapan_pra_fgd = $request->persiapan_pra_fgd;
+        $form->pembagian_tugas_pelaksana = $request->pembagian_tugas_pelaksana;
+        $form->perkenalan_pengantar = $request->perkenalan_pengantar;
+        $form->pembahasan = $request->pembahasan;
+        $form->pendalaman_tanya_jawab = $request->pendalaman_tanya_jawab;
+        $form->penyimpulan_penutupan = $request->penyimpulan_penutupan;
+
+        // Diskusi
+        $form->akses_hak_bekerja = $request->akses_hak_bekerja;
+        $form->akses_hak_jamsos = $request->akses_hak_jamsos;
+        $form->akses_hak_perlindungan = $request->akses_hak_perlindungan;
+        $form->akses_hak_kesehatan = $request->akses_hak_kesehatan;
+        $form->akses_hak_pendidikan = $request->akses_hak_pendidikan;
+
+        $form->fungsi_pranata_sosial = $request->fungsi_pranata_sosial;
+        $form->fungsi_pranata_ekonomi = $request->fungsi_pranata_ekonomi;
+        $form->fungsi_pranata_agama = $request->fungsi_pranata_agama;
+        $form->fungsi_pranata_pemerintahan = $request->fungsi_pranata_pemerintahan;
+
+        $form->resiko_kerentanan_sosial = $request->resiko_kerentanan_sosial;
+        $form->resiko_kerentanan_ekonomi = $request->resiko_kerentanan_ekonomi;
+        $form->resiko_kerentanan_geografis = $request->resiko_kerentanan_geografis;
+
         $form->updated_by = Auth::id();
         $form->save();
 
