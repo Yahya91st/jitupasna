@@ -127,7 +127,6 @@ class Form7Controller extends Controller
         $form->akses_hak = $aksesHak;
         $form->fungsi_pranata = $fungsiPranata;
         $form->resiko_kerentanan = $resikoKerentanan;
-        $form->created_by = Auth::id();
         $form->save();
 
         return redirect()->route('forms.form7.show', $form->id)->with('success', 'Data Form7 berhasil disimpan.');
@@ -165,7 +164,7 @@ class Form7Controller extends Controller
     public function generatePdf($id)
     {
         $form = Form7::with('bencana')->findOrFail($id);
-        $pdf = PDF::loadView('forms.Form7.pdf', compact('Form'));
+        $pdf = PDF::loadView('forms.Form7.pdf', compact('form'));
         return $pdf->download('formulir-07-Form7-' . $form->id . '.pdf');
     }
     
