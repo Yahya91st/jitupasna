@@ -28,12 +28,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Format1Form4;
 use Illuminate\Http\Request;
 use App\Models\Bencana;
 use App\Models\FormPerumahan;
 use App\Models\EnvironmentalReport;
 use App\Models\GovernmentReport;
-use App\Models\ form;
+use App\Models\form;
 use App\Models\Format10Form4;
 use App\Models\Format11Form4;
 use App\Models\Format12Form4;
@@ -919,7 +920,7 @@ class Form4Controller extends Controller
     /**
      * List Format 9 (Telecommunications sector) data
      */
-    public function list(Request $request)
+    public function listFormat9(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -927,7 +928,7 @@ class Form4Controller extends Controller
             return $query->where('bencana_id', $bencana_id);
         })->with('bencana')->latest()->paginate(10);
         
-        return view('forms.form4.format9.list-format9', compact('forms', 'bencana_id'));
+        return view('forms.form4.format9.listFormat9', compact('forms', 'bencana_id'));
     }
 
     /**
@@ -935,7 +936,7 @@ class Form4Controller extends Controller
      */ 
     public function generatePdf($id)
     {
-        $formPerumahan = FormPerumahan::with('bencana.kategori_bencana', 'bencana.desa')->findOrFail($id);
+        $formPerumahan = Format1Form4::with('bencana.kategori_bencana', 'bencana.desa')->findOrFail($id);
         $bencana = $formPerumahan->bencana;
         
         // Calculate totals
@@ -1011,7 +1012,7 @@ class Form4Controller extends Controller
     /**
      * List all form data for a bencana
      */
-    public function list(Request $request)
+    public function listFormat1(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
         
@@ -1022,7 +1023,7 @@ class Form4Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
          $form = FormPerumahan::where('bencana_id', $bencana_id)->latest()->get();
         
-        return view('forms.form4.format1.format1list', compact('bencana', ' form'));
+        return view('forms.form4.format1.listFormat1', compact('bencana', ' form'));
     }
 
     /**
