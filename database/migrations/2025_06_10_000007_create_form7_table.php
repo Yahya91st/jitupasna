@@ -26,9 +26,34 @@ return new class extends Migration
             $table->text('komposisi_peserta');
             $table->string('fasilitator');
             $table->string('pencatat');
-            $table->text('akses_hak')->nullable();
-            $table->text('fungsi_pranata')->nullable();
-            $table->text('resiko_kerentanan')->nullable();
+            
+            // CHECKLIST PERSIAPAN
+            $table->boolean('persiapan_pra_fgd');   
+            $table->boolean('pembagian_tugas_pelaksana');   
+            $table->boolean('perkenalan_pengantar');    
+            $table->boolean('pembahasan');  
+            $table->boolean('pendalaman_tanya_jawab');  
+            $table->boolean('penyimpulan_penutupan');   
+
+            // A. Akses Hak
+            $table->text('akses_hak_bekerja');
+            $table->text('akses_hak_jamsos');
+            $table->text('akses_hak_perlindungan');
+            $table->text('akses_hak_kesehatan');
+            $table->text('akses_hak_pendidikan');
+
+            // B. Fungsi Pranata
+            $table->text('fungsi_pranata_sosial');
+            $table->text('fungsi_pranata_ekonomi');
+            $table->text('fungsi_pranata_agama');
+            $table->text('fungsi_pranata_pemerintahan');
+
+            // C. Resiko Kerentanan
+            $table->text('resiko_kerentanan_sosial');
+            $table->text('resiko_kerentanan_ekonomi');
+            $table->text('resiko_kerentanan_geografis');
+
+            // ...existing code...
             $table->timestamps();
         });
     }

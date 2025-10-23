@@ -34,7 +34,7 @@
                             <a href="{{ route('forms.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-secondary">
                                 <i class="fa fa-arrow-left mr-2"></i> Kembali
                             </a>
-                            <a href="{{ route('forms.form6.index') }}" class="btn btn-primary">
+                            <a href="{{ route('forms.form6.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
                                 <i class="fa fa-plus"></i> Tambah Data Baru
                             </a>
                         </div>
