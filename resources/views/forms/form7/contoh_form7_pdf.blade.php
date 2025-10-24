@@ -7,14 +7,14 @@
     <title>Formulir 07 - Diskusi Kelompok Terfokus</title>
     <style>
         @page {
-            margin: 1.5cm 1.8cm;
+            margin: 0.8cm;
             size: A4;
         }
 
         body {
             font-family: 'Times New Roman', serif;
-            line-height: 1.3;
-            color: #000;
+            line-height: 1.2;
+            color: #333;
             margin: 0;
             padding: 0;
             font-size: 9pt;
@@ -28,121 +28,127 @@
 
         .header {
             text-align: center;
-            margin-bottom: 10px;
-            padding-bottom: 6px;
-            border-bottom: 2px double #000;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #ddd;
         }
 
         .header h2 {
-            margin: 2px 0;
-            font-size: 12pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .header h3 {
-            margin: 2px 0;
+            margin: 0.1rem 0;
             font-size: 10pt;
             font-weight: bold;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #333;
+        }
+
+        .header h3 {
+            margin: 0.1rem 0;
+            font-size: 9pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #333;
         }
 
         .intro-text {
             text-align: justify;
             font-size: 8pt;
-            line-height: 1.3;
-            margin-bottom: 8px;
-            padding: 6px 8px;
-            background-color: #f8f8f8;
-            border-left: 3px solid #000;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            padding: 4px 6px;
+            background-color: #f9f9f9;
+            border-left: 2px solid #333;
+            border-radius: 2px;
         }
 
         .intro-label {
-            font-weight: bold;
+            font-weight: 600;
             font-size: 8pt;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
             display: block;
+            color: #333;
         }
 
         .section-box {
-            border: 1.5px solid #000;
-            padding: 8px 10px;
-            margin-bottom: 5px;
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+            margin-bottom: 4px;
             background-color: #fff;
         }
 
         .section-title {
             font-weight: bold;
             font-size: 9pt;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            background-color: #000;
+            background-color: #333;
             color: #fff;
-            padding: 4px 6px;
-            margin-left: -10px;
-            margin-right: -10px;
-            margin-top: -8px;
-            letter-spacing: 1px;
+            padding: 3px 4px;
+            margin-left: -8px;
+            margin-right: -8px;
+            margin-top: -6px;
+            letter-spacing: 0.5px;
         }
 
         .section-number {
             display: inline-block;
-            background-color: #fff;
-            color: #000;
-            padding: 1px 6px;
-            margin-right: 4px;
+            background-color: #333;
+            color: #fff;
+            padding: 1px 4px;
+            margin-right: 3px;
             border-radius: 2px;
             font-weight: bold;
         }
 
         .subsection-title {
-            font-weight: bold;
+            font-weight: 500;
             font-size: 8pt;
-            margin: 6px 0 4px 0;
-            padding: 4px 6px;
-            background-color: #f0f0f0;
-            border-left: 3px solid #000;
+            margin: 4px 0 3px 0;
+            padding: 3px 4px;
+            background-color: #f9f9f9;
+            border-left: 2px solid #333;
+            color: #333;
         }
 
         .info-box {
             background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            padding: 5px;
-            margin: 3px 0 5px 0;
+            border: 1px solid #ddd;
+            padding: 3px;
+            margin: 2px 0 3px 0;
+            border-radius: 2px;
         }
 
         .info-box-title {
-            font-weight: bold;
+            font-weight: 600;
             font-size: 7pt;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
             color: #333;
         }
 
         .table-header-main {
             text-align: center;
             font-size: 9pt;
-            font-weight: bold;
-            margin: 8px 0 5px 0;
-            padding: 6px;
-            background-color: #000;
+            font-weight: 600;
+            margin: 6px 0 4px 0;
+            padding: 4px;
+            background-color: #333;
             color: #fff;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            border: 1.5px solid #000;
+            border: 1px solid #333;
         }
 
         .question-number {
             display: inline-block;
-            width: 18px;
-            height: 18px;
-            background-color: #000;
-            color: #fff;
+            width: auto;
+            height: auto;
+            background-color: transparent;
+            color: #333;
             text-align: center;
-            border-radius: 50%;
-            font-weight: bold;
-            line-height: 18px;
-            margin-right: 4px;
+            border-radius: 0;
+            font-weight: 600;
+            line-height: normal;
+            margin-right: 3px;
             font-size: 8pt;
         }
 
@@ -154,47 +160,49 @@
         }
 
         .form-row {
-            margin-bottom: 4px;
-            line-height: 1.4;
+            margin-bottom: 3px;
+            line-height: 1.2;
         }
 
         .form-row label {
             display: inline-block;
-            min-width: 140px;
-            font-weight: bold;
+            min-width: 120px;
+            font-weight: 500;
+            color: #333;
         }
 
         .underline {
-            border-bottom: 1px solid #000;
+            border-bottom: 1px solid #333;
             display: inline-block;
-            min-width: 180px;
-            padding: 0 3px;
+            min-width: 150px;
+            padding: 0 2px;
         }
 
         .checklist-section {
-            margin-top: 8px;
-            padding-top: 6px;
-            border-top: 1.5px solid #000;
+            margin-top: 6px;
+            padding-top: 4px;
+            border-top: 1px solid #333;
         }
 
         .checklist-title {
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 600;
+            margin-bottom: 3px;
             font-size: 8pt;
+            color: #333;
         }
 
         .checklist-item {
-            margin-bottom: 4px;
-            padding-left: 15px;
-            line-height: 1.3;
+            margin-bottom: 3px;
+            padding-left: 12px;
+            line-height: 1.2;
         }
 
         .checkbox {
             display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 1.5px solid #000;
-            margin-right: 5px;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #333;
+            margin-right: 4px;
             vertical-align: middle;
         }
 
@@ -208,29 +216,29 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 4px;
-            border: 1.5px solid #000;
+            margin-bottom: 3px;
+            border: 1px solid #333;
             page-break-inside: avoid;
         }
 
         th,
         td {
-            padding: 4px 6px;
+            padding: 3px 4px;
             text-align: left;
-            font-size: 7pt;
+            font-size: 8pt;
             vertical-align: top;
-            border: 1px solid #000;
+            border: 1px solid #333;
             line-height: 1.2;
         }
 
         th {
-            background-color: #f0f0f0;
-            font-weight: bold;
+            background-color: #f9f9f9;
+            font-weight: 600;
             text-align: center;
-            padding: 5px 4px;
-            border-bottom: 1.5px solid #000;
-            color: #000;
-            font-size: 7.5pt;
+            padding: 4px 3px;
+            border-bottom: 1px solid #333;
+            color: #333;
+            font-size: 8pt;
         }
         
         td {
@@ -243,37 +251,36 @@
         }
         
         .compact-table td {
-            padding: 3px 5px;
-            font-size: 6.5pt;
+            padding: 2px 3px;
+            font-size: 7pt;
             line-height: 1.1;
         }
         
         /* Table untuk checklist dengan spacing khusus */
         .checklist-section table {
             border-collapse: collapse;
-            border: 2px solid #000;
-            margin-top: 5px;
+            border: 1px solid #333;
+            margin-top: 4px;
         }
         
         .checklist-section th,
         .checklist-section td {
             border: 1px solid #333;
-            padding: 8px 6px;
+            padding: 6px 4px;
         }
         
         .checklist-section th {
-            background-color: #f0f0f0;
-            font-weight: bold;
+            background-color: #f9f9f9;
+            font-weight: 600;
             text-align: center;
-            border-bottom: 2px solid #000;
+            border-bottom: 1px solid #333;
             font-size: 8pt;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+            color: #333;
         }
         
         .checklist-section td {
             background-color: #fff;
-            font-size: 7.5pt;
+            font-size: 8pt;
         }
         
         .checklist-section tr:nth-child(even) td {
@@ -285,62 +292,51 @@
         }
 
         .signature-table {
-            margin-top: 25px;
+            margin-top: 15px;
             border: none;
         }
 
         .signature-table td {
             border: none;
-            padding: 8px;
+            padding: 6px;
         }
 
         .signature-box {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 30px;
         }
 
         .signature-line {
-            border-top: 2px solid #000;
-            width: 170px;
+            border-top: 1px solid #333;
+            width: 150px;
             margin: 0 auto;
-            padding-top: 4px;
-            font-weight: bold;
+            padding-top: 3px;
+            font-weight: 600;
         }
 
         .small-text {
-            font-size: 6pt;
+            font-size: 7pt;
             line-height: 1.2;
         }
         
         .small-text strong {
-            font-size: 6.5pt;
+            font-size: 7pt;
+            font-weight: 600;
         }
 
-        .question-number {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-            border-radius: 50%;
-            font-weight: bold;
-            line-height: 14px;
-            margin-right: 2px;
-            font-size: 7pt;
-        }        ul {
-            margin: 4px 0;
-            padding-left: 15px;
+        ul {
+            margin: 3px 0;
+            padding-left: 12px;
         }
 
         ul li {
-            margin-bottom: 2px;
-            line-height: 1.3;
+            margin-bottom: 1px;
+            line-height: 1.2;
         }
 
         @media print {
             @page {
-                margin: 1.5cm 1.8cm;
+                margin: 0.8cm;
             }
 
             body {
@@ -380,44 +376,90 @@
 
             <div class="subsection-title">A. Informasi Lokasi</div>
             
-            <div class="form-row">
-                <strong>Desa/Kelurahan:</strong> <span class="underline">{{ $form->desa_kelurahan ?? '______________________________' }}</span>
-                &nbsp;&nbsp;&nbsp;
-                <strong>Kecamatan:</strong> <span class="underline">{{ $form->kecamatan ?? '______________________________' }}</span>
-            </div>
+            <table style="width: 100%; border: none; margin-bottom: 8px;">
+                <tr>
+                    <td style="width: 50%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Desa/Kelurahan:</strong><br>
+                            <span class="underline" style="min-width: 200px; display: inline-block;">{{ $form->desa_kelurahan ?? 'Sukamaju' }}</span>
+                        </div>
+                    </td>
+                    <td style="width: 50%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Kecamatan:</strong><br>
+                            <span class="underline" style="min-width: 200px; display: inline-block;">{{ $form->kecamatan ?? 'Cianjur' }}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Kabupaten:</strong><br>
+                            <span class="underline" style="min-width: 200px; display: inline-block;">{{ $form->kabupaten ?? 'Cianjur' }}</span>
+                        </div>
+                    </td>
+                    <td style="width: 50%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Tanggal Pelaksanaan:</strong><br>
+                            <span class="underline" style="min-width: 200px; display: inline-block;">{{ $form->tanggal ? \Carbon\Carbon::parse($form->tanggal)->format('d F Y') : '16 October 2025' }}</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-            <div class="form-row">
-                <strong>Kabupaten:</strong> <span class="underline">{{ $form->kabupaten ?? '______________________________' }}</span>
-                &nbsp;&nbsp;&nbsp;
-                <strong>Tanggal Pelaksanaan:</strong> <span class="underline">{{ $form->tanggal ? \Carbon\Carbon::parse($form->tanggal)->format('d F Y') : '______________________________' }}</span>
-            </div>
-
-            <div class="form-row">
-                <strong>Jarak dari Lokasi Bencana:</strong> <span class="underline">{{ $form->jarak_bencana ?? '______' }}</span> <strong>km</strong>
-                <span class="help-text">(diisi oleh fasilitator/pencatat)</span>
+            <div class="form-row" style="margin-bottom: 8px;">
+                <strong>Jarak dari Lokasi Bencana:</strong> <span class="underline" style="min-width: 60px; display: inline-block; text-align: center;">{{ $form->jarak_bencana ?? '3' }}</span> <strong>km</strong>
+                <span class="help-text" style="margin-left: 10px;">(diisi oleh fasilitator/pencatat)</span>
             </div>
 
             <div class="subsection-title">B. Tempat Pelaksanaan</div>
 
-            <div class="form-row">
-                <strong>Tempat/Lokasi Sesi:</strong> <span class="underline">{{ $form->tempat_sesi ?? '_______________________________________________' }}</span>
+            <div class="form-row" style="margin-bottom: 6px;">
+                <strong>Tempat/Lokasi Sesi:</strong><br>
+                <span class="underline" style="min-width: 400px; display: inline-block;">{{ $form->tempat_sesi ?? 'Balai Desa Sukamaju' }}</span>
             </div>
             
-            <div class="form-row">
-                <strong>Desa/Kelurahan:</strong> <span class="underline">{{ $form->desa_sesi ?? '______________________' }}</span>
-                &nbsp;&nbsp;&nbsp;
-                <strong>Kecamatan:</strong> <span class="underline">{{ $form->kec_sesi ?? '______________________' }}</span>
-            </div>
+            <table style="width: 100%; border: none; margin-bottom: 8px;">
+                <tr>
+                    <td style="width: 50%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Desa/Kelurahan:</strong><br>
+                            <span class="underline" style="min-width: 200px; display: inline-block;">{{ $form->desa_sesi ?? 'Sukamaju' }}</span>
+                        </div>
+                    </td>
+                    <td style="width: 50%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Kecamatan:</strong><br>
+                            <span class="underline" style="min-width: 200px; display: inline-block;">{{ $form->kec_sesi ?? 'Cianjur' }}</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
             <div class="subsection-title">C. Informasi Peserta</div>
 
-            <div class="form-row">
-                <strong>Jumlah Total Peserta:</strong> <span class="underline">{{ $form->jumlah_peserta ?? '______' }}</span> <strong>orang</strong>
-                &nbsp;&nbsp;|&nbsp;&nbsp;
-                <strong>Perempuan:</strong> <span class="underline">{{ $form->jumlah_perempuan ?? '______' }}</span> <strong>orang</strong>
-                &nbsp;&nbsp;|&nbsp;&nbsp;
-                <strong>Laki-laki:</strong> <span class="underline">{{ $form->jumlah_laki_laki ?? '______' }}</span> <strong>orang</strong>
-            </div>
+            <table style="width: 100%; border: none; margin-bottom: 6px;">
+                <tr>
+                    <td style="width: 40%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Jumlah Total Peserta:</strong><br>
+                            <span class="underline" style="min-width: 50px; display: inline-block; text-align: center;">{{ $form->jumlah_peserta ?? '15' }}</span> <strong>orang</strong>
+                        </div>
+                    </td>
+                    <td style="width: 30%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Perempuan:</strong><br>
+                            <span class="underline" style="min-width: 50px; display: inline-block; text-align: center;">{{ $form->jumlah_perempuan ?? '7' }}</span> <strong>orang</strong>
+                        </div>
+                    </td>
+                    <td style="width: 30%; border: none; padding: 2px;">
+                        <div class="form-row">
+                            <strong>Laki-laki:</strong><br>
+                            <span class="underline" style="min-width: 50px; display: inline-block; text-align: center;">{{ $form->jumlah_laki_laki ?? '8' }}</span> <strong>orang</strong>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
             <div class="info-box">
                 <div class="info-box-title">Komposisi Peserta (pekerjaan, status sosial, kelompok umur, dll):</div>
@@ -428,21 +470,21 @@
 
             <div class="subsection-title">D. Tim Penyelenggara</div>
 
-            <table style="border: 2px solid #333; margin-top: 6px;">
+            <table style="border: 1px solid #333; margin-top: 4px;">
                 <tr>
-                    <td style="width: 25%; background-color: #f5f5f5; border: 1px solid #333; font-weight: bold; text-align: center; padding: 8px;"><strong>Posisi</strong></td>
-                    <td style="width: 50%; background-color: #f5f5f5; border: 1px solid #333; font-weight: bold; text-align: center; padding: 8px;"><strong>Nama</strong></td>
-                    <td style="width: 25%; background-color: #f5f5f5; border: 1px solid #333; font-weight: bold; text-align: center; padding: 8px;"><strong>Paraf</strong></td>
+                    <td style="width: 25%; background-color: #f9f9f9; border: 1px solid #333; font-weight: 600; text-align: center; padding: 6px; color: #333;"><strong>Posisi</strong></td>
+                    <td style="width: 50%; background-color: #f9f9f9; border: 1px solid #333; font-weight: 600; text-align: center; padding: 6px; color: #333;"><strong>Nama</strong></td>
+                    <td style="width: 25%; background-color: #f9f9f9; border: 1px solid #333; font-weight: 600; text-align: center; padding: 6px; color: #333;"><strong>Paraf</strong></td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid #333; padding: 8px; background-color: #fff;"><strong>Fasilitator</strong></td>
-                    <td style="border: 1px solid #333; padding: 8px; background-color: #fff;">{{ $form->fasilitator ?? '____________________________________' }}</td>
-                    <td style="border: 1px solid #333; padding: 8px; text-align: center; background-color: #fff;">{{ $form->paraf_fasilitator ?? '______________' }}</td>
+                    <td style="border: 1px solid #333; padding: 6px; background-color: #fff; font-weight: 500; color: #333;"><strong>Fasilitator</strong></td>
+                    <td style="border: 1px solid #333; padding: 6px; background-color: #fff;">{{ $form->fasilitator ?? '____________________________________' }}</td>
+                    <td style="border: 1px solid #333; padding: 6px; text-align: center; background-color: #fff;">{{ $form->paraf_fasilitator ?? '______________' }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid #333; padding: 8px; background-color: #fafafa;"><strong>Pencatat/Notulen</strong></td>
-                    <td style="border: 1px solid #333; padding: 8px; background-color: #fafafa;">{{ $form->pencatat ?? '____________________________________' }}</td>
-                    <td style="border: 1px solid #333; padding: 8px; text-align: center; background-color: #fafafa;">{{ $form->paraf_pencatat ?? '______________' }}</td>
+                    <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9; font-weight: 500; color: #333;"><strong>Pencatat/Notulen</strong></td>
+                    <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">{{ $form->pencatat ?? '____________________________________' }}</td>
+                    <td style="border: 1px solid #333; padding: 6px; text-align: center; background-color: #f9f9f9;">{{ $form->paraf_pencatat ?? '______________' }}</td>
                 </tr>
             </table>
 
@@ -453,74 +495,74 @@
             </div>
 
             <div class="checklist-section">
-                <table style="width: 100%; border: 2px solid #000; margin-top: 6px;">
+                <table style="width: 100%; border: 1px solid #333; margin-top: 4px;">
                     <thead>
                         <tr>
-                            <th style="width: 8%; background-color: #f0f0f0; padding: 10px 6px; border-bottom: 2px solid #000;">No.</th>
-                            <th style="width: 62%; background-color: #f0f0f0; padding: 10px 8px; border-bottom: 2px solid #000;">Tahapan Pelaksanaan FGD</th>
-                            <th style="width: 15%; background-color: #f0f0f0; padding: 10px 6px; border-bottom: 2px solid #000;">Ya</th>
-                            <th style="width: 15%; background-color: #f0f0f0; padding: 10px 6px; border-bottom: 2px solid #000;">Tidak</th>
+                            <th style="width: 8%; background-color: #f9f9f9; padding: 6px 4px; border-bottom: 1px solid #333; color: #333;">No.</th>
+                            <th style="width: 62%; background-color: #f9f9f9; padding: 6px 6px; border-bottom: 1px solid #333; color: #333;">Tahapan Pelaksanaan FGD</th>
+                            <th style="width: 15%; background-color: #f9f9f9; padding: 6px 4px; border-bottom: 1px solid #333; color: #333;">Ya</th>
+                            <th style="width: 15%; background-color: #f9f9f9; padding: 6px 4px; border-bottom: 1px solid #333; color: #333;">Tidak</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">1</td>
-                            <td style="border: 1px solid #333; padding: 8px; background-color: #fff;"><strong>Persiapan Pra-FGD</strong><br><span class="small-text">Koordinasi awal, persiapan materi, dan identifikasi peserta</span></td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">
-                                <span class="checkbox {{ isset($form->persiapan_pra_fgd) && $form->persiapan_pra_fgd ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">1</td>
+                            <td style="border: 1px solid #333; padding: 6px; background-color: #fff;"><strong>Persiapan Pra-FGD</strong><br><span class="small-text">Koordinasi awal, persiapan materi, dan identifikasi peserta</span></td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
+                                <span class="checkbox checked">✓</span>
                             </td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">
-                                <span class="checkbox {{ isset($form->persiapan_pra_fgd) && !$form->persiapan_pra_fgd ? 'checked' : '' }}"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">2</td>
-                            <td style="border: 1px solid #333; padding: 8px; background-color: #f9f9f9;"><strong>Pembagian Tugas Pelaksana</strong><br><span class="small-text">Penentuan fasilitator, notulen, dan tim pendukung</span></td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">
-                                <span class="checkbox {{ isset($form->pembagian_tugas) && $form->pembagian_tugas ? 'checked' : '' }}"></span>
-                            </td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">
-                                <span class="checkbox {{ isset($form->pembagian_tugas) && !$form->pembagian_tugas ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
+                                <span class="checkbox"></span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">3</td>
-                            <td style="border: 1px solid #333; padding: 8px; background-color: #fff;"><strong>Koordinasi dengan Pengantar</strong><br><span class="small-text">Koordinasi dengan tokoh masyarakat/pemerintah setempat</span></td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">
-                                <span class="checkbox {{ isset($form->koordinasi_pengantar) && $form->koordinasi_pengantar ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">2</td>
+                            <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9;"><strong>Pembagian Tugas Pelaksana</strong><br><span class="small-text">Penentuan fasilitator, notulen, dan tim pendukung</span></td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
+                                <span class="checkbox checked">✓</span>
                             </td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">
-                                <span class="checkbox {{ isset($form->koordinasi_pengantar) && !$form->koordinasi_pengantar ? 'checked' : '' }}"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">4</td>
-                            <td style="border: 1px solid #333; padding: 8px; background-color: #f9f9f9;"><strong>Pembahasan Materi</strong><br><span class="small-text">Diskusi inti sesuai topik dan tujuan FGD</span></td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">
-                                <span class="checkbox {{ isset($form->pembahasan) && $form->pembahasan ? 'checked' : '' }}"></span>
-                            </td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">
-                                <span class="checkbox {{ isset($form->pembahasan) && !$form->pembahasan ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
+                                <span class="checkbox"></span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">5</td>
-                            <td style="border: 1px solid #333; padding: 8px; background-color: #fff;"><strong>Pendalaman Tanya Jawab</strong><br><span class="small-text">Eksplorasi mendalam terhadap isu-isu penting</span></td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">
-                                <span class="checkbox {{ isset($form->pendalaman_tanya_jawab) && $form->pendalaman_tanya_jawab ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">3</td>
+                            <td style="border: 1px solid #333; padding: 6px; background-color: #fff;"><strong>Koordinasi dengan Pengantar</strong><br><span class="small-text">Koordinasi dengan tokoh masyarakat/pemerintah setempat</span></td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
+                                <span class="checkbox checked">✓</span>
                             </td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #fff;">
-                                <span class="checkbox {{ isset($form->pendalaman_tanya_jawab) && !$form->pendalaman_tanya_jawab ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
+                                <span class="checkbox"></span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">6</td>
-                            <td style="border: 1px solid #333; padding: 8px; background-color: #f9f9f9;"><strong>Penyimpulan dan Penutupan</strong><br><span class="small-text">Kesimpulan hasil diskusi dan ucapan terima kasih</span></td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">
-                                <span class="checkbox {{ isset($form->penyimpulan_penutupan) && $form->penyimpulan_penutupan ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">4</td>
+                            <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9;"><strong>Pembahasan Materi</strong><br><span class="small-text">Diskusi inti sesuai topik dan tujuan FGD</span></td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
+                                <span class="checkbox checked">✓</span>
                             </td>
-                            <td style="text-align: center; border: 1px solid #333; padding: 8px; background-color: #f9f9f9;">
-                                <span class="checkbox {{ isset($form->penyimpulan_penutupan) && !$form->penyimpulan_penutupan ? 'checked' : '' }}"></span>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
+                                <span class="checkbox"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">5</td>
+                            <td style="border: 1px solid #333; padding: 6px; background-color: #fff;"><strong>Pendalaman Tanya Jawab</strong><br><span class="small-text">Eksplorasi mendalam terhadap isu-isu penting</span></td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
+                                <span class="checkbox"></span>
+                            </td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
+                                <span class="checkbox checked">✓</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">6</td>
+                            <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9;"><strong>Penyimpulan dan Penutupan</strong><br><span class="small-text">Kesimpulan hasil diskusi dan ucapan terima kasih</span></td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
+                                <span class="checkbox checked">✓</span>
+                            </td>
+                            <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
+                                <span class="checkbox"></span>
                             </td>
                         </tr>
                     </tbody>
@@ -528,19 +570,19 @@
             </div>
         </div>
 
-        <!-- Page Break -->
-        <div style="page-break-before: avoid;"></div>
+        <!-- Page Break untuk memindahkan ke halaman 2 -->
+        <div class="page-break"></div>
 
         <!-- Pertanyaan Akses Section -->
         <div class="section-box" style="border: none; padding: 0; page-break-inside: avoid;">
             <div class="table-header-main">
-                <span class="section-number" style="background-color: #fff; color: #000; padding: 3px 8px;">II</span>
+                <span class="section-number">II</span>
                 AKSES DAN HAK TERHADAP SUMBER DAYA
             </div>
             
-            <div class="info-box" style="background-color: #fffbf0; margin-bottom: 3px; padding: 3px;">
+            <div class="info-box" style="background-color: #f9f9f9; margin-bottom: 2px; padding: 2px;">
                 <div class="info-box-title">📌 Petunjuk:</div>
-                <div style="font-size: 6pt;">
+                <div style="font-size: 7pt;">
                     Bagian ini menggali informasi tentang hak-hak dasar masyarakat dan aksesibilitas terhadap sumber daya pasca bencana.
                 </div>
             </div>
@@ -550,32 +592,25 @@
             <thead>
                 <tr>
                     <th style="width: 14%;">
-                        <div class="question-number">1</div>
-                        <strong>Hak Bekerja</strong>
+                        <strong>1. Hak Bekerja</strong>
                     </th>
                     <th style="width: 14%;">
-                        <div class="question-number">2</div>
-                        <strong>Hak Jaminan Keamanan Sosial</strong>
+                        <strong>2. Hak Jaminan Keamanan Sosial</strong>
                     </th>
                     <th style="width: 14%;">
-                        <div class="question-number">3</div>
-                        <strong>Hak Perlindungan & Bantuan Keluarga</strong>
+                        <strong>3. Hak Perlindungan & Bantuan Keluarga</strong>
                     </th>
                     <th style="width: 14%;">
-                        <div class="question-number">4</div>
-                        <strong>Hak Taraf Kehidupan Memadai</strong>
+                        <strong>4. Hak Taraf Kehidupan Memadai</strong>
                     </th>
                     <th style="width: 15%;">
-                        <div class="question-number">5</div>
-                        <strong>Hak Pelayanan Kesehatan</strong>
+                        <strong>5. Hak Pelayanan Kesehatan</strong>
                     </th>
                     <th style="width: 14%;">
-                        <div class="question-number">6</div>
-                        <strong>Hak Pendidikan</strong>
+                        <strong>6. Hak Pendidikan</strong>
                     </th>
                     <th style="width: 15%;">
-                        <div class="question-number">7</div>
-                        <strong>Hak Kehidupan Budaya</strong>
+                        <strong>7. Hak Kehidupan Budaya</strong>
                     </th>
                 </tr>
             </thead>
@@ -644,13 +679,13 @@
         <!-- Pertanyaan Fungsi Section -->
         <div class="section-box" style="border: none; padding: 0; page-break-inside: avoid; margin-top: 8px;">
             <div class="table-header-main">
-                <span class="section-number" style="background-color: #fff; color: #000; padding: 3px 8px;">III</span>
+                <span class="section-number">III</span>
                 FUNGSI PRANATA SOSIAL DAN KEAGAMAAN
             </div>
             
-            <div class="info-box" style="background-color: #fffbf0; margin-bottom: 3px; padding: 3px;">
+            <div class="info-box" style="background-color: #f9f9f9; margin-bottom: 2px; padding: 2px;">
                 <div class="info-box-title">📌 Petunjuk:</div>
-                <div style="font-size: 6pt;">
+                <div style="font-size: 7pt;">
                     Bagian ini mengeksplorasi peran pranata/lembaga kemasyarakatan sebelum dan sesudah bencana.
                 </div>
             </div>
@@ -660,23 +695,19 @@
             <thead>
                 <tr>
                     <th style="width: 25%;">
-                        <div class="question-number">1</div>
-                        <strong>Pranata Sosial</strong><br>
+                        <strong>1. Pranata Sosial</strong><br>
                         <span class="small-text">(Organisasi masyarakat, Karang Taruna, PKK, dll)</span>
                     </th>
                     <th style="width: 25%;">
-                        <div class="question-number">2</div>
-                        <strong>Pranata Ekonomi</strong><br>
+                        <strong>2. Pranata Ekonomi</strong><br>
                         <span class="small-text">(Koperasi, Kelompok Tani, UMKM, dll)</span>
                     </th>
-                    <th style="width: 25%;">
-                        <div class="question-number">3</div>
-                        <strong>Pranata Agama & Tradisi</strong><br>
+                    <th style="width: 25%;">                        
+                        <strong>3. Pranata Agama & Tradisi</strong><br>
                         <span class="small-text">(Organisasi keagamaan, Adat, dll)</span>
                     </th>
-                    <th style="width: 25%;">
-                        <div class="question-number">4</div>
-                        <strong>Pranata Pemerintahan</strong><br>
+                     <th style="width: 25%;">
+                        <strong>4. Pranata Pemerintahan</strong><br>
                         <span class="small-text">(RT/RW, Desa, Kecamatan, dll)</span>
                     </th>
                 </tr>
@@ -726,13 +757,13 @@
         <!-- Pertanyaan Resiko Section -->
         <div class="section-box" style="border: none; padding: 0; page-break-inside: avoid; margin-top: 8px;">
             <div class="table-header-main">
-                <span class="section-number" style="background-color: #fff; color: #000; padding: 3px 8px;">IV</span>
+                <span class="section-number">IV</span>
                 RESIKO DAN KERENTANAN MASYARAKAT
             </div>
             
-            <div class="info-box" style="background-color: #fffbf0; margin-bottom: 3px; padding: 3px;">
+            <div class="info-box" style="background-color: #f9f9f9; margin-bottom: 2px; padding: 2px;">
                 <div class="info-box-title">📌 Petunjuk:</div>
-                <div style="font-size: 6pt;">
+                <div style="font-size: 7pt;">
                     Bagian ini mengidentifikasi kelompok rentan dari berbagai sudut pandang.
                 </div>
             </div>
@@ -742,18 +773,15 @@
             <thead>
                 <tr>
                     <th style="width: 33%;">
-                        <div class="question-number">1</div>
-                        <strong>Karakter Sosial</strong><br>
+                        <strong>1. Karakter Sosial</strong><br>
                         <span class="small-text">(Gender, Usia, Status, dll)</span>
                     </th>
                     <th style="width: 33%;">
-                        <div class="question-number">2</div>
-                        <strong>Karakter & Kelas Ekonomi</strong><br>
+                        <strong>2. Karakter & Kelas Ekonomi</strong><br>
                         <span class="small-text">(Tingkat Penghasilan, Pekerjaan, Aset, dll)</span>
                     </th>
                     <th style="width: 34%;">
-                        <div class="question-number">3</div>
-                        <strong>Karakter Geografis</strong><br>
+                        <strong>3. Karakter Geografis</strong><br>
                         <span class="small-text">(Lokasi Tempat Tinggal, Lahan, dll)</span>
                     </th>
                 </tr>
@@ -791,30 +819,35 @@
             </tbody>
         </table>
 
+        <!-- Spacer untuk mendorong signature ke bawah -->
+        <div style="flex-grow: 1; min-height: 50px;"></div>
+
+        
+
         <!-- Signature Section -->
-        <div class="signature-table">
-            <div style="margin-top: 25px; border-top: 2px solid #000; padding-top: 10px;">
+        <div class="signature-table" style="position: fixed; bottom: 60px; left: 0; right: 0; margin: 0; padding: 0 0.8cm;">
+            <div style="border-top: 1px solid #333; padding-top: 8px;">
                 <table style="border: none; width: 100%;">
                     <tr>
-                        <td style="width: 50%; border: none; text-align: center; vertical-align: top; padding: 10px;">
-                            <div style="margin-bottom: 6px;">
-                                <strong style="font-size: 9pt; text-transform: uppercase; letter-spacing: 1px;">PENCATAT/NOTULEN</strong>
+                        <td style="width: 50%; border: none; text-align: center; vertical-align: top; padding: 8px;">
+                            <div style="margin-bottom: 4px;">
+                                <strong style="font-size: 9pt; color: #333;">PENCATAT/NOTULEN</strong>
                             </div>
-                            <div style="height: 50px;"></div>
-                            <div style="border-top: 2px solid #000; width: 170px; margin: 0 auto; padding-top: 4px;">
-                                <strong style="font-size: 9pt;">{{ $form->pencatat ?? '(Nama Lengkap)' }}</strong>
+                            <div style="height: 30px;"></div>
+                            <div style="border-top: 1px solid #333; width: 150px; margin: 0 auto; padding-top: 3px;">
+                                <strong style="font-size: 9pt; color: #333;">{{ $form->pencatat ?? 'Siti Nurhaliza' }}</strong>
                             </div>
                         </td>
-                        <td style="width: 50%; border: none; text-align: center; vertical-align: top; padding: 10px;">
-                            <div style="margin-bottom: 3px; font-size: 8pt; color: #333;">
-                                {{ $form->kabupaten ?? 'Kabupaten' }}, {{ $form->tanggal ? \Carbon\Carbon::parse($form->tanggal)->format('d F Y') : now()->format('d F Y') }}
+                        <td style="width: 50%; border: none; text-align: center; vertical-align: top; padding: 8px;">
+                            <div style="margin-bottom: 2px; font-size: 8pt; color: #333;">
+                                Cianjur, {{ $form->tanggal ? \Carbon\Carbon::parse($form->tanggal)->format('d F Y') : '16 October 2025' }}
                             </div>
-                            <div style="margin-bottom: 6px;">
-                                <strong style="font-size: 9pt; text-transform: uppercase; letter-spacing: 1px;">FASILITATOR FGD</strong>
+                            <div style="margin-bottom: 4px;">
+                                <strong style="font-size: 9pt; color: #333;">FASILITATOR FGD</strong>
                             </div>
-                            <div style="height: 50px;"></div>
-                            <div style="border-top: 2px solid #000; width: 170px; margin: 0 auto; padding-top: 4px;">
-                                <strong style="font-size: 9pt;">{{ $form->fasilitator ?? '(Nama Lengkap)' }}</strong>
+                            <div style="height: 30px;"></div>
+                            <div style="border-top: 1px solid #333; width: 150px; margin: 0 auto; padding-top: 3px;">
+                                <strong style="font-size: 9pt; color: #333;">{{ $form->fasilitator ?? 'Budi Santoso' }}</strong>
                             </div>
                         </td>
                     </tr>
@@ -822,12 +855,16 @@
             </div>
         </div>
 
-        <!-- Footer Note -->
-        <div style="margin-top: 20px; border-top: 2px double #000; padding-top: 8px; text-align: center; background-color: #f8f8f8;">
-            <p style="font-size: 8pt; color: #333; margin: 2px 0; font-style: italic;"><em>Formulir 07 - Diskusi Kelompok Terfokus (FGD)</em></p>
-            <p style="font-size: 10pt; font-weight: bold; margin: 2px 0; letter-spacing: 1px;">JITUPASNA</p>
-            <p style="font-size: 7pt; color: #666; margin: 2px 0;">Sistem Informasi Pengkajian Kebutuhan Pasca Bencana</p>
+        <!-- Footer Note di bagian paling bawah -->
+        <div style="position: fixed; bottom: 0; left: 0; right: 0; margin: 0; padding: 0 0.8cm; border-top: 1px solid #ddd; background-color: #f9f9f9;">
+            <p style="font-size: 8pt; color: #333; margin: 1px 0; font-style: italic; text-align: center;"><em>Formulir 07 - Diskusi Kelompok Terfokus (FGD)</em></p>
+            <p style="font-size: 9pt; font-weight: 600; margin: 1px 0; color: #333; text-align: center;">JITUPASNA</p>
+            <p style="font-size: 7pt; color: #666; margin: 1px 0; text-align: center;">Sistem Informasi Pengkajian Kebutuhan Pasca Bencana</p>
         </div>
+
+        <!-- Spacer untuk memberi ruang untuk signature dan footer fixed -->
+        <div style="height: 120px;"></div>
+
     </div>
 </body>
 
