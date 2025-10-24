@@ -10,7 +10,7 @@
             margin: 0.8cm;
             size: A4;
         }
-        
+
         body {
             font-family: 'Times New Roman', serif;
             font-size: 9pt;
@@ -19,14 +19,14 @@
             padding: 0;
             color: #333;
         }
-        
+
         .document-header {
             text-align: center;
             margin-bottom: 8px;
             padding-bottom: 4px;
             border-bottom: 1px solid #ddd;
         }
-        
+
         .document-title {
             font-size: 10pt;
             font-weight: bold;
@@ -35,7 +35,7 @@
             letter-spacing: 1px;
             color: #333;
         }
-        
+
         .document-subtitle {
             font-size: 9pt;
             font-weight: normal;
@@ -43,7 +43,7 @@
             color: #0066cc;
             margin-bottom: 0.1rem;
         }
-        
+
         .section-header {
             font-size: 9pt;
             font-weight: bold;
@@ -56,11 +56,11 @@
             border-radius: 2px;
             letter-spacing: 0.5px;
         }
-        
+
         .form-section {
             margin-bottom: 4px;
         }
-        
+
         .form-label {
             display: inline-block;
             width: 120px;
@@ -69,22 +69,24 @@
             color: #333;
             font-size: 9pt;
         }
-        
+
         .form-indent {
             margin-left: 125px;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 2px 0;
             font-size: 8pt;
         }
-        
-        table, th, td {
-            border: 1px solid #ddd;
+
+        table,
+        th,
+        td {
+            border: 1px solid #000;
         }
-        
+
         th {
             background-color: #f9f9f9;
             font-weight: bold;
@@ -93,26 +95,26 @@
             font-size: 8pt;
             color: #333;
         }
-        
+
         td {
             padding: 3px 4px;
             text-align: left;
             vertical-align: top;
             font-size: 8pt;
         }
-        
+
         .label {
             font-weight: bold;
             width: 30%;
             background-color: #f9f9f9;
             color: #333;
         }
-        
+
         .value {
             width: 70%;
             color: #333;
         }
-        
+
         .text-content {
             text-align: justify;
             line-height: 1.2;
@@ -122,54 +124,59 @@
             font-size: 8pt;
             color: #333;
         }
-        
-        .signature-section {
+
+        .footer {
+            margin-top: 30px;
             text-align: right;
             margin: 8px 40px 8px 0;
         }
-        
+
         .signature-content {
             text-align: left;
             margin-bottom: 4px;
         }
-        
-        .signature-name {
-            text-align: center;
+
+        .signature {
+            margin-top: 3em;
             font-weight: bold;
             width: 150px;
             margin-top: 20px;
             border-bottom: 1px solid #333;
             padding-bottom: 1px;
         }
-        
+
         p {
             margin-bottom: 0.2em;
             text-align: justify;
             line-height: 1.1;
             font-size: 9pt;
         }
-        
+
         @media print {
-            body { 
-                font-size: 8pt; 
-                line-height: 1.0;
+            body {
+                font-size: 9pt;
+                line-height: 1.2;
             }
+
+            .document-header {
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+            }
+
             .section-header {
                 margin: 4px 0 3px 0;
                 padding: 2px 4px;
                 font-size: 8pt;
             }
+
             table {
                 margin: 2px 0;
                 font-size: 7pt;
             }
-            th, td {
-                padding: 2px 3px;
-                font-size: 7pt;
-            }
-            .text-content {
-                font-size: 7pt;
-                padding: 3px;
+
+            th,
+            td {
+                padding: 4px;
             }
         }
     </style>
@@ -183,24 +190,30 @@
     </div>
     <!-- A. INFORMASI BENCANA -->
     <div class="section-header">A. Informasi Bencana</div>
-    <div class="form-section">
-        <p>
-            <span class="form-label">Nama Bencana</span>: {{ $form->bencana->kategori_bencana->nama ?? '-' }}
-        </p>
-        <p>
-            <span class="form-label">Tanggal Bencana</span>: {{ $form->bencana->tanggal ? \Carbon\Carbon::parse($form->bencana->tanggal)->format('d F Y') : '-' }}
-        </p>
-        <p>
-            <span class="form-label">Lokasi Bencana</span>: 
-            @if ($form->bencana->desa && $form->bencana->desa->count() > 0)
-                @foreach ($form->bencana->desa as $desa)
-                    {{ $desa->nama }}@if (!$loop->last), @endif
-                @endforeach
-            @else
-                -
-            @endif
-        </p>
-    </div>
+    <table>
+        <tr>
+            <td class="label">Nama Bencana</td>
+            <td class="value">{{ $form->bencana->kategori_bencana->nama ?? '-' }}</td>
+        </tr>
+        <tr>
+            <td class="label">Tanggal Bencana</td>
+            <td class="value">{{ $form->bencana->tanggal ? \Carbon\Carbon::parse($form->bencana->tanggal)->format('d F Y') : '-' }}</td>
+        </tr>
+        <tr>
+            <td class="label">Lokasi Bencana</td>
+            <td class="value">
+                @if ($form->bencana->desa && $form->bencana->desa->count() > 0)
+                    @foreach ($form->bencana->desa as $desa)
+                        {{ $desa->nama }}@if (!$loop->last)
+                            ,
+                        @endif
+                    @endforeach
+                @else
+                    -
+                @endif
+            </td>
+        </tr>
+    </table>
 
     <!-- B. INFORMASI LOKASI FGD -->
     <div class="section-header">B. Informasi Lokasi FGD</div>
@@ -334,7 +347,7 @@
             <div style="text-align: center; width: 200px; margin-left: auto;">
                 <p style="font-size: 8pt; margin: 1px 0;">{{ $form->kabupaten ?? 'Lokasi' }}, {{ now()->format('d F Y') }}</p>
                 <strong>Fasilitator FGD</strong>
-                
+
                 <div style="margin-top: 2em;">
                     <strong>{{ $form->fasilitator ?? 'Fasilitator' }}</strong>
                 </div>
@@ -342,4 +355,5 @@
         </div>
     </div>
 </body>
+
 </html>
