@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form8;
+use App\Models\Form8Row;
 use App\Models\Bencana;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,54 +34,62 @@ class form8Controller extends Controller
      * Store a new form submission
      */
     public function store(Request $request)
-    {        
-            $validator = Validator::make($request->all(), [
-            'bencana_id' => 'required|exists:bencana,id',
-            'sektor_sub_sektor' => 'required|string|max:255',
-            'komponen_kerusakan' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-
-            // Data Kerusakan
-            'data_kerusakan_rb' => 'nullable|integer|min:0',
-            'data_kerusakan_rs' => 'nullable|integer|min:0',
-            'data_kerusakan_rr' => 'nullable|integer|min:0',
-
-            // Harga Satuan
-            'harga_satuan_rb' => 'nullable|numeric|min:0',
-            'harga_satuan_rs' => 'nullable|numeric|min:0',
-            'harga_satuan_rr' => 'nullable|numeric|min:0',
-
-            // Nilai Kerusakan
-            'nilai_kerusakan_rb' => 'nullable|numeric|min:0',
-            'nilai_kerusakan_rs' => 'nullable|numeric|min:0',
-            'nilai_kerusakan_rr' => 'nullable|numeric|min:0',
-
-            // Perkiraan Kerugian dan Total
-            'perkiraan_kerugian' => 'nullable|numeric|min:0',
-            'total_kerusakan_kerugian' => 'nullable|numeric|min:0',
-            'kebutuhan' => 'nullable|numeric|min:0',
-
-            // Dynamic rows data
-            'dynamic_rows' => 'nullable|array',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+    {
+        
+        $rows = [];
+        for ($i = 1; $i <= 15; $i++) {
+            $row = [
+                'sektor_sub_sektor' => $request->input("sektor/subsektor_$i"),
+                'komponen_kerusakan' => $request->input("komponen_kerusakan_dan_kerugian_$i"),
+                'lokasi' => $request->input("lokasi_$i"),
+                'data_kerusakan_rb' => $request->input("data_kerusakan_rb_$i"),
+                'data_kerusakan_rs' => $request->input("data_kerusakan_rs_$i"),
+                'data_kerusakan_rr' => $request->input("data_kerusakan_rr_$i"),
+                'harga_satuan_rb' => $request->input("harga_satuan_rb_$i"),
+                'harga_satuan_rs' => $request->input("harga_satuan_rs_$i"),
+                'harga_satuan_rr' => $request->input("harga_satuan_rr_$i"),
+                'nilai_kerusakan_rb' => $request->input("nilai_kerusakan_rb_$i"),
+                'nilai_kerusakan_rs' => $request->input("nilai_kerusakan_rs_$i"),
+                'nilai_kerusakan_rr' => $request->input("nilai_kerusakan_rr_$i"),
+                'perkiraan_kerugian' => $request->input("perkiraan_kerugian_$i"),
+                'jumlah_kerusakan_kerugian' => $request->input("jumlah_kerusakan_kerugian_$i"),
+                'kebutuhan' => $request->input("kebutuhan_$i"),
+            ];
+            if (array_filter($row)) {
+                $validator = Validator::make($row, [
+                    'sektor_sub_sektor' => 'required|string|max:255',
+                    'komponen_kerusakan' => 'required|string|max:255',
+                    'lokasi' => 'required|string|max:255',
+                    // ... validasi field lain ...
+                ]);
+                if ($validator->fails()) {
+                    return back()->withErrors($validator)->withInput();
+                }
+                $rows[] = $row;
+            }
         }
 
-        $form = form8::create($request->all());
+        // Jika validasi lolos, baru simpan data utama dan detail
+        $form = Form8::create([
+            'bencana_id' => $request->bencana_id,
+            'tanggal' => $request->tanggal,
+            'keterangan' => $request->keterangan,
+        ]);
+        foreach ($rows as $row) {
+            $row['form8_id'] = $form->id;
+            Form8Row::create($row);
+        }
 
-        return redirect()->route('forms.form8.show', $form->id)
-            ->with('success', 'Formulir berhasil disimpan.');
+
+        return redirect()->route('forms.form8.show', $form->id)->with('success', 'Data berhasil disimpan!');    
     }
-
+           
+    
     /**
      * Display a specific form entry     */    
     public function show($id)
     {
-        $form = form8::with(['bencana'])->findOrFail($id);
+        $form = Form8::with(['bencana', 'rows'])->findOrFail($id);
         return view('forms.form8.show', compact('form'));
     }
 
@@ -96,8 +105,7 @@ class form8Controller extends Controller
         }
         
         $bencana = Bencana::findOrFail($bencana_id);
-         $form = form8::where('bencana_id', $bencana_id)->latest()->get();
-        
+        $form = Form8::where('bencana_id', $bencana_id)->latest()->get();
         return view('forms.form8.list', compact('bencana', 'form'));
     }
 
@@ -106,11 +114,30 @@ class form8Controller extends Controller
      */    
     public function generatePdf($id)
     {
-        $form = form8::with(['bencana'])->findOrFail($id);
-        
-        $pdf = Pdf::loadView('forms.form8.pdf', compact('form'));
-        return $pdf->download('Formulir_01_PDNA_' . $form->id . '.pdf');
-    }   
+        $form = Form8::with('rows')->findOrFail($id);
+        $rows = $form->rows->map(function($row) {
+            return [
+                'sektor' => $row->sektor_sub_sektor,
+                'komponen' => $row->komponen_kerusakan,
+                'lokasi' => $row->lokasi,
+                'rb_kerusakan' => $row->data_kerusakan_rb,
+                'rs_kerusakan' => $row->data_kerusakan_rs,
+                'rr_kerusakan' => $row->data_kerusakan_rr,
+                'rb_harga' => $row->harga_satuan_rb,
+                'rs_harga' => $row->harga_satuan_rs,
+                'rr_harga' => $row->harga_satuan_rr,
+                'rb_nilai' => $row->nilai_kerusakan_rb,
+                'rs_nilai' => $row->nilai_kerusakan_rs,
+                'rr_nilai' => $row->nilai_kerusakan_rr,
+                'kerugian' => $row->perkiraan_kerugian,
+                'total' => $row->jumlah_kerusakan_kerugian,
+                'kebutuhan' => $row->kebutuhan,
+            ];
+        })->toArray();
+
+        $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', ['form' => $rows]);
+        return $pdf->download('Formulir_08_PDNA_' . $form->id . '.pdf');
+    } 
 
     /**
      * Preview PDF without downloading
@@ -119,8 +146,8 @@ class form8Controller extends Controller
     {
         $form = form8::with(['bencana'])->findOrFail($id);
         
-        $pdf = Pdf::loadView('forms.form8.pdf', compact('form'));
-        return $pdf->stream('Formulir_01_PDNA_' . $form->id . '.pdf');
+        $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', compact('form'));
+        return $pdf->stream('Formulir_08_PDNA_' . $form->id . '.pdf');
     }
     
     /**
@@ -128,14 +155,7 @@ class form8Controller extends Controller
      */
     public function edit($id)
     {
-        try {
-            $form = form8::findOrFail($id);
-            $bencana = Bencana::find($form->bencana_id);
-            
-            return view('forms.form8.edit', compact('form', 'bencana'));
-        } catch (\Exception $e) {
-            return back()->with('error', 'Data formulir tidak ditemukan.');
-        }
+        
     }
     
     /**
@@ -143,105 +163,51 @@ class form8Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            $form = form8::findOrFail($id);
-            
-            $validator = Validator::make($request->all(), [
-            'bencana_id' => 'required|exists:bencana,id',
-            'sektor_sub_sektor' => 'required|string|max:255',
-            'komponen_kerusakan' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-
-            // Data Kerusakan
-            'data_kerusakan_rb' => 'nullable|integer|min:0',
-            'data_kerusakan_rs' => 'nullable|integer|min:0',
-            'data_kerusakan_rr' => 'nullable|integer|min:0',
-
-            // Harga Satuan
-            'harga_satuan_rb' => 'nullable|numeric|min:0',
-            'harga_satuan_rs' => 'nullable|numeric|min:0',
-            'harga_satuan_rr' => 'nullable|numeric|min:0',
-
-            // Nilai Kerusakan
-            'nilai_kerusakan_rb' => 'nullable|numeric|min:0',
-            'nilai_kerusakan_rs' => 'nullable|numeric|min:0',
-            'nilai_kerusakan_rr' => 'nullable|numeric|min:0',
-
-            // Perkiraan Kerugian dan Total
-            'perkiraan_kerugian' => 'nullable|numeric|min:0',
-            'total_kerusakan_kerugian' => 'nullable|numeric|min:0',
-            'kebutuhan' => 'nullable|numeric|min:0',
-
-            // Dynamic rows data
-            'dynamic_rows' => 'nullable|array',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-            
-            $form->update($request->all());
-            
-            return redirect()->route('forms.form8.show', $form->id)
-                ->with('success', 'Formulir berhasil diperbarui.');
-        } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }    
+        
     }
     public function destroy($id)
     {
-        try {
-            $form = form8::findOrFail($id);
-            $bencana_id = $form->bencana_id;
-            $form->delete();
-            
-            return redirect()->route('forms.form8.list', ['bencana_id' => $bencana_id])
-                ->with('success', 'Data Form 1 berhasil dihapus');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
+        
     }
-public function contohPdf()
-{
-    $form = [
-        [
-            'sektor' => 'Pendidikan',
-            'komponen' => 'Gedung SD',
-            'lokasi' => 'Desa Sukamaju',
-            'rb_kerusakan' => 2,
-            'rs_kerusakan' => 1,
-            'rr_kerusakan' => 0,
-            'rb_harga' => 50000000,
-            'rs_harga' => 30000000,
-            'rr_harga' => 0,
-            'rb_nilai' => 100000000,
-            'rs_nilai' => 30000000,
-            'rr_nilai' => 0,
-            'kerugian' => 20000000,
-            'total' => 150000000,
-            'kebutuhan' => 160000000,
-        ],
-        [
-            'sektor' => 'Kesehatan',
-            'komponen' => 'Puskesmas',
-            'lokasi' => 'Desa Sukamaju',
-            'rb_kerusakan' => 1,
-            'rs_kerusakan' => 0,
-            'rr_kerusakan' => 1,
-            'rb_harga' => 80000000,
-            'rs_harga' => 0,
-            'rr_harga' => 40000000,
-            'rb_nilai' => 80000000,
-            'rs_nilai' => 0,
-            'rr_nilai' => 40000000,
-            'kerugian' => 10000000,
-            'total' => 130000000,
-            'kebutuhan' => 140000000,
-        ],
-        // Tambah data lain sesuai kebutuhan
-    ];
-        $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', compact('form'));
-        return $pdf->stream('Contoh_Formulir_08_PDNA.pdf');
-}}
+    public function contohPdf()
+    {
+        $form = [
+            [
+                'sektor' => 'Pendidikan',
+                'komponen' => 'Gedung SD',
+                'lokasi' => 'Desa Sukamaju',
+                'rb_kerusakan' => 2,
+                'rs_kerusakan' => 1,
+                'rr_kerusakan' => 0,
+                'rb_harga' => 50000000,
+                'rs_harga' => 30000000,
+                'rr_harga' => 0,
+                'rb_nilai' => 100000000,
+                'rs_nilai' => 30000000,
+                'rr_nilai' => 0,
+                'kerugian' => 20000000,
+                'total' => 150000000,
+                'kebutuhan' => 160000000,
+            ],
+            [
+                'sektor' => 'Kesehatan',
+                'komponen' => 'Puskesmas',
+                'lokasi' => 'Desa Sukamaju',
+                'rb_kerusakan' => 1,
+                'rs_kerusakan' => 0,
+                'rr_kerusakan' => 1,
+                'rb_harga' => 80000000,
+                'rs_harga' => 0,
+                'rr_harga' => 40000000,
+                'rb_nilai' => 80000000,
+                'rs_nilai' => 0,
+                'rr_nilai' => 40000000,
+                'kerugian' => 10000000,
+                'total' => 130000000,
+                'kebutuhan' => 140000000,
+            ],
+            // Tambah data lain sesuai kebutuhan
+        ];
+            $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', compact('form'));
+            return $pdf->stream('Contoh_Formulir_08_PDNA.pdf');
+    }}

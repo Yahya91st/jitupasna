@@ -34,10 +34,10 @@
                 <div class="row">
                     <div class="col-md-12 mb-4">
                         <div class="alert alert-light-primary color-primary">
-                            <p><strong>Bencana:</strong> {{ $form8->bencana->kategori_bencana->nama }}</p>
-                            <p><strong>Tanggal:</strong> {{ $form8->bencana->tanggal }}</p>
+                            <p><strong>Bencana:</strong> {{ $form->bencana->kategori_bencana->nama }}</p>
+                            <p><strong>Tanggal:</strong> {{ $form->bencana->tanggal }}</p>
                             <p><strong>Lokasi:</strong>
-                                @foreach ($form8->bencana->desa as $desa)
+                                @foreach ($form->bencana->desa as $desa)
                                     {{ $desa->nama }}@if (!$loop->last)
                                         ,
                                     @endif
@@ -59,11 +59,11 @@
                         <table class="table table-borderless">
                             <tr>
                                 <td style="width: 40%"><strong>Sektor</strong></td>
-                                <td>{{ $form8->sektor }}</td>
+                                <td>{{ $form->sektor }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Sub Sektor</strong></td>
-                                <td>{{ $form8->sub_sektor }}</td>
+                                <td>{{ $form->sub_sektor }}</td>
                             </tr>
                         </table>
                     </div>
@@ -71,11 +71,11 @@
                         <table class="table table-borderless">
                             <tr>
                                 <td style="width: 40%"><strong>Komponen Kerusakan</strong></td>
-                                <td>{{ $form8->komponen_kerusakan }}</td>
+                                <td>{{ $form->komponen_kerusakan }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Lokasi</strong></td>
-                                <td>{{ $form8->lokasi }}</td>
+                                <td>{{ $form->lokasi }}</td>
                             </tr>
                         </table>
                     </div>
@@ -93,11 +93,11 @@
                         <table class="table table-borderless">
                             <tr>
                                 <td style="width: 40%"><strong>Perkiraan Kerugian (Losses)</strong></td>
-                                <td>Rp {{ number_format($form8->perkiraan_kerugian, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($form->perkiraan_kerugian, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Total Kerusakan + Kerugian</strong></td>
-                                <td>Rp {{ number_format($form8->total_kerusakan_kerugian, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($form->total_kerusakan_kerugian, 0, ',', '.') }}</td>
                             </tr>
                         </table>
                     </div>
@@ -108,15 +108,15 @@
                             </tr>
                             <tr>
                                 <td style="width: 40%">Rehabilitasi (RB)</td>
-                                <td>Rp {{ number_format($form8->kebutuhan_rb, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($form->kebutuhan_rb, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td>Rekonstruksi Sederhana (RS)</td>
-                                <td>Rp {{ number_format($form8->kebutuhan_rs, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($form->kebutuhan_rs, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td>Rekonstruksi Besar (RR)</td>
-                                <td>Rp {{ number_format($form8->kebutuhan_rr, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($form->kebutuhan_rr, 0, ',', '.') }}</td>
                             </tr>
                         </table>
                     </div>
@@ -134,11 +134,11 @@
                         <table class="table table-borderless">
                             <tr>
                                 <td style="width: 40%"><strong>Harga Satuan</strong></td>
-                                <td>Rp {{ number_format($form8->harga_satuan, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($form->harga_satuan, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Nilai Kerusakan (Damage)</strong></td>
-                                <td>Rp {{ number_format($form8->nilai_kerusakan, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($form->nilai_kerusakan, 0, ',', '.') }}</td>
                             </tr>
                         </table>
                     </div>
@@ -147,12 +147,12 @@
                 <div class="row mt-5">
                     <div class="col-md-12">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('forms.form8.list', ['bencana_id' => $form8->bencana_id]) }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('forms.form8.list', ['bencana_id' => $form->bencana_id]) }}" class="btn btn-secondary">Kembali</a>
                             <div>
-                                <a href="{{ route('forms.form8.preview-pdf', $form8->id) }}" class="btn btn-secondary" target="_blank">
+                                <a href="{{ route('forms.form8.preview-pdf', $form->id) }}" class="btn btn-secondary" target="_blank">
                                     <i class="bi bi-eye"></i> Lihat PDF
                                 </a>
-                                <a href="{{ route('forms.form8.pdf', $form8->id) }}" class="btn btn-primary">
+                                <a href="{{ route('forms.form8.pdf', $form->id) }}" class="btn btn-primary">
                                     <i class="bi bi-download"></i> Download PDF
                                 </a>
                             </div>

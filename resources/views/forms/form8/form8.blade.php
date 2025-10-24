@@ -281,7 +281,6 @@
         @csrf
         <input type="hidden" name="form_type" value="form8">
         <input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
-
         <div class="container">
             <!-- Document Header - Style dari Form6 -->
             <div class="form-header">

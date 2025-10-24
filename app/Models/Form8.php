@@ -13,45 +13,8 @@ class Form8 extends Model
 
     protected $fillable = [
         'bencana_id',
-        'sektor_sub_sektor',
-        'komponen_kerusakan',
-        'lokasi',
-        
-        // Data Kerusakan
-        'data_kerusakan_rb',
-        'data_kerusakan_rs',
-        'data_kerusakan_rr',
-        
-        // Harga Satuan
-        'harga_satuan_rb',
-        'harga_satuan_rs',
-        'harga_satuan_rr',
-        
-        // Nilai Kerusakan
-        'nilai_kerusakan_rb',
-        'nilai_kerusakan_rs',
-        'nilai_kerusakan_rr',
-        
-        // Perkiraan Kerugian dan Total
-        'perkiraan_kerugian',
-        'total_kerusakan_kerugian',
-        'kebutuhan',
-        
-        // Dynamic rows data
-        'dynamic_rows',
-    ];
-
-    protected $casts = [
-        'harga_satuan_rb' => 'decimal:2',
-        'harga_satuan_rs' => 'decimal:2',
-        'harga_satuan_rr' => 'decimal:2',
-        'nilai_kerusakan_rb' => 'decimal:2',
-        'nilai_kerusakan_rs' => 'decimal:2',
-        'nilai_kerusakan_rr' => 'decimal:2',
-        'perkiraan_kerugian' => 'decimal:2',
-        'total_kerusakan_kerugian' => 'decimal:2',
-        'kebutuhan' => 'decimal:2',
-        'dynamic_rows' => 'array',
+        'tanggal',
+        'keterangan',    
     ];
 
     /**
@@ -60,5 +23,10 @@ class Form8 extends Model
     public function bencana()
     {
         return $this->belongsTo(Bencana::class);
+    }
+
+    public function rows()
+    {
+        return $this->hasMany(Form8Row::class, 'form8_id');
     }
 }

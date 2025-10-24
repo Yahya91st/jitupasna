@@ -10,7 +10,7 @@
             margin: 15mm;
             size: A4;
         }
-        
+
         body {
             font-family: 'Times New Roman', serif;
             font-size: 10pt;
@@ -19,14 +19,14 @@
             padding: 0;
             color: #000;
         }
-        
+
         .document-header {
             text-align: center;
             margin-bottom: 15px;
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
         }
-        
+
         .document-title {
             font-size: 14pt;
             font-weight: bold;
@@ -34,13 +34,13 @@
             margin: 0 0 5px 0;
             letter-spacing: 1px;
         }
-        
+
         .document-subtitle {
             font-size: 11pt;
             font-weight: normal;
             margin: 0;
         }
-        
+
         .section-header {
             font-size: 11pt;
             font-weight: bold;
@@ -51,18 +51,20 @@
             border: 1px solid #000;
             text-align: center;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 8px 0;
             font-size: 9pt;
         }
-        
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #000;
         }
-        
+
         th {
             background-color: #e9ecef;
             font-weight: bold;
@@ -70,23 +72,23 @@
             padding: 6px 4px;
             font-size: 9pt;
         }
-        
+
         td {
             padding: 6px;
             text-align: left;
             vertical-align: top;
         }
-        
+
         .label {
             font-weight: bold;
             width: 30%;
             background-color: #f8f9fa;
         }
-        
+
         .value {
             width: 70%;
         }
-        
+
         .text-content {
             text-align: justify;
             line-height: 1.4;
@@ -95,35 +97,40 @@
             border: 1px solid #ddd;
             font-size: 10pt;
         }
-        
+
         .footer {
             margin-top: 30px;
             text-align: right;
             padding-right: 50px;
         }
-        
+
         .signature {
             margin-top: 3em;
             font-weight: bold;
         }
-        
+
         @media print {
-            body { 
-                font-size: 9pt; 
+            body {
+                font-size: 9pt;
                 line-height: 1.2;
             }
+
             .document-header {
                 margin-bottom: 10px;
                 padding-bottom: 8px;
             }
+
             .section-header {
                 margin: 10px 0 8px 0;
                 padding: 6px;
             }
+
             table {
                 margin: 6px 0;
             }
-            th, td {
+
+            th,
+            td {
                 padding: 4px;
             }
         }
@@ -152,7 +159,9 @@
             <td class="value">
                 @if ($form->bencana->desa && $form->bencana->desa->count() > 0)
                     @foreach ($form->bencana->desa as $desa)
-                        {{ $desa->nama }}@if (!$loop->last), @endif
+                        {{ $desa->nama }}@if (!$loop->last)
+                            ,
+                        @endif
                     @endforeach
                 @else
                     -
@@ -308,4 +317,5 @@
         </div>
     </div>
 </body>
+
 </html>
