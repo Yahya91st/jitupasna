@@ -507,39 +507,39 @@
                     </tr>
                     <tr>
                         <td>Pengurangan Resiko</td>
-                        <td><input type="text" name="ekonomi_resiko_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_resiko_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_resiko_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_resiko_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_resiko_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_resiko_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="ekonomi_resiko_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_resiko_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_resiko_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_resiko_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_resiko_jumlah" readonly></td>
+                        <td><input type="text" name="ekonomi_resiko_keterangan" placeholder="Keterangan..."></td>
                     </tr>
                     <tr>
                         <td>Pembangunan</td>
-                        <td><input type="text" name="ekonomi_pembangunan_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_pembangunan_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_pembangunan_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_pembangunan_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_pembangunan_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_pembangunan_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="ekonomi_pembangunan_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_pembangunan_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_pembangunan_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_pembangunan_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_pembangunan_jumlah" readonly></td>
+                        <td><input type="text" name="ekonomi_pembangunan_keterangan" placeholder="Keterangan..."></td>
                     </tr>
                     <tr>
                         <td>Penggantian</td>
-                        <td><input type="text" name="ekonomi_penggantian_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_penggantian_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_penggantian_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_penggantian_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_penggantian_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_penggantian_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="ekonomi_penggantian_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_penggantian_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_penggantian_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_penggantian_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_penggantian_jumlah" readonly></td>
+                        <td><input type="text" name="ekonomi_penggantian_keterangan" placeholder="Keterangan..."></td>
                     </tr>
                     <tr>
                         <td>Penyediaan Bantuan</td>
-                        <td><input type="text" name="ekonomi_bantuan_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_bantuan_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_bantuan_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_bantuan_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="ekonomi_bantuan_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="ekonomi_bantuan_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="ekonomi_bantuan_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_bantuan_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_bantuan_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_bantuan_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_bantuan_jumlah" readonly></td>
+                        <td><input type="text" name="ekonomi_bantuan_keterangan" placeholder="Keterangan..."></td>
                     </tr> {{-- Sosial --}}
                     <tr class="clickable-row">
                         <td rowspan="3" class="kategori">Sosial</td>
@@ -572,21 +572,21 @@
                     <tr>
                         <td rowspan="6" class="kategori">Lintas Sektor</td>
                         <td>Pemulihan Fungsi</td>
-                        <td><input type="text" name="lintas_pemulihan_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_pemulihan_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_pemulihan_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_pemulihan_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_pemulihan_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_pemulihan_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="lintas_pemulihan_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_pemulihan_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_pemulihan_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_pemulihan_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_pemulihan_jumlah" readonly></td>
+                        <td><input type="text" name="lintas_pemulihan_keterangan" placeholder="Keterangan..."></td>
                     </tr>
                     <tr>
                         <td>Pengurangan Resiko</td>
-                        <td><input type="text" name="lintas_resiko1_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_resiko1_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_resiko1_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_resiko1_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_resiko1_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_resiko1_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="lintas_resiko1_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_resiko1_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_resiko1_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_resiko1_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_resiko1_jumlah" readonly></td>
+                        <td><input type="text" name="lintas_resiko1_keterangan" placeholder="Keterangan..."></td>
                     </tr>
                     <tr class="clickable-row">
                         <td>Pembangunan</td>
@@ -599,21 +599,21 @@
                     </tr>
                     <tr>
                         <td>Penggantian</td>
-                        <td><input type="text" name="lintas_penggantian_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_penggantian_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_penggantian_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_penggantian_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_penggantian_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_penggantian_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="lintas_penggantian_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_penggantian_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_penggantian_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_penggantian_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_penggantian_jumlah" readonly></td>
+                        <td><input type="text" name="lintas_penggantian_keterangan" placeholder="Keterangan..."></td>
                     </tr>
                     <tr>
                         <td>Penyediaan Bantuan</td>
-                        <td><input type="text" name="lintas_bantuan_kegiatan" style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_bantuan_lokasi" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_bantuan_volume" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_bantuan_harga" style="width: 100%; border: none;"></td>
-                        <td><input type="number" name="lintas_bantuan_jumlah" readonly style="width: 100%; border: none;"></td>
-                        <td><input type="text" name="lintas_bantuan_keterangan" style="width: 100%; border: none;"></td>
+                        <td><input type="text" name="lintas_bantuan_kegiatan" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_bantuan_lokasi" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_bantuan_volume" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_bantuan_harga" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_bantuan_jumlah" readonly></td>
+                        <td><input type="text" name="lintas_bantuan_keterangan" placeholder="Keterangan..."></td>
                     </tr>
                 </tbody>
             </table>
