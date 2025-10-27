@@ -112,9 +112,10 @@ class form8Controller extends Controller
     /**
      * Generate PDF for form data
      */    
-    public function generatePdf($id)
+public function generatePdf($id)
     {
         $form = Form8::with('rows')->findOrFail($id);
+
         $rows = $form->rows->map(function($row) {
             return [
                 'sektor' => $row->sektor_sub_sektor,
@@ -135,18 +136,49 @@ class form8Controller extends Controller
             ];
         })->toArray();
 
-        $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', ['form' => $rows]);
+        // kirim kedua variabel, gunakan nama jelas
+        $pdf = Pdf::loadView('forms.form8.pdf', [
+            'formModel' => $form,
+            'rows' => $rows,
+        ]);
+
         return $pdf->download('Formulir_08_PDNA_' . $form->id . '.pdf');
-    } 
+    }
+
 
     /**
      * Preview PDF without downloading
      */    
     public function previewPdf($id)
     {
-        $form = form8::with(['bencana'])->findOrFail($id);
-        
-        $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', compact('form'));
+        $form = Form8::with('rows')->findOrFail($id);
+
+        $rows = $form->rows->map(function($row) {
+            return [
+                'sektor' => $row->sektor_sub_sektor,
+                'komponen' => $row->komponen_kerusakan,
+                'lokasi' => $row->lokasi,
+                'rb_kerusakan' => $row->data_kerusakan_rb,
+                'rs_kerusakan' => $row->data_kerusakan_rs,
+                'rr_kerusakan' => $row->data_kerusakan_rr,
+                'rb_harga' => $row->harga_satuan_rb,
+                'rs_harga' => $row->harga_satuan_rs,
+                'rr_harga' => $row->harga_satuan_rr,
+                'rb_nilai' => $row->nilai_kerusakan_rb,
+                'rs_nilai' => $row->nilai_kerusakan_rs,
+                'rr_nilai' => $row->nilai_kerusakan_rr,
+                'kerugian' => $row->perkiraan_kerugian,
+                'total' => $row->jumlah_kerusakan_kerugian,
+                'kebutuhan' => $row->kebutuhan,
+            ];
+        })->toArray();
+
+        // kirim kedua variabel, gunakan nama jelas
+        $pdf = Pdf::loadView('forms.form8.pdf', [
+            'formModel' => $form,
+            'rows' => $rows,
+        ]);
+
         return $pdf->stream('Formulir_08_PDNA_' . $form->id . '.pdf');
     }
     

@@ -174,7 +174,8 @@ class Form7Controller extends Controller
     public function previewPdf($id)
     {
         $form = Form7::with('bencana')->findOrFail($id);
-        return view('forms.Form7.pdf', compact('form'));
+        $pdf = Pdf::loadView('forms.form7.contoh_form7_pdf', compact('form'));
+        return $pdf->stream('Contoh_Formulir_07_PDNA.pdf');
     }
     
     /**
