@@ -669,6 +669,12 @@ Route::prefix('/forms')
             Route::get('/pdf/{id}', [Form8Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form8Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/contoh-pdf', [Form8Controller::class, 'contohPdf'])->name('contoh-pdf');
+            
+            // Route untuk format baru Form8
+            Route::get('/format-menu', [Form8Controller::class, 'formatMenu'])->name('format-menu');
+            Route::get('/table-ringkas', [Form8Controller::class, 'tableRingkas'])->name('table-ringkas');
+            Route::get('/per-baris', [Form8Controller::class, 'perBaris'])->name('per-baris');
+            Route::get('/analisis-komprehensif', [Form8Controller::class, 'analisisKomprehensif'])->name('analisis-komprehensif');
         });
 
         // Form9 (Pengolahan Data dan Kuesioner)

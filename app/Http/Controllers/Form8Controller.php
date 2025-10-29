@@ -242,4 +242,91 @@ public function generatePdf($id)
         ];
             $pdf = Pdf::loadView('forms.form8.contoh_form8_pdf', compact('form'));
             return $pdf->stream('Contoh_Formulir_08_PDNA.pdf');
-    }}
+    }
+
+    /**
+     * Show format menu
+     */
+    public function formatMenu()
+    {
+        // Get summary data for display
+        $totalForms = Form8::count();
+        $totalRows = Form8Row::count();
+        $totalKebutuhan = Form8Row::sum('kebutuhan');
+        $totalKerusakan = Form8Row::sum('jumlah_kerusakan_kerugian');
+        
+        return view('forms.form8.format_menu', compact('totalForms', 'totalRows', 'totalKebutuhan', 'totalKerusakan'));
+    }
+
+    /**
+     * Generate Table Ringkas PDF
+     */
+    public function tableRingkas()
+    {
+        // Get all Form8 data with rows
+        $forms = Form8::with(['rows', 'bencana'])->get();
+        $allRows = Form8Row::with('form8.bencana')->get();
+        
+        // Calculate totals
+        $totalRB = $allRows->sum('data_kerusakan_rb');
+        $totalRS = $allRows->sum('data_kerusakan_rs');
+        $totalRR = $allRows->sum('data_kerusakan_rr');
+        $totalNilaiKerusakan = $allRows->sum('nilai_kerusakan_rb') + $allRows->sum('nilai_kerusakan_rs') + $allRows->sum('nilai_kerusakan_rr');
+        $totalKerugian = $allRows->sum('perkiraan_kerugian');
+        $totalKeruskanKerugian = $allRows->sum('jumlah_kerusakan_kerugian');
+        $totalKebutuhan = $allRows->sum('kebutuhan');
+        
+        $pdf = Pdf::loadView('forms.form8.form8_table_ringkas', compact(
+            'allRows', 'totalRB', 'totalRS', 'totalRR', 'totalNilaiKerusakan', 
+            'totalKerugian', 'totalKeruskanKerugian', 'totalKebutuhan'
+        ));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('Form8_Table_Ringkas.pdf');
+    }
+
+    /**
+     * Generate Per Baris PDF  
+     */
+    public function perBaris()
+    {
+        // Get all Form8 data with related models
+        $allRows = Form8Row::with('form8.bencana')->get();
+        
+        // Calculate summary
+        $totalKebutuhan = $allRows->sum('kebutuhan');
+        $totalKerusakan = $allRows->sum('jumlah_kerusakan_kerugian');
+        $totalItems = $allRows->count();
+        
+        $pdf = Pdf::loadView('forms.form8.form8_per_baris', compact('allRows', 'totalKebutuhan', 'totalKerusakan', 'totalItems'));
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('Form8_Per_Baris.pdf');
+    }
+
+    /**
+     * Generate Analisis Komprehensif PDF
+     */
+    public function analisisKomprehensif()
+    {
+        // Get all Form8 data grouped by sector
+        $allRows = Form8Row::with('form8.bencana')->get();
+        
+        // Group by sector
+        $groupedBySector = $allRows->groupBy('sektor_sub_sektor');
+        
+        // Calculate totals
+        $totalRB = $allRows->sum('data_kerusakan_rb');
+        $totalRS = $allRows->sum('data_kerusakan_rs');
+        $totalRR = $allRows->sum('data_kerusakan_rr');
+        $totalNilaiKerusakan = $allRows->sum('nilai_kerusakan_rb') + $allRows->sum('nilai_kerusakan_rs') + $allRows->sum('nilai_kerusakan_rr');
+        $totalKerugian = $allRows->sum('perkiraan_kerugian');
+        $totalKeruskanKerugian = $allRows->sum('jumlah_kerusakan_kerugian');
+        $totalKebutuhan = $allRows->sum('kebutuhan');
+        
+        $pdf = Pdf::loadView('forms.form8.form8_analisis_komprehensif', compact(
+            'allRows', 'groupedBySector', 'totalRB', 'totalRS', 'totalRR', 
+            'totalNilaiKerusakan', 'totalKerugian', 'totalKeruskanKerugian', 'totalKebutuhan'
+        ));
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('Form8_Analisis_Komprehensif.pdf');
+    }
+}
