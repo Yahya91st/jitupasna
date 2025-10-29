@@ -155,6 +155,7 @@ class BencanaController extends Controller
 
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
+
     }
 
     public function show(string $id)
@@ -174,6 +175,9 @@ class BencanaController extends Controller
             'totalKerugian' => $totalKerugian,
             'kebutuhan' => $kebutuhan,
         ]);
+        
+        dd($request->latitude, $request->longitude);
+        
     }
 
     /**

@@ -287,7 +287,7 @@
         </a>
     </div>
     <div>
-        <div class="container text-center mt-3">
+        <div class="container text-center">
             <a href="{{ route('forms.form8.list',['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
                 <i class="fa fa-arrow-left mr-2"></i> Kembali ke List
             </a>
@@ -295,53 +295,57 @@
                 <h5>DAFTAR KERUSAKAN DAN KERUGIAN PER SEKTOR/ SUB SEKTOR</h5>
                 <h5>AKIBAT BENCANA ALAM</h5>
             </div>
-            <table class="table-responsive">
-                <thead>                            
-                    <tr>
-                        <td style="border: 1px solid black;">No.</td>
-                        <td style="border: 1px solid black;">Form id</td>
-                        <td style="border: 1px solid black;">Sektor <br>Subsektor</td>
-                        <td style="border: 1px solid black;">Komponen Kerusakan</td>
-                        <td style="border: 1px solid black;">Lokasi</td>
-                        <td style="border: 1px solid black;">rb</td>
-                        <td style="border: 1px solid black;">rs</td>
-                        <td style="border: 1px solid black;">rr</td>
-                        <td style="border: 1px solid black;">Harga Satuan rb</td>
-                        <td style="border: 1px solid black;">Harga Satuan rs</td>
-                        <td style="border: 1px solid black;">Harga Satuan rr</td>
-                        <td style="border: 1px solid black;">Nilai Kerusakan rb</td>
-                        <td style="border: 1px solid black;">Nilai Kerusakan rs</td>
-                        <td style="border: 1px solid black;">Nilai Kerusakan rr</td>
-                        <td style="border: 1px solid black;">Perkiraan Kerugian</td>
-                        <td style="border: 1px solid black;">Jumlah Kerusakan dan Kerugian</td>
-                        <td style="border: 1px solid black;">Kebutuhan</td>
-                    </tr>   
-                </thead>
-                <tbody>
-                        @foreach($allRows as $index => $row)
-                        <tr>
-                            <td style="border: 1px solid black;">{{ $index + 1 }}</td>
-                            <td style="border: 1px solid black;">{{ $row->form8 ? $row->form8->id : $row->form8_id }}</td>
-                            <td style="border: 1px solid black;">{{ $row->sektor_sub_sektor }}</td>
-                            <td style="border: 1px solid black;">{{ $row->komponen_kerusakan }}</td>
-                            <td style="border: 1px solid black;">{{ $row->lokasi }}</td>
-                            <td style="border: 1px solid black;">{{ $row->data_kerusakan_rb }}</td>
-                            <td style="border: 1px solid black;">{{ $row->data_kerusakan_rs }}</td>
-                            <td style="border: 1px solid black;">{{ $row->data_kerusakan_rr }}</td>
-                            <td style="border: 1px solid black;">{{ $row->harga_satuan_rb }}</td>
-                            <td style="border: 1px solid black;">{{ $row->harga_satuan_rs }}</td>
-                            <td style="border: 1px solid black;">{{ $row->harga_satuan_rr }}</td>
-                            <td style="border: 1px solid black;">{{ $row->nilai_kerusakan_rb }}</td>
-                            <td style="border: 1px solid black;">{{ $row->nilai_kerusakan_rs }}</td>
-                            <td style="border: 1px solid black;">{{ $row->nilai_kerusakan_rr }}</td>
-                            <td style="border: 1px solid black;">{{ $row->perkiraan_kerugian }}</td>
-                            <td style="border: 1px solid black;">{{ $row->jumlah_kerusakan_kerugian }}</td>
-                            <td style="border: 1px solid black;">{{ $row->kebutuhan }}</td>
-                        </tr>
-                        @endforeach
+            <div class="container mt-3 mb-10">
 
-                </tbody>
-            </table>
+
+                <table class="table-responsive">
+                    <thead>                            
+                        <tr>
+                            <td style="border: 1px solid black;">No.</td>
+                            <td style="border: 1px solid black;">Form id</td>
+                            <td style="border: 1px solid black;">Sektor <br>Subsektor</td>
+                            <td style="border: 1px solid black;">Komponen Kerusakan</td>
+                            <td style="border: 1px solid black;">Lokasi</td>
+                            <td style="border: 1px solid black;">rb</td>
+                            <td style="border: 1px solid black;">rs</td>
+                            <td style="border: 1px solid black;">rr</td>
+                            <td style="border: 1px solid black;">Harga Satuan rb</td>
+                            <td style="border: 1px solid black;">Harga Satuan rs</td>
+                            <td style="border: 1px solid black;">Harga Satuan rr</td>
+                            <td style="border: 1px solid black;">Nilai Kerusakan rb</td>
+                            <td style="border: 1px solid black;">Nilai Kerusakan rs</td>
+                            <td style="border: 1px solid black;">Nilai Kerusakan rr</td>
+                            <td style="border: 1px solid black;">Perkiraan Kerugian</td>
+                            <td style="border: 1px solid black;">Jumlah Kerusakan dan Kerugian</td>
+                            <td style="border: 1px solid black;">Kebutuhan</td>
+                        </tr>   
+                    </thead>
+                    <tbody>
+                            @foreach($allRows as $index => $row)
+                            <tr>
+                                <td style="border: 1px solid black;">{{ $index + 1 }}</td>
+                                <td style="border: 1px solid black;">{{ $row->form8 ? $row->form8->id : $row->form8_id }}</td>
+                                <td style="border: 1px solid black;">{{ $row->sektor_sub_sektor }}</td>
+                                <td style="border: 1px solid black;">{{ $row->komponen_kerusakan }}</td>
+                                <td style="border: 1px solid black;">{{ $row->lokasi }}</td>
+                                <td style="border: 1px solid black;">{{ $row->data_kerusakan_rb }}</td>
+                                <td style="border: 1px solid black;">{{ $row->data_kerusakan_rs }}</td>
+                                <td style="border: 1px solid black;">{{ $row->data_kerusakan_rr }}</td>
+                                <td style="border: 1px solid black;">{{ $row->harga_satuan_rb }}</td>
+                                <td style="border: 1px solid black;">{{ $row->harga_satuan_rs }}</td>
+                                <td style="border: 1px solid black;">{{ $row->harga_satuan_rr }}</td>
+                                <td style="border: 1px solid black;">{{ $row->nilai_kerusakan_rb }}</td>
+                                <td style="border: 1px solid black;">{{ $row->nilai_kerusakan_rs }}</td>
+                                <td style="border: 1px solid black;">{{ $row->nilai_kerusakan_rr }}</td>
+                                <td style="border: 1px solid black;">{{ $row->perkiraan_kerugian }}</td>
+                                <td style="border: 1px solid black;">{{ $row->jumlah_kerusakan_kerugian }}</td>
+                                <td style="border: 1px solid black;">{{ $row->kebutuhan }}</td>
+                            </tr>
+                            @endforeach
+    
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

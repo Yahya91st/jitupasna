@@ -146,6 +146,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="map" style="height: 400px; width: 100%;"></div>
+                                    <input type="hidden" name="latitude" id="latitude">
+                                    <input type="hidden" name="longitude" id="longitude">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-12">
@@ -248,6 +251,40 @@
     </section>
 @endsection
 @push('script')
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARVEALROScbJQGyveyCs0HgnYsEiWUF-U"></script>
+    <script>
+        let map, marker;
+
+        function initMap() {
+            var center = { lat: -2.5489, lng: 118.0149 };
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: center
+            });
+
+            // Klik di peta untuk ambil lokasi
+            map.addListener('click', function(event) {
+                var lat = event.latLng.lat();
+                var lng = event.latLng.lng();
+
+                // Isi input hidden
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+
+                // Tampilkan marker di lokasi yang diklik
+                if (marker) {
+                    marker.setMap(null);
+                }
+                marker = new google.maps.Marker({
+                    position: { lat: lat, lng: lng },
+                    map: map
+                });
+            });
+        }
+
+        window.onload = initMap;
+    </script>    
     <script>
         var bs_modal = $('#modal');
         var image = document.getElementById('image');

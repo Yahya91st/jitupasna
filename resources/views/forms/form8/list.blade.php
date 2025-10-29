@@ -101,9 +101,8 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Sektor/Sub Sektor</th>
+                            <th>Bencana ID</th>
                             <th>Lokasi</th>
-                            <th>Total Kerusakan dan Kerugian</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -112,9 +111,9 @@
                             @foreach( $form as $index => $item)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->sektor }} / {{ $item->sub_sektor }}</td>
+                                <td>{{ $item->bencana_id }}</td>
                                 <td>{{ $item->lokasi }}</td>
-                                <td>Rp {{ number_format($item->total_kerusakan_kerugian, 0, ',', '.') }}</td>                                <td>
+                                <td>
                                     <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
                                         <a href="{{ route('forms.form8.show', $item->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
                                             <i class="bi bi-eye"></i> Detail
