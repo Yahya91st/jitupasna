@@ -29,34 +29,46 @@ class Form9Controller extends Controller
         $bencana_id = $validated['bencana_id'];
         $jawabanData = $validated['jawaban'];
 
-        // Delete old data for this bencana instance to prevent duplicates
+        // mapping template keys (urutannya sama dengan di blade)
+        $templateNos = [
+            'a','b','c','d','e','f','g','h','i','j','k',
+            '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25'
+        ];
+        $map = [];
+        foreach ($templateNos as $i => $key) {
+            $map[(string)$key] = $i + 1; // nomor pertanyaan mulai dari 1
+        }
+
+        // Hapus data lama untuk bencana
         Form9::where('bencana_id', $bencana_id)->delete();
 
-        // Pre-calculate total sums for each question to determine percentage
+        // Pre-calculate totals per pertanyaan (gunakan map untuk index integer)
         $question_totals = [];
-        foreach ($jawabanData as $pertanyaan_no => $jawaban_indices) {
-            $question_totals[$pertanyaan_no] = 0;
+        foreach ($jawabanData as $pert_no_key => $jawaban_indices) {
+            $pert_index = $map[(string)$pert_no_key] ?? (is_numeric($pert_no_key) ? intval($pert_no_key) : null);
+            if ($pert_index === null) continue;
+            $question_totals[$pert_index] = ($question_totals[$pert_index] ?? 0);
             foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
-                // Ensure kuesioner_values is an array before summing
                 if (is_array($kuesioner_values)) {
-                    $question_totals[$pertanyaan_no] += array_sum(array_map('intval', $kuesioner_values));
+                    $question_totals[$pert_index] += array_sum(array_map('intval', $kuesioner_values));
                 }
             }
         }
 
-        foreach ($jawabanData as $pertanyaan_no => $jawaban_indices) {
+        foreach ($jawabanData as $pert_no_key => $jawaban_indices) {
+            $pert_index = $map[(string)$pert_no_key] ?? (is_numeric($pert_no_key) ? intval($pert_no_key) : null);
+            if ($pert_index === null) continue;
+
             foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
-                if (!is_array($kuesioner_values)) {
-                    continue; // Skip if there are no kuesioner values
-                }
+                if (!is_array($kuesioner_values)) continue;
 
                 $jumlah = array_sum(array_map('intval', $kuesioner_values));
-                $total_for_question = $question_totals[$pertanyaan_no];
+                $total_for_question = $question_totals[$pert_index] ?? 0;
                 $persentase = ($total_for_question > 0) ? ($jumlah / $total_for_question) * 100 : 0;
 
                 Form9::create([
                     'bencana_id' => $bencana_id,
-                    'pertanyaan_no' => $pertanyaan_no,
+                    'pertanyaan_no' => $pert_index, // integer mapped
                     'jawaban_index' => $jawaban_index,
                     'kuesioner_1' => $kuesioner_values[1] ?? 0,
                     'kuesioner_2' => $kuesioner_values[2] ?? 0,
@@ -73,7 +85,6 @@ class Form9Controller extends Controller
         return redirect()->route('forms.form-list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data Form 9 berhasil disimpan.');
     }
-
     public function list(Request $request)
     {
         $bencana_id = $request->get('bencana_id');
