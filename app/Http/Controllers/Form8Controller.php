@@ -108,7 +108,7 @@ class form8Controller extends Controller
         $form = Form8::where('bencana_id', $bencana_id)->latest()->get();
         return view('forms.form8.list', compact('bencana', 'form'));
     }
-
+    
     /**
      * Generate PDF for form data
      */    
@@ -244,6 +244,32 @@ public function generatePdf($id)
             return $pdf->stream('Contoh_Formulir_08_PDNA.pdf');
     }
 
+    
+    public function perBaris(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        $bencana = Bencana::findOrFail($bencana_id);
+        $allRows = Form8Row::with('form8.bencana')->whereHas('form8', function($q) use ($bencana_id) {
+            $q->where('bencana_id', $bencana_id);
+        })->get();
+
+        return view('forms.form8.form8_per_baris', compact('allRows','bencana','bencana_id'));
+    }
+    public function perBarisPdf()
+    {
+        // Get all Form8 data with related models
+        $allRows = Form8Row::with('form8.bencana')->get();
+        
+        // Calculate summary
+        $totalKebutuhan = $allRows->sum('kebutuhan');
+        $totalKerusakan = $allRows->sum('jumlah_kerusakan_kerugian');
+        $totalItems = $allRows->count();
+        
+        $pdf = Pdf::loadView('forms.form8.form8_per_baris_pdf', compact('allRows', 'totalKebutuhan', 'totalKerusakan', 'totalItems'));
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('Form8_Per_Baris.pdf');
+    }
+
     /**
      * Show format menu
      */
@@ -287,20 +313,7 @@ public function generatePdf($id)
     /**
      * Generate Per Baris PDF  
      */
-    public function perBaris()
-    {
-        // Get all Form8 data with related models
-        $allRows = Form8Row::with('form8.bencana')->get();
-        
-        // Calculate summary
-        $totalKebutuhan = $allRows->sum('kebutuhan');
-        $totalKerusakan = $allRows->sum('jumlah_kerusakan_kerugian');
-        $totalItems = $allRows->count();
-        
-        $pdf = Pdf::loadView('forms.form8.form8_per_baris', compact('allRows', 'totalKebutuhan', 'totalKerusakan', 'totalItems'));
-        $pdf->setPaper('A4', 'portrait');
-        return $pdf->stream('Form8_Per_Baris.pdf');
-    }
+    
 
     /**
      * Generate Analisis Komprehensif PDF

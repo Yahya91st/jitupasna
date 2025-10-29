@@ -44,23 +44,18 @@
     </div>
     
     <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <h4 class="card-title">Daftar Data Penilaian</h4>
-            <a href="{{ route('forms.form8.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-                <i class="bi bi-plus"></i> Tambah Data Baru
-            </a>
-        </div>
+        
 
         <!-- Format Baru Form8 -->
         <div class="card-body border-bottom">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">📊 Format Analisis Baru</h5>
-                <a href="{{ route('forms.form8.format-menu') }}" class="btn btn-outline-primary btn-sm">
+                <!-- <a href="{{ route('forms.form8.format-menu') }}" class="btn btn-outline-primary btn-sm">
                     <i class="bi bi-grid"></i> Lihat Semua Format
-                </a>
+                </a> -->
             </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
+            <div>
+                <div>
                     <div class="card border-primary">
                         <div class="card-body text-center">
                             <i class="bi bi-table" style="font-size: 2rem; color: #007bff;"></i>
@@ -72,19 +67,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card border-success">
-                        <div class="card-body text-center">
-                            <i class="bi bi-list-ol" style="font-size: 2rem; color: #28a745;"></i>
-                            <h6 class="mt-2">Format Per Baris</h6>
-                            <p class="text-muted small">Detail lengkap setiap item dalam card terpisah</p>
-                            <a href="{{ route('forms.form8.per-baris') }}" class="btn btn-outline-success btn-sm" target="_blank">
-                                <i class="bi bi-file-pdf"></i> Lihat PDF
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
+                
+                <!-- <div class="col-md-4 mb-3">
                     <div class="card border-warning">
                         <div class="card-body text-center">
                             <i class="bi bi-graph-up" style="font-size: 2rem; color: #ffc107;"></i>
@@ -95,17 +79,23 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             
-            <div class="alert alert-light-info mt-3">
-                <i class="bi bi-info-circle"></i>
-                <strong>Catatan:</strong> Format baru ini menyediakan berbagai cara untuk menganalisis data kerusakan dan kerugian. 
-                Pilih format yang sesuai dengan kebutuhan laporan Anda.
+            <div class="text-center mt-3">
+                <a href="{{ route('forms.form8.form8-per-baris', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                    <i class="fa fa-arrow-left mr-2"></i> Format 8 Per Baris
+                </a>
             </div>
         </div>
+        <div class="card-header d-flex justify-content-between">
+            <h4 class="card-title">Daftar Data Penilaian</h4>
+            <a href="{{ route('forms.form8.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                <i class="bi bi-plus"></i> Tambah Data Baru
+            </a>
+        </div>
 
-        <div class="card-body">{
+        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
