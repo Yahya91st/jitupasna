@@ -665,7 +665,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form8Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form8Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form8Controller::class, 'update'])->name('update');
-            Route::get('/form8/list', [Form8Controller::class, 'list'])->name('list');
+            Route::get('/list', [Form8Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form8Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form8Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/contoh-pdf', [Form8Controller::class, 'contohPdf'])->name('contoh-pdf');
@@ -689,7 +689,8 @@ Route::prefix('/forms')
             Route::get('/pdf/{id}', [Form9Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form9Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/contoh-pdf', [Form9Controller::class, 'contohPdf'])->name('contoh-pdf');
-        });
+            Route::get('/form9Row', [Form9Controller::class, 'perBaris'])->name('form9Row');
+});
 
         // Form10 (Analisa Data Akibat terhadap Akses, Fungsi, dan Resiko)
         Route::prefix('form10')->name('form10.')->group(function () {

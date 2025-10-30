@@ -35,4 +35,8 @@ class Form9 extends Model
     {
         return $this->belongsTo(Bencana::class);
     }
+    public function rows()
+    {
+        return $this->hasMany(Form9Row::class, 'form9_id');
+    }
 }

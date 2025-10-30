@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bencana;
+use Carbon\Carbon;
 use App\Models\Form9;
+use App\Models\Bencana;
+use App\Models\Form9Row;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class Form9Controller extends Controller
 {
@@ -24,66 +28,92 @@ class Form9Controller extends Controller
         $validated = $request->validate([
             'bencana_id' => 'required|exists:bencana,id',
             'jawaban' => 'required|array',
+            'tanggal' => 'nullable|date',
+            'keterangan' => 'nullable|string',
         ]);
 
         $bencana_id = $validated['bencana_id'];
         $jawabanData = $validated['jawaban'];
 
-        // mapping template keys (urutannya sama dengan di blade)
+        // mapping template keys same as blade (if blade still uses 'a','b', etc.)
         $templateNos = [
             'a','b','c','d','e','f','g','h','i','j','k',
             '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25'
         ];
         $map = [];
         foreach ($templateNos as $i => $key) {
-            $map[(string)$key] = $i + 1; // nomor pertanyaan mulai dari 1
+            $map[(string)$key] = $i + 1;
         }
 
-        // Hapus data lama untuk bencana
-        Form9::where('bencana_id', $bencana_id)->delete();
+        DB::transaction(function () use ($validated, $jawabanData, $bencana_id, $map) {
+            // remove previous submission(s) for this bencana if desired
+            Form9::where('bencana_id', $bencana_id)->delete();
 
-        // Pre-calculate totals per pertanyaan (gunakan map untuk index integer)
-        $question_totals = [];
-        foreach ($jawabanData as $pert_no_key => $jawaban_indices) {
-            $pert_index = $map[(string)$pert_no_key] ?? (is_numeric($pert_no_key) ? intval($pert_no_key) : null);
-            if ($pert_index === null) continue;
-            $question_totals[$pert_index] = ($question_totals[$pert_index] ?? 0);
-            foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
-                if (is_array($kuesioner_values)) {
-                    $question_totals[$pert_index] += array_sum(array_map('intval', $kuesioner_values));
+            // create master record
+            $form = Form9::create([
+                'bencana_id' => $bencana_id,
+                'tanggal' => $validated['tanggal'] ?? null,
+                'keterangan' => $validated['keterangan'] ?? null,
+            ]);
+
+            // pre-calc totals per question (mapped to integer)
+            $question_totals = [];
+            foreach ($jawabanData as $pert_no_key => $jawaban_indices) {
+                $pert_index = $map[(string)$pert_no_key] ?? (is_numeric($pert_no_key) ? intval($pert_no_key) : null);
+                if ($pert_index === null) continue;
+                $question_totals[$pert_index] = ($question_totals[$pert_index] ?? 0);
+                foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
+                    if (is_array($kuesioner_values)) {
+                        $question_totals[$pert_index] += array_sum(array_map('intval', $kuesioner_values));
+                    }
                 }
             }
-        }
 
-        foreach ($jawabanData as $pert_no_key => $jawaban_indices) {
-            $pert_index = $map[(string)$pert_no_key] ?? (is_numeric($pert_no_key) ? intval($pert_no_key) : null);
-            if ($pert_index === null) continue;
+            $now = Carbon::now();
+            $insertRows = [];
 
-            foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
-                if (!is_array($kuesioner_values)) continue;
+            foreach ($jawabanData as $pert_no_key => $jawaban_indices) {
+                $pert_index = $map[(string)$pert_no_key] ?? (is_numeric($pert_no_key) ? intval($pert_no_key) : null);
+                if ($pert_index === null) continue;
 
-                $jumlah = array_sum(array_map('intval', $kuesioner_values));
-                $total_for_question = $question_totals[$pert_index] ?? 0;
-                $persentase = ($total_for_question > 0) ? ($jumlah / $total_for_question) * 100 : 0;
+                foreach ($jawaban_indices as $jawaban_index => $kuesioner_values) {
+                    if (!is_array($kuesioner_values)) continue;
 
-                Form9::create([
-                    'bencana_id' => $bencana_id,
-                    'pertanyaan_no' => $pert_index, // integer mapped
-                    'jawaban_index' => $jawaban_index,
-                    'kuesioner_1' => $kuesioner_values[1] ?? 0,
-                    'kuesioner_2' => $kuesioner_values[2] ?? 0,
-                    'kuesioner_3' => $kuesioner_values[3] ?? 0,
-                    'kuesioner_4' => $kuesioner_values[4] ?? 0,
-                    'kuesioner_5' => $kuesioner_values[5] ?? 0,
-                    'kuesioner_6' => $kuesioner_values[6] ?? 0,
-                    'jumlah' => $jumlah,
-                    'persentase' => $persentase,
-                ]);
+                    $k1 = intval($kuesioner_values[1] ?? 0);
+                    $k2 = intval($kuesioner_values[2] ?? 0);
+                    $k3 = intval($kuesioner_values[3] ?? 0);
+                    $k4 = intval($kuesioner_values[4] ?? 0);
+                    $k5 = intval($kuesioner_values[5] ?? 0);
+                    $k6 = intval($kuesioner_values[6] ?? 0);
+                    $jumlah = $k1 + $k2 + $k3 + $k4 + $k5 + $k6;
+                    $total_for_question = $question_totals[$pert_index] ?? 0;
+                    $persentase = ($total_for_question > 0) ? ($jumlah / $total_for_question) * 100 : 0;
+
+                    $insertRows[] = [
+                        'form9_id' => $form->id,
+                        'pertanyaan_no' => $pert_index,
+                        'jawaban_index' => intval($jawaban_index),
+                        'kuesioner_1' => $k1,
+                        'kuesioner_2' => $k2,
+                        'kuesioner_3' => $k3,
+                        'kuesioner_4' => $k4,
+                        'kuesioner_5' => $k5,
+                        'kuesioner_6' => $k6,
+                        'jumlah' => $jumlah,
+                        'persentase' => $persentase,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
+                }
             }
-        }
+
+            if (!empty($insertRows)) {
+                DB::table('form9_rows')->insert($insertRows);
+            }
+        });
 
         return redirect()->route('forms.form-list', ['bencana_id' => $bencana_id])
-            ->with('success', 'Data Form 9 berhasil disimpan.');
+            ->with('success', 'Data Form 9 berhasil disimpan (master + rows).');
     }
     public function list(Request $request)
     {
@@ -194,9 +224,9 @@ class Form9Controller extends Controller
     public function destroy($id)
     {
         try {
-            $form8 = Form9::findOrFail($id);
-            $bencana_id = $form8->bencana_id;
-            $form8->delete();
+            $form9 = Form9::findOrFail($id);
+            $bencana_id = $form9->bencana_id;
+            $form9->delete();
             
             return redirect()->route('forms.form9.list', ['bencana_id' => $bencana_id])
                 ->with('success', 'Data Form 9 berhasil dihapus');
@@ -210,4 +240,15 @@ class Form9Controller extends Controller
         $pdf = Pdf::loadView('forms.form9.contoh_form9_pdf', []);
         return $pdf->stream('Contoh_Formulir_09_PDNA.pdf');
     }
+        public function perBaris(Request $request)
+    {
+        $bencana_id = $request->input('bencana_id');
+        $bencana = Bencana::findOrFail($bencana_id);
+        $allRows = Form9Row::with('form9.bencana')->whereHas('form9', function($q) use ($bencana_id) {
+            $q->where('bencana_id', $bencana_id);
+        })->get();
+
+        return view('forms.form9.form9Row', compact('allRows','bencana','bencana_id'));
+    }
+
 }

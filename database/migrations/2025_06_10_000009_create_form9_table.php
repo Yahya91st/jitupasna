@@ -14,17 +14,8 @@ return new class extends Migration
         Schema::create('form9', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bencana_id');
-
-            $table->integer('pertanyaan_no')->nullable();
-            $table->integer('jawaban_index')->nullable();
-            $table->text('kuesioner_1')->nullable();
-            $table->text('kuesioner_2')->nullable();
-            $table->text('kuesioner_3')->nullable();
-            $table->text('kuesioner_4')->nullable();
-            $table->text('kuesioner_5')->nullable();
-            $table->text('kuesioner_6')->nullable();
-            $table->integer('jumlah')->nullable()->default(0);
-            $table->decimal('persentase', 5, 2)->nullable()->default(0);
+            $table->date('tanggal')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }
