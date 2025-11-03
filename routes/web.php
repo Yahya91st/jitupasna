@@ -676,6 +676,11 @@ Route::prefix('/forms')
             Route::get('/table-ringkas', [Form8Controller::class, 'tableRingkas'])->name('table-ringkas');
             Route::get('/form8-per-baris-pdf', [Form8Controller::class, 'perBarisPdf'])->name('form8-per-baris-pdf');
             Route::get('/analisis-komprehensif', [Form8Controller::class, 'analisisKomprehensif'])->name('analisis-komprehensif');
+            
+            // Route untuk edit dan delete per row
+            Route::get('/row/edit/{id}', [Form8Controller::class, 'editRow'])->name('row.edit');
+            Route::patch('/row/update/{id}', [Form8Controller::class, 'updateRow'])->name('row.update');
+            Route::delete('/row/destroy/{id}', [Form8Controller::class, 'destroyRow'])->name('row.destroy');
         });
 
         // Form9 (Pengolahan Data dan Kuesioner)

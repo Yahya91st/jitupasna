@@ -44,8 +44,6 @@
     </div>
     
     <div class="card">
-        
-
         <!-- Format Baru Form8 -->
         <div class="card-body border-bottom">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -54,8 +52,8 @@
                     <i class="bi bi-grid"></i> Lihat Semua Format
                 </a> -->
             </div>
-            <div>
-                <div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
                     <div class="card border-primary">
                         <div class="card-body text-center">
                             <i class="bi bi-table" style="font-size: 2rem; color: #007bff;"></i>
@@ -63,6 +61,32 @@
                             <p class="text-muted small">Format tabel kompak untuk analisis cepat</p>
                             <a href="{{ route('forms.form8.table-ringkas') }}" class="btn btn-outline-primary btn-sm" target="_blank">
                                 <i class="bi bi-file-pdf"></i> Lihat PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card border-success">
+                        <div class="card-body text-center">
+                            <i class="bi bi-list-ul" style="font-size: 2rem; color: #28a745;"></i>
+                            <h6 class="mt-2">Format Per Baris</h6>
+                            <p class="text-muted small">Detail setiap item dengan breakdown lengkap</p>
+                            <a href="{{ route('forms.form8.form8-per-baris', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-success btn-sm">
+                                <i class="bi bi-eye"></i> Lihat Detail
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="card border-info">
+                        <div class="card-body text-center">
+                            <i class="bi bi-plus-circle" style="font-size: 2rem; color: #17a2b8;"></i>
+                            <h6 class="mt-2">Tambah Data Baru</h6>
+                            <p class="text-muted small">Input data kerusakan dan kerugian</p>
+                            <a href="{{ route('forms.form8.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info btn-sm">
+                                <i class="bi bi-plus"></i> Tambah Data
                             </a>
                         </div>
                     </div>
@@ -81,18 +105,10 @@
                     </div>
                 </div> -->
             </div>
-            
-            <div class="text-center mt-3">
-                <a href="{{ route('forms.form8.form8-per-baris', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-                    <i class="fa fa-arrow-left mr-2"></i> Format 8 Per Baris
-                </a>
-            </div>
         </div>
-        <div class="card-header d-flex justify-content-between">
-            <h4 class="card-title">Daftar Data Penilaian</h4>
-            <a href="{{ route('forms.form8.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-                <i class="bi bi-plus"></i> Tambah Data Baru
-            </a>
+        
+        <div class="card-header">
+            <h4 class="card-title mb-0">Daftar Data Penilaian</h4>
         </div>
 
         <div class="card-body">
@@ -101,18 +117,28 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Bencana ID</th>
+                            <th>Tanggal</th>
                             <th>Lokasi</th>
+                            <th>Jumlah Item</th>
+                            <th>Total Kerusakan & Kerugian</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(count( $form) > 0)
-                            @foreach( $form as $index => $item)
+                        @if(count($form) > 0)
+                            @foreach($form as $index => $item)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->bencana_id }}</td>
-                                <td>{{ $item->lokasi }}</td>
+                                <td>{{ $item->tanggal ? \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') : '-' }}</td>
+                                <td>
+                                    @if($item->rows && $item->rows->count() > 0)
+                                        {{ $item->rows->pluck('lokasi')->filter()->unique()->implode(', ') ?: '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="text-center">{{ $item->rows ? $item->rows->count() : 0 }} item</td>
+                                <td class="text-end">Rp {{ number_format($item->rows ? $item->rows->sum('jumlah_kerusakan_kerugian') : 0, 0, ',', '.') }}</td>
                                 <td>
                                     <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
                                         <a href="{{ route('forms.form8.show', $item->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
@@ -133,7 +159,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5" class="text-center">Belum ada data penilaian</td>
+                                <td colspan="6" class="text-center">Belum ada data penilaian</td>
                             </tr>
                         @endif
                     </tbody>

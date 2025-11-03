@@ -105,7 +105,7 @@ class form8Controller extends Controller
         }
         
         $bencana = Bencana::findOrFail($bencana_id);
-        $form = Form8::where('bencana_id', $bencana_id)->latest()->get();
+        $form = Form8::with('rows')->where('bencana_id', $bencana_id)->latest()->get();
         return view('forms.form8.list', compact('bencana', 'form'));
     }
     
@@ -341,5 +341,72 @@ public function generatePdf($id)
         ));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream('Form8_Analisis_Komprehensif.pdf');
+    }
+
+    /**
+     * Show the form for editing a single Form8Row
+     */
+    public function editRow($id)
+    {
+        $row = Form8Row::with('form8.bencana')->findOrFail($id);
+        $bencana = $row->form8->bencana;
+        return view('forms.form8.edit_row', compact('row', 'bencana'));
+    }
+
+    /**
+     * Update a single Form8Row
+     */
+    public function updateRow(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            
+            $row = Form8Row::findOrFail($id);
+            
+            $validated = $request->validate([
+                'sektor_sub_sektor' => 'required|string|max:255',
+                'komponen_kerusakan' => 'required|string|max:255',
+                'lokasi' => 'required|string|max:255',
+                'data_kerusakan_rb' => 'nullable|numeric',
+                'data_kerusakan_rs' => 'nullable|numeric',
+                'data_kerusakan_rr' => 'nullable|numeric',
+                'harga_satuan_rb' => 'nullable|numeric',
+                'harga_satuan_rs' => 'nullable|numeric',
+                'harga_satuan_rr' => 'nullable|numeric',
+                'nilai_kerusakan_rb' => 'nullable|numeric',
+                'nilai_kerusakan_rs' => 'nullable|numeric',
+                'nilai_kerusakan_rr' => 'nullable|numeric',
+                'perkiraan_kerugian' => 'nullable|numeric',
+                'jumlah_kerusakan_kerugian' => 'nullable|numeric',
+                'kebutuhan' => 'nullable|numeric',
+            ]);
+            
+            $row->update($validated);
+            
+            DB::commit();
+            
+            return redirect()->route('forms.form8.form8-per-baris', ['bencana_id' => $row->form8->bencana_id])
+                ->with('success', 'Data berhasil diupdate');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Delete a single Form8Row
+     */
+    public function destroyRow($id)
+    {
+        try {
+            $row = Form8Row::findOrFail($id);
+            $bencana_id = $row->form8->bencana_id;
+            $row->delete();
+            
+            return redirect()->route('forms.form8.form8-per-baris', ['bencana_id' => $bencana_id])
+                ->with('success', 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data. ' . $e->getMessage()]);
+        }
     }
 }
