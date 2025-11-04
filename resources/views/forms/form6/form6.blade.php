@@ -562,22 +562,22 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_pre_suami" value="0">
-                                            <input type="checkbox" name="nafkah_pre_suami" id="nafkah1">
+                                            <input type="checkbox" name="nafkah_pre_suami" id="nafkah1" value="1">
                                             <label for="nafkah1">Suami</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_pre_istri" value="0">
-                                            <input type="checkbox" name="nafkah_pre_istri" id="nafkah2">
+                                            <input type="checkbox" name="nafkah_pre_istri" id="nafkah2" value="1">
                                             <label for="nafkah2">Istri</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_pre_anak" value="0">
-                                            <input type="checkbox" name="nafkah_pre_anak" id="nafkah3">
-                                            <label for="nafkah3">Anak (<18 tahun) </label>
+                                            <input type="checkbox" name="nafkah_pre_anak" id="nafkah3" value="1">
+                                            <label for="nafkah3">Anak (<18 tahun)>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_pre_lain" value="0">
-                                            <input type="checkbox" name="nafkah_pre_lain" id="nafkah4">
+                                            <input type="checkbox" name="nafkah_pre_lain" id="nafkah4" value="1">
                                             <label for="nafkah4">Lainnya:</label>
                                             <input type="text" name="nafkah_pre_lain_text" class="inline-input" style="width: 50%;" placeholder="Sebutkan">
                                         </div>
@@ -591,22 +591,22 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_post_suami" value="0">
-                                            <input type="checkbox" name="nafkah_post_suami" id="nafkah_post1">
+                                            <input type="checkbox" name="nafkah_post_suami" id="nafkah_post1" value="1">
                                             <label for="nafkah_post1">Suami</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_post_istri" value="0">
-                                            <input type="checkbox" name="nafkah_post_istri" id="nafkah_post2">
+                                            <input type="checkbox" name="nafkah_post_istri" id="nafkah_post2" value="1">
                                             <label for="nafkah_post2">Istri</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_post_anak" value="0">
-                                            <input type="checkbox" name="nafkah_post_anak" id="nafkah_post3">
-                                            <label for="nafkah_post3">Anak (<18 tahun)</label>
+                                            <input type="checkbox" name="nafkah_post_anak" id="nafkah_post3" value="1">
+                                            <label for="nafkah_post3">Anak (<18 tahun)>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="nafkah_post_lain" value="0">
-                                            <input type="checkbox" name="nafkah_post_lain" id="nafkah_post4">
+                                            <input type="checkbox" name="nafkah_post_lain" id="nafkah_post4" value="1">
                                             <label for="nafkah_post4">Lainnya:</label>
                                             <input type="text" name="nafkah_post_lain_text" class="inline-input" style="width: 50%;" placeholder="Sebutkan">
                                         </div>
@@ -620,42 +620,42 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_pertanian" value="0">
-                                            <input type="checkbox" name="sumber_pertanian" id="sumber1">
+                                            <input type="checkbox" name="sumber_pertanian" id="sumber1" value="1">
                                             <label for="sumber1">Pertanian</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_peternakan" value="0">
-                                            <input type="checkbox" name="sumber_peternakan" id="sumber2">
+                                            <input type="checkbox" name="sumber_peternakan" id="sumber2" value="1">
                                             <label for="sumber2">Peternakan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_dagang" value="0">
-                                            <input type="checkbox" name="sumber_dagang" id="sumber3">
+                                            <input type="checkbox" name="sumber_dagang" id="sumber3" value="1">
                                             <label for="sumber3">Perdagangan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_industri" value="0">
-                                            <input type="checkbox" name="sumber_industri" id="sumber4">
+                                            <input type="checkbox" name="sumber_industri" id="sumber4" value="1">
                                             <label for="sumber4">Industri</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_jasa" value="0">
-                                            <input type="checkbox" name="sumber_jasa" id="sumber5">
+                                            <input type="checkbox" name="sumber_jasa" id="sumber5" value="1">
                                             <label for="sumber5">Jasa</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_pegawai" value="0">
-                                            <input type="checkbox" name="sumber_pegawai" id="sumber6">
+                                            <input type="checkbox" name="sumber_pegawai" id="sumber6" value="1">
                                             <label for="sumber6">Pegawai</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_pertukangan" value="0">
-                                            <input type="checkbox" name="sumber_pertukangan" id="sumber7">
+                                            <input type="checkbox" name="sumber_pertukangan" id="sumber7" value="1">
                                             <label for="sumber7">Pertukangan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="sumber_lain" value="0">
-                                            <input type="checkbox" name="sumber_lain" id="sumber8">
+                                            <input type="checkbox" name="sumber_lain" id="sumber8" value="1">
                                             <label for="sumber8">Lainnya:</label>
                                             <input type="text" name="sumber_lain_text" class="inline-input" style="width: 50%;" placeholder="Sebutkan">
                                         </div>
@@ -685,27 +685,27 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantuan_keterampilan" value="0">
-                                            <input type="checkbox" name="bantuan_keterampilan" id="bantuan1">
+                                            <input type="checkbox" name="bantuan_keterampilan" id="bantuan1" value="1">
                                             <label for="bantuan1">Keterampilan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantuan_peralatan" value="0">
-                                            <input type="checkbox" name="bantuan_peralatan" id="bantuan2">
+                                            <input type="checkbox" name="bantuan_peralatan" id="bantuan2" value="1">
                                             <label for="bantuan2">Peralatan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantuan_modal" value="0">
-                                            <input type="checkbox" name="bantuan_modal" id="bantuan3">
+                                            <input type="checkbox" name="bantuan_modal" id="bantuan3" value="1">
                                             <label for="bantuan3">Modal</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantuan_pasar" value="0">
-                                            <input type="checkbox" name="bantuan_pasar" id="bantuan4">
+                                            <input type="checkbox" name="bantuan_pasar" id="bantuan4" value="1">
                                             <label for="bantuan4">Akses Pasar</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantuan_lain" value="0">
-                                            <input type="checkbox" name="bantuan_lain" id="bantuan5">
+                                            <input type="checkbox" name="bantuan_lain" id="bantuan5" value="1">
                                             <label for="bantuan5">Lain-lain:</label>
                                             <input type="text" name="bantuan_lain_text" class="inline-input" style="width: 50%;" placeholder="Sebutkan">
                                         </div>
@@ -716,12 +716,18 @@
                                 <td>6</td>
                                 <td>Sumber cadangan keluarga yang terganggu setelah bencana <br><em>(Pilih maksimal tiga)</em></td>
                                 <td>
-                                    <input type="hidden" name="cadangan_tabungan" value="0"><input type="checkbox" name="cadangan_tabungan"> Tabungan
-                                    <input type="hidden" name="cadangan_pinjaman" value="0"><input type="checkbox" name="cadangan_pinjaman"> Pinjaman
-                                    <input type="hidden" name="cadangan_barang" value="0"><input type="checkbox" name="cadangan_barang"> Barang
-                                    <input type="hidden" name="cadangan_ternak" value="0"><input type="checkbox" name="cadangan_ternak"> Ternak
-                                    <input type="hidden" name="cadangan_jamsos" value="0"><input type="checkbox" name="cadangan_jamsos"> Jaminan Sosial
-                                    <input type="hidden" name="cadangan_lain" value="0"><input type="checkbox" name="cadangan_lain"> Lainnya: <input type="text" name="cadangan_lain_text" style="width: 30%; border: none; border-bottom: 1px solid #ccc;">
+                                    <input type="hidden" name="cadangan_tabungan" value="0">
+                                    <input type="checkbox" name="cadangan_tabungan" value="1"> Tabungan
+                                    <input type="hidden" name="cadangan_pinjaman" value="0">
+                                    <input type="checkbox" name="cadangan_pinjaman" value="1"> Pinjaman
+                                    <input type="hidden" name="cadangan_barang" value="0">
+                                    <input type="checkbox" name="cadangan_barang" value="1"> Barang
+                                    <input type="hidden" name="cadangan_ternak" value="0">
+                                    <input type="checkbox" name="cadangan_ternak" value="1"> Ternak
+                                    <input type="hidden" name="cadangan_jamsos" value="0">
+                                    <input type="checkbox" name="cadangan_jamsos" value="1"> Jaminan Sosial
+                                    <input type="hidden" name="cadangan_lain" value="0">
+                                    <input type="checkbox" name="cadangan_lain"> Lainnya: <input type="text" name="cadangan_lain_text" style="width: 30%; border: none; border-bottom: 1px solid #ccc;">
                                 </td>
                             </tr>
                             <tr>
@@ -731,27 +737,27 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_koperasi" value="0">
-                                            <input type="checkbox" name="dukungan_koperasi" id="dukungan1">
+                                            <input type="checkbox" name="dukungan_koperasi" id="dukungan1" value="1">
                                             <label for="dukungan1">Koperasi</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_kelompok" value="0">
-                                            <input type="checkbox" name="dukungan_kelompok" id="dukungan2">
+                                            <input type="checkbox" name="dukungan_kelompok" id="dukungan2" value="1">
                                             <label for="dukungan2">Kelompok Usaha</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pinjaman" value="0">
-                                            <input type="checkbox" name="dukungan_pinjaman" id="dukungan3">
+                                            <input type="checkbox" name="dukungan_pinjaman" id="dukungan3" value="1">
                                             <label for="dukungan3">Pinjaman</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pemerintah" value="0">
-                                            <input type="checkbox" name="dukungan_pemerintah" id="dukungan4">
+                                            <input type="checkbox" name="dukungan_pemerintah" id="dukungan4" value="1">
                                             <label for="dukungan4">Bantuan pemerintah</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_lain" value="0">
-                                            <input type="checkbox" name="dukungan_lain" id="dukungan5">
+                                            <input type="checkbox" name="dukungan_lain" id="dukungan5" value="1">
                                             <label for="dukungan5">Lainnya:</label>
                                             <input type="text" name="dukungan_lain_text" class="inline-input" style="width: 50%;" placeholder="Sebutkan">
                                         </div>
@@ -764,15 +770,15 @@
                                 <td class="answer-cell">
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
-                                            <input type="radio" name="perlindungan" value="meningkat" id="perlindungan1">
+                                            <input type="radio" name="perlindungan" value="meningkat" id="perlindungan1" value="1">
                                             <label for="perlindungan1">Meningkat</label>
                                         </div>
                                         <div class="checkbox-item">
-                                            <input type="radio" name="perlindungan" value="menurun" id="perlindungan2">
+                                            <input type="radio" name="perlindungan" value="menurun" id="perlindungan2" value="1">
                                             <label for="perlindungan2">Menurun</label>
                                         </div>
                                         <div class="checkbox-item">
-                                            <input type="radio" name="perlindungan" value="sama" id="perlindungan3">
+                                            <input type="radio" name="perlindungan" value="sama" id="perlindungan3" value="1">
                                             <label for="perlindungan3">Sama saja</label>
                                         </div>
                                     </div>
@@ -785,27 +791,27 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantu_lindung_penyuluhan" value="0">
-                                            <input type="checkbox" name="bantu_lindung_penyuluhan" id="bantu_lindung1">
+                                            <input type="checkbox" name="bantu_lindung_penyuluhan" id="bantu_lindung1" value="1">
                                             <label for="bantu_lindung1">Penyuluhan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantu_lindung_moral" value="0">
-                                            <input type="checkbox" name="bantu_lindung_moral" id="bantu_lindung2">
+                                            <input type="checkbox" name="bantu_lindung_moral" id="bantu_lindung2" value="1">
                                             <label for="bantu_lindung2">Penguatan moral</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantu_lindung_polisi" value="0">
-                                            <input type="checkbox" name="bantu_lindung_polisi" id="bantu_lindung3">
+                                            <input type="checkbox" name="bantu_lindung_polisi" id="bantu_lindung3" value="1">
                                             <label for="bantu_lindung3">Polisi keliling</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantu_lindung_pos" value="0">
-                                            <input type="checkbox" name="bantu_lindung_pos" id="bantu_lindung4">
+                                            <input type="checkbox" name="bantu_lindung_pos" id="bantu_lindung4" value="1">
                                             <label for="bantu_lindung4">Pos Pengaduan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="bantu_lindung_rumah" value="0">
-                                            <input type="checkbox" name="bantu_lindung_rumah" id="bantu_lindung5">
+                                            <input type="checkbox" name="bantu_lindung_rumah" id="bantu_lindung5" value="1">
                                             <label for="bantu_lindung5">Rumah aman</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -824,17 +830,17 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="masalah_rumah_relokasi" value="0">
-                                            <input type="checkbox" name="masalah_rumah_relokasi" id="masalah_rumah1">
+                                            <input type="checkbox" name="masalah_rumah_relokasi" id="masalah_rumah1" value="1">
                                             <label for="masalah_rumah1">Harus relokasi</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="masalah_rumah_rusak" value="0">
-                                            <input type="checkbox" name="masalah_rumah_rusak" id="masalah_rumah2">
+                                            <input type="checkbox" name="masalah_rumah_rusak" id="masalah_rumah2" value="1">
                                             <label for="masalah_rumah2">Rusak</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="masalah_rumah_belum" value="0">
-                                            <input type="checkbox" name="masalah_rumah_belum" id="masalah_rumah3">
+                                            <input type="checkbox" name="masalah_rumah_belum" id="masalah_rumah3" value="1">
                                             <label for="masalah_rumah3">Belum punya rumah</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -853,17 +859,17 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="tindakan_rumah_stimulus" value="0">
-                                            <input type="checkbox" name="tindakan_rumah_stimulus" id="tindakan_rumah1">
+                                            <input type="checkbox" name="tindakan_rumah_stimulus" id="tindakan_rumah1" value="1">
                                             <label for="tindakan_rumah1">Stimulus rumah</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="tindakan_rumah_kredit" value="0">
-                                            <input type="checkbox" name="tindakan_rumah_kredit" id="tindakan_rumah2">
+                                            <input type="checkbox" name="tindakan_rumah_kredit" id="tindakan_rumah2" value="1">
                                             <label for="tindakan_rumah2">Kredit</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="tindakan_rumah_teknis" value="0">
-                                            <input type="checkbox" name="tindakan_rumah_teknis" id="tindakan_rumah3">
+                                            <input type="checkbox" name="tindakan_rumah_teknis" id="tindakan_rumah3" value="1">
                                             <label for="tindakan_rumah3">Bantuan teknis</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -881,11 +887,11 @@
                                 <td class="answer-cell">
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
-                                            <input type="radio" name="perkiraan_tinggal" value="rumah_asal" id="perkiraan1">
+                                            <input type="radio" name="perkiraan_tinggal" value="rumah_asal" id="perkiraan1" value="1">
                                             <label for="perkiraan1">Di rumah asal</label>
                                         </div>
                                         <div class="checkbox-item">
-                                            <input type="radio" name="perkiraan_tinggal" value="desa_asal" id="perkiraan2">
+                                            <input type="radio" name="perkiraan_tinggal" value="desa_asal" id="perkiraan2" value="1">
                                             <label for="perkiraan2">Di desa asal</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -903,17 +909,17 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="makanan_bantuan" value="0">
-                                            <input type="checkbox" name="makanan_bantuan" id="makanan1">
+                                            <input type="checkbox" name="makanan_bantuan" id="makanan1" value="1">
                                             <label for="makanan1">Bantuan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="makanan_cadangan" value="0">
-                                            <input type="checkbox" name="makanan_cadangan" id="makanan2">
+                                            <input type="checkbox" name="makanan_cadangan" id="makanan2" value="1">
                                             <label for="makanan2">Cadangan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="makanan_tanaman" value="0">
-                                            <input type="checkbox" name="makanan_tanaman" id="makanan3">
+                                            <input type="checkbox" name="makanan_tanaman" id="makanan3" value="1">
                                             <label for="makanan3">Sisa tanaman</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -932,17 +938,17 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pangan_langsung" value="0">
-                                            <input type="checkbox" name="dukungan_pangan_langsung" id="dukungan_pangan1">
+                                            <input type="checkbox" name="dukungan_pangan_langsung" id="dukungan_pangan1" value="1">
                                             <label for="dukungan_pangan1">Pangan langsung</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pangan_pulih" value="0">
-                                            <input type="checkbox" name="dukungan_pangan_pulih" id="dukungan_pangan2">
+                                            <input type="checkbox" name="dukungan_pangan_pulih" id="dukungan_pangan2" value="1">
                                             <label for="dukungan_pangan2">Pemulihan pangan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pangan_gotong" value="0">
-                                            <input type="checkbox" name="dukungan_pangan_gotong" id="dukungan_pangan3">
+                                            <input type="checkbox" name="dukungan_pangan_gotong" id="dukungan_pangan3" value="1">
                                             <label for="dukungan_pangan3">Gotong royong</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -961,17 +967,17 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="air_kurang" value="0">
-                                            <input type="checkbox" name="air_kurang" id="air1">
+                                            <input type="checkbox" name="air_kurang" id="air1" value="1">
                                             <label for="air1">Kurang</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="air_kotor" value="0">
-                                            <input type="checkbox" name="air_kotor" id="air2">
+                                            <input type="checkbox" name="air_kotor" id="air2" value="1">
                                             <label for="air2">Tidak bersih</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="air_simpan" value="0">
-                                            <input type="checkbox" name="air_simpan" id="air3">
+                                            <input type="checkbox" name="air_simpan" id="air3" value="1">
                                             <label for="air3">Penyimpanan</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -990,17 +996,17 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_air_sedia" value="0">
-                                            <input type="checkbox" name="dukungan_air_sedia" id="dukungan_air1">
+                                            <input type="checkbox" name="dukungan_air_sedia" id="dukungan_air1" value="1">
                                             <label for="dukungan_air1">Penyediaan air</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_air_pulih" value="0">
-                                            <input type="checkbox" name="dukungan_air_pulih" id="dukungan_air2">
+                                            <input type="checkbox" name="dukungan_air_pulih" id="dukungan_air2" value="1">
                                             <label for="dukungan_air2">Pemulihan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_air_simpan" value="0">
-                                            <input type="checkbox" name="dukungan_air_simpan" id="dukungan_air3">
+                                            <input type="checkbox" name="dukungan_air_simpan" id="dukungan_air3" value="1">
                                             <label for="dukungan_air3">Sarana simpan</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -1018,11 +1024,11 @@
                                 <td class="answer-cell">
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
-                                            <input type="radio" name="pelayanan_kesehatan" value="memadai" id="kesehatan1">
+                                            <input type="radio" name="pelayanan_kesehatan" value="memadai" id="kesehatan1" value="1">
                                             <label for="kesehatan1">Memadai</label>
                                         </div>
                                         <div class="checkbox-item">
-                                            <input type="radio" name="pelayanan_kesehatan" value="tidak" id="kesehatan2">
+                                            <input type="radio" name="pelayanan_kesehatan" value="tidak" id="kesehatan2" value="1">
                                             <label for="kesehatan2">Tidak memadai</label>
                                         </div>
                                     </div>
@@ -1035,27 +1041,27 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="perbaikan_obat" value="0">
-                                            <input type="checkbox" name="perbaikan_obat" id="perbaikan1">
+                                            <input type="checkbox" name="perbaikan_obat" id="perbaikan1" value="1">
                                             <label for="perbaikan1">Obat</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="perbaikan_medis" value="0">
-                                            <input type="checkbox" name="perbaikan_medis" id="perbaikan2">
+                                            <input type="checkbox" name="perbaikan_medis" id="perbaikan2" value="1">
                                             <label for="perbaikan2">Tenaga Medis</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="perbaikan_jarak" value="0">
-                                            <input type="checkbox" name="perbaikan_jarak" id="perbaikan3">
+                                            <input type="checkbox" name="perbaikan_jarak" id="perbaikan3" value="1">
                                             <label for="perbaikan3">Jarak</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="perbaikan_biaya" value="0">
-                                            <input type="checkbox" name="perbaikan_biaya" id="perbaikan4">
+                                            <input type="checkbox" name="perbaikan_biaya" id="perbaikan4" value="1">
                                             <label for="perbaikan4">Biaya</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="perbaikan_psiko" value="0">
-                                            <input type="checkbox" name="perbaikan_psiko" id="perbaikan5">
+                                            <input type="checkbox" name="perbaikan_psiko" id="perbaikan5" value="1">
                                             <label for="perbaikan5">Psikososial</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -1073,11 +1079,11 @@
                                 <td class="answer-cell">
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
-                                            <input type="radio" name="sekolah_terganggu" value="ya" id="sekolah1">
+                                            <input type="radio" name="sekolah_terganggu" value="ya" id="sekolah1" value="1">
                                             <label for="sekolah1">Ya</label>
                                         </div>
                                         <div class="checkbox-item">
-                                            <input type="radio" name="sekolah_terganggu" value="tidak" id="sekolah2">
+                                            <input type="radio" name="sekolah_terganggu" value="tidak" id="sekolah2" value="1">
                                             <label for="sekolah2">Tidak</label>
                                         </div>
                                     </div>
@@ -1090,32 +1096,32 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pend_guru" value="0">
-                                            <input type="checkbox" name="dukungan_pend_guru" id="dukungan_pend1">
+                                            <input type="checkbox" name="dukungan_pend_guru" id="dukungan_pend1" value="1">
                                             <label for="dukungan_pend1">Guru</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pend_alat" value="0">
-                                            <input type="checkbox" name="dukungan_pend_alat" id="dukungan_pend2">
+                                            <input type="checkbox" name="dukungan_pend_alat" id="dukungan_pend2" value="1">
                                             <label for="dukungan_pend2">Perlengkapan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pend_biaya" value="0">
-                                            <input type="checkbox" name="dukungan_pend_biaya" id="dukungan_pend3">
+                                            <input type="checkbox" name="dukungan_pend_biaya" id="dukungan_pend3" value="1">
                                             <label for="dukungan_pend3">Biaya</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pend_trans" value="0">
-                                            <input type="checkbox" name="dukungan_pend_trans" id="dukungan_pend4">
+                                            <input type="checkbox" name="dukungan_pend_trans" id="dukungan_pend4" value="1">
                                             <label for="dukungan_pend4">Transport</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pend_dekat" value="0">
-                                            <input type="checkbox" name="dukungan_pend_dekat" id="dukungan_pend5">
+                                            <input type="checkbox" name="dukungan_pend_dekat" id="dukungan_pend5" value="1">
                                             <label for="dukungan_pend5">Dekat</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_pend_bangun" value="0">
-                                            <input type="checkbox" name="dukungan_pend_bangun" id="dukungan_pend6">
+                                            <input type="checkbox" name="dukungan_pend_bangun" id="dukungan_pend6" value="1">
                                             <label for="dukungan_pend6">Bangunan</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -1133,11 +1139,11 @@
                                 <td class="answer-cell">
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
-                                            <input type="radio" name="agama_terganggu" value="ya" id="agama1">
+                                            <input type="radio" name="agama_terganggu" value="ya" id="agama1" value="1">
                                             <label for="agama1">Ya</label>
                                         </div>
                                         <div class="checkbox-item">
-                                            <input type="radio" name="agama_terganggu" value="tidak" id="agama2">
+                                            <input type="radio" name="agama_terganggu" value="tidak" id="agama2" value="1">
                                             <label for="agama2">Tidak</label>
                                         </div>
                                     </div>
@@ -1150,17 +1156,17 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_agama_stimulus" value="0">
-                                            <input type="checkbox" name="dukungan_agama_stimulus" id="dukungan_agama1">
+                                            <input type="checkbox" name="dukungan_agama_stimulus" id="dukungan_agama1" value="1">
                                             <label for="dukungan_agama1">Stimulasi</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_agama_latih" value="0">
-                                            <input type="checkbox" name="dukungan_agama_latih" id="dukungan_agama2">
+                                            <input type="checkbox" name="dukungan_agama_latih" id="dukungan_agama2" value="1">
                                             <label for="dukungan_agama2">Pelatihan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="dukungan_agama_izin" value="0">
-                                            <input type="checkbox" name="dukungan_agama_izin" id="dukungan_agama3">
+                                            <input type="checkbox" name="dukungan_agama_izin" id="dukungan_agama3" value="1">
                                             <label for="dukungan_agama3">Perizinan</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -1179,37 +1185,37 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="cegah_info" value="0">
-                                            <input type="checkbox" name="cegah_info" id="cegah1">
+                                            <input type="checkbox" name="cegah_info" id="cegah1" value="1">
                                             <label for="cegah1">Info</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="cegah_latih" value="0">
-                                            <input type="checkbox" name="cegah_latih" id="cegah2">
+                                            <input type="checkbox" name="cegah_latih" id="cegah2" value="1">
                                             <label for="cegah2">Pelatihan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="cegah_rencana" value="0">
-                                            <input type="checkbox" name="cegah_rencana" id="cegah3">
+                                            <input type="checkbox" name="cegah_rencana" id="cegah3" value="1">
                                             <label for="cegah3">Rencana</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="cegah_fasilitas" value="0">
-                                            <input type="checkbox" name="cegah_fasilitas" id="cegah4">
+                                            <input type="checkbox" name="cegah_fasilitas" id="cegah4" value="1">
                                             <label for="cegah4">Fasilitas</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="cegah_warning" value="0">
-                                            <input type="checkbox" name="cegah_warning" id="cegah5">
+                                            <input type="checkbox" name="cegah_warning" id="cegah5" value="1">
                                             <label for="cegah5">Peringatan</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="cegah_komunitas" value="0">
-                                            <input type="checkbox" name="cegah_komunitas" id="cegah6">
+                                            <input type="checkbox" name="cegah_komunitas" id="cegah6" value="1">
                                             <label for="cegah6">Komunitas</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="cegah_budaya" value="0">
-                                            <input type="checkbox" name="cegah_budaya" id="cegah7">
+                                            <input type="checkbox" name="cegah_budaya" id="cegah7" value="1">
                                             <label for="cegah7">Budaya</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -1228,22 +1234,22 @@
                                     <div class="checkbox-group">
                                         <div class="checkbox-item">
                                             <input type="hidden" name="butuh_anak" value="0">
-                                            <input type="checkbox" name="butuh_anak" id="butuh1">
+                                            <input type="checkbox" name="butuh_anak" id="butuh1" value="1">
                                             <label for="butuh1">Anak-anak</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="butuh_lansia" value="0">
-                                            <input type="checkbox" name="butuh_lansia" id="butuh2">
+                                            <input type="checkbox" name="butuh_lansia" id="butuh2" value="1">
                                             <label for="butuh2">Lansia</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="butuh_difabel" value="0">
-                                            <input type="checkbox" name="butuh_difabel" id="butuh3">
+                                            <input type="checkbox" name="butuh_difabel" id="butuh3" value="1">
                                             <label for="butuh3">Difabel</label>
                                         </div>
                                         <div class="checkbox-item">
                                             <input type="hidden" name="butuh_hamil" value="0">
-                                            <input type="checkbox" name="butuh_hamil" id="butuh4">
+                                            <input type="checkbox" name="butuh_hamil" id="butuh4" value="1">
                                             <label for="butuh4">Ibu hamil</label>
                                         </div>
                                         <div class="checkbox-item">
@@ -1284,7 +1290,6 @@
                         </tbody>
                     </table>
 
-                    <!-- Action Buttons -->
                     <div class="action-buttons">
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-save"></i> Simpan Data
@@ -1298,113 +1303,92 @@
                         <button type="button" class="btn btn-secondary" onclick="previewForm()">
                             <i class="bi bi-eye"></i> Preview
                         </button>
+                        <!-- Auto Fill button -->
+                        <button type="button" class="btn btn-secondary" onclick="autoFillForm()">
+                            <i class="bi bi-lightning-fill"></i> Auto Fill
+                        </button>
                     </div>
+
                 </div>
             </div>
         </div>
     </form>
 
     <script>
-        // Fungsi untuk menyimpan data ke localStorage
+        // skip saving inputs that have data-nosave
+        function shouldSaveInput(input) {
+            return !input.hasAttribute('data-nosave');
+        }
+
         function saveFormData() {
             const formData = {};
+            document.querySelectorAll('input').forEach(input => {
+                if (!shouldSaveInput(input) || !input.name) return;
 
-            // Simpan semua input text dan date
-            document.querySelectorAll('input[type="text"], input[type="date"]').forEach(input => {
-                if (input.name) {
+                if (input.type === 'text' || input.type === 'date') {
                     formData[input.name] = input.value;
+                } else if (input.type === 'radio' && input.checked) {
+                    formData[input.name] = input.value;
+                } else if (input.type === 'checkbox') {
+                    formData[input.name] = input.checked;
                 }
             });
-
-            // Simpan semua radio yang terpilih
-            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-                if (radio.name) {
-                    formData[radio.name] = radio.value;
-                }
-            });
-
-            // Simpan semua checkbox yang terpilih
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                if (checkbox.name) {
-                    formData[checkbox.name] = checkbox.checked;
-                }
-            });
-
             localStorage.setItem('form6_data', JSON.stringify(formData));
         }
 
-        // Fungsi untuk memuat data dari localStorage
         function loadFormData() {
             const savedData = localStorage.getItem('form6_data');
             if (!savedData) return;
 
             const formData = JSON.parse(savedData);
 
-            // Restore text dan date inputs
             Object.keys(formData).forEach(key => {
-                const input = document.querySelector(`input[name="${key}"]`);
-                if (!input) return;
+                const inputs = document.querySelectorAll(`input[name="${key}"]`);
+                if (!inputs.length) return;
 
-                if (input.type === 'text' || input.type === 'date') {
-                    input.value = formData[key];
-                } else if (input.type === 'radio' && input.value === formData[key]) {
-                    input.checked = true;
-                } else if (input.type === 'checkbox') {
-                    input.checked = formData[key];
-                }
+                inputs.forEach(input => {
+                    if (!shouldSaveInput(input)) return;
+
+                    if (input.type === 'text' || input.type === 'date') {
+                        input.value = formData[key];
+                    } else if (input.type === 'radio' && input.value === formData[key]) {
+                        input.checked = true;
+                    } else if (input.type === 'checkbox') {
+                        input.checked = formData[key];
+                    }
+                });
             });
         }
 
-        // Fungsi untuk menghapus data localStorage
         function clearFormData() {
             localStorage.removeItem('form6_data');
         }
 
-        // Event listener saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
-            // Load data yang tersimpan
             loadFormData();
 
-            // Auto-save setiap ada perubahan
             document.querySelectorAll('input').forEach(input => {
+                if (!shouldSaveInput(input)) return;
                 input.addEventListener('change', saveFormData);
                 input.addEventListener('input', saveFormData);
             });
-        });
 
-        // Hapus localStorage setelah form berhasil disubmit
-        document.querySelector('form').addEventListener('submit', function() {
-            clearFormData();
-        });
-
-        // Update fungsi reset untuk juga menghapus localStorage
-        function resetForm() {
-            if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
+            // Hapus localStorage setelah submit
+            const formEl = document.querySelector('form');
+            if (formEl) formEl.addEventListener('submit', function() {
                 clearFormData();
-
-                // Reset all checkboxes
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                checkboxes.forEach(checkbox => checkbox.checked = false);
-
-                // Reset all radios
-                const radios = document.querySelectorAll('input[type="radio"]');
-                radios.forEach(radio => radio.checked = false);
-
-                // Reset all text inputs
-                const textInputs = document.querySelectorAll('input[type="text"], input[type="date"]');
-                textInputs.forEach(input => input.value = '');
-            }
-        }
+            });
+        });
 
         function resetForm() {
             if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
-                // Reset all radioes
-                const radioes = document.querySelectorAll('input[type="radio"]');
-                radioes.forEach(radio => radio.checked = false);
-
-                // Reset all text inputs
-                const textInputs = document.querySelectorAll('input[type="text"], input[type="date"]');
-                textInputs.forEach(input => input.value = '');
+                // Reset radios, teks dan checkbox (tetapi tidak menyentuh input yang dikecualikan)
+                document.querySelectorAll('input').forEach(input => {
+                    if (input.hasAttribute('data-nosave')) return;
+                    if (input.type === 'radio' || input.type === 'checkbox') input.checked = false;
+                    if (input.type === 'text' || input.type === 'date') input.value = '';
+                });
+                clearFormData();
             }
         }
 
@@ -1413,15 +1397,12 @@
         }
 
         function previewForm() {
-            // Create preview window
             const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
-            const formContent = document.querySelector('.container').cloneNode(true);
+            const formContent = document.querySelector('.form-container').cloneNode(true);
 
-            // Remove buttons from preview
             const buttons = formContent.querySelectorAll('button');
             buttons.forEach(btn => btn.style.display = 'none');
 
-            // Remove input borders for preview
             const inputs = formContent.querySelectorAll('input[type="text"], input[type="date"]');
             inputs.forEach(input => {
                 const span = document.createElement('span');
@@ -1432,8 +1413,7 @@
                 input.parentNode.replaceChild(span, input);
             });
 
-            // Handle radioes for preview
-            const radioes = formContent.querySelectorAll('input[type="radio"]');
+            const radioes = formContent.querySelectorAll('input[type="radio"], input[type="checkbox"]');
             radioes.forEach(radio => {
                 const span = document.createElement('span');
                 span.textContent = radio.checked ? '☑' : '☐';
@@ -1441,23 +1421,106 @@
             });
 
             previewWindow.document.write(`
-        <html>
-        <head>
-            <title>Preview Form 6 - Pendataan Tingkat Rumahtangga</title>
-            <style>
-                body { font-family: 'Times New Roman', serif; padding: 20px; }
-                .table { border-collapse: collapse; width: 100%; }
-                .table td, .table th { border: 1px solid #000; padding: 8px; }
-            </style>
-        </head>
-        <body>
-            ${formContent.outerHTML}
-        </body>
-        </html>
-    `);
+                <html>
+                <head><title>Preview Form 6</title></head>
+                <body>${formContent.outerHTML}</body>
+                </html>
+            `);
             previewWindow.document.close();
         }
-    </script>
 
-    </div>
+        // Auto fill contoh data (respekt data-nosave)
+        function autoFillForm() {
+            if (!confirm('Isi otomatis form dengan data contoh?')) return;
+
+            const today = new Date().toISOString().slice(0, 10);
+
+            // simple helper
+            const setValue = (selector, value) => {
+                const el = document.querySelector(selector);
+                if (!el || el.hasAttribute('data-nosave')) return;
+                if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!value;
+                else el.value = value;
+            };
+
+            // header / meta
+            setValue('input[name="enumerator"]', 'ENUM01');
+            setValue('input[name="tgl_wawancara"]', today);
+            setValue('input[name="paraf_enum"]', 'PE01');
+            setValue('input[name="data_entry"]', 'DATA01');
+            setValue('input[name="tgl_entry"]', today);
+            setValue('input[name="paraf_entry"]', 'PE01');
+
+            // texts
+            const texts = {
+                'nama': 'Nama Contoh',
+                'desa': 'Desa Contoh',
+                'kecamatan': 'Kecamatan Contoh',
+                'kabupaten': 'Kabupaten Contoh',
+                'penghasilan_suami': '1000000',
+                'bidang_suami': 'Pertanian',
+                'penghasilan_istri': '500000',
+                'bidang_istri': 'Jasa',
+                'penghasilan_lainnya': '300000',
+                'bidang_lainnya': 'Perdagangan'
+            };
+            Object.entries(texts).forEach(([k, v]) => setValue(`input[name="${k}"]`, v));
+
+            // radios (set beberapa default)
+            const radios = {
+                'responden': 'l',
+                'umur': '31_40',
+                'pendidikan': 'slta',
+                'krt_perempuan': 'tidak',
+                'jumlah_anggota': '3_5',
+                'jumlah_anak': '2',
+                'jumlah_balita': '1',
+                'tipe_hunian': 'sendiri',
+                'penghasilan_hilang': 'ada',
+                'perlindungan': 'sama',
+                'perkiraan_tinggal': 'rumah_asal',
+                'pelayanan_kesehatan': 'memadai',
+                'sekolah_terganggu': 'tidak',
+                'agama_terganggu': 'tidak'
+            };
+            Object.entries(radios).forEach(([name, val]) => {
+                const r = document.querySelector(`input[name="${name}"][value="${val}"]`);
+                if (r && !r.hasAttribute('data-nosave')) r.checked = true;
+            });
+
+            // checkboxes to tick
+            const checks = [
+                'nafkah_pre_suami', 'nafkah_pre_istri', 'sumber_dagang', 'bantuan_keterampilan',
+                'cadangan_tabungan', 'dukungan_koperasi', 'bantu_lindung_rumah', 'masalah_rumah_rusak',
+                'tindakan_rumah_teknis', 'makanan_bantuan', 'dukungan_pangan_langsung', 'air_kurang',
+                'dukungan_air_sedia', 'perbaikan_jarak', 'dukungan_pend_guru', 'dukungan_agama_stimulus',
+                'cegah_info', 'butuh_anak'
+            ];
+            checks.forEach(name => {
+                // pilih semua input dengan nama tersebut (ada hidden + checkbox)
+                const inputs = document.querySelectorAll(`input[name="${name}"]`);
+                if (!inputs.length) return;
+                inputs.forEach(el => {
+                    if (el.hasAttribute('data-nosave')) return;
+                    if (el.type === 'checkbox') {
+                        el.checked = true;
+                    }
+                });
+            });
+
+
+            // contoh isi untuk beberapa text area / custom fields if present
+            const extras = {
+                'nafkah_pre_lain_text': 'Pekerja lepas',
+                'nafkah_post_lain_text': 'Pekerja harian',
+                'sumber_lain_text': 'Sumber lain',
+                'bantuan_lain_text': 'Modal usaha kecil'
+            };
+            Object.entries(extras).forEach(([k, v]) => setValue(`input[name="${k}"]`, v));
+
+            // simpan ke localStorage agar konsisten dengan mekanik auto-save
+            if (typeof saveFormData === 'function') saveFormData();
+            alert('Form telah diisi contoh. Silakan cek dan simpan jika cocok.');
+        }
+    </script>
 @endsection

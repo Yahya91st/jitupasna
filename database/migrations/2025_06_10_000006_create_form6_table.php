@@ -6,95 +6,49 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('form6', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bencana_id');
 
-                        
-            // Pengumpulan data
-            $table->string('enumerator')->nullable();
+            // Pengumpulan & perekaman
+            $table->string('enumerator', 100)->nullable();
             $table->date('tgl_wawancara')->nullable();
-            $table->string('paraf_enum')->nullable();
-            
-            // Perekaman data
-            $table->string('data_entry')->nullable();
+            $table->string('paraf_enum', 100)->nullable();
+            $table->string('data_entry', 100)->nullable();
             $table->date('tgl_entry')->nullable();
-            $table->string('paraf_entry')->nullable();
-            
-            // Informasi Umum Responden
-            $table->boolean('responden_l')->default(false);
-            $table->boolean('responden_p')->default(false);
-            
-            // Umur responden
-            $table->boolean('umur_20')->default(false);
-            $table->boolean('umur_21_30')->default(false);
-            $table->boolean('umur_31_40')->default(false);
-            $table->boolean('umur_41_50')->default(false);
-            $table->boolean('umur_50plus')->default(false);
-            
-            $table->string('nama')->nullable();
-            $table->string('desa')->nullable();
-            $table->string('kecamatan')->nullable();
-            $table->string('kabupaten')->nullable();
-            
-            // Pendidikan terakhir
-            $table->boolean('pend_sd')->default(false);
-            $table->boolean('pend_sltp')->default(false);
-            $table->boolean('pend_slta')->default(false);
-            $table->boolean('pend_pt')->default(false);
-            
-            // Kepala rumah tangga perempuan
-            $table->boolean('krt_perempuan_ya')->default(false);
-            $table->boolean('krt_perempuan_tidak')->default(false);
-            
-            // Jumlah anggota keluarga berdasarkan umur
-            $table->integer('anggota_0_5')->default(0);
-            $table->integer('anggota_6_17')->default(0);
-            $table->integer('anggota_18_59')->default(0);
-            $table->integer('anggota_60plus')->default(0);
-            
-            // Status rumah
-            $table->boolean('rumah_milik_sendiri')->default(false);
-            $table->boolean('rumah_sewa')->default(false);
-            $table->boolean('rumah_menumpang')->default(false);
-            
-            // Kondisi rumah sebelum bencana
-            $table->boolean('kondisi_baik')->default(false);
-            $table->boolean('kondisi_rusak_ringan')->default(false);
-            $table->boolean('kondisi_rusak_sedang')->default(false);
-            $table->boolean('kondisi_rusak_berat')->default(false);
-            
-            // Kerusakan akibat bencana
-            $table->boolean('kerusakan_tidak_ada')->default(false);
-            $table->boolean('kerusakan_ringan')->default(false);
-            $table->boolean('kerusakan_sedang')->default(false);
-            $table->boolean('kerusakan_berat')->default(false);
-            $table->boolean('kerusakan_hancur')->default(false);
-            
-            // Status tempat tinggal saat ini
-            $table->boolean('tinggal_rumah_sendiri')->default(false);
-            $table->boolean('tinggal_rumah_saudara')->default(false);
-            $table->boolean('tinggal_mengungsi')->default(false);
-            $table->boolean('tinggal_tenda')->default(false);
-            
-            // Penghasilan per bulan sebelum bencana
+            $table->string('paraf_entry', 100)->nullable();
+
+            // Informasi umum
+            $table->string('responden', 2)->nullable(); // 'l' | 'p'
+            $table->string('umur', 20)->nullable(); // e.g. 21_30
+            $table->string('nama', 100)->nullable();
+            $table->string('desa', 100)->nullable();
+            $table->string('kecamatan', 100)->nullable();
+            $table->string('kabupaten', 100)->nullable();
+            $table->string('pendidikan', 20)->nullable();
+            $table->string('krt_perempuan', 10)->nullable(); // ya|tidak
+            $table->string('jumlah_anggota', 20)->nullable();
+            $table->string('jumlah_anak', 20)->nullable();
+            $table->string('jumlah_balita', 20)->nullable();
+            $table->string('tipe_hunian', 50)->nullable();
+
+            // Pertanyaan 1 - nafkah pre
             $table->boolean('nafkah_pre_suami')->default(false);
             $table->boolean('nafkah_pre_istri')->default(false);
             $table->boolean('nafkah_pre_anak')->default(false);
             $table->boolean('nafkah_pre_lain')->default(false);
             $table->string('nafkah_pre_lain_text')->nullable();
 
+            // Pertanyaan 2 - nafkah post
             $table->boolean('nafkah_post_suami')->default(false);
             $table->boolean('nafkah_post_istri')->default(false);
             $table->boolean('nafkah_post_anak')->default(false);
             $table->boolean('nafkah_post_lain')->default(false);
             $table->string('nafkah_post_lain_text')->nullable();
 
+            // Pertanyaan 3 - sumber
             $table->boolean('sumber_pertanian')->default(false);
             $table->boolean('sumber_peternakan')->default(false);
             $table->boolean('sumber_dagang')->default(false);
@@ -106,7 +60,7 @@ return new class extends Migration
             $table->string('sumber_lain_text')->nullable();
 
             // Pertanyaan 4
-            $table->string('penghasilan_hilang')->nullable();
+            $table->string('penghasilan_hilang', 20)->nullable(); // ada|tidak
 
             // Pertanyaan 5
             $table->boolean('bantuan_keterampilan')->default(false);
@@ -134,7 +88,7 @@ return new class extends Migration
             $table->string('dukungan_lain_text')->nullable();
 
             // Pertanyaan 8
-            $table->string('perlindungan')->nullable();
+            $table->string('perlindungan', 20)->nullable(); // meningkat|menurun|sama
 
             // Pertanyaan 9
             $table->boolean('bantu_lindung_penyuluhan')->default(false);
@@ -160,7 +114,7 @@ return new class extends Migration
             $table->string('tindakan_rumah_lain_text')->nullable();
 
             // Pertanyaan 12
-            $table->string('perkiraan_tinggal')->nullable();
+            $table->string('perkiraan_tinggal', 50)->nullable();
             $table->string('perkiraan_tempat_lain_text')->nullable();
 
             // Pertanyaan 13
@@ -192,7 +146,7 @@ return new class extends Migration
             $table->string('dukungan_air_lain_text')->nullable();
 
             // Pertanyaan 17
-            $table->string('pelayanan_kesehatan')->nullable();
+            $table->string('pelayanan_kesehatan', 20)->nullable(); // memadai|tidak
 
             // Pertanyaan 18
             $table->boolean('perbaikan_obat')->default(false);
@@ -204,7 +158,7 @@ return new class extends Migration
             $table->string('perbaikan_lain_text')->nullable();
 
             // Pertanyaan 19
-            $table->string('sekolah_terganggu')->nullable();
+            $table->string('sekolah_terganggu', 10)->nullable(); // ya|tidak
 
             // Pertanyaan 20
             $table->boolean('dukungan_pend_guru')->default(false);
@@ -217,7 +171,7 @@ return new class extends Migration
             $table->string('dukungan_pend_lain_text')->nullable();
 
             // Pertanyaan 21
-            $table->string('agama_terganggu')->nullable();
+            $table->string('agama_terganggu', 10)->nullable(); // ya|tidak
 
             // Pertanyaan 22
             $table->boolean('dukungan_agama_stimulus')->default(false);
@@ -245,7 +199,7 @@ return new class extends Migration
             $table->boolean('butuh_lain')->default(false);
             $table->string('butuh_lain_text')->nullable();
 
-            // Pertanyaan 25
+            // Pertanyaan 25 - penghasilan & bidang
             $table->string('penghasilan_suami')->nullable();
             $table->string('bidang_suami')->nullable();
             $table->string('penghasilan_istri')->nullable();
@@ -253,16 +207,11 @@ return new class extends Migration
             $table->string('penghasilan_lainnya')->nullable();
             $table->string('bidang_lainnya')->nullable();
 
-            // ...existing code...
-            
-            // Relation to Bencana
             $table->timestamps();
+
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('form6');

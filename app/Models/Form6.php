@@ -13,61 +13,26 @@ class Form6 extends Model
 
     protected $fillable = [
         'bencana_id',
-        // Pengumpulan data
         'enumerator',
+
         'tgl_wawancara',
         'paraf_enum',
-        // Perekaman data
         'data_entry',
         'tgl_entry',
         'paraf_entry',
-        // Informasi Umum Responden
-        'responden_l',
-        'responden_p',
-        // Umur responden
-        'umur_20',
-        'umur_21_30',
-        'umur_31_40',
-        'umur_41_50',
-        'umur_50plus',
+        'responden',
+        'umur',
         'nama',
         'desa',
         'kecamatan',
         'kabupaten',
-        // Pendidikan terakhir
-        'pend_sd',
-        'pend_sltp',
-        'pend_slta',
-        'pend_pt',
-        // Kepala rumah tangga perempuan
-        'krt_perempuan_ya',
-        'krt_perempuan_tidak',
-        // Jumlah anggota keluarga berdasarkan umur
-        'anggota_0_5',
-        'anggota_6_17',
-        'anggota_18_59',
-        'anggota_60plus',
-        // Status rumah
-        'rumah_milik_sendiri',
-        'rumah_sewa',
-        'rumah_menumpang',
-        // Kondisi rumah sebelum bencana
-        'kondisi_baik',
-        'kondisi_rusak_ringan',
-        'kondisi_rusak_sedang',
-        'kondisi_rusak_berat',
-        // Kerusakan akibat bencana
-        'kerusakan_tidak_ada',
-        'kerusakan_ringan',
-        'kerusakan_sedang',
-        'kerusakan_berat',
-        'kerusakan_hancur',
-        // Status tempat tinggal saat ini
-        'tinggal_rumah_sendiri',
-        'tinggal_rumah_saudara',
-        'tinggal_mengungsi',
-        'tinggal_tenda',
-        // Penghasilan per bulan sebelum bencana
+        'pendidikan',
+        'krt_perempuan',
+        'jumlah_anggota',
+        'jumlah_anak',
+        'jumlah_balita',
+        'tipe_hunian',
+
         'nafkah_pre_suami',
         'nafkah_pre_istri',
         'nafkah_pre_anak',
@@ -76,9 +41,10 @@ class Form6 extends Model
         'nafkah_post_suami',
         'nafkah_post_istri',
         'nafkah_post_anak',
+        
+        
         'nafkah_post_lain',
         'nafkah_post_lain_text',
-        // Sumber penghasilan
         'sumber_pertanian',
         'sumber_peternakan',
         'sumber_dagang',
@@ -88,56 +54,46 @@ class Form6 extends Model
         'sumber_pertukangan',
         'sumber_lain',
         'sumber_lain_text',
-        // Penghasilan detail
-        'penghasilan_suami',
-        'bidang_suami',
-        'penghasilan_istri',
-        'bidang_istri',
-        'penghasilan_lainnya',
-        'bidang_lainnya',
-        // Tambahkan field lain dari form6.blade jika ada
+        'penghasilan_hilang',
+        'bantuan_keterampilan',
+        'bantuan_peralatan','bantuan_modal','bantuan_pasar','bantuan_lain','bantuan_lain_text',
+        'cadangan_tabungan','cadangan_pinjaman','cadangan_barang','cadangan_ternak','cadangan_jamsos','cadangan_lain','cadangan_lain_text',
+        'dukungan_koperasi','dukungan_kelompok','dukungan_pinjaman','dukungan_pemerintah','dukungan_lain','dukungan_lain_text',
+        'perlindungan',
+        'bantu_lindung_penyuluhan','bantu_lindung_moral','bantu_lindung_polisi','bantu_lindung_pos','bantu_lindung_rumah','bantu_lindung_lain','bantu_lindung_lain_text',
+        'masalah_rumah_relokasi','masalah_rumah_rusak','masalah_rumah_belum','masalah_rumah_lain','masalah_rumah_lain_text',
+        'tindakan_rumah_stimulus','tindakan_rumah_kredit','tindakan_rumah_teknis','tindakan_rumah_lain','tindakan_rumah_lain_text',
+        'perkiraan_tinggal','perkiraan_tempat_lain_text',
+        'makanan_bantuan','makanan_cadangan','makanan_tanaman','makanan_lain','makanan_lain_text',
+        'dukungan_pangan_langsung','dukungan_pangan_pulih','dukungan_pangan_gotong','dukungan_pangan_lain','dukungan_pangan_lain_text',
+        'air_kurang','air_kotor','air_simpan','air_lain','air_lain_text',
+        'dukungan_air_sedia','dukungan_air_pulih','dukungan_air_simpan','dukungan_air_lain','dukungan_air_lain_text',
+        'pelayanan_kesehatan',
+        'perbaikan_obat','perbaikan_medis','perbaikan_jarak','perbaikan_biaya','perbaikan_psiko','perbaikan_lain','perbaikan_lain_text',
+        'sekolah_terganggu',
+        'dukungan_pend_guru','dukungan_pend_alat','dukungan_pend_biaya','dukungan_pend_trans','dukungan_pend_dekat','dukungan_pend_bangun','dukungan_pend_lain','dukungan_pend_lain_text',
+        'agama_terganggu',
+        'dukungan_agama_stimulus','dukungan_agama_latih','dukungan_agama_izin','dukungan_agama_lain','dukungan_agama_lain_text',
+        'cegah_info','cegah_latih','cegah_rencana','cegah_fasilitas','cegah_warning','cegah_komunitas','cegah_budaya','cegah_lain','cegah_lain_text',
+        'butuh_anak','butuh_lansia','butuh_difabel','butuh_hamil','butuh_lain','butuh_lain_text',
+        'penghasilan_suami','bidang_suami','penghasilan_istri','bidang_istri','penghasilan_lainnya','bidang_lainnya',
     ];
 
-    protected $casts = [
+        protected $casts = [
         'tgl_wawancara' => 'date',
         'tgl_entry' => 'date',
-        'responden_l' => 'boolean',
-        'responden_p' => 'boolean',
-        'umur_20' => 'boolean',
-        'umur_21_30' => 'boolean',
-        'umur_31_40' => 'boolean',
-        'umur_41_50' => 'boolean',
-        'umur_50plus' => 'boolean',
-        'pend_sd' => 'boolean',
-        'pend_sltp' => 'boolean',
-        'pend_slta' => 'boolean',
-        'pend_pt' => 'boolean',
-        'krt_perempuan_ya' => 'boolean',
-        'krt_perempuan_tidak' => 'boolean',
-        'rumah_milik_sendiri' => 'boolean',
-        'rumah_sewa' => 'boolean',
-        'rumah_menumpang' => 'boolean',
-        'kondisi_baik' => 'boolean',
-        'kondisi_rusak_ringan' => 'boolean',
-        'kondisi_rusak_sedang' => 'boolean',
-        'kondisi_rusak_berat' => 'boolean',
-        'kerusakan_tidak_ada' => 'boolean',
-        'kerusakan_ringan' => 'boolean',
-        'kerusakan_sedang' => 'boolean',
-        'kerusakan_berat' => 'boolean',
-        'kerusakan_hancur' => 'boolean',
-        'tinggal_rumah_sendiri' => 'boolean',
-        'tinggal_rumah_saudara' => 'boolean',
-        'tinggal_mengungsi' => 'boolean',
-        'tinggal_tenda' => 'boolean',
+
+        // booleans
         'nafkah_pre_suami' => 'boolean',
         'nafkah_pre_istri' => 'boolean',
         'nafkah_pre_anak' => 'boolean',
         'nafkah_pre_lain' => 'boolean',
+
         'nafkah_post_suami' => 'boolean',
         'nafkah_post_istri' => 'boolean',
         'nafkah_post_anak' => 'boolean',
         'nafkah_post_lain' => 'boolean',
+
         'sumber_pertanian' => 'boolean',
         'sumber_peternakan' => 'boolean',
         'sumber_dagang' => 'boolean',
@@ -146,15 +102,102 @@ class Form6 extends Model
         'sumber_pegawai' => 'boolean',
         'sumber_pertukangan' => 'boolean',
         'sumber_lain' => 'boolean',
-        // Tambahkan casts boolean lain sesuai field baru
+
+        'bantuan_keterampilan' => 'boolean',
+        'bantuan_peralatan' => 'boolean',
+        'bantuan_modal' => 'boolean',
+        'bantuan_pasar' => 'boolean',
+        'bantuan_lain' => 'boolean',
+
+        'cadangan_tabungan' => 'boolean',
+        'cadangan_pinjaman' => 'boolean',
+        'cadangan_barang' => 'boolean',
+        'cadangan_ternak' => 'boolean',
+        'cadangan_jamsos' => 'boolean',
+        'cadangan_lain' => 'boolean',
+
+        'dukungan_koperasi' => 'boolean',
+        'dukungan_kelompok' => 'boolean',
+        'dukungan_pinjaman' => 'boolean',
+        'dukungan_pemerintah' => 'boolean',
+        'dukungan_lain' => 'boolean',
+
+        'bantu_lindung_penyuluhan' => 'boolean',
+        'bantu_lindung_moral' => 'boolean',
+        'bantu_lindung_polisi' => 'boolean',
+        'bantu_lindung_pos' => 'boolean',
+        'bantu_lindung_rumah' => 'boolean',
+        'bantu_lindung_lain' => 'boolean',
+
+        'masalah_rumah_relokasi' => 'boolean',
+        'masalah_rumah_rusak' => 'boolean',
+        'masalah_rumah_belum' => 'boolean',
+        'masalah_rumah_lain' => 'boolean',
+
+        'tindakan_rumah_stimulus' => 'boolean',
+        'tindakan_rumah_kredit' => 'boolean',
+        'tindakan_rumah_teknis' => 'boolean',
+        'tindakan_rumah_lain' => 'boolean',
+
+        'makanan_bantuan' => 'boolean',
+        'makanan_cadangan' => 'boolean',
+        'makanan_tanaman' => 'boolean',
+        'makanan_lain' => 'boolean',
+
+        'dukungan_pangan_langsung' => 'boolean',
+        'dukungan_pangan_pulih' => 'boolean',
+        'dukungan_pangan_gotong' => 'boolean',
+        'dukungan_pangan_lain' => 'boolean',
+
+        'air_kurang' => 'boolean',
+        'air_kotor' => 'boolean',
+        'air_simpan' => 'boolean',
+        'air_lain' => 'boolean',
+
+        'dukungan_air_sedia' => 'boolean',
+        'dukungan_air_pulih' => 'boolean',
+        'dukungan_air_simpan' => 'boolean',
+        'dukungan_air_lain' => 'boolean',
+
+        'perbaikan_obat' => 'boolean',
+        'perbaikan_medis' => 'boolean',
+        'perbaikan_jarak' => 'boolean',
+        'perbaikan_biaya' => 'boolean',
+        'perbaikan_psiko' => 'boolean',
+        'perbaikan_lain' => 'boolean',
+
+        'dukungan_pend_guru' => 'boolean',
+        'dukungan_pend_alat' => 'boolean',
+        'dukungan_pend_biaya' => 'boolean',
+        'dukungan_pend_trans' => 'boolean',
+        'dukungan_pend_dekat' => 'boolean',
+        'dukungan_pend_bangun' => 'boolean',
+        'dukungan_pend_lain' => 'boolean',
+
+        'dukungan_agama_stimulus' => 'boolean',
+        'dukungan_agama_latih' => 'boolean',
+        'dukungan_agama_izin' => 'boolean',
+        'dukungan_agama_lain' => 'boolean',
+
+        'cegah_info' => 'boolean',
+        'cegah_latih' => 'boolean',
+        'cegah_rencana' => 'boolean',
+        'cegah_fasilitas' => 'boolean',
+        'cegah_warning' => 'boolean',
+        'cegah_komunitas' => 'boolean',
+        'cegah_budaya' => 'boolean',
+        'cegah_lain' => 'boolean',
+
+        'butuh_anak' => 'boolean',
+        'butuh_lansia' => 'boolean',
+        'butuh_difabel' => 'boolean',
+        'butuh_hamil' => 'boolean',
+        'butuh_lain' => 'boolean',
     ];
 
 
-    /**
-     * Relationship with Bencana
-     */
     public function bencana()
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->belongsTo(\App\Models\Bencana::class);
     }
 }
