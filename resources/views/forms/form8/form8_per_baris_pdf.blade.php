@@ -70,12 +70,10 @@
         .item-card {
             margin-bottom: 10px;
             padding: 8px;
-            border: 1px solid #ccc;
+            border: 1px solid #333;
             border-radius: 5px;
             background-color: #fff;
-            page-break-inside: avoid; /* prevent splitting an item across pages */
-            -webkit-box-shadow: none;
-            box-shadow: none;
+            page-break-inside: avoid;
         }
 
         .item-header {
@@ -102,15 +100,13 @@
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-bottom: 8px;
-            align-items: start;
         }
 
         .detail-section {
             padding: 6px;
-            border: 1px solid #eee;
+            border: 1px solid #ddd;
             border-radius: 3px;
-            background-color: #fbfbfb;
-            font-size: 8pt;
+            background-color: #f9f9f9;
         }
 
         .detail-title {
@@ -168,15 +164,15 @@
         .nilai-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
+            gap: 4px;
         }
 
         .nilai-item {
             display: flex;
             justify-content: space-between;
-            padding: 4px 8px;
-            background-color: #fff;
-            border: 1px solid #eee;
+            padding: 3px 6px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
             border-radius: 2px;
             font-size: 8pt;
         }
@@ -191,15 +187,14 @@
         }
 
         .total-section {
-            background-color: #222;
+            background-color: #333;
             color: white;
-            padding: 8px 10px;
+            padding: 6px 8px;
             margin: 8px -8px -8px -8px;
             border-radius: 0 0 4px 4px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 9pt;
         }
 
         .total-label {
@@ -214,11 +209,11 @@
         }
 
         .summary-card {
-            margin-top: 12px;
+            margin-top: 15px;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #f7fdff;
+            border: 2px solid #333;
+            border-radius: 5px;
+            background-color: #f0f9ff;
         }
 
         .summary-title {
