@@ -81,7 +81,7 @@
                                                 @if ($data->status_bantuan == 'Ya')
                                                     <span class="badge badge-success">Sudah Menerima Bantuan</span>
                                                 @else
-                                                    <span class="badge badge-secondary">Belum Menerima Bantuan</span>
+                                                    <span class="badge badge-dark">Belum Menerima Bantuan</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -91,12 +91,6 @@
                                                     </a>
                                                     <a href="{{ route('forms.form6.edit', $data->id) }}" class="btn btn-sm btn-warning" title="Edit">
                                                         <i class="fa fa-edit"></i> Edit
-                                                    </a>
-                                                    <a href="{{ route('forms.form6.preview-pdf', $data->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
-                                                        <i class="fa fa-search"></i> Lihat PDF
-                                                    </a>
-                                                    <a href="{{ route('forms.form6.pdf', $data->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
-                                                        <i class="fa fa-download"></i> Unduh PDF
                                                     </a>
                                                 </div>
                                             </td>

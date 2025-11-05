@@ -1,131 +1,121 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulir 06 - Pendataan Tingkat Rumahtangga</title>
     <style>
         @page {
-            margin: 0.8cm;
+            margin: 0.5cm;
             size: A4;
         }
         
         body {
             font-family: 'Times New Roman', serif;
-            font-size: 9pt;
+            font-size: 8pt;
             line-height: 1.2;
-            margin: 0;
-            padding: 0;
+            margin: 0.5cm;
             color: #333;
-            background: #ffffff;
-        }
-        
-        .document-header {
-            text-align: center;
-            margin-bottom: 8px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid #ddd;
         }
         
         .document-title {
-            font-size: 10pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0.1rem 0;
-            letter-spacing: 1px;
-            color: #333;
+            text-align: center;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid #0066cc;
         }
         
-        .document-subtitle {
-            font-size: 9pt;
-            font-weight: normal;
-            margin: 0;
+        .document-title h5 {
+            margin: 0.1rem 0;
+            font-weight: bold;
+            color: #333;
+            font-size: 10pt;
+        }
+        
+        .document-title h5:first-child {
             color: #0066cc;
             margin-bottom: 0.1rem;
+            font-size: 9pt;
         }
         
         .section-header {
-            font-size: 9pt;
+            font-size: 8pt;
             font-weight: bold;
-            text-transform: uppercase;
-            background: #f9f9f9;
+            background: #f0f0f0;
             color: #333;
             padding: 3px 6px;
-            margin: 6px 0 4px 0;
-            text-align: left;
-            border-radius: 2px;
-            letter-spacing: 0.5px;
+            margin: 6px 0 3px 0;
+            border-left: 3px solid #0066cc;
+            letter-spacing: 0.2px;
         }
         
         .form-section {
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         
         .form-label {
             display: inline-block;
-            width: 120px;
+            width: 140px;
             vertical-align: top;
-            font-weight: 500;
-            color: #333;
-            font-size: 9pt;
+            font-weight: 600;
+            color: #555;
+            font-size: 8pt;
         }
         
-        .form-indent {
-            margin-left: 125px;
+        .form-value {
+            color: #000;
+            font-weight: normal;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 2px 0;
+            margin: 4px 0;
             font-size: 8pt;
-            background: white;
         }
         
         table td {
-            border: 1px solid #ddd;
-            padding: 3px 4px;
+            border: 1px solid #333;
+            padding: 3px 5px;
             vertical-align: top;
-            font-size: 8pt;
         }
         
         .label {
-            font-weight: bold;
+            font-weight: 600;
             width: 35%;
-            background: #f9f9f9;
+            background: #f5f5f5;
             color: #333;
         }
         
         .value {
             width: 65%;
             background: white;
-            color: #333;
+            color: #000;
         }
         
         .text-content {
             margin: 0;
-            padding: 4px;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
+            padding: 3px 5px;
+            background: white;
             font-size: 8pt;
-            min-height: 15px;
-            color: #333;
+            min-height: 12px;
+            color: #000;
+            line-height: 1.2;
         }
         
         .documentation-section {
-            margin-top: 8px;
-            padding: 6px;
+            margin-top: 6px;
+            padding: 5px;
             background: #f9f9f9;
-            border-radius: 2px;
+            border: 1px solid #ddd;
         }
         
         .images {
             width: 100%;
-            margin: 6px 0;
+            margin: 5px 0;
             display: flex;
             justify-content: space-between;
-            gap: 6px;
+            gap: 5px;
         }
         
         .image-container {
@@ -133,14 +123,14 @@
             text-align: center;
             background: white;
             padding: 4px;
-            border: 1px solid #ddd;
+            border: 1px solid #333;
         }
         
         .image-container img {
             max-width: 100%;
             height: auto;
-            max-height: 100px;
-            border: 1px solid #333;
+            max-height: 80px;
+            border: 1px solid #666;
         }
         
         .image-caption {
@@ -152,55 +142,57 @@
         }
         
         .signature-section {
+            position: relative;
             text-align: right;
-            margin: 8px 40px 8px 0;
+            margin-top: 8px;
+            page-break-inside: avoid;
         }
         
-        .signature-content {
-            text-align: left;
-            margin-bottom: 4px;
+        .signature-box {
+            display: inline-block;
+            text-align: center;
+            width: 150px;
+            float: right;
         }
         
         .signature-name {
             text-align: center;
             font-weight: bold;
-            width: 150px;
-            margin-top: 20px;
+            margin-top: 35px;
             border-bottom: 1px solid #333;
-            padding-bottom: 1px;
+            padding-bottom: 2px;
         }
         
         .status-badge {
             display: inline-block;
-            padding: 2px 4px;
+            padding: 2px 6px;
             border-radius: 2px;
             font-size: 7pt;
             font-weight: bold;
-            text-transform: uppercase;
         }
         
         .badge-success {
-            background: #27ae60;
+            background: #28a745;
             color: white;
         }
         
         .badge-warning {
-            background: #f39c12;
-            color: white;
+            background: #ffc107;
+            color: #000;
         }
         
         .badge-danger {
-            background: #e74c3c;
+            background: #dc3545;
             color: white;
         }
         
         .badge-info {
-            background: #3498db;
+            background: #17a2b8;
             color: white;
         }
         
         .badge-secondary {
-            background: #95a5a6;
+            background: #6c757d;
             color: white;
         }
         
@@ -209,35 +201,21 @@
         }
         
         p {
-            margin-bottom: 0.2em;
-            text-align: justify;
-            line-height: 1.1;
-            font-size: 9pt;
+            margin: 2px 0;
+            line-height: 1.2;
+            font-size: 8pt;
+        }
+        
+        strong {
+            font-weight: 600;
         }
         
         @media print {
             body { 
-                font-size: 8pt; 
-                line-height: 1.0;
-            }
-            .section-header {
-                margin: 4px 0 3px 0;
-                padding: 2px 4px;
                 font-size: 8pt;
             }
-            table {
-                font-size: 7pt;
-            }
-            table td {
-                padding: 2px 3px;
-                font-size: 7pt;
-            }
-            .text-content {
-                font-size: 7pt;
-                padding: 3px;
-            }
-            .image-container img {
-                max-height: 80px;
+            .page-break {
+                page-break-before: always;
             }
         }
     </style>
@@ -245,44 +223,44 @@
 
 <body>
     <!-- Document Header -->
-    <div class="document-header">
-        <div class="document-title"><strong>Formulir 06</strong></div>
-        <div class="document-subtitle">Pendataan Tingkat Rumahtangga - JITUPASNA</div>
+    <div class="document-title">
+        <h5><strong>Formulir 06</strong></h5>
+        <h5>Pendataan Tingkat Rumahtangga</h5>
     </div>
 
     <!-- A. INFORMASI BENCANA -->
-    <div class="section-header">A. Informasi Bencana</div>
+    <div class="section-header">A. INFORMASI BENCANA</div>
     <div class="form-section">
         <p>
-            <span class="form-label">Nama Bencana</span>: {{ $rumahtangga->bencana->nama_bencana }}
+            <span class="form-label">Nama Bencana</span>: <span class="form-value">{{ $rumahtangga->bencana->nama_bencana }}</span>
         </p>
         <p>
-            <span class="form-label">Tanggal Bencana</span>: {{ $rumahtangga->bencana->tanggal }}
+            <span class="form-label">Tanggal Bencana</span>: <span class="form-value">{{ \Carbon\Carbon::parse($rumahtangga->bencana->tanggal)->format('d F Y') }}</span>
         </p>
         <p>
-            <span class="form-label">Lokasi Bencana</span>: {{ $rumahtangga->bencana->lokasi }}
+            <span class="form-label">Lokasi Bencana</span>: <span class="form-value">{{ $rumahtangga->bencana->lokasi }}</span>
         </p>
     </div>
 
     <!-- B. DATA KEPALA KELUARGA -->
-    <div class="section-header">B. Data Kepala Keluarga</div>
+    <div class="section-header">B. DATA KEPALA KELUARGA</div>
     <div class="form-section">
         <p>
-            <span class="form-label">Nama Kepala Keluarga</span>: {{ $rumahtangga->nama_kk }}
+            <span class="form-label">Nama Kepala Keluarga</span>: <span class="form-value">{{ $rumahtangga->nama_kk }}</span>
         </p>
         <p>
-            <span class="form-label">NIK</span>: {{ $rumahtangga->nik_kk }}
+            <span class="form-label">NIK</span>: <span class="form-value">{{ $rumahtangga->nik_kk }}</span>
         </p>
         <p>
-            <span class="form-label">Jumlah Anggota Keluarga</span>: {{ $rumahtangga->jumlah_anggota }} orang
+            <span class="form-label">Jumlah Anggota Keluarga</span>: <span class="form-value">{{ $rumahtangga->jumlah_anggota }} orang</span>
         </p>
         <p>
-            <span class="form-label">Nomor HP/Telepon</span>: {{ $rumahtangga->nomor_hp }}
+            <span class="form-label">Nomor HP/Telepon</span>: <span class="form-value">{{ $rumahtangga->nomor_hp }}</span>
         </p>
     </div>
 
     <!-- C. ALAMAT LENGKAP -->
-    <div class="section-header">C. Alamat Lengkap</div>
+    <div class="section-header">C. ALAMAT LENGKAP</div>
     <table>
         <tr>
             <td class="label">Dusun/Lingkungan</td>
@@ -311,7 +289,7 @@
     </table>
 
     <!-- D. STATUS RUMAH & KERUSAKAN -->
-    <div class="section-header">D. Status Rumah & Kerusakan</div>
+    <div class="section-header">D. STATUS RUMAH & KERUSAKAN</div>
     <table>
         <tr>
             <td class="label">Status Rumah</td>
@@ -338,7 +316,7 @@
     </table>
 
     <!-- E. KEBUTUHAN REHABILITASI -->
-    <div class="section-header">E. Kebutuhan Rehabilitasi</div>
+    <div class="section-header">E. KEBUTUHAN REHABILITASI</div>
     <table>
         <tr>
             <td class="label">Kebutuhan Material</td>
@@ -359,7 +337,7 @@
     </table>
 
     <!-- F. STATUS BANTUAN -->
-    <div class="section-header">F. Status Bantuan</div>
+    <div class="section-header">F. STATUS BANTUAN</div>
     <table>
         <tr>
             <td class="label">Status Bantuan</td>
@@ -389,12 +367,18 @@
 
     @if ($rumahtangga->keterangan_tambahan)
         <!-- G. KETERANGAN TAMBAHAN -->
-        <div class="section-header">G. Keterangan Tambahan</div>
-        <div class="text-content">{{ $rumahtangga->keterangan_tambahan }}</div>
+        <div class="section-header">G. KETERANGAN TAMBAHAN</div>
+        <table>
+            <tr>
+                <td colspan="2" class="value">
+                    <div class="text-content">{{ $rumahtangga->keterangan_tambahan }}</div>
+                </td>
+            </tr>
+        </table>
     @endif
 
     <!-- H. DOKUMENTASI -->
-    <div class="section-header page-break">H. Dokumentasi</div>
+    <div class="section-header">H. DOKUMENTASI</div>
     <div class="documentation-section">
         <div class="images">
             <div class="image-container">
@@ -414,14 +398,11 @@
 
     <!-- Signature Section -->
     <div class="signature-section">
-        <div style="text-align: right; margin-top: 0.5em; margin-right: 0;">
-            <div style="text-align: center; width: 200px; margin-left: auto;">
-                <p style="font-size: 8pt; margin: 1px 0;">{{ $rumahtangga->kabupaten }}, {{ now()->format('d F Y') }}</p>
-                <strong>Petugas Pendataan</strong>
-                
-                <div style="margin-top: 2em;">
-                    <strong>{{ $rumahtangga->createdBy->name ?? 'Petugas' }}</strong>
-                </div>
+        <div class="signature-box">
+            <p style="margin: 0;">{{ $rumahtangga->kabupaten }}, {{ now()->format('d F Y') }}</p>
+            <p style="margin: 5px 0;"><strong>Petugas Pendataan</strong></p>
+            <div class="signature-name">
+                {{ $rumahtangga->createdBy->name ?? 'Petugas' }}
             </div>
         </div>
     </div>

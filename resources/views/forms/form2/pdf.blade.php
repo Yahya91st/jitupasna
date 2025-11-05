@@ -7,155 +7,170 @@
     <style>
         body {
             font-family: 'Times New Roman', serif;
-            line-height: 1.3;
+            line-height: 1.1;
             color: #000;
             margin: 0;
-            padding: 15mm;
-            font-size: 10pt;
+            padding: 8mm;
+            font-size: 8pt;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 4px;
         }
 
         .header h2 {
-            font-size: 12pt;
+            font-size: 9pt;
             font-weight: bold;
-            margin: 3px 0;
+            margin: 1px 0;
             text-transform: uppercase;
         }
 
         .header h3 {
-            font-size: 10pt;
+            font-size: 8pt;
             font-weight: normal;
-            margin: 2px 0;
+            margin: 1px 0;
         }
 
         .decree-header {
             text-align: center;
-            margin: 20px 0;
+            margin: 8px 0;
         }
 
         .decree-header h1 {
-            font-size: 12pt;
+            font-size: 9pt;
             font-weight: bold;
-            margin: 5px 0;
+            margin: 2px 0;
             text-transform: uppercase;
         }
 
         .decree-header h2 {
-            font-size: 10pt;
+            font-size: 8pt;
             font-weight: normal;
-            margin: 3px 0;
+            margin: 1px 0;
         }
 
         .pejabat-section {
             text-align: center;
-            margin: 20px 0;
+            margin: 8px 0;
             font-weight: bold;
             text-transform: uppercase;
+            font-size: 8pt;
         }
 
         .section {
-            margin: 10px 0;
+            margin: 4px 0;
         }
 
         .section-label {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
+            font-size: 8pt;
         }
 
         .section-content {
-            margin-left: 15px;
+            margin-left: 12px;
             text-align: justify;
         }
 
         .section-content p {
-            margin: 3px 0;
+            margin: 1px 0;
             text-indent: 0;
+            font-size: 8pt;
         }
 
         .memutuskan {
             text-align: center;
             font-weight: bold;
-            font-size: 11pt;
-            margin: 15px 0;
+            font-size: 9pt;
+            margin: 6px 0;
             text-transform: uppercase;
         }
 
         .diktum {
-            margin: 8px 0;
+            margin: 3px 0;
         }
 
         .diktum-label {
             font-weight: bold;
-            margin-bottom: 3px;
+            margin-bottom: 1px;
             text-transform: uppercase;
+            font-size: 8pt;
         }
 
         .diktum-content {
-            margin-left: 15px;
+            margin-left: 12px;
             text-align: justify;
         }
 
         .diktum-content p {
-            margin: 2px 0;
+            margin: 1px 0;
+            font-size: 8pt;
         }
 
         .diktum-list {
-            margin-left: 15px;
+            margin-left: 12px;
+        }
+
+        .diktum-list p {
+            margin: 1px 0;
+            font-size: 8pt;
         }
 
         .signature-section {
-            margin-top: 30px;
+            margin-top: 10px;
             text-align: center;
         }
 
         .signature-left {
             text-align: left;
-            margin-bottom: 50px;
+            margin-bottom: 15px;
+            font-size: 8pt;
         }
 
         .signature-right {
             text-align: center;
             margin-left: 60%;
+            font-size: 8pt;
         }
 
         .signature-space {
-            height: 50px;
-            margin: 15px 0;
+            height: 25px;
+            margin: 5px 0;
         }
 
         .signature-name {
             border-bottom: 1px solid #000;
-            padding-bottom: 3px;
-            margin-bottom: 5px;
+            padding-bottom: 2px;
+            margin-bottom: 2px;
+            font-size: 8pt;
         }
 
         .tembusan {
-            margin-top: 25px;
+            margin-top: 10px;
         }
 
         .tembusan-title {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
+            font-size: 8pt;
         }
 
         .tembusan-list {
-            margin-left: 15px;
+            margin-left: 12px;
         }
 
         .tembusan-list p {
-            margin: 2px 0;
+            margin: 1px 0;
+            font-size: 8pt;
         }
 
         /* Print styles */
         @media print {
             body {
-                padding: 15mm;
+                padding: 8mm;
             }
             
             .page-break {

@@ -4,14 +4,14 @@
     <title>Form 3 - Pendataan OPD</title>
     <style>
         @page {
-            margin: 15mm;
+            margin: 8mm;
             size: A4;
         }
         
         body {
             font-family: 'Times New Roman', serif;
-            font-size: 10pt;
-            line-height: 1.3;
+            font-size: 8pt;
+            line-height: 1.1;
             margin: 0;
             padding: 0;
             color: #000;
@@ -19,62 +19,62 @@
         
         .document-header {
             text-align: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 4px;
         }
         
         .document-title {
-            font-size: 14pt;
+            font-size: 10pt;
             font-weight: bold;
             text-transform: uppercase;
-            margin: 0 0 5px 0;
-            letter-spacing: 1px;
+            margin: 0 0 2px 0;
+            letter-spacing: 0.5px;
         }
         
         .document-subtitle {
-            font-size: 11pt;
+            font-size: 9pt;
             font-weight: normal;
             margin: 0;
         }
         
         .header-info {
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             background-color: #f8f9fa;
-            padding: 8px;
+            padding: 4px;
             border: 1px solid #ddd;
         }
         
         .header-info p {
-            margin: 3px 0;
-            font-size: 10pt;
+            margin: 1px 0;
+            font-size: 8pt;
         }
         
         .section-header {
-            font-size: 11pt;
+            font-size: 9pt;
             font-weight: bold;
             text-transform: uppercase;
             background-color: #e9ecef;
-            padding: 8px;
-            margin: 15px 0 10px 0;
+            padding: 4px;
+            margin: 8px 0 4px 0;
             border: 1px solid #000;
             text-align: center;
         }
         
         .subsection-header {
-            font-size: 10pt;
+            font-size: 8pt;
             font-weight: bold;
-            margin: 10px 0 5px 0;
-            padding: 5px;
+            margin: 4px 0 2px 0;
+            padding: 3px;
             background-color: #f8f9fa;
-            border-left: 3px solid #000;
+            border-left: 2px solid #000;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 8px 0;
-            font-size: 9pt;
+            margin: 3px 0;
+            font-size: 7pt;
         }
         
         table, th, td {
@@ -85,52 +85,52 @@
             background-color: #e9ecef;
             font-weight: bold;
             text-align: center;
-            padding: 6px 4px;
-            font-size: 9pt;
+            padding: 3px 2px;
+            font-size: 7pt;
         }
         
         td {
-            padding: 4px;
+            padding: 2px;
             text-align: left;
             vertical-align: top;
         }
         
         .text-content {
-            margin: 5px 0;
-            padding: 5px;
+            margin: 2px 0;
+            padding: 3px;
             background-color: #f8f9fa;
             border: 1px solid #ddd;
-            font-size: 10pt;
-            min-height: 20px;
+            font-size: 8pt;
+            min-height: 15px;
         }
         
         .number-cell {
             text-align: right;
-            padding-right: 8px;
+            padding-right: 6px;
         }
         
         @media print {
             body { 
-                font-size: 9pt; 
-                line-height: 1.2;
+                font-size: 7pt; 
+                line-height: 1.05;
             }
             .document-header {
-                margin-bottom: 10px;
-                padding-bottom: 8px;
+                margin-bottom: 6px;
+                padding-bottom: 3px;
             }
             .section-header {
-                margin: 10px 0 8px 0;
-                padding: 6px;
+                margin: 6px 0 3px 0;
+                padding: 3px;
             }
             .subsection-header {
-                margin: 8px 0 4px 0;
-                padding: 4px;
+                margin: 3px 0 1px 0;
+                padding: 2px;
             }
             table {
-                margin: 6px 0;
+                margin: 2px 0;
             }
             th, td {
-                padding: 3px;
+                padding: 1px;
             }
         }
     </style>

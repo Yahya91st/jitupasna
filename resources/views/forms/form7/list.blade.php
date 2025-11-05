@@ -64,12 +64,6 @@
                                                 <a href="{{ route('forms.form7.edit', $form->id) }}" class="btn btn-sm btn-warning" title="Edit">
                                                     <i class="bi bi-pencil"></i> Edit
                                                 </a>
-                                                <a href="{{ route('forms.form7.preview-pdf', $form->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
-                                                    <i class="bi bi-search"></i> Lihat PDF
-                                                </a>
-                                                <a href="{{ route('forms.form7.pdf', $form->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
-                                                    <i class="bi bi-download"></i> Unduh PDF
-                                                </a>
                                             </div>
                                         </td>
                                     </tr>
