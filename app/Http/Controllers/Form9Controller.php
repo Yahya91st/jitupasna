@@ -46,8 +46,6 @@ class Form9Controller extends Controller
         }
 
         DB::transaction(function () use ($validated, $jawabanData, $bencana_id, $map) {
-            // remove previous submission(s) for this bencana if desired
-            Form9::where('bencana_id', $bencana_id)->delete();
 
             // create master record
             $form = Form9::create([
@@ -112,7 +110,7 @@ class Form9Controller extends Controller
             }
         });
 
-        return redirect()->route('forms.form-list', ['bencana_id' => $bencana_id])
+        return redirect()->route('forms.form9.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data Form 9 berhasil disimpan (master + rows).');
     }
     public function list(Request $request)
@@ -133,11 +131,12 @@ class Form9Controller extends Controller
      */
     public function show($id)
     {
+
         try {
             $form = Form9::findOrFail($id);
             $bencana = Bencana::find($form->bencana_id);
-            
-            return view('forms.form9.show', compact('form', 'bencana'));
+            $allRows = Form9Row::where('form9_id', $form->id)->get();          
+            return view('forms.form9.show', compact('form', 'bencana', 'allRows'));
         } catch (\Exception $e) {
             return back()->with('error', 'Data kuesioner tidak ditemukan.');
         }
@@ -240,6 +239,7 @@ class Form9Controller extends Controller
         $pdf = Pdf::loadView('forms.form9.contoh_form9_pdf', []);
         return $pdf->stream('Contoh_Formulir_09_PDNA.pdf');
     }
+
         public function perBaris(Request $request)
     {
         $bencana_id = $request->input('bencana_id');

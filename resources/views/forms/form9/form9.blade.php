@@ -292,6 +292,8 @@
 
         <form action="{{ route('forms.form9.store') }}" method="POST">
             @csrf
+            <input type="hidden" name="form_type" value="form9">
+
             <input type="hidden" name="bencana_id" value="{{ request()->get('bencana_id') }}">
 
             <div>

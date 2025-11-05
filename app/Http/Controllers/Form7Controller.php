@@ -47,6 +47,25 @@ class Form7Controller extends Controller
             'komposisi_peserta' => 'required|string',
             'fasilitator' => 'required|string|max:255',
             'pencatat' => 'required|string|max:255',
+            'persiapan_pra_fgd' => 'nullable|in:0,1',
+            'pembagian_tugas_pelaksana' => 'nullable|in:0,1',
+            'perkenalan_pengantar' => 'nullable|in:0,1',
+            'pembahasan' => 'nullable|in:0,1',
+            'pendalaman_tanya_jawab' => 'nullable|in:0,1',
+            'penyimpulan_penutupan' => 'nullable|in:0,1',
+            // textarea answers (set 'required' — ubah ke 'nullable' bila ingin optional)
+            'akses_hak_bekerja' => 'required|string',
+            'akses_hak_jamsos' => 'required|string',
+            'akses_hak_perlindungan' => 'required|string',
+            'akses_hak_kesehatan' => 'required|string',
+            'akses_hak_pendidikan' => 'required|string',
+            'fungsi_pranata_sosial' => 'required|string',
+            'fungsi_pranata_ekonomi' => 'required|string',
+            'fungsi_pranata_agama' => 'required|string',
+            'fungsi_pranata_pemerintahan' => 'required|string',
+            'resiko_kerentanan_sosial' => 'required|string',
+            'resiko_kerentanan_ekonomi' => 'required|string',
+            'resiko_kerentanan_geografis' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -124,9 +143,24 @@ class Form7Controller extends Controller
         $form->komposisi_peserta = $request->komposisi_peserta;
         $form->fasilitator = $request->fasilitator;
         $form->pencatat = $request->pencatat;
-        $form->akses_hak = $aksesHak;
-        $form->fungsi_pranata = $fungsiPranata;
-        $form->resiko_kerentanan = $resikoKerentanan;
+        // simpan field akses_hak terpisah
+        $form->akses_hak_bekerja = $request->input('akses_hak_bekerja');
+        $form->akses_hak_jamsos = $request->input('akses_hak_jamsos');
+        $form->akses_hak_perlindungan = $request->input('akses_hak_perlindungan');
+        $form->akses_hak_kesehatan = $request->input('akses_hak_kesehatan');
+        $form->akses_hak_pendidikan = $request->input('akses_hak_pendidikan');
+
+        // simpan field fungsi_pranata terpisah
+        $form->fungsi_pranata_sosial = $request->input('fungsi_pranata_sosial');
+        $form->fungsi_pranata_ekonomi = $request->input('fungsi_pranata_ekonomi');
+        $form->fungsi_pranata_agama = $request->input('fungsi_pranata_agama');
+        $form->fungsi_pranata_pemerintahan = $request->input('fungsi_pranata_pemerintahan');
+
+        // simpan field resiko_kerentanan terpisah
+        $form->resiko_kerentanan_sosial = $request->input('resiko_kerentanan_sosial');
+        $form->resiko_kerentanan_ekonomi = $request->input('resiko_kerentanan_ekonomi');
+        $form->resiko_kerentanan_geografis = $request->input('resiko_kerentanan_geografis');
+
         $form->save();
 
         return redirect()->route('forms.form7.show', $form->id)->with('success', 'Data Form7 berhasil disimpan.');
@@ -209,6 +243,19 @@ class Form7Controller extends Controller
             'komposisi_peserta' => 'required|string',
             'fasilitator' => 'required|string|max:255',
             'pencatat' => 'required|string|max:255',
+            // textarea answers (set 'required' — ubah ke 'nullable' bila ingin optional)
+            'akses_hak_bekerja' => 'required|string',
+            'akses_hak_jamsos' => 'required|string',
+            'akses_hak_perlindungan' => 'required|string',
+            'akses_hak_kesehatan' => 'required|string',
+            'akses_hak_pendidikan' => 'required|string',
+            'fungsi_pranata_sosial' => 'required|string',
+            'fungsi_pranata_ekonomi' => 'required|string',
+            'fungsi_pranata_agama' => 'required|string',
+            'fungsi_pranata_pemerintahan' => 'required|string',
+            'resiko_kerentanan_sosial' => 'required|string',
+            'resiko_kerentanan_ekonomi' => 'required|string',
+            'resiko_kerentanan_geografis' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -285,9 +332,25 @@ class Form7Controller extends Controller
         $form->komposisi_peserta = $request->komposisi_peserta;
         $form->fasilitator = $request->fasilitator;
         $form->pencatat = $request->pencatat;
-        $form->akses_hak = $aksesHak;
-        $form->fungsi_pranata = $fungsiPranata;
-        $form->resiko_kerentanan = $resikoKerentanan;
+        // simpan field akses_hak terpisah
+        $form->akses_hak_bekerja = $request->input('akses_hak_bekerja');
+        $form->akses_hak_jamsos = $request->input('akses_hak_jamsos');
+        $form->akses_hak_perlindungan = $request->input('akses_hak_perlindungan');
+        $form->akses_hak_kesehatan = $request->input('akses_hak_kesehatan');
+        $form->akses_hak_pendidikan = $request->input('akses_hak_pendidikan');
+
+        // simpan field fungsi_pranata terpisah
+        $form->fungsi_pranata_sosial = $request->input('fungsi_pranata_sosial');
+        $form->fungsi_pranata_ekonomi = $request->input('fungsi_pranata_ekonomi');
+        $form->fungsi_pranata_agama = $request->input('fungsi_pranata_agama');
+        $form->fungsi_pranata_pemerintahan = $request->input('fungsi_pranata_pemerintahan');
+
+        // simpan field resiko_kerentanan terpisah
+        $form->resiko_kerentanan_sosial = $request->input('resiko_kerentanan_sosial');
+        $form->resiko_kerentanan_ekonomi = $request->input('resiko_kerentanan_ekonomi');
+        $form->resiko_kerentanan_geografis = $request->input('resiko_kerentanan_geografis');
+
+        $form->save();
         $form->updated_by = Auth::id();
         $form->save();
 

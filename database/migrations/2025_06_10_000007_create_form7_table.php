@@ -28,12 +28,12 @@ return new class extends Migration
             $table->string('pencatat');
             
             // CHECKLIST PERSIAPAN
-            $table->boolean('persiapan_pra_fgd');   
-            $table->boolean('pembagian_tugas_pelaksana');   
-            $table->boolean('perkenalan_pengantar');    
-            $table->boolean('pembahasan');  
-            $table->boolean('pendalaman_tanya_jawab');  
-            $table->boolean('penyimpulan_penutupan');   
+            $table->boolean('persiapan_pra_fgd')->default(false)->change();
+            $table->boolean('pembagian_tugas_pelaksana')->default(false)->change();
+            $table->boolean('perkenalan_pengantar')->default(false)->change();
+            $table->boolean('pembahasan')->default(false)->change();
+            $table->boolean('pendalaman_tanya_jawab')->default(false)->change();
+            $table->boolean('penyimpulan_penutupan')->default(false)->change();
 
             // A. Akses Hak
             $table->text('akses_hak_bekerja');

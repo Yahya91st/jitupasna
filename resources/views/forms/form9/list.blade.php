@@ -29,11 +29,7 @@
                 </p>
             </div>
         @endif
-        <div class="text-center mt-3">
-            <a href="{{ route('forms.form9.form9Row', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-                <i class="fa fa-arrow-left mr-2"></i> Form 9 Per Baris
-            </a>
-        </div>
+
         <div class="mb-4 flex justify-between">
             <a href="{{ route('forms.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn btn-secondary">
                 <i class="fa fa-arrow-left mr-2"></i> Kembali

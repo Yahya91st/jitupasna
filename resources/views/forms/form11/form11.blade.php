@@ -420,201 +420,514 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {{-- Perumahan & Permukiman --}}
+
                     <tr class="clickable-row">
-                        <td rowspan="5" class="kategori">Perumahan &<br>Permukiman</td>
-                        <td>Pembangunan</td>
-                        <td><input type="text" name="perumahan_pembangunan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="perumahan_pembangunan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="perumahan_pembangunan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_pembangunan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_pembangunan_jumlah" readonly></td>
-                        <td><input type="text" name="perumahan_pembangunan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="15" class="kategori">Perumahan &<br>Permukiman</td>
+                        <td rowspan="3">Pembangunan</td>
+                        <td><input type="text" name="perumahan_pembangunan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="perumahan_pembangunan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="perumahan_pembangunan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_pembangunan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_pembangunan_jumlah_1" readonly></td>
+                        <td><input type="text" name="perumahan_pembangunan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="perumahan_pembangunan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="perumahan_pembangunan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="perumahan_pembangunan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_pembangunan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_pembangunan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="perumahan_pembangunan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td>Penggantian</td>
-                        <td><input type="text" name="perumahan_penggantian_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="perumahan_penggantian_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="perumahan_penggantian_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_penggantian_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_penggantian_jumlah" readonly></td>
-                        <td><input type="text" name="perumahan_penggantian_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Penggantian</td>
+                        <td><input type="text" name="perumahan_penggantian_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="perumahan_penggantian_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="perumahan_penggantian_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_penggantian_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_penggantian_jumlah_1" readonly></td>
+                        <td><input type="text" name="perumahan_penggantian_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="perumahan_penggantian_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="perumahan_penggantian_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="perumahan_penggantian_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_penggantian_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_penggantian_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="perumahan_penggantian_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td>Penyediaan Bantuan</td>
-                        <td><input type="text" name="perumahan_bantuan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="perumahan_bantuan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="perumahan_bantuan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_bantuan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_bantuan_jumlah" readonly></td>
-                        <td><input type="text" name="perumahan_bantuan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Penyediaan Bantuan</td>
+                        <td><input type="text" name="perumahan_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="perumahan_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="perumahan_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="perumahan_bantuan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="perumahan_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="perumahan_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="perumahan_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="perumahan_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td>Pemulihan Fungsi</td>
-                        <td><input type="text" name="perumahan_pemulihan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="perumahan_pemulihan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="perumahan_pemulihan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_pemulihan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_pemulihan_jumlah" readonly></td>
-                        <td><input type="text" name="perumahan_pemulihan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Pemulihan Fungsi</td>
+                        <td><input type="text" name="perumahan_pemulihan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="perumahan_pemulihan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="perumahan_pemulihan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_pemulihan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_pemulihan_jumlah_1" readonly></td>
+                        <td><input type="text" name="perumahan_pemulihan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="perumahan_pemulihan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="perumahan_pemulihan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="perumahan_pemulihan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_pemulihan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_pemulihan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="perumahan_pemulihan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td>Pengurangan Resiko</td>
-                        <td><input type="text" name="perumahan_resiko_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="perumahan_resiko_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="perumahan_resiko_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_resiko_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="perumahan_resiko_jumlah" readonly></td>
-                        <td><input type="text" name="perumahan_resiko_keterangan" placeholder="Keterangan..."></td>
-                    </tr> {{-- Infrastruktur --}}
-                    <tr class="clickable-row">
-                        <td rowspan="3" class="kategori">Infrastruktur</td>
-                        <td>Pembangunan</td>
-                        <td><input type="text" name="infra_pembangunan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="infra_pembangunan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="infra_pembangunan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_pembangunan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_pembangunan_jumlah" readonly></td>
-                        <td><input type="text" name="infra_pembangunan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Pengurangan Resiko</td>
+                        <td><input type="text" name="perumahan_resiko_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="perumahan_resiko_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="perumahan_resiko_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_resiko_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="perumahan_resiko_jumlah_1" readonly></td>
+                        <td><input type="text" name="perumahan_resiko_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="perumahan_resiko_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="perumahan_resiko_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="perumahan_resiko_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_resiko_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="perumahan_resiko_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="perumahan_resiko_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td>Penggantian</td>
-                        <td><input type="text" name="infra_penggantian_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="infra_penggantian_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="infra_penggantian_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_penggantian_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_penggantian_jumlah" readonly></td>
-                        <td><input type="text" name="infra_penggantian_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="15" class="kategori">Infrastruktur</td>
+                        <td rowspan="3">Pembangunan</td>
+                        <td><input type="text" name="infra_pembangunan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="infra_pembangunan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="infra_pembangunan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_pembangunan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_pembangunan_jumlah_1" readonly></td>
+                        <td><input type="text" name="infra_pembangunan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="infra_pembangunan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="infra_pembangunan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="infra_pembangunan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_pembangunan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_pembangunan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="infra_pembangunan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td>Penyediaan Bantuan</td>
-                        <td><input type="text" name="infra_bantuan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="infra_bantuan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="infra_bantuan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_bantuan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_bantuan_jumlah" readonly></td>
-                        <td><input type="text" name="infra_bantuan_keterangan" placeholder="Keterangan..."></td>
-                    </tr> {{-- Ekonomi Produktif --}}
-                    <tr class="clickable-row">
-                        <td rowspan="5" class="kategori">Ekonomi Produktif</td>
-                        <td>Pemulihan Fungsi</td>
-                        <td><input type="text" name="ekonomi_pemulihan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="ekonomi_pemulihan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="ekonomi_pemulihan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_pemulihan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_pemulihan_jumlah" readonly></td>
-                        <td><input type="text" name="ekonomi_pemulihan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Penggantian</td>
+                        <td><input type="text" name="infra_penggantian_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="infra_penggantian_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="infra_penggantian_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_penggantian_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_penggantian_jumlah_1" readonly></td>
+                        <td><input type="text" name="infra_penggantian_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="infra_penggantian_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="infra_penggantian_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="infra_penggantian_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_penggantian_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_penggantian_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="infra_penggantian_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
+                    <tr class="clickable-row">
+                        <td rowspan="3">Penyediaan Bantuan</td>
+                        <td><input type="text" name="infra_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="infra_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="infra_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="infra_bantuan_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="infra_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="infra_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="infra_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="infra_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
                     <tr>
-                        <td>Pengurangan Resiko</td>
-                        <td><input type="text" name="ekonomi_resiko_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="ekonomi_resiko_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="ekonomi_resiko_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_resiko_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_resiko_jumlah" readonly></td>
-                        <td><input type="text" name="ekonomi_resiko_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Pemulihan Fungsi</td>
+                        <td><input type="text" name="infra_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="infra_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="infra_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="infra_bantuan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="infra_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="infra_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="infra_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="infra_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr>
-                        <td>Pembangunan</td>
-                        <td><input type="text" name="ekonomi_pembangunan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="ekonomi_pembangunan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="ekonomi_pembangunan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_pembangunan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_pembangunan_jumlah" readonly></td>
-                        <td><input type="text" name="ekonomi_pembangunan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Pengurangan Resiko</td>
+                        <td><input type="text" name="infra_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="infra_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="infra_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="infra_bantuan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
-                    <tr>
-                        <td>Penggantian</td>
-                        <td><input type="text" name="ekonomi_penggantian_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="ekonomi_penggantian_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="ekonomi_penggantian_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_penggantian_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_penggantian_jumlah" readonly></td>
-                        <td><input type="text" name="ekonomi_penggantian_keterangan" placeholder="Keterangan..."></td>
-                    </tr>
-                    <tr>
-                        <td>Penyediaan Bantuan</td>
-                        <td><input type="text" name="ekonomi_bantuan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="ekonomi_bantuan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="ekonomi_bantuan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_bantuan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="ekonomi_bantuan_jumlah" readonly></td>
-                        <td><input type="text" name="ekonomi_bantuan_keterangan" placeholder="Keterangan..."></td>
-                    </tr> {{-- Sosial --}}
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="infra_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="infra_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="infra_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="infra_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td rowspan="3" class="kategori">Sosial</td>
-                        <td>Pembangunan</td>
-                        <td><input type="text" name="sosial_pembangunan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="sosial_pembangunan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="sosial_pembangunan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="sosial_pembangunan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="sosial_pembangunan_jumlah" readonly></td>
-                        <td><input type="text" name="sosial_pembangunan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="15" class="kategori">Ekonomi Produktif</td>
+                        <td rowspan="3">Pemulihan Fungsi</td>
+                        <td><input type="text" name="ekonomi_pemulihan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_pemulihan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_pemulihan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_pemulihan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_pemulihan_jumlah_1" readonly></td>
+                        <td><input type="text" name="ekonomi_pemulihan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="ekonomi_pemulihan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="ekonomi_pemulihan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="ekonomi_pemulihan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_pemulihan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_pemulihan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="ekonomi_pemulihan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
+                    <tr>
+                        <td rowspan="3">Pengurangan Resiko</td>
+                        <td><input type="text" name="ekonomi_resiko_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_resiko_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_resiko_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_resiko_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_resiko_jumlah_1" readonly></td>
+                        <td><input type="text" name="ekonomi_resiko_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="ekonomi_resiko_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="ekonomi_resiko_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="ekonomi_resiko_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_resiko_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_resiko_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="ekonomi_resiko_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+                    <tr>
+                        <td rowspan="3">Pembangunan</td>
+                        <td><input type="text" name="ekonomi_pembangunan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_pembangunan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_pembangunan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_pembangunan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_pembangunan_jumlah_1" readonly></td>
+                        <td><input type="text" name="ekonomi_pembangunan_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="ekonomi_pembangunan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="ekonomi_pembangunan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="ekonomi_pembangunan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_pembangunan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_pembangunan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="ekonomi_pembangunan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+                    <tr>
+                        <td rowspan="3">Penggantian</td>
+                        <td><input type="text" name="ekonomi_penggantian_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_penggantian_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_penggantian_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_penggantian_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_penggantian_jumlah_1" readonly></td>
+                        <td><input type="text" name="ekonomi_penggantian_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="ekonomi_penggantian_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="ekonomi_penggantian_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="ekonomi_penggantian_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_penggantian_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_penggantian_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="ekonomi_penggantian_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
+                    <tr>
+                        <td rowspan="3">Penyediaan Bantuan</td>
+                        <td><input type="text" name="ekonomi_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="ekonomi_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="ekonomi_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="ekonomi_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="ekonomi_bantuan_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for ($i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="ekonomi_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="ekonomi_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="ekonomi_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="ekonomi_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="ekonomi_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr class="clickable-row">
-                        <td>Penggantian</td>
-                        <td><input type="text" name="sosial_penggantian_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="sosial_penggantian_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="sosial_penggantian_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="sosial_penggantian_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="sosial_penggantian_jumlah" readonly></td>
-                        <td><input type="text" name="sosial_penggantian_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="15" class="kategori">Sosial</td>
+                        <td rowspan="3">Pembangunan</td>
+                        <td><input type="text" name="sosial_pembangunan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="sosial_pembangunan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="sosial_pembangunan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_pembangunan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_pembangunan_jumlah_1" readonly></td>
+                        <td><input type="text" name="sosial_pembangunan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="sosial_pembangunan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="sosial_pembangunan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="sosial_pembangunan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_pembangunan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_pembangunan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="sosial_pembangunan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
                     <tr class="clickable-row">
-                        <td>Penyediaan Bantuan</td>
-                        <td><input type="text" name="sosial_bantuan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="sosial_bantuan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="sosial_bantuan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="sosial_bantuan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="sosial_bantuan_jumlah" readonly></td>
-                        <td><input type="text" name="sosial_bantuan_keterangan" placeholder="Keterangan..."></td>
-                    </tr> {{-- Lintas Sektor --}}
-                    <tr>
-                        <td rowspan="6" class="kategori">Lintas Sektor</td>
-                        <td>Pemulihan Fungsi</td>
-                        <td><input type="text" name="lintas_pemulihan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="lintas_pemulihan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="lintas_pemulihan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_pemulihan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_pemulihan_jumlah" readonly></td>
-                        <td><input type="text" name="lintas_pemulihan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3"></td>Penggantian</td>
+                        <td><input type="text" name="sosial_penggantian_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="sosial_penggantian_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="sosial_penggantian_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_penggantian_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_penggantian_jumlah_1" readonly></td>
+                        <td><input type="text" name="sosial_penggantian_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
-                    <tr>
-                        <td>Pengurangan Resiko</td>
-                        <td><input type="text" name="lintas_resiko1_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="lintas_resiko1_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="lintas_resiko1_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_resiko1_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_resiko1_jumlah" readonly></td>
-                        <td><input type="text" name="lintas_resiko1_keterangan" placeholder="Keterangan..."></td>
-                    </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="sosial_penggantian_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="sosial_penggantian_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="sosial_penggantian_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_penggantian_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_penggantian_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="sosial_penggantian_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
                     <tr class="clickable-row">
-                        <td>Pembangunan</td>
-                        <td><input type="text" name="infra_bangun_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="infra_bangun_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="infra_bangun_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_bangun_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="infra_bangun_jumlah" readonly></td>
-                        <td><input type="text" name="infra_bangun_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Penyediaan Bantuan</td>
+                        <td><input type="text" name="sosial_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="sosial_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="sosial_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="sosial_bantuan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="sosial_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="sosial_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="sosial_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="sosial_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+                    <tr class="clickable-row">
+                        <td rowspan="3">Pengurangan Resiko</td>
+                        <td><input type="text" name="sosial_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="sosial_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="sosial_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="sosial_bantuan_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="sosial_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="sosial_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="sosial_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="sosial_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+                    <tr class="clickable-row">
+                        <td rowspan="3">Penyediaan Bantuan</td>
+                        <td><input type="text" name="sosial_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="sosial_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="sosial_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="sosial_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="sosial_bantuan_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="sosial_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="sosial_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="sosial_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="sosial_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="sosial_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+
                     <tr>
-                        <td>Penggantian</td>
-                        <td><input type="text" name="lintas_penggantian_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="lintas_penggantian_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="lintas_penggantian_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_penggantian_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_penggantian_jumlah" readonly></td>
-                        <td><input type="text" name="lintas_penggantian_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="15" class="kategori">Lintas Sektor</td>
+                        <td rowspan="3">Pemulihan Fungsi</td>
+                        <td><input type="text" name="lintas_pemulihan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_pemulihan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_pemulihan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_pemulihan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_pemulihan_jumlah_1" readonly></td>
+                        <td><input type="text" name="lintas_pemulihan_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="lintas_pemulihan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="lintas_pemulihan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="lintas_pemulihan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_pemulihan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_pemulihan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="lintas_pemulihan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
                     <tr>
-                        <td>Penyediaan Bantuan</td>
-                        <td><input type="text" name="lintas_bantuan_kegiatan" placeholder="Masukkan kegiatan..."></td>
-                        <td><input type="text" name="lintas_bantuan_lokasi" placeholder="Lokasi..."></td>
-                        <td><input type="number" name="lintas_bantuan_volume" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_bantuan_harga" placeholder="0" step="0.01"></td>
-                        <td><input type="number" name="lintas_bantuan_jumlah" readonly></td>
-                        <td><input type="text" name="lintas_bantuan_keterangan" placeholder="Keterangan..."></td>
+                        <td rowspan="3">Pengurangan Resiko</td>
+                        <td><input type="text" name="lintas_resiko1_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_resiko1_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_resiko1_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_resiko1_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_resiko1_jumlah_1" readonly></td>
+                        <td><input type="text" name="lintas_resiko1_keterangan_1" placeholder="Keterangan..."></td>
                     </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="lintas_resiko1_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="lintas_resiko1_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="lintas_resiko1_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_resiko1_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_resiko1_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="lintas_resiko1_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+                    <tr class="clickable-row">
+                        <td rowspan="3">Pembangunan</td>
+                        <td><input type="text" name="infra_bangun_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="infra_bangun_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="infra_bangun_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bangun_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="infra_bangun_jumlah_1" readonly></td>
+                        <td><input type="text" name="infra_bangun_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="infra_bangun_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="infra_bangun_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="infra_bangun_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bangun_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="infra_bangun_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="infra_bangun_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+                        </tr>
+                    @endfor
+                    <tr>
+                        <td rowspan="3">Penggantian</td>
+                        <td><input type="text" name="lintas_penggantian_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_penggantian_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_penggantian_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_penggantian_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_penggantian_jumlah_1" readonly></td>
+                        <td><input type="text" name="lintas_penggantian_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="lintas_penggantian_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="lintas_penggantian_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="lintas_penggantian_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_penggantian_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_penggantian_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="lintas_penggantian_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+
+                        </tr>
+                    @endfor
+                    <tr>
+                        <td rowspan="3">Penyediaan Bantuan</td>
+                        <td><input type="text" name="lintas_bantuan_kegiatan_1" placeholder="Masukkan kegiatan..."></td>
+                        <td><input type="text" name="lintas_bantuan_lokasi_1" placeholder="Lokasi..."></td>
+                        <td><input type="number" name="lintas_bantuan_volume_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_bantuan_harga_1" placeholder="0" step="0.01"></td>
+                        <td><input type="number" name="lintas_bantuan_jumlah_1" readonly></td>
+                        <td><input type="text" name="lintas_bantuan_keterangan_1" placeholder="Keterangan..."></td>
+                    </tr>
+                    @for (@$i = 2; $i <= 3; $i++)
+                        <tr>
+                            <td><input type="text" name="lintas_bantuan_kegiatan_{{ $i }}" placeholder="Masukkan kegiatan..."></td>
+                            <td><input type="text" name="lintas_bantuan_lokasi_{{ $i }}" placeholder="Lokasi..."></td>
+                            <td><input type="number" name="lintas_bantuan_volume_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_bantuan_harga_{{ $i }}" placeholder="0" step="0.01"></td>
+                            <td><input type="number" name="lintas_bantuan_jumlah_{{ $i }}" readonly></td>
+                            <td><input type="text" name="lintas_bantuan_keterangan_{{ $i }}" placeholder="Keterangan..."></td>
+
+                        </tr>
+                    @endfor
+
                 </tbody>
             </table>
 
