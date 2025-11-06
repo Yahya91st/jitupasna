@@ -408,3 +408,21 @@
 2025-11-05 11:32:50 - Form3Controller.php exists: Yes
 2025-11-05 11:32:51 - Request to Form3: /forms/form3/preview-pdf/1
 2025-11-05 11:32:51 - Form3Controller.php exists: Yes
+2025-11-06 05:55:14 - Request to Form3: /forms/form3?bencana_id=1
+2025-11-06 05:55:14 - Form3Controller.php exists: Yes
+2025-11-06 05:55:14 - Request to Form3: /forms/form3/list?bencana_id=1
+2025-11-06 05:55:14 - Form3Controller.php exists: Yes
+2025-11-06 07:06:25 - Request to Form3: /forms/form3/list?bencana_id=1
+2025-11-06 07:06:25 - Form3Controller.php exists: Yes
+2025-11-06 07:06:28 - Request to Form3: /forms/form3?bencana_id=1
+2025-11-06 07:06:28 - Form3Controller.php exists: Yes
+2025-11-06 07:08:38 - Request to Form3: /forms/form3/store
+2025-11-06 07:08:38 - Form3Controller.php exists: Yes
+2025-11-06 07:08:38 - Request to Form3: /forms/form3/show/1
+2025-11-06 07:08:38 - Form3Controller.php exists: Yes
+2025-11-06 07:08:39 - Request to Form3: /forms/form3/preview-pdf/1
+2025-11-06 07:08:39 - Form3Controller.php exists: Yes
+2025-11-06 07:08:47 - Request to Form3: /forms/form3/list?bencana_id=1
+2025-11-06 07:08:47 - Form3Controller.php exists: Yes
+2025-11-06 07:10:39 - Request to Form3: /forms/form3/list?bencana_id=1
+2025-11-06 07:10:39 - Form3Controller.php exists: Yes

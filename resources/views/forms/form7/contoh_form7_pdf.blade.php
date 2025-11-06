@@ -199,18 +199,26 @@
 
         .checkbox {
             display: inline-block;
-            width: 10px;
-            height: 10px;
-            border: 1px solid #333;
+            width: 12px;
+            height: 12px;
+            border: 1.5px solid #333;
             margin-right: 4px;
             vertical-align: middle;
+            background-color: #fff;
+            position: relative;
+            text-align: center;
+            line-height: 10px;
         }
 
-        .checkbox.checked::before {
-            content: '✓';
+        .checkbox.checked::after {
+            content: 'V';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 9pt;
             font-weight: bold;
-            font-size: 10pt;
-            margin-left: 0px;
+            color: #000;
         }
 
         table {
@@ -509,7 +517,7 @@
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">1</td>
                             <td style="border: 1px solid #333; padding: 6px; background-color: #fff;"><strong>Persiapan Pra-FGD</strong><br><span class="small-text">Koordinasi awal, persiapan materi, dan identifikasi peserta</span></td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
-                                <span class="checkbox checked">✓</span>
+                                <span class="checkbox checked"></span>
                             </td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
                                 <span class="checkbox"></span>
@@ -519,7 +527,7 @@
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">2</td>
                             <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9;"><strong>Pembagian Tugas Pelaksana</strong><br><span class="small-text">Penentuan fasilitator, notulen, dan tim pendukung</span></td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
-                                <span class="checkbox checked">✓</span>
+                                <span class="checkbox checked"></span>
                             </td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
                                 <span class="checkbox"></span>
@@ -529,7 +537,7 @@
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">3</td>
                             <td style="border: 1px solid #333; padding: 6px; background-color: #fff;"><strong>Koordinasi dengan Pengantar</strong><br><span class="small-text">Koordinasi dengan tokoh masyarakat/pemerintah setempat</span></td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
-                                <span class="checkbox checked">✓</span>
+                                <span class="checkbox checked"></span>
                             </td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
                                 <span class="checkbox"></span>
@@ -539,7 +547,7 @@
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">4</td>
                             <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9;"><strong>Pembahasan Materi</strong><br><span class="small-text">Diskusi inti sesuai topik dan tujuan FGD</span></td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
-                                <span class="checkbox checked">✓</span>
+                                <span class="checkbox checked"></span>
                             </td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
                                 <span class="checkbox"></span>
@@ -552,14 +560,14 @@
                                 <span class="checkbox"></span>
                             </td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #fff;">
-                                <span class="checkbox checked">✓</span>
+                                <span class="checkbox checked"></span>
                             </td>
                         </tr>
                         <tr>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">6</td>
                             <td style="border: 1px solid #333; padding: 6px; background-color: #f9f9f9;"><strong>Penyimpulan dan Penutupan</strong><br><span class="small-text">Kesimpulan hasil diskusi dan ucapan terima kasih</span></td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
-                                <span class="checkbox checked">✓</span>
+                                <span class="checkbox checked"></span>
                             </td>
                             <td style="text-align: center; border: 1px solid #333; padding: 6px; background-color: #f9f9f9;">
                                 <span class="checkbox"></span>

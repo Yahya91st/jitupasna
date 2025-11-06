@@ -45,7 +45,7 @@ class Form9Controller extends Controller
             $map[(string)$key] = $i + 1;
         }
 
-        DB::transaction(function () use ($validated, $jawabanData, $bencana_id, $map) {
+        $form = DB::transaction(function () use ($validated, $jawabanData, $bencana_id, $map) {
 
             // create master record
             $form = Form9::create([
@@ -108,9 +108,11 @@ class Form9Controller extends Controller
             if (!empty($insertRows)) {
                 DB::table('form9_rows')->insert($insertRows);
             }
+            
+            return $form;
         });
 
-        return redirect()->route('forms.form9.list', ['bencana_id' => $bencana_id])
+        return redirect()->route('forms.form9.show', $form->id)
             ->with('success', 'Data Form 9 berhasil disimpan (master + rows).');
     }
     public function list(Request $request)
@@ -225,6 +227,11 @@ class Form9Controller extends Controller
         try {
             $form9 = Form9::findOrFail($id);
             $bencana_id = $form9->bencana_id;
+            
+            // Delete related rows first
+            Form9Row::where('form9_id', $form9->id)->delete();
+            
+            // Then delete the main form
             $form9->delete();
             
             return redirect()->route('forms.form9.list', ['bencana_id' => $bencana_id])

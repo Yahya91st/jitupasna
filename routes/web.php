@@ -196,6 +196,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form1Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form1Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form1Controller::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [Form1Controller::class, 'destroy'])->name('destroy');
             Route::get('/list', [Form1Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form1Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form1Controller::class, 'previewPdf'])->name('preview-pdf');
@@ -208,6 +209,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form2Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form2Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form2Controller::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [Form2Controller::class, 'destroy'])->name('destroy');
             Route::get('/list', [Form2Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form2Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form2Controller::class, 'previewPdf'])->name('preview-pdf');
@@ -634,6 +636,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form6Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form6Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form6Controller::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [Form6Controller::class, 'destroy'])->name('destroy');
             Route::get('/list', [Form6Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form6Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form6Controller::class, 'previewPdf'])->name('preview-pdf');
@@ -665,6 +668,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form8Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form8Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form8Controller::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [Form8Controller::class, 'destroy'])->name('destroy');
             Route::get('/list', [Form8Controller::class, 'list'])->name('list');
             Route::get('/pdf/{id}', [Form8Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form8Controller::class, 'previewPdf'])->name('preview-pdf');
@@ -693,6 +697,7 @@ Route::prefix('/forms')
             Route::patch('/update/{id}', [Form9Controller::class, 'update'])->name('update');
             Route::get('/pdf/{id}', [Form9Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form9Controller::class, 'previewPdf'])->name('preview-pdf');
+            Route::delete('/delete/{id}', [Form9Controller::class, 'destroy'])->name('destroy');
             Route::get('/contoh-pdf', [Form9Controller::class, 'contohPdf'])->name('contoh-pdf');
             Route::get('/form9Row', [Form9Controller::class, 'perBaris'])->name('form9Row');
 });
