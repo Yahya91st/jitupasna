@@ -14,20 +14,8 @@ return new class extends Migration
         Schema::create('form11', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bencana_id');
-
-            $table->string('sektor')->nullable();
-            $table->string('sub_sektor')->nullable();
-            $table->string('lokasi')->nullable();
-            $table->text('jenis_kebutuhan')->nullable();
-            $table->text('rincian_kebutuhan')->nullable();
-            $table->integer('jumlah_unit')->nullable()->default(0);
-            $table->string('satuan')->nullable();
-            $table->decimal('harga_satuan', 15, 2)->nullable()->default(0);
-            $table->decimal('total_kebutuhan', 15, 2)->nullable()->default(0);
-            $table->string('prioritas')->nullable();
-            $table->string('durasi_penyelesaian')->nullable();
-            $table->string('penanggung_jawab')->nullable();
-            $table->text('keterangan')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

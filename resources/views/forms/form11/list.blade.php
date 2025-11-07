@@ -30,34 +30,18 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Sektor</th>
-                    <th>Sub Sektor</th>
-                    <th>Jenis Kebutuhan</th>
-                    <th>Jumlah Unit</th>
-                    <th>Total Kebutuhan</th>
-                    <th>Prioritas</th>
-                    <th>Aksi</th>
+                        <th>No</th>
+                        <th>Bencana ID</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($rekapitulasiList as $index => $rekapitulasi)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $rekapitulasi->sektor }}</td>
-                    <td>{{ $rekapitulasi->sub_sektor }}</td>
-                    <td>{{ Str::limit($rekapitulasi->jenis_kebutuhan, 50) }}</td>
-                    <td>{{ number_format($rekapitulasi->jumlah_unit, 2) }} {{ $rekapitulasi->satuan }}</td>
-                    <td>Rp {{ number_format($rekapitulasi->total_kebutuhan, 0, ',', '.') }}</td>
-                    <td>
-                        @if($rekapitulasi->prioritas == 'Tinggi')
-                            <span class="badge bg-danger">Tinggi</span>
-                        @elseif($rekapitulasi->prioritas == 'Sedang')
-                            <span class="badge bg-warning">Sedang</span>
-                        @else
-                            <span class="badge bg-info">Rendah</span>
-                        @endif
-                    </td>
+                    <td>{{ $rekapitulasi->bencana_id }}</td>
+                    <td>{{ $rekapitulasi->tanggal }}</td>
                     <td>
                         <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
                             <a href="{{ route('forms.form11.show', $rekapitulasi->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
