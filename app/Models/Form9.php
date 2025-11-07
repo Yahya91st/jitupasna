@@ -13,16 +13,8 @@ class Form9 extends Model
     
     protected $fillable = [
         'bencana_id',
-        'pertanyaan_no',
-        'jawaban_index',
-        'kuesioner_1',
-        'kuesioner_2',
-        'kuesioner_3',
-        'kuesioner_4',
-        'kuesioner_5',
-        'kuesioner_6',
-        'jumlah',
-        'persentase',
+        'tanggal',
+        'keterangan',    
     ];
     
     // Cast array data properly for multi-select fields
