@@ -723,8 +723,9 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form11Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form11Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form11Controller::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [Form11Controller::class, 'destroy'])->name('destroy');
             Route::get('/pdf/{id}', [Form11Controller::class, 'generatePdf'])->name('pdf');
-            Route::get('/preview-pdf/{id}', [Form11Controller::class, 'previewPdf'])->name('previewPdf');
+            Route::get('/preview-pdf/{id}', [Form11Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/contoh-pdf', [Form11Controller::class, 'contohPdf'])->name('contoh-pdf');
         });
 

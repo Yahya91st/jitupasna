@@ -1,122 +1,301 @@
 @extends('layouts.main')
 
+@push('style')
+    <style>
+        .card-data {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+            border: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-data:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-header-custom {
+            background: linear-gradient(to right, #4a6cf7, #28bafd);
+            color: white;
+            border-radius: 0.5rem 0.5rem 0 0;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-custom {
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-pdf {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-preview {
+            background-color: #0dcaf0;
+            color: white;
+        }
+
+        .detail-table {
+            width: 100%;
+        }
+
+        .detail-table td,
+        .detail-table th {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-table th {
+            width: 40%;
+            font-weight: 600;
+        }
+
+        .badge-custom {
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        .img-container {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            position: relative;
+            height: 250px;
+        }
+
+        .img-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .img-caption {
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #495057;
+            text-align: center;
+        }
+
+        .img-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .img-fluid {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .section-title {
+            position: relative;
+            padding-left: 15px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #4a6cf7, #28bafd);
+            border-radius: 4px;
+        }
+
+        .badge-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-info {
+            background-color: #0dcaf0;
+            color: white;
+        }
+
+        .badge-success {
+            background-color: #198754;
+            color: white;
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+        }
+
+        .image-zoom-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .zoom-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .zoom-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+@endpush
+
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title">Detail Rekapitulasi Kebutuhan Pascabencana</h4>
-                    <div>
-                        <a href="{{ route('forms.form11.list', ['bencana_id' => $rekapitulasi->bencana_id]) }}" class="btn btn-secondary">
-                            <i class="fa fa-arrow-left"></i> Kembali
-                        </a>
-                    </div>
-                </div>
+    <div class="page-heading">
+        <div class="page-title mb-4">
+            <h3>Formulir 11 - Rekapitulasi Kebutuhan Pascabencana</h3>
+            <p class="text-subtitle text-muted">Data lengkap rekapitulasi kebutuhan untuk pemulihan pascabencana</p>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-content">
                 <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success mb-4">
-                            {{ session('success') }}
+                    @if (session('success'))
+                        <div class="alert alert-success shadow-sm">
+                            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
                         </div>
                     @endif
 
                     <div class="row mb-4">
                         <div class="col-md-12">
-                            <div class="alert alert-light-primary color-primary">
-                                <h5>Informasi Bencana</h5>
-                                <p><strong>Bencana:</strong> {{ $rekapitulasi->bencana->kategori_bencana->nama }}</p>
-                                <p><strong>Referensi:</strong> {{ $rekapitulasi->bencana->Ref }}</p>
-                                <p><strong>Tanggal:</strong> {{ $rekapitulasi->bencana->tanggal }}</p>
-                                <p><strong>Lokasi:</strong> 
-                                    @foreach($rekapitulasi->bencana->desa as $desa)
-                                        {{ $desa->nama }}@if(!$loop->last), @endif
-                                    @endforeach
-                                </p>
+                            <div class="d-flex justify-content-between flex-wrap">
+                                <div class="mb-2">
+                                    <a href="{{ route('forms.form11.list', ['bencana_id' => $form11->bencana_id]) }}" class="btn btn-custom btn-back me-2">
+                                        <i class="bi bi-arrow-left me-1"></i> Kembali
+                                    </a>
+                                    <a href="{{ route('forms.form11.edit', $form11->id) }}" class="btn btn-custom btn-edit">
+                                        <i class="bi bi-pencil me-1"></i> Edit
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{{ route('forms.form11.pdf', $form11->id) }}" class="btn btn-custom btn-pdf me-2" target="_blank">
+                                        <i class="bi bi-file-pdf me-1"></i> Download PDF
+                                    </a>
+                                    <a href="{{ route('forms.form11.preview-pdf', $form11->id) }}" class="btn btn-custom btn-preview" target="_blank">
+                                        <i class="bi bi-eye me-1"></i> Preview PDF
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- PDF Preview Section -->
                     <div class="row">
-                        <div class="col-md-6">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th width="30%">Sektor</th>
-                                    <td>{{ $rekapitulasi->sektor }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Sub Sektor</th>
-                                    <td>{{ $rekapitulasi->sub_sektor }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Lokasi</th>
-                                    <td>{{ $rekapitulasi->lokasi }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Jenis Kebutuhan</th>
-                                    <td>{{ $rekapitulasi->jenis_kebutuhan }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Rincian Kebutuhan</th>
-                                    <td>{{ $rekapitulasi->rincian_kebutuhan }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Jumlah Unit</th>
-                                    <td>{{ number_format($rekapitulasi->jumlah_unit, 2) }} {{ $rekapitulasi->satuan }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th width="30%">Harga Satuan</th>
-                                    <td>Rp {{ number_format($rekapitulasi->harga_satuan, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Total Kebutuhan</th>
-                                    <td class="font-weight-bold text-primary">Rp {{ number_format($rekapitulasi->total_kebutuhan, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Prioritas</th>
-                                    <td>
-                                        @if($rekapitulasi->prioritas == 'Tinggi')
-                                            <span class="badge bg-danger">Tinggi</span>
-                                        @elseif($rekapitulasi->prioritas == 'Sedang')
-                                            <span class="badge bg-warning">Sedang</span>
-                                        @else
-                                            <span class="badge bg-info">Rendah</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Durasi Penyelesaian</th>
-                                    <td>{{ $rekapitulasi->durasi_penyelesaian }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Penanggung Jawab</th>
-                                    <td>{{ $rekapitulasi->penanggung_jawab }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Keterangan</th>
-                                    <td>{{ $rekapitulasi->keterangan ?? '-' }}</td>
-                                </tr>
-                            </table>
+                        <div class="col-md-12">
+                            <div class="card card-data">
+                                <div class="card-header-custom">
+                                    <i class="bi bi-file-pdf me-2"></i>Preview Dokumen - Rekapitulasi Kebutuhan ({{ $form11->tanggal ? \Carbon\Carbon::parse($form11->tanggal)->format('d/m/Y') : '-' }})
+                                </div>
+                                <div class="card-body p-0">
+                                    <iframe 
+                                        src="{{ route('forms.form11.preview-pdf', $form11->id) }}" 
+                                        width="100%" 
+                                        height="800px" 
+                                        style="border: none;"
+                                        frameborder="0">
+                                    </iframe>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Informasi Pencatatan -->
                     <div class="row mt-4">
-                        <div class="col-md-12 d-flex justify-content-between">
-                            <div>
-                                <a href="{{ route('forms.form11.edit', $rekapitulasi->id) }}" class="btn btn-warning">
-                                    <i class="fa fa-edit"></i> Edit Data
-                                </a>
-                            </div>
-                            <div>
-                                <a href="{{ route('forms.form11.previewPdf', $rekapitulasi->id) }}" class="btn btn-secondary" target="_blank">
-                                    <i class="fa fa-search"></i> Lihat PDF
-                                </a>
-                                <a href="{{ route('forms.form11.pdf', $rekapitulasi->id) }}" class="btn btn-primary" target="_blank">
-                                    <i class="fa fa-download"></i> Unduh PDF
-                                </a>
+                        <div class="col-md-12">
+                            <div class="card card-data">
+                                <div class="card-header-custom">
+                                    <i class="bi bi-clock-history me-2"></i>Informasi Pencatatan
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center p-3 bg-light rounded mb-3">
+                                                <div class="me-3">
+                                                    <i class="bi bi-person-plus fs-3 text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0">Dibuat Oleh: <strong>{{ $form11->createdBy->name ?? 'Unknown' }}</strong></h6>
+                                                    <small class="text-muted">{{ $form11->created_at->format('d-m-Y H:i') }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if ($form11->updated_by)
+                                            <div class="col-md-6">
+                                                <div class="d-flex align-items-center p-3 bg-light rounded mb-3">
+                                                    <div class="me-3">
+                                                        <i class="bi bi-pencil-square fs-3 text-success"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0">Diperbarui Oleh: <strong>{{ $form11->updatedBy->name ?? 'Unknown' }}</strong></h6>
+                                                        <small class="text-muted">{{ $form11->updated_at->format('d-m-Y H:i') }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -124,5 +303,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

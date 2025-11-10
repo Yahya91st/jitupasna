@@ -318,15 +318,17 @@ class Form11Controller extends Controller
 
     public function generatePdf($id)
     {
-        $form11 =  Form11::with('rows')->findOrFail($id);
+        $form11 = Form11::with(['rows', 'bencana.kategori_bencana', 'bencana.desa'])->findOrFail($id);
         $pdf = PDF::loadView('forms.form11.pdf', compact('form11'));
-        return $pdf->download('formulir-11-rekapitulasi-' . $form11->id . '.pdf');
+        return $pdf->download('Formulir_11_PDNA_' . $form11->id . '.pdf');
     }
 
     public function previewPdf($id)
     {
-        $form11 =  Form11::with('rows')->findOrFail($id);
-        return view('forms.form11.pdf', compact('form11'));
+        $form11 = Form11::with(['rows', 'bencana.kategori_bencana', 'bencana.desa'])->findOrFail($id);
+                
+        $pdf = Pdf::loadView('forms.form11.pdf', compact('form11'));
+        return $pdf->stream('Formulir_11_PDNA_' . $form11->id . '.pdf');
     }
 
     public function destroy($id)
