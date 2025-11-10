@@ -33,38 +33,18 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Sektor</th>
-                            <th>Sub Sektor</th>
-                            <th>Lokasi</th>
-                            <th>Jumlah Kebutuhan</th>
-                            <th>Tanggal Input</th>
-                            <th>Aksi</th>
+                            <th>Bencana</th>
+                            <th>Tanggal</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($analisaList as $index => $analisa)
+                        @foreach ($rekapitulasiList as $index => $analisa)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $analisa->sektor }}</td>
-                                <td>{{ $analisa->sub_sektor }}</td>
-                                <td>{{ $analisa->lokasi }}</td>
-                                <td>Rp {{ number_format($analisa->jumlah_kebutuhan, 0, ',', '.') }}</td>
-                                <td>{{ $analisa->created_at->format('d-m-Y H:i') }}</td>
+                                <td>{{ $analisa->bencana_id }}</td>
+                                <td>{{ $analisa->tanggal }}</td>
                                 <td>
-                                    <div class="btn-group" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 4px;">
-                                        <a href="{{ route('forms.form10.show', $analisa->id) }}" class="btn btn-sm btn-info" title="Lihat Detail">
-                                            <i class="fa fa-eye"></i> Detail
-                                        </a>
-                                        <a href="{{ route('forms.form10.edit', $analisa->id) }}" class="btn btn-sm btn-warning" title="Edit">
-                                            <i class="fa fa-edit"></i> Edit
-                                        </a>
-                                        <a href="{{ route('forms.form10.preview-pdf', $analisa->id) }}" class="btn btn-sm btn-secondary" title="Preview PDF" target="_blank">
-                                            <i class="fa fa-search"></i> Lihat PDF
-                                        </a>
-                                        <a href="{{ route('forms.form10.pdf', $analisa->id) }}" class="btn btn-sm btn-primary" title="Download PDF" target="_blank">
-                                            <i class="fa fa-download"></i> Unduh PDF
-                                        </a>
-                                    </div>
+                                    <a href="{{ route('forms.form10.show', $analisa->id) }}" class="btn btn-sm btn-info">Detail</a>
                                 </td>
                             </tr>
                         @endforeach

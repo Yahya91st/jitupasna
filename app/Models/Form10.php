@@ -9,24 +9,12 @@ class Form10 extends Model
 {
     use HasFactory;
     
-    protected $table = 'form10';
+    protected $table = 'Form10';
     
     protected $fillable = [
         'bencana_id',
-        'sektor',
-        'sub_sektor',
-        'lokasi',
-        'hasil_survey',
-        'hasil_wawancara',
-        'hasil_pendataan_skpd',
-        'kebutuhan_pemulihan',
-        'created_by',
-        'updated_by'
-    ];
-    
-    protected $casts = [
-        'created_by' => 'integer',
-        'updated_by' => 'integer'
+        'tanggal',
+        'keterangan',    
     ];
     
     // Relationships
@@ -34,4 +22,9 @@ class Form10 extends Model
     {
         return $this->belongsTo(Bencana::class);
     }
+
+    public function rows()
+    {
+        return $this->hasMany(Form10Row::class, 'Form10_id');
+    }    
 }

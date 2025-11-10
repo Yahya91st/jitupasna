@@ -11,20 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('form10', function (Blueprint $table) {
+        Schema::create('Form10', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bencana_id');
-
-            $table->string('sektor')->nullable();
-            $table->string('sub_sektor')->nullable();
-            $table->string('lokasi')->nullable();
-            $table->text('hasil_survey')->nullable();
-            $table->text('hasil_wawancara')->nullable();
-            $table->text('hasil_pendataan_skpd')->nullable();
-            $table->text('kebutuhan_pemulihan')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
-            
-
         });
     }
 
@@ -33,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('form10');
+        Schema::dropIfExists('Form10');
     }
 };
