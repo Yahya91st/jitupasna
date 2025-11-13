@@ -9,14 +9,18 @@ class Form10 extends Model
 {
     use HasFactory;
     
-    protected $table = 'Form10';
+    protected $table = 'form10';
     
     protected $fillable = [
         'bencana_id',
         'tanggal',
         'keterangan',    
     ];
-    
+
+    protected $casts = [
+        'tanggal' => 'datetime', 
+    ];
+
     // Relationships
     public function bencana()
     {

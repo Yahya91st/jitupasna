@@ -38,8 +38,12 @@ public function store(Request $request)
         // detect repeating rows (inputs like {slug}_{key}_{field}_{idx})
         $groups = [];
         foreach ($request->all() as $name => $value) {
+            // allow underscore in slug/key
             if (preg_match('/^([a-z0-9_]+)_([a-z0-9_]+)_(sektor|subsektor|lokasi|hasil_survey|hasil_wawancara|hasil_pendataan_skpd|hasil_pendalaman|kebutuhan_pemulihan)_([0-9]+)$/i', $name, $m)) {
-                $slug = $m[1]; $key = $m[2]; $field = $m[3]; $idx = (int)$m[4];
+                $slug = $m[1];
+                $key  = $m[2];
+                $field= $m[3];
+                $idx  = (int)$m[4];
                 $k = "{$slug}|{$key}|{$idx}";
                 $groups[$k][$field] = $value;
             }
@@ -78,7 +82,7 @@ public function store(Request $request)
             // create master
             $form = Form10::create([
                 'bencana_id' => $request->input('bencana_id'),
-                'tanggal' => $request->input('tanggal') ?? null,
+                'tanggal' => $request->input('tanggal') ? $request->input('tanggal') : now()->toDateString(),
                 'keterangan' => $request->input('keterangan') ?? null,
             ]);
 
@@ -88,7 +92,7 @@ public function store(Request $request)
             if (empty($groups)) {
                 // single detail row from header inputs
                 $insertRows[] = [
-                    'Form10_id' => $form->id,
+                    'form10_id' => $form->id,
                     'order' => 1,
                     'sektor_sub_sektor' => trim($request->input('sektor') . ' / ' . $request->input('sub_sektor')),
                     'lokasi' => $request->input('lokasi') ?? null,
@@ -115,7 +119,7 @@ public function store(Request $request)
                     $sektor_sub = $sektor || $sub ? trim(($sektor ?? '') . ($sub ? ' / ' . $sub : '')) : "{$slug}/{$key}";
 
                     $insertRows[] = [
-                        'Form10_id' => $form->id,
+                        'form10_id' => $form->id,
                         'order' => (int)$idx,
                         'sektor_sub_sektor' => $sektor_sub,
                         'lokasi' => $r['lokasi'] ?? null,
@@ -130,7 +134,15 @@ public function store(Request $request)
             }
 
             if (! empty($insertRows)) {
-                DB::table('Form10_rows')->insert($insertRows);
+                // Pastikan urutan sebelum insert:
+                usort($insertRows, function($a, $b) {
+                    if (($a['order'] ?? 0) === ($b['order'] ?? 0)) {
+                        return strcmp($a['sektor_sub_sektor'] ?? '', $b['sektor_sub_sektor'] ?? '');
+                    }
+                    return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
+                });
+
+                DB::table('form10_rows')->insert($insertRows);
             }
         });
 
@@ -165,7 +177,7 @@ public function store(Request $request)
         $forms = $query->orderBy('created_at', 'desc')->get();
 
         // build a simple list for the view: one representative row per master
-        $rekapitulasiList = $forms->map(function ($form) {
+        $analisaList = $forms->map(function ($form) {
             $first = $form->rows->first();
 
             return (object)[
@@ -181,10 +193,7 @@ public function store(Request $request)
             ];
         });
 
-        // remove dd() and align variable name with view
-        $analisaList = $rekapitulasiList;
-
-        return view('forms.form10.list', compact('rekapitulasiList','analisaList', 'bencana', 'forms'));
+        return view('forms.form10.list', compact('analisaList', 'bencana'));
     }
 
     /**

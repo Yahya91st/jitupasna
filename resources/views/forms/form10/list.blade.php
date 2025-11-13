@@ -38,11 +38,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($rekapitulasiList as $index => $analisa)
+                        @foreach ($analisaList as $index => $analisa)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $analisa->bencana_id }}</td>
-                                <td>{{ $analisa->tanggal }}</td>
+                                <td>{{ $analisa->tanggal ? \Carbon\Carbon::parse($analisa->tanggal)->format('d F Y') : '-' }}</td>
                                 <td>
                                     <a href="{{ route('forms.form10.show', $analisa->id) }}" class="btn btn-sm btn-info">Detail</a>
                                 </td>
