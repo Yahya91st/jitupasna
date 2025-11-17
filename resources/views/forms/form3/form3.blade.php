@@ -437,42 +437,38 @@
                                     67 => 'Harga konstruksi untuk per M2 untuk dermaga/pelabuhan',
                                     68 => 'Harga sewa rumah',
                                 ];
-                            @endphp
-
-                            @php
-                                $groups = [
-                                    'Penduduk-Wilayah' => range(1, 3),
-                                    'Sarana Kesehatan' => range(4, 8),
-                                    'Tenaga Kesehatan' => range(9, 12),
+                                
+                                $groups_data_dasar_sebelum_bencana = [
+                                    'Penduduk-Wilayah' => [1, 2, 3],
+                                    'Sarana Kesehatan' => [4, 5, 6, 7, 8],
+                                    'Tenaga Kesehatan' => [9, 10, 11, 12],
                                     'Kunjungan ke PUSKESMAS' => [13],
-                                    'Balita' => range(14, 17),
+                                    'Balita' => [14, 15, 16, 17],
                                     'Manula' => [18],
                                     'Penerima JPS Kesehatan' => [19],
-                                    'Sanitasi' => range(20, 21),
-                                    'Kondisi Keluarga' => range(22, 25),
-                                    'Unit Kegiatan Ekonomi' => range(26, 35),
-                                    'Sarana Ibadah' => range(36, 41),
-                                    'Jumlah Lembaga Sosial Masyarakat' => range(42, 49),
+                                    'Sanitasi' => [20, 21],
+                                    'Kondisi Keluarga' => [22, 23, 24, 25],
+                                    'Unit Kegiatan Ekonomi' => [26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
+                                    'Sarana Ibadah' => [36, 37, 38, 39, 40, 41],
+                                    'Jumlah Lembaga Sosial Masyarakat' => [42, 43, 44, 45, 46, 47, 48, 49],
                                     'Penyandang PMKS' => [50],
-                                    'Rumah' => range(51, 53),
-                                    'Jalan' => range(54, 56),
-                                    'Bangunan Bersejarah' => 57,
-                                    'Produksi' => range(58, 62),
-                                    'Harga' => range(63, 68),
+                                    'Rumah' => [51, 52, 53],
+                                    'Jalan' => [54, 55, 56],
+                                    'Bangunan Bersejarah' => [57],
+                                    'Produksi' => [58, 59, 60, 61, 62],
+                                    'Harga' => [63, 64, 65, 66, 67, 68],
                                 ];
                             @endphp
 
-                            @foreach ($groups as $groupName => $indexes)
+                            @foreach ($groups_data_dasar_sebelum_bencana as $groupName => $indexes)
                                 @foreach ($indexes as $idx)
                                     @php $slug = $slugs_data_dasar_sebelum_bencana[$idx] ?? 'dll'; @endphp
                                     <tr>
-                                        @if ($loop->parent->first && $loop->first)
-                                            <td rowspan="{{ count($indexes) }}">{{ $groupName }}</td>
-                                        @elseif ($loop->first)
-                                            {{-- handled by parent first-row logic --}}
+                                        @if ($loop->first)
+                                        <td rowspan="{{ count($indexes) }}">{{ $groupName }}</td>
                                         @endif
                                         <td>{{ $slug }}</td>
-                                        <td><input type="text" name="data[{{ $idx }}]"></td>
+                                        <td><input type="text" name="data_dasar_sebelum_bencana[{{ $idx }}]"></td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -493,42 +489,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Sejarah bencana di masa lalu</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Kronologis kejadian bencana saat ini</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Wilayah yang terdampak bencana saat ini</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah korban meninggal dunia</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah korban luka-luka</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah korban yang mengunsi</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Kerusakan dan kerugian yang dialami</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
+                            @php 
+                                $slug_data_sekunder_akibat_bencana_umum = [
+                                    1=>'Sejarah bencana di masa lalu',
+                                    2=>'Kronologis kejadian bencana saat ini',
+                                    3=>'Wilayah yang terdampak bencana saat ini',
+                                    4=>'Jumlah korban meninggal dunia',
+                                    5=>'Jumlah korban luka-luka',
+                                    6=>'Jumlah korban yang mengunsi',
+                                    7=>'Kerusakan dan kerugian yang dialami',
+                                ];
+                            @endphp
+
+                            @foreach ($slug_data_sekunder_akibat_bencana_umum as $idx => $slug)
+                                @php $slug = $slug_data_sekunder_akibat_bencana_umum[$idx] ?? 'dll'; @endphp
+                                <tr>
+                                    <td>{{ $slug }}</td>
+                                    <td>
+                                        <textarea name="data_sekunder_akibat_bencana_umum[{{ $idx }}]" class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -555,75 +536,51 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>
-                                    <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong>
-                                    <ul>
-                                        <li class="form-list-item">Pertanian pangan dan sayuran: <input type="text" class="form-input" style="width: 300px;" name="rt_pertanian"></li>
-                                        <li class="form-list-item">Peternakan: <input type="text" class="form-input" style="width: 300px;" name="rt_peternakan"></li>
-                                        <li class="form-list-item">Perikanan: <input type="text" class="form-input" style="width: 300px;" name="rt_perikanan"></li>
-                                        <li class="form-list-item">Perkebunan: <input type="text" class="form-input" style="width: 300px;" name="rt_perkebunan"></li>
-                                        <li class="form-list-item">Lainnya: <input type="text" class="form-input" style="width: 300px;" name="rt_lainnya"></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>
-                                    <strong>Bentuk gangguan kegiatan ekonomi, pada:</strong>
-                                    <ul>
-                                        <li class="form-list-item">Pertanian pangan dan sayuran: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_pertanian"></li>
-                                        <li class="form-list-item">Peternakan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_peternakan"></li>
-                                        <li class="form-list-item">Perikanan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_perikanan"></li>
-                                        <li class="form-list-item">Perkebunan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_perkebunan"></li>
-                                        <li class="form-list-item">Lainnya: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_lainnya"></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>
-                                    <div class="mb-3">
-                                        <strong>Jenis produk pertanian lokal khas yang terkena dampak bencana:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="produk_pertanian_terdampak"></textarea>
-                                    </div>
+                            @php
+                                $slug_data_sekunder_akibat_bencana_khusus_opd_1 = [
+                                    1=>'Pertanian pangan dan sayuran',
+                                    2=>'Peternakan',
+                                    3=>'Perikanan',
+                                    4=>'Perkebunan',
+                                    5=>'Lainnya',
+                                    6=>'Pertanian pangan dan sayuran: berupa',
+                                    7=>'Peternakan: berupa',
+                                    8=>'Perikanan: berupa',
+                                    9=>'Perkebunan: berupa',
+                                    10=>'Lainnya: berupa',
+                                    11=>'Jenis produk pertanian lokal khas yang terkena dampak bencana',
+                                    12=>'Seberapa berat dampak bencana terhadap produk tersebut',
+                                    13=>'Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut',
+                                    14=>'Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana',
+                                    15=>'Sebutkan bentuk-bentuk organisasi/lembaga tersebut',
+                                    16=>'Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut',
+                                    17=>'Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut',
+                                ];
+                                
+                                $groups_data_sekunder_akibat_bencana_khusus_opd_1 = [
+                                    'Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:' => [1, 2, 3, 4, 5],
+                                    'Bentuk gangguan kegiatan ekonomi, pada:'=> [6, 7, 8, 9, 10],
+                                    'Dampak pada produk pertanian lokal khas' => [11, 12, 13],
+                                    'Dampak pada organisasi/lembaga pertanian' => [14, 15, 16, 17],
+                                ];
+                            @endphp
 
-                                    <div class="mb-3">
-                                        <strong>Seberapa berat dampak bencana terhadap produk tersebut:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="dampak_produk_pertanian"></textarea>
-                                    </div>
+                            @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_1 as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_1[$idx] ?? 'dll'; @endphp    
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td> {{-- nomor grup: 1,2,... --}}
+                                        @endif
 
-                                    <div>
-                                        <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="pemulihan_produk_pertanian"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>
-                                    <div class="mb-3">
-                                        <strong>Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana .... unit.</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <strong>Sebutkan bentuk-bentuk organisasi/lembaga tersebut..........</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
-
-                                    <div>
-                                        <strong>Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut.......</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
-                                    <div>
-                                        <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut.......</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
-
-                                </td>
-                            </tr>
+                                        <td>
+                                            @if($loop->first)<strong>{{$groupName}}</strong><br>@endif
+                                            {{ $slug }}</br><input type="text" class="form-input" style="width: 300px;"
+                                            name="data_sekunder_akibat_bencana_khusus_opd_1[{{ $idx }}]">
+                                        </td>                                    
+                                    </tr>
+                                @endforeach
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -650,71 +607,53 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>
-                                    Rumah tangga yang <strong>terkena bencana</strong> dan <strong>terganggu kegiatan ekonominya:</strong><br>
-                                    Perdagangan kecil : <input type="text" class="form-input" style="width: 300px;" name="rt_perdagangan_kecil"><br>
-                                    Perdagangan menengah : <input type="text" class="form-input" style="width: 300px;" name="rt_perdagangan_menengah"><br>
-                                    Perdagangan besar : <input type="text" class="form-input" style="width: 300px;" name="rt_perdagangan_besar"><br>
-                                    Industri kecil (rakyat) : <input type="text" class="form-input" style="width: 300px;" name="rt_industri_kecil"><br>
-                                    Industri menengah : <input type="text" class="form-input" style="width: 300px;" name="rt_industri_menengah"><br>
-                                    <em>Lanjutan:</em><br>
-                                    Industri besar : <input type="text" class="form-input" style="width: 300px;" name="rt_industri_besar"><br>
-                                    Koperasi : <input type="text" class="form-input" style="width: 300px;" name="rt_koperasi"><br>
-                                    Lainnya ...... : <input type="text" class="form-input" style="width: 300px;" name="rt_lainnya_2">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>
-                                    Bentuk gangguan kegiatan ekonomi, pada:<br>
-                                    Perdagangan kecil : berupa <input type="text" class="form-input" style="width: calc(100% - 200px);" name="gangguan_perdagangan_kecil"><br>
-                                    Perdagangan menengah : berupa <input type="text" class="form-input" style="width: calc(100% - 250px);" name="gangguan_perdagangan_menengah"><br>
-                                    Perdagangan besar : berupa <input type="text" class="form-input" style="width: calc(100% - 220px);" name="gangguan_perdagangan_besar"><br>
-                                    Industri kecil-menengah : berupa <input type="text" class="form-input" style="width: calc(100% - 250px);" name="gangguan_industri_kecil_menengah"><br>
-                                    Industri besar : berupa <input type="text" class="form-input" style="width: calc(100% - 180px);" name="gangguan_industri_besar"><br>
-                                    Lainnya : berupa <input type="text" class="form-input" style="width: calc(100% - 150px);" name="gangguan_lainnya_2"><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>
-                                    <div class="mb-3">
-                                        <strong>Jenis produk industri lokal khas yang terkena dampak bencana:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="produk_industri_terdampak"></textarea>
-                                    </div>
+                            @php
+                                $slug_data_sekunder_akibat_bencana_khusus_opd_2 = [
+                                    1=>'Perdagangan kecil :',
+                                    2=>'Perdagangan menengah :',
+                                    3=>'Perdagangan besar :',
+                                    4=>'Industri kecil (rakyat) :',
+                                    5=>'Industri menengah :',
+                                    6=>'Lanjutan : <br> Jumlah Industri besar :',
+                                    7=>'Koperasi :',
+                                    8=>'Lainnya ...... :',
+                                    9=>'Perdagangan kecil : berupa',
+                                    10=>'Perdagangan menengah : berupa',
+                                    11=>'Perdagangan besar : berupa',
+                                    12=>'Industri kecil-menengah : berupa',
+                                    13=>'Industri besar : berupa',
+                                    14=>'Lainnya : berupa',
+                                    15=>'Jenis produk industri lokal khas yang terkena dampak bencana:',
+                                    16=>'Seberapa berat dampak bencana terhadap produk tersebut:',
+                                    17=>'Kegiatan yang dibutuhkan untuk pemulihan produk tersebut:',
+                                    18=>'Jumlah organisasi/lembaga koperasi di lokasi bencana yang terkena dampak bencana',
+                                    19=>'Seberapa berat dampak bencana terhadap organisasi/lembaga koperasi tersebut',
+                                    20=>'Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga koperasi tersebut'
+                                    ];
+                                    
+                                $groups_data_sekunder_akibat_bencana_khusus_opd_2 = [
+                                    'Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya'=>[1,2,3,4,5,6,7,8],
+                                    'Bentuk gangguan kegiatan ekonomi, pada'=>[9,10,11,12,13,14],
+                                    'Dampak pada produk industri'=>[15,16,17],
+                                    'Dampak organisasi/lembaga koperasi'=>[18,19,20],
+                                ];
+                            @endphp
+                            @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_2 as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_2[$idx] ?? 'dll'; @endphp    
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td> {{-- nomor grup: 1,2,... --}}
+                                        @endif
 
-                                    <div class="mb-3">
-                                        <strong>Seberapa berat dampak bencana terhadap produk tersebut:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="dampak_produk_industri"></textarea>
-                                    </div>
-
-                                    <div>
-                                        <strong>Kegiatan yang dibutuhkan untuk pemulihan produk tersebut:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="pemulihan_produk_industri"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>
-                                    <div class="mb-3">
-                                        <strong>Jumlah organisasi/lembaga koperasi di lokasi bencana yang terkena dampak bencana</strong><br>
-                                        <input type="text" class="form-input" style="width: 150px;" name="jumlah_koperasi_terdampak"> unit.
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <strong>Seberapa berat dampak bencana terhadap organisasi/lembaga koperasi tersebut</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="dampak_koperasi"></textarea>
-                                    </div>
-
-                                    <div>
-                                        <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga koperasi tersebut</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="pemulihan_koperasi"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
+                                        <td>
+                                            @if($loop->first)<strong>{{$groupName}}</strong><br>@endif
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;"
+                                            name="data_sekunder_akibat_bencana_khusus_opd_2[{{ $idx }}]">
+                                        </td>                                    
+                                    </tr>
+                                @endforeach
+                            @endforeach                        
                         </tbody>
                     </table>
 
@@ -757,76 +696,47 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>
-                                    Jumlah rumah tangga yang kehilangan akses terhadap naungan yang layak (rumah rusak berat dan rusak sedang):
-                                    <input type="text" class="form-input" style="width: 200px;" name="jumlah_rt_kehilangan_naungan">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah penyandang cacat akibat bencana:
-                                        <input type="text" class="form-input" style="width: 150px;" name="jumlah_penyandang_cacat">
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk membantu rehabilitasi penyandang cacat akibat bencana:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_rehabilitasi_cacat"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>
-                                    Kegiatan agama, sosial kemasyarakatan yang terkena dampak bencana:<br>
-                                    Jelaskan:<br>
-                                    <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_agama_sosial_terdampak"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>
-                                    Penggerak kegiatan masyarakat tersebut:<br>
-                                    <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="penggerak_kegiatan_masyarakat"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">5</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Kondisi Keberfungsian kegiatan masyarakat tersebut setelah mengalami bencana:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kondisi_kegiatan_masyarakat"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk pemulihan kegiatan tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_pemulihan_masyarakat"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">6</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Adakah permasalahan sosial akibat bencana?<br>
-                                        Jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="permasalahan_sosial"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk pengurangan permasalahan sosial tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_pengurangan_masalah_sosial"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">7</td>
-                                <td>
-                                    Adakah pengetahuan/kearifan lokal yang dapat digunakan untuk mengurangi resiko akibat bencana?<br>
-                                    Jelaskan:<br>
-                                    <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kearifan_lokal"></textarea>
-                                </td>
-                            </tr>
+                            @php 
+                            $slug_data_sekunder_akibat_bencana_khusus_opd_3 = [
+                                1=>'Jumlah rumah tangga yang kehilangan akses terhadap naungan yang layak (rumah rusak berat dan rusak sedang):',
+                                2=>'Jumlah penyandang cacat akibat bencana: ',
+                                3=>'Kegiatan yang dibutuhkan untuk membantu rehabilitasi penyandang cacat akibat bencana:',
+                                4=>'Kegiatan agama, sosial kemasyarakatan yang terkena dampak bencana: <br> Jelaskan:',
+                                5=>'Penggerak kegiatan masyarakat tersebut:',
+                                6=>'Kondisi Keberfungsian kegiatan masyarakat tersebut setelah mengalami bencana:',
+                                7=>'Kegiatan yang dibutuhkan untuk pemulihan kegiatan tersebut:',
+                                8=>'Adakah permasalahan sosial akibat bencana? <br> Jelaskan:',
+                                9=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan sosial tersebut:',
+                                10=>'Adakah pengetahuan/kearifan lokal yang dapat digunakan untuk mengurangi resiko akibat bencana? <br> Jelaskan:',
+                            ];
+
+                            $groups_data_sekunder_akibat_bencana_khusus_opd_3 = [
+                                'rumah tangga' => [1],
+                                'penyandang cacat' => [2,3],
+                                'kegiatan agama, sosial kemasyarakatan' => [4],
+                                'penggerak kegiatan masyarakat' => [5],
+                                'kondisi keberfungsian kegiatan masyarakat' => [6,7],
+                                'permasalahan sosial' => [8,9],
+                                'kearifan lokal' => [10],
+                            ];
+                            @endphp
+
+                            @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_3 as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_3[$idx] ?? 'dll'; @endphp    
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
+                                        @endif
+
+                                        <td>
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
+                                            name="data_sekunder_akibat_bencana_khusus_opd_3[{{ $idx }}]">
+                                        </td>                                    
+                                    </tr>
+                                @endforeach
+                            @endforeach
+
                         </tbody>
                     </table>
 
@@ -853,57 +763,42 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>
-                                    Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam):<br>
-                                    <textarea class="form-input" rows="3" style="width: 100%; margin-top: 5px;" name="permasalahan_pendidikan_sebelum_bencana"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Adakah indikasi siswa dan/atau guru terkena trauma setelah bencana?:
-                                        <input type="text" class="form-input" style="width: 200px;" name="indikasi_trauma_pendidikan">
-                                    </div>
-                                    <div>
-                                        Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?:
-                                        <input type="text" class="form-input" style="width: 200px;" name="jumlah_trauma_pendidikan">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Permasalahan pendidikan akibat bencana?<br>
-                                        Jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="permasalahan_pendidikan_bencana"></textarea>
-                                    </div>
-                                    <div class="mb-2">
-                                        Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_permasalahan_pendidikan"></textarea>
-                                    </div>
-                                    <div>
-                                        Jumlah sasaran:
-                                        <input type="text" class="form-input" style="width: 200px;" name="jumlah_sasaran_pendidikan">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah guru yang meninggal/berpindah setelah bencana:
-                                        <input type="text" class="form-input" style="width: 200px;" name="jumlah_guru_meninggal_pindah">
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk mengatasi permasalahan guru yang meninggal/berpindah:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_guru_meninggal_pindah"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
+                            @php 
+                            
+                            $slug_data_sekunder_akibat_bencana_khusus_opd_4=[
+                                1=>'Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam)',
+                                2=>'Adakah indikasi siswa dan/atau guru terkena trauma setelah bencana?',
+                                3=>'Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?',
+                                4=>'Permasalahan pendidikan akibat bencana? <br> Jelaskan:',
+                                5=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
+                                6=>'Jumlah sasaran:',
+                                7=>'Jumlah guru yang meninggal/berpindah setelah bencana:',
+                                8=>'Kegiatan yang dibutuhkan untuk mengatasi permasalahan guru yang meninggal/berpindah:',
+                                ];
+                            
+                            $groups_data_sekunder_akibat_bencana_khusus_opd_4 = [
+                                'Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana'=>[1],
+                                'Trauma siswa dan/atau guru setelah bencana'=>[2,3],
+                                'Permasalahan pendidikan akibat bencana'=>[4,5,6],
+                                'Guru yang meninggal/berpindah setelah bencana'=>[7,8],
+                                ];
+                            @endphp
+
+                            @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_4 as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_4[$idx] ?? 'dll'; @endphp    
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
+                                        @endif
+
+                                        <td>
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
+                                            name="data_sekunder_akibat_bencana_khusus_opd_4[{{ $idx }}]">
+                                        </td>                                    
+                                    </tr>
+                                @endforeach
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -930,93 +825,55 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah Rukun Tetangga/Rukun Warga/Kelurahan/Kecamatan yang terganggu akibat bencana:
-                                        <input type="text" class="form-input" style="width: 150px;" name="jumlah_rt_rw_terganggu">
-                                    </div>
-                                    <div class="mb-2">
-                                        Jenis gangguan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="jenis_gangguan_rt_rw"></textarea>
-                                    </div>
-                                    <div>
-                                        Kebutuhan dukungan untuk pemulihan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kebutuhan_dukungan_pemulihan"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Adakah komunitas desa yang memiliki sistem pemeliharaan dan sarana desa?<br>
-                                        Bila ada jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="sistem_pemeliharaan_desa"></textarea>
-                                    </div>
-                                    <div>
-                                        Apakah sistem tersebut terganggu akibat bencana?<br>
-                                        Jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="gangguan_sistem_pemeliharaan"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Adakah komunitas desa yang memiliki ketahanan pangan desa (lumbung dll)?<br>
-                                        Bila ada jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="ketahanan_pangan_desa"></textarea>
-                                    </div>
-                                    <div>
-                                        Apakah sistem tersebut terganggu akibat bencana?<br>
-                                        Jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="gangguan_ketahanan_pangan"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah penduduk/keluarga yang kehilangan surat-surat penting (sertifikat tanah, KTP dan lain sebagainya):
-                                        <input type="text" class="form-input" style="width: 150px;" name="jumlah_kehilangan_surat">
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk mengatasi hal tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_kehilangan_surat"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">5</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Apakah pemerintah daerah memiliki rencana kontingensi untuk permasalahan administrasi penduduk?<br>
-                                        Jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="rencana_kontingensi_administrasi"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_kontingensi_administrasi"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">6</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah pegawai pemerintah yang meninggal/berpindah:
-                                        <input type="text" class="form-input" style="width: 150px;" name="jumlah_pegawai_meninggal_pindah">
-                                    </div>
-                                    <div>
-                                        Dukungan yang dibutuhkan untuk mengatasi permasalahan tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="dukungan_pegawai_meninggal_pindah"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
+                            @php 
+                            
+                            $slug_data_sekunder_akibat_bencana_khusus_opd_5=[
+                                1=>'Jumlah Rukun Tetangga/Rukun Warga/Kelurahan/Kecamatan yang terganggu akibat bencana:',
+                                2=>'Jenis gangguan:',
+                                3=>'Kebutuhan dukungan untuk pemulihan:',
+                                4=>'Adakah komunitas desa yang memiliki sistem pemeliharaan dan sarana desa?<br>
+                                    Bila ada jelaskan:<br>',
+                                5=>'Apakah sistem tersebut terganggu akibat bencana?<br>
+                                    Jelaskan:<br>',
+                                6=>'Adakah komunitas desa yang memiliki ketahanan pangan desa (lumbung dll)?<br>
+                                    Bila ada jelaskan:<br>',
+                                7=>'Apakah sistem tersebut terganggu akibat bencana?<br>
+                                    Jelaskan:<br>',
+                                8=>'Jumlah penduduk/keluarga yang kehilangan surat-surat penting (sertifikat tanah, KTP dan lain sebagainya):',
+                                9=>'Kegiatan yang dibutuhkan untuk mengatasi hal tersebut:<br>',
+                                10=>'Apakah pemerintah daerah memiliki rencana kontingensi untuk permasalahan administrasi penduduk?<br>
+                                    Jelaskan:<br>',
+                                11=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
+                                12=>'Jumlah pegawai pemerintah yang meninggal/berpindah:',
+                                13=>'Dukungan yang dibutuhkan untuk mengatasi permasalahan tersebut:',
+                                ];
+                            
+                            $groups_data_sekunder_akibat_bencana_khusus_opd_5 = [
+                                'a'=>[1,2,3],
+                                'b'=>[4,5],
+                                'c'=>[6,7],
+                                'd'=>[8,9],
+                                'e'=>[10,11],
+                                'f'=>[12,13],
+                                ];
+                            @endphp
+
+                            @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_5 as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_5[$idx] ?? 'dll'; @endphp    
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
+                                        @endif
+
+                                        <td>
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
+                                            name="data_sekunder_akibat_bencana_khusus_opd_5[{{ $idx }}]">
+                                        </td>                                    
+                                    </tr>
+                                @endforeach
+                            @endforeach
+
                         </tbody>
                     </table>
 
@@ -1043,130 +900,64 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>
-                                    Permasalahan umum yang menghambat pelaksanaan pelayanan kesehatan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam):<br>
-                                    <textarea class="form-input" rows="3" style="width: 100%; margin-top: 5px;" name="permasalahan_kesehatan_sebelum_bencana"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Adakah indikasi penduduk trauma setelah bencana?:
-                                        <input type="text" class="form-input" style="width: 200px;" name="indikasi_trauma_kesehatan">
-                                    </div>
-                                    <div>
-                                        Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?:
-                                        <input type="text" class="form-input" style="width: 200px;" name="jumlah_trauma_kesehatan">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>
-                                    Adakah program/kegiatan kesehatan masal dalam penanggulangan dampak bencana?<br>
-                                    Jelaskan:
-                                    <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="program_kesehatan_masal"></textarea>
-                                </td>
-                            </tr>
+                            @php 
+                            
+                            $slug_data_sekunder_akibat_bencana_khusus_opd_6=[
+                                1=>'Permasalahan umum yang menghambat pelaksanaan pelayanan kesehatan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam):',
+                                2=>'Adakah indikasi penduduk trauma setelah bencana?:',
+                                3=>'Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?:',
+                                4=>'Adakah program/kegiatan kesehatan masal dalam penanggulangan dampak bencana?<br>
+                                    Jelaskan:',
+                                5=>'Permasalahan kesehatan yang umum akibat bencana?<br>
+                                    Jelaskan:<br>',
+                                6=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
+                                7=>'Adakah program pemberian makanan tambahan untuk balita/anak sekolah?<br>
+                                    Jelaskan:',
+                                8=>'Jumlah balita yang terdampak bencana:',
+                                9=>'Jelaskan dampak bencana terhadap balita:',
+                                10=>'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap balita:',
+                                11=>'Jumlah ibu hamil yang terdampak bencana:',
+                                12=>'Jelaskan dampak bencana terhadap ibu hamil:',
+                                13=>'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap ibu hamil:',
+                                14=>'Jumlah lansia yang terdampak bencana:',
+                                15=>'Jelaskan dampak bencana terhadap lansia:',
+                                16=>'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap lansia',
+                                17=>'Perkiraan dampak kesehatan jangka menengah akibat bencana<br>
+                                    Jelaskan:<br>',
+                                18=>'Kegiatan yang dibutuhkan untuk mengatasi dampak kesehatan jangka menengah tersebut:',
+                                19=>'Jumlah tenaga kesehatan yang meninggal/berpindah setelah bencana:',
+                                ];
+                            
+                            $groups_data_sekunder_akibat_bencana_khusus_opd_6 = [
+                                'a'=>[1],
+                                'b'=>[2,3],
+                                'c'=>[4],
+                                'd'=>[5,6],
+                                'e'=>[7],
+                                'f'=>[8,9,10],
+                                'g'=>[11,12,13],
+                                'h'=>[14,15,16],
+                                'i'=>[17,18],
+                                'j'=>[19],
+                                ];
+                            @endphp
 
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Permasalahan kesehatan yang umum akibat bencana?<br>
-                                        Jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="permasalahan_kesehatan"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_permasalahan_kesehatan"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">5</td>
-                                <td>
-                                    Adakah program pemberian makanan tambahan untuk balita/anak sekolah?<br>
-                                    Jelaskan:
-                                    <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="program_makanan_tambahan"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">6</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah balita yang terdampak bencana:
-                                        <input type="number" name="jumlah_balita_terdampak" class="form-input" style="width: 150px;">
-                                    </div>
-                                    <div class="mb-2">
-                                        Jelaskan dampak bencana terhadap balita:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="dampak_balita"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap balita:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_balita"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">7</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah ibu hamil yang terdampak bencana:
-                                        <input type="number" name="jumlah_ibu_hamil_terdampak" class="form-input" style="width: 150px;">
-                                    </div>
-                                    <div class="mb-2">
-                                        Jelaskan dampak bencana terhadap ibu hamil:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="dampak_ibu_hamil"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap ibu hamil:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_ibu_hamil"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">8</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Jumlah lansia yang terdampak bencana:
-                                        <input type="number" name="jumlah_lansia_terdampak" class="form-input" style="width: 150px;">
-                                    </div>
-                                    <div class="mb-2">
-                                        Jelaskan dampak bencana terhadap lansia:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="dampak_lansia"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap lansia:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_lansia"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">9</td>
-                                <td>
-                                    <div class="mb-2">
-                                        Perkiraan dampak kesehatan jangka menengah akibat bencana<br>
-                                        Jelaskan:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="dampak_kesehatan_menengah"></textarea>
-                                    </div>
-                                    <div>
-                                        Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:<br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="kegiatan_dampak_kesehatan"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">10</td>
-                                <td>
-                                    Adakah rencana kontingensi terkait bidang kesehatan dalam mengurangi risiko akibat bencana?<br>
-                                    Jelaskan:<br>
-                                    <textarea class="form-input" rows="2" style="width: 100%; margin-top: 5px;" name="rencana_kontingensi_kesehatan"></textarea>
-                                </td>
-                            </tr>
+                            @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_6 as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_6[$idx] ?? 'dll'; @endphp    
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
+                                        @endif
+
+                                        <td>
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
+                                            name="data_sekunder_akibat_bencana_khusus_opd_6[{{ $idx }}]">
+                                        </td>                                    
+                                    </tr>
+                                @endforeach
+                            @endforeach
+
                         </tbody>
                     </table>
 
