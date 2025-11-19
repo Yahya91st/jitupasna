@@ -13,6 +13,19 @@ class Form3 extends Model
     
     protected $fillable = [
         'bencana_id',
+        'wilayah_bencana',
+        'nama_opd_1',
+        'tanggal_opd_1',
+        'nama_opd_2',
+        'tanggal_opd_2',
+        'nama_opd_3',
+        'tanggal_opd_3',
+        'nama_opd_4',
+        'tanggal_opd_4',
+        'nama_opd_5',
+        'tanggal_opd_5',
+        'nama_opd_6',
+        'tanggal_opd_6',
         'tanggal',
         'keterangan',    
     ];

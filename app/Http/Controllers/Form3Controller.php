@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Bencana;
 use App\Models\Form3;
+use App\Models\Form3Row_1;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
-
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class Form3Controller extends Controller
@@ -31,41 +28,34 @@ class Form3Controller extends Controller
         return view('forms.form3.form3', compact('bencana'));
     }
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'bencana_id' => 'required|exists:bencana,id',
-            'program_kesehatan_masal' => 'nullable|string',
-            'permasalahan_kesehatan' => 'nullable|string',
-            'kegiatan_permasalahan_kesehatan' => 'nullable|string',
-            'program_makanan_tambahan' => 'nullable|string',
-            'jumlah_balita_terdampak' => 'nullable|integer|min:0',
-            'dampak_balita' => 'nullable|string',
-            'kegiatan_balita' => 'nullable|string',
-            'jumlah_ibu_hamil_terdampak' => 'nullable|integer|min:0',
-            'dampak_ibu_hamil' => 'nullable|string',
-            'kegiatan_ibu_hamil' => 'nullable|string',
-            'jumlah_lansia_terdampak' => 'nullable|integer|min:0',
-            'dampak_lansia' => 'nullable|string',
-            'kegiatan_lansia' => 'nullable|string',
-            'dampak_kesehatan_menengah' => 'nullable|string',
-            'kegiatan_dampak_kesehatan' => 'nullable|string',
-            'rencana_kontingensi_kesehatan' => 'nullable|string',
-        ]);
+public function store(\App\Http\Requests\StoreForm3Request $request)
+{
+    $validated = $request->validated();
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+    // contoh penyimpanan sederhana
+    $form = Form3::create([
+        'bencana_id' => $validated['bencana_id'] ?? null,
+        'wilayah_bencana' => $validated['wilayah_bencana'] ?? null,
+        'tanggal' => $validated['tanggal'] ?? null,
+        'keterangan' => $validated['keterangan'] ?? null,
+    ]);
+
+    // simpan detail data_dasar_sebelum_bencana jika ada
+    if (!empty($validated['data_dasar_sebelum_bencana'])) {
+        foreach ($validated['data_dasar_sebelum_bencana'] as $index => $value) {
+            Form3Row_1::create([
+                'form3_id'   => $form->id,
+                'section'    => 'data_dasar_sebelum_bencana',
+                'item_index' => (int) $index,
+                'label'      => null, // isi jika mau simpan label
+                'value'      => is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : (string) $value,
+            ]);
         }
-
-        $validated = $validator->validated();
-        $form = Form3::create($request->all());
-
-        return redirect()->route('forms.form3.show', $form->id)
-            ->with('success', 'Formulir berhasil disimpan.');
-        
     }
+
+    // simpan kelompok lain sesuai kebutuhan...
+    return redirect()->back()->with('success', 'Data Form3 tersimpan.');
+}
 
     public function show($id)
     {

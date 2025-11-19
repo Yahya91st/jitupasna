@@ -10,6 +10,8 @@ return new class extends Migration
         Schema::create('form3_rows_2', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('form3_id');
+            $table->string('Pertanyaan');
+            $table->string('Jawaban');
             $table->timestamps();
 
             $table->foreign('form3_id')->references('id')->on('form3')->onDelete('cascade');

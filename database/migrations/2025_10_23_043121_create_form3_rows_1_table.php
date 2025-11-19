@@ -9,11 +9,14 @@ return new class extends Migration
     {
         Schema::create('form3_rows_1', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('form3_id');
-
+            $table->foreignId('form3_id')->constrained('form3')->cascadeOnDelete();
+            $table->string('Kategori')->nullable();   
+            $table->string('Sub-Kategori')->nullable();
+            $table->string('Jawaban')->nullable();
             $table->timestamps();
 
-            $table->foreign('form3_id')->references('id')->on('form3')->onDelete('cascade');
+
+            $table->index(['form3_id', 'item_index']);
         });
     }
 

@@ -328,7 +328,7 @@
                     <p>
                         <span class="form-label">Wilayah bencana</span>
                         <span>Kab/kota/kecamatan: </span>
-                        <input type="text" class="form-input" style="width: 300px;" name="wilayah_bencana">
+                        <input type="text" class="form-input" style="width: 300px; border-inline-color" name="wilayah_bencana">
                     </p>
 
                     <table class="form-table three-column-table">
@@ -437,7 +437,7 @@
                                     67 => 'Harga konstruksi untuk per M2 untuk dermaga/pelabuhan',
                                     68 => 'Harga sewa rumah',
                                 ];
-                                
+
                                 $groups_data_dasar_sebelum_bencana = [
                                     'Penduduk-Wilayah' => [1, 2, 3],
                                     'Sarana Kesehatan' => [4, 5, 6, 7, 8],
@@ -465,10 +465,10 @@
                                     @php $slug = $slugs_data_dasar_sebelum_bencana[$idx] ?? 'dll'; @endphp
                                     <tr>
                                         @if ($loop->first)
-                                        <td rowspan="{{ count($indexes) }}">{{ $groupName }}</td>
+                                            <td rowspan="{{ count($indexes) }}">{{ $groupName }}</td>
                                         @endif
                                         <td>{{ $slug }}</td>
-                                        <td><input type="text" name="data_dasar_sebelum_bencana[{{ $idx }}]"></td>
+                                        <td><input type="text" class="form-input" style="width: 100%;" name="data_dasar_sebelum_bencana[{{ $idx }}]"></td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -489,15 +489,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
+                            @php
                                 $slug_data_sekunder_akibat_bencana_umum = [
-                                    1=>'Sejarah bencana di masa lalu',
-                                    2=>'Kronologis kejadian bencana saat ini',
-                                    3=>'Wilayah yang terdampak bencana saat ini',
-                                    4=>'Jumlah korban meninggal dunia',
-                                    5=>'Jumlah korban luka-luka',
-                                    6=>'Jumlah korban yang mengunsi',
-                                    7=>'Kerusakan dan kerugian yang dialami',
+                                    1 => 'Sejarah bencana di masa lalu',
+                                    2 => 'Kronologis kejadian bencana saat ini',
+                                    3 => 'Wilayah yang terdampak bencana saat ini',
+                                    4 => 'Jumlah korban meninggal dunia',
+                                    5 => 'Jumlah korban luka-luka',
+                                    6 => 'Jumlah korban yang mengunsi',
+                                    7 => 'Kerusakan dan kerugian yang dialami',
                                 ];
                             @endphp
 
@@ -538,28 +538,28 @@
                         <tbody>
                             @php
                                 $slug_data_sekunder_akibat_bencana_khusus_opd_1 = [
-                                    1=>'Pertanian pangan dan sayuran',
-                                    2=>'Peternakan',
-                                    3=>'Perikanan',
-                                    4=>'Perkebunan',
-                                    5=>'Lainnya',
-                                    6=>'Pertanian pangan dan sayuran: berupa',
-                                    7=>'Peternakan: berupa',
-                                    8=>'Perikanan: berupa',
-                                    9=>'Perkebunan: berupa',
-                                    10=>'Lainnya: berupa',
-                                    11=>'Jenis produk pertanian lokal khas yang terkena dampak bencana',
-                                    12=>'Seberapa berat dampak bencana terhadap produk tersebut',
-                                    13=>'Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut',
-                                    14=>'Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana',
-                                    15=>'Sebutkan bentuk-bentuk organisasi/lembaga tersebut',
-                                    16=>'Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut',
-                                    17=>'Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut',
+                                    1 => 'Pertanian pangan dan sayuran',
+                                    2 => 'Peternakan',
+                                    3 => 'Perikanan',
+                                    4 => 'Perkebunan',
+                                    5 => 'Lainnya',
+                                    6 => 'Pertanian pangan dan sayuran: berupa',
+                                    7 => 'Peternakan: berupa',
+                                    8 => 'Perikanan: berupa',
+                                    9 => 'Perkebunan: berupa',
+                                    10 => 'Lainnya: berupa',
+                                    11 => 'Jenis produk pertanian lokal khas yang terkena dampak bencana',
+                                    12 => 'Seberapa berat dampak bencana terhadap produk tersebut',
+                                    13 => 'Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut',
+                                    14 => 'Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana',
+                                    15 => 'Sebutkan bentuk-bentuk organisasi/lembaga tersebut',
+                                    16 => 'Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut',
+                                    17 => 'Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut',
                                 ];
-                                
+
                                 $groups_data_sekunder_akibat_bencana_khusus_opd_1 = [
                                     'Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:' => [1, 2, 3, 4, 5],
-                                    'Bentuk gangguan kegiatan ekonomi, pada:'=> [6, 7, 8, 9, 10],
+                                    'Bentuk gangguan kegiatan ekonomi, pada:' => [6, 7, 8, 9, 10],
                                     'Dampak pada produk pertanian lokal khas' => [11, 12, 13],
                                     'Dampak pada organisasi/lembaga pertanian' => [14, 15, 16, 17],
                                 ];
@@ -567,17 +567,18 @@
 
                             @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_1 as $groupName => $indexes)
                                 @foreach ($indexes as $idx)
-                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_1[$idx] ?? 'dll'; @endphp    
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_1[$idx] ?? 'dll'; @endphp
                                     <tr>
                                         @if ($loop->first)
                                             <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td> {{-- nomor grup: 1,2,... --}}
                                         @endif
 
                                         <td>
-                                            @if($loop->first)<strong>{{$groupName}}</strong><br>@endif
-                                            {{ $slug }}</br><input type="text" class="form-input" style="width: 300px;"
-                                            name="data_sekunder_akibat_bencana_khusus_opd_1[{{ $idx }}]">
-                                        </td>                                    
+                                            @if ($loop->first)
+                                                <strong>{{ $groupName }}</strong><br>
+                                            @endif
+                                            {{ $slug }}</br><input type="text" class="form-input" style="width: 300px;" name="data_sekunder_akibat_bencana_khusus_opd_1[{{ $idx }}]">
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -609,51 +610,52 @@
                         <tbody>
                             @php
                                 $slug_data_sekunder_akibat_bencana_khusus_opd_2 = [
-                                    1=>'Perdagangan kecil :',
-                                    2=>'Perdagangan menengah :',
-                                    3=>'Perdagangan besar :',
-                                    4=>'Industri kecil (rakyat) :',
-                                    5=>'Industri menengah :',
-                                    6=>'Lanjutan : <br> Jumlah Industri besar :',
-                                    7=>'Koperasi :',
-                                    8=>'Lainnya ...... :',
-                                    9=>'Perdagangan kecil : berupa',
-                                    10=>'Perdagangan menengah : berupa',
-                                    11=>'Perdagangan besar : berupa',
-                                    12=>'Industri kecil-menengah : berupa',
-                                    13=>'Industri besar : berupa',
-                                    14=>'Lainnya : berupa',
-                                    15=>'Jenis produk industri lokal khas yang terkena dampak bencana:',
-                                    16=>'Seberapa berat dampak bencana terhadap produk tersebut:',
-                                    17=>'Kegiatan yang dibutuhkan untuk pemulihan produk tersebut:',
-                                    18=>'Jumlah organisasi/lembaga koperasi di lokasi bencana yang terkena dampak bencana',
-                                    19=>'Seberapa berat dampak bencana terhadap organisasi/lembaga koperasi tersebut',
-                                    20=>'Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga koperasi tersebut'
-                                    ];
-                                    
+                                    1 => 'Perdagangan kecil :',
+                                    2 => 'Perdagangan menengah :',
+                                    3 => 'Perdagangan besar :',
+                                    4 => 'Industri kecil (rakyat) :',
+                                    5 => 'Industri menengah :',
+                                    6 => 'Lanjutan : <br> Jumlah Industri besar :',
+                                    7 => 'Koperasi :',
+                                    8 => 'Lainnya ...... :',
+                                    9 => 'Perdagangan kecil : berupa',
+                                    10 => 'Perdagangan menengah : berupa',
+                                    11 => 'Perdagangan besar : berupa',
+                                    12 => 'Industri kecil-menengah : berupa',
+                                    13 => 'Industri besar : berupa',
+                                    14 => 'Lainnya : berupa',
+                                    15 => 'Jenis produk industri lokal khas yang terkena dampak bencana:',
+                                    16 => 'Seberapa berat dampak bencana terhadap produk tersebut:',
+                                    17 => 'Kegiatan yang dibutuhkan untuk pemulihan produk tersebut:',
+                                    18 => 'Jumlah organisasi/lembaga koperasi di lokasi bencana yang terkena dampak bencana',
+                                    19 => 'Seberapa berat dampak bencana terhadap organisasi/lembaga koperasi tersebut',
+                                    20 => 'Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga koperasi tersebut',
+                                ];
+
                                 $groups_data_sekunder_akibat_bencana_khusus_opd_2 = [
-                                    'Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya'=>[1,2,3,4,5,6,7,8],
-                                    'Bentuk gangguan kegiatan ekonomi, pada'=>[9,10,11,12,13,14],
-                                    'Dampak pada produk industri'=>[15,16,17],
-                                    'Dampak organisasi/lembaga koperasi'=>[18,19,20],
+                                    'Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya' => [1, 2, 3, 4, 5, 6, 7, 8],
+                                    'Bentuk gangguan kegiatan ekonomi, pada' => [9, 10, 11, 12, 13, 14],
+                                    'Dampak pada produk industri' => [15, 16, 17],
+                                    'Dampak organisasi/lembaga koperasi' => [18, 19, 20],
                                 ];
                             @endphp
                             @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_2 as $groupName => $indexes)
                                 @foreach ($indexes as $idx)
-                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_2[$idx] ?? 'dll'; @endphp    
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_2[$idx] ?? 'dll'; @endphp
                                     <tr>
                                         @if ($loop->first)
                                             <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td> {{-- nomor grup: 1,2,... --}}
                                         @endif
 
                                         <td>
-                                            @if($loop->first)<strong>{{$groupName}}</strong><br>@endif
-                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;"
-                                            name="data_sekunder_akibat_bencana_khusus_opd_2[{{ $idx }}]">
-                                        </td>                                    
+                                            @if ($loop->first)
+                                                <strong>{{ $groupName }}</strong><br>
+                                            @endif
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" name="data_sekunder_akibat_bencana_khusus_opd_2[{{ $idx }}]">
+                                        </td>
                                     </tr>
                                 @endforeach
-                            @endforeach                        
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -696,43 +698,42 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
-                            $slug_data_sekunder_akibat_bencana_khusus_opd_3 = [
-                                1=>'Jumlah rumah tangga yang kehilangan akses terhadap naungan yang layak (rumah rusak berat dan rusak sedang):',
-                                2=>'Jumlah penyandang cacat akibat bencana: ',
-                                3=>'Kegiatan yang dibutuhkan untuk membantu rehabilitasi penyandang cacat akibat bencana:',
-                                4=>'Kegiatan agama, sosial kemasyarakatan yang terkena dampak bencana: <br> Jelaskan:',
-                                5=>'Penggerak kegiatan masyarakat tersebut:',
-                                6=>'Kondisi Keberfungsian kegiatan masyarakat tersebut setelah mengalami bencana:',
-                                7=>'Kegiatan yang dibutuhkan untuk pemulihan kegiatan tersebut:',
-                                8=>'Adakah permasalahan sosial akibat bencana? <br> Jelaskan:',
-                                9=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan sosial tersebut:',
-                                10=>'Adakah pengetahuan/kearifan lokal yang dapat digunakan untuk mengurangi resiko akibat bencana? <br> Jelaskan:',
-                            ];
+                            @php
+                                $slug_data_sekunder_akibat_bencana_khusus_opd_3 = [
+                                    1 => 'Jumlah rumah tangga yang kehilangan akses terhadap naungan yang layak (rumah rusak berat dan rusak sedang):',
+                                    2 => 'Jumlah penyandang cacat akibat bencana: ',
+                                    3 => 'Kegiatan yang dibutuhkan untuk membantu rehabilitasi penyandang cacat akibat bencana:',
+                                    4 => 'Kegiatan agama, sosial kemasyarakatan yang terkena dampak bencana: <br> Jelaskan:',
+                                    5 => 'Penggerak kegiatan masyarakat tersebut:',
+                                    6 => 'Kondisi Keberfungsian kegiatan masyarakat tersebut setelah mengalami bencana:',
+                                    7 => 'Kegiatan yang dibutuhkan untuk pemulihan kegiatan tersebut:',
+                                    8 => 'Adakah permasalahan sosial akibat bencana? <br> Jelaskan:',
+                                    9 => 'Kegiatan yang dibutuhkan untuk pengurangan permasalahan sosial tersebut:',
+                                    10 => 'Adakah pengetahuan/kearifan lokal yang dapat digunakan untuk mengurangi resiko akibat bencana? <br> Jelaskan:',
+                                ];
 
-                            $groups_data_sekunder_akibat_bencana_khusus_opd_3 = [
-                                'rumah tangga' => [1],
-                                'penyandang cacat' => [2,3],
-                                'kegiatan agama, sosial kemasyarakatan' => [4],
-                                'penggerak kegiatan masyarakat' => [5],
-                                'kondisi keberfungsian kegiatan masyarakat' => [6,7],
-                                'permasalahan sosial' => [8,9],
-                                'kearifan lokal' => [10],
-                            ];
+                                $groups_data_sekunder_akibat_bencana_khusus_opd_3 = [
+                                    'rumah tangga' => [1],
+                                    'penyandang cacat' => [2, 3],
+                                    'kegiatan agama, sosial kemasyarakatan' => [4],
+                                    'penggerak kegiatan masyarakat' => [5],
+                                    'kondisi keberfungsian kegiatan masyarakat' => [6, 7],
+                                    'permasalahan sosial' => [8, 9],
+                                    'kearifan lokal' => [10],
+                                ];
                             @endphp
 
                             @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_3 as $groupName => $indexes)
                                 @foreach ($indexes as $idx)
-                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_3[$idx] ?? 'dll'; @endphp    
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_3[$idx] ?? 'dll'; @endphp
                                     <tr>
                                         @if ($loop->first)
                                             <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
                                         @endif
 
                                         <td>
-                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
-                                            name="data_sekunder_akibat_bencana_khusus_opd_3[{{ $idx }}]">
-                                        </td>                                    
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" name="data_sekunder_akibat_bencana_khusus_opd_3[{{ $idx }}]">
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -763,39 +764,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
-                            
-                            $slug_data_sekunder_akibat_bencana_khusus_opd_4=[
-                                1=>'Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam)',
-                                2=>'Adakah indikasi siswa dan/atau guru terkena trauma setelah bencana?',
-                                3=>'Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?',
-                                4=>'Permasalahan pendidikan akibat bencana? <br> Jelaskan:',
-                                5=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
-                                6=>'Jumlah sasaran:',
-                                7=>'Jumlah guru yang meninggal/berpindah setelah bencana:',
-                                8=>'Kegiatan yang dibutuhkan untuk mengatasi permasalahan guru yang meninggal/berpindah:',
+                            @php
+
+                                $slug_data_sekunder_akibat_bencana_khusus_opd_4 = [
+                                    1 => 'Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam)',
+                                    2 => 'Adakah indikasi siswa dan/atau guru terkena trauma setelah bencana?',
+                                    3 => 'Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?',
+                                    4 => 'Permasalahan pendidikan akibat bencana? <br> Jelaskan:',
+                                    5 => 'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
+                                    6 => 'Jumlah sasaran:',
+                                    7 => 'Jumlah guru yang meninggal/berpindah setelah bencana:',
+                                    8 => 'Kegiatan yang dibutuhkan untuk mengatasi permasalahan guru yang meninggal/berpindah:',
                                 ];
-                            
-                            $groups_data_sekunder_akibat_bencana_khusus_opd_4 = [
-                                'Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana'=>[1],
-                                'Trauma siswa dan/atau guru setelah bencana'=>[2,3],
-                                'Permasalahan pendidikan akibat bencana'=>[4,5,6],
-                                'Guru yang meninggal/berpindah setelah bencana'=>[7,8],
+
+                                $groups_data_sekunder_akibat_bencana_khusus_opd_4 = [
+                                    'Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana' => [1],
+                                    'Trauma siswa dan/atau guru setelah bencana' => [2, 3],
+                                    'Permasalahan pendidikan akibat bencana' => [4, 5, 6],
+                                    'Guru yang meninggal/berpindah setelah bencana' => [7, 8],
                                 ];
                             @endphp
 
                             @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_4 as $groupName => $indexes)
                                 @foreach ($indexes as $idx)
-                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_4[$idx] ?? 'dll'; @endphp    
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_4[$idx] ?? 'dll'; @endphp
                                     <tr>
                                         @if ($loop->first)
                                             <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
                                         @endif
 
                                         <td>
-                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
-                                            name="data_sekunder_akibat_bencana_khusus_opd_4[{{ $idx }}]">
-                                        </td>                                    
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" name="data_sekunder_akibat_bencana_khusus_opd_4[{{ $idx }}]">
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -825,51 +825,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
-                            
-                            $slug_data_sekunder_akibat_bencana_khusus_opd_5=[
-                                1=>'Jumlah Rukun Tetangga/Rukun Warga/Kelurahan/Kecamatan yang terganggu akibat bencana:',
-                                2=>'Jenis gangguan:',
-                                3=>'Kebutuhan dukungan untuk pemulihan:',
-                                4=>'Adakah komunitas desa yang memiliki sistem pemeliharaan dan sarana desa?<br>
+                            @php
+
+                                $slug_data_sekunder_akibat_bencana_khusus_opd_5 = [
+                                    1 => 'Jumlah Rukun Tetangga/Rukun Warga/Kelurahan/Kecamatan yang terganggu akibat bencana:',
+                                    2 => 'Jenis gangguan:',
+                                    3 => 'Kebutuhan dukungan untuk pemulihan:',
+                                    4 => 'Adakah komunitas desa yang memiliki sistem pemeliharaan dan sarana desa?<br>
                                     Bila ada jelaskan:<br>',
-                                5=>'Apakah sistem tersebut terganggu akibat bencana?<br>
+                                    5 => 'Apakah sistem tersebut terganggu akibat bencana?<br>
                                     Jelaskan:<br>',
-                                6=>'Adakah komunitas desa yang memiliki ketahanan pangan desa (lumbung dll)?<br>
+                                    6 => 'Adakah komunitas desa yang memiliki ketahanan pangan desa (lumbung dll)?<br>
                                     Bila ada jelaskan:<br>',
-                                7=>'Apakah sistem tersebut terganggu akibat bencana?<br>
+                                    7 => 'Apakah sistem tersebut terganggu akibat bencana?<br>
                                     Jelaskan:<br>',
-                                8=>'Jumlah penduduk/keluarga yang kehilangan surat-surat penting (sertifikat tanah, KTP dan lain sebagainya):',
-                                9=>'Kegiatan yang dibutuhkan untuk mengatasi hal tersebut:<br>',
-                                10=>'Apakah pemerintah daerah memiliki rencana kontingensi untuk permasalahan administrasi penduduk?<br>
+                                    8 => 'Jumlah penduduk/keluarga yang kehilangan surat-surat penting (sertifikat tanah, KTP dan lain sebagainya):',
+                                    9 => 'Kegiatan yang dibutuhkan untuk mengatasi hal tersebut:<br>',
+                                    10 => 'Apakah pemerintah daerah memiliki rencana kontingensi untuk permasalahan administrasi penduduk?<br>
                                     Jelaskan:<br>',
-                                11=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
-                                12=>'Jumlah pegawai pemerintah yang meninggal/berpindah:',
-                                13=>'Dukungan yang dibutuhkan untuk mengatasi permasalahan tersebut:',
+                                    11 => 'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
+                                    12 => 'Jumlah pegawai pemerintah yang meninggal/berpindah:',
+                                    13 => 'Dukungan yang dibutuhkan untuk mengatasi permasalahan tersebut:',
                                 ];
-                            
-                            $groups_data_sekunder_akibat_bencana_khusus_opd_5 = [
-                                'a'=>[1,2,3],
-                                'b'=>[4,5],
-                                'c'=>[6,7],
-                                'd'=>[8,9],
-                                'e'=>[10,11],
-                                'f'=>[12,13],
+
+                                $groups_data_sekunder_akibat_bencana_khusus_opd_5 = [
+                                    'a' => [1, 2, 3],
+                                    'b' => [4, 5],
+                                    'c' => [6, 7],
+                                    'd' => [8, 9],
+                                    'e' => [10, 11],
+                                    'f' => [12, 13],
                                 ];
                             @endphp
 
                             @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_5 as $groupName => $indexes)
                                 @foreach ($indexes as $idx)
-                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_5[$idx] ?? 'dll'; @endphp    
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_5[$idx] ?? 'dll'; @endphp
                                     <tr>
                                         @if ($loop->first)
                                             <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
                                         @endif
 
                                         <td>
-                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
-                                            name="data_sekunder_akibat_bencana_khusus_opd_5[{{ $idx }}]">
-                                        </td>                                    
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" name="data_sekunder_akibat_bencana_khusus_opd_5[{{ $idx }}]">
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -900,67 +899,64 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
-                            
-                            $slug_data_sekunder_akibat_bencana_khusus_opd_6=[
-                                1=>'Permasalahan umum yang menghambat pelaksanaan pelayanan kesehatan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam):',
-                                2=>'Adakah indikasi penduduk trauma setelah bencana?:',
-                                3=>'Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?:',
-                                4=>'Adakah program/kegiatan kesehatan masal dalam penanggulangan dampak bencana?<br>
+                            @php
+
+                                $slug_data_sekunder_akibat_bencana_khusus_opd_6 = [
+                                    1 => 'Permasalahan umum yang menghambat pelaksanaan pelayanan kesehatan pada masa sebelum bencana (dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam):',
+                                    2 => 'Adakah indikasi penduduk trauma setelah bencana?:',
+                                    3 => 'Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?:',
+                                    4 => 'Adakah program/kegiatan kesehatan masal dalam penanggulangan dampak bencana?<br>
                                     Jelaskan:',
-                                5=>'Permasalahan kesehatan yang umum akibat bencana?<br>
+                                    5 => 'Permasalahan kesehatan yang umum akibat bencana?<br>
                                     Jelaskan:<br>',
-                                6=>'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
-                                7=>'Adakah program pemberian makanan tambahan untuk balita/anak sekolah?<br>
+                                    6 => 'Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut:',
+                                    7 => 'Adakah program pemberian makanan tambahan untuk balita/anak sekolah?<br>
                                     Jelaskan:',
-                                8=>'Jumlah balita yang terdampak bencana:',
-                                9=>'Jelaskan dampak bencana terhadap balita:',
-                                10=>'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap balita:',
-                                11=>'Jumlah ibu hamil yang terdampak bencana:',
-                                12=>'Jelaskan dampak bencana terhadap ibu hamil:',
-                                13=>'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap ibu hamil:',
-                                14=>'Jumlah lansia yang terdampak bencana:',
-                                15=>'Jelaskan dampak bencana terhadap lansia:',
-                                16=>'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap lansia',
-                                17=>'Perkiraan dampak kesehatan jangka menengah akibat bencana<br>
+                                    8 => 'Jumlah balita yang terdampak bencana:',
+                                    9 => 'Jelaskan dampak bencana terhadap balita:',
+                                    10 => 'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap balita:',
+                                    11 => 'Jumlah ibu hamil yang terdampak bencana:',
+                                    12 => 'Jelaskan dampak bencana terhadap ibu hamil:',
+                                    13 => 'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap ibu hamil:',
+                                    14 => 'Jumlah lansia yang terdampak bencana:',
+                                    15 => 'Jelaskan dampak bencana terhadap lansia:',
+                                    16 => 'Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap lansia',
+                                    17 => 'Perkiraan dampak kesehatan jangka menengah akibat bencana<br>
                                     Jelaskan:<br>',
-                                18=>'Kegiatan yang dibutuhkan untuk mengatasi dampak kesehatan jangka menengah tersebut:',
-                                19=>'Jumlah tenaga kesehatan yang meninggal/berpindah setelah bencana:',
+                                    18 => 'Kegiatan yang dibutuhkan untuk mengatasi dampak kesehatan jangka menengah tersebut:',
+                                    19 => 'Jumlah tenaga kesehatan yang meninggal/berpindah setelah bencana:',
                                 ];
-                            
-                            $groups_data_sekunder_akibat_bencana_khusus_opd_6 = [
-                                'a'=>[1],
-                                'b'=>[2,3],
-                                'c'=>[4],
-                                'd'=>[5,6],
-                                'e'=>[7],
-                                'f'=>[8,9,10],
-                                'g'=>[11,12,13],
-                                'h'=>[14,15,16],
-                                'i'=>[17,18],
-                                'j'=>[19],
+
+                                $groups_data_sekunder_akibat_bencana_khusus_opd_6 = [
+                                    'a' => [1],
+                                    'b' => [2, 3],
+                                    'c' => [4],
+                                    'd' => [5, 6],
+                                    'e' => [7],
+                                    'f' => [8, 9, 10],
+                                    'g' => [11, 12, 13],
+                                    'h' => [14, 15, 16],
+                                    'i' => [17, 18],
+                                    'j' => [19],
                                 ];
                             @endphp
 
                             @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_6 as $groupName => $indexes)
                                 @foreach ($indexes as $idx)
-                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_6[$idx] ?? 'dll'; @endphp    
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_6[$idx] ?? 'dll'; @endphp
                                     <tr>
                                         @if ($loop->first)
                                             <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td>
                                         @endif
 
                                         <td>
-                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" 
-                                            name="data_sekunder_akibat_bencana_khusus_opd_6[{{ $idx }}]">
-                                        </td>                                    
+                                            {!! $slug !!}</br><input type="text" class="form-input" style="width: 300px;" name="data_sekunder_akibat_bencana_khusus_opd_6[{{ $idx }}]">
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
-
                         </tbody>
                     </table>
-
                     <!-- Tombol Aksi -->
                     <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
                         <button type="submit" class="btn btn-success">
