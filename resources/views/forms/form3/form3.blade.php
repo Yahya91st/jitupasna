@@ -328,7 +328,7 @@
                     <p>
                         <span class="form-label">Wilayah bencana</span>
                         <span>Kab/kota/kecamatan: </span>
-                        <input type="text" class="form-input" style="width: 300px;" name="wilayah_bencana">
+                        <input type="text" class="form-input" style="width: 300px; border-inline-color" name="wilayah_bencana">
                     </p>
 
                     <table class="form-table three-column-table">
@@ -340,321 +340,139 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Penduduk-Wilayah -->
-                            <tr>
-                                <td rowspan="3">Penduduk-Wilayah</td>
-                                <td>Jumlah laki-laki</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah perempuan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah rumah tangga</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
 
-                            <!-- Kesehatan -->
-                            <tr>
-                                <td rowspan="5">Sarana Kesehatan</td>
-                                <td>Jumlah rumah sakit</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah PUSKESMAS</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah PUSKESMAS Pembantu</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah POLINDES</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah POSYANDU</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
+                            @php
+                                // mapping index ke slug sesuai permintaan
+                                $slugs_data_dasar_sebelum_bencana = [
+                                    // Penduduk-Wilayah
+                                    1 => 'Jumlah laki-laki',
+                                    2 => 'Jumlah perempuan',
+                                    3 => 'Jumlah rumah tangga',
+                                    // Kesehatan
+                                    // Sarana Kesehatan
+                                    4 => 'Jumlah rumah sakit',
+                                    5 => 'Jumlah PUSKESMAS',
+                                    6 => 'Jumlah PUSKESMAS Pembantu',
+                                    7 => 'Jumlah POLINDES',
+                                    8 => 'Jumlah POSYANDU',
+                                    // Tenaga Kesehatan
+                                    9 => 'Jumlah dokter',
+                                    10 => 'Jumlah paramedis',
+                                    11 => 'Jumlah bidan',
+                                    12 => 'Jumlah kader kesehatan',
+                                    // Kunjungan ke PUSKESMAS
+                                    13 => 'Jumlah kunjungan ke PUSKESMAS',
+                                    // Balita
+                                    14 => 'Jumlah balita',
+                                    15 => 'Jumlah balita gizi buruk',
+                                    16 => 'Jumlah balita gizi kurang',
+                                    17 => 'Jumlah balita ditimbang di Posyandu',
+                                    // Manula
+                                    18 => 'Jumlah manula',
+                                    // Penerima JPS Kesehatan
+                                    19 => 'Jumlah penerima JPS kesehatan',
+                                    // Sanitasi
+                                    20 => 'Jumlah cakupan rumah dengan air bersih',
+                                    21 => 'Jumlah cakupan rumah dengan jamban (MCK)',
+                                    // Ekonomi
+                                    // Kondisi Keluarga
+                                    22 => 'Jumlah Keluarga Pra-Sejahtera/Miskin',
+                                    23 => 'Jumlah Keluarga Sejahtera -1',
+                                    24 => 'Jumlah Penduduk Miskin',
+                                    25 => 'Jumlah Keluarga Penerima Beras Miskin',
+                                    // Unit Kegiatan Ekonomi
+                                    26 => 'Jumlah rumah tangga pertanian',
+                                    27 => 'Jumlah rumah tangga peternak',
+                                    28 => 'Jumlah rumah tangga perikanan',
+                                    29 => 'Jumlah rumah tangga perkebunan',
+                                    30 => 'Jumlah industri kecil-menengah',
+                                    31 => 'Jumlah pedagang kecil-menengah',
+                                    32 => 'Jumlah koperasi/lembaga ekonomi masyarakat',
+                                    33 => 'Jumlah tempat wisata umum / tempat menarik',
+                                    34 => 'Jumlah pasar',
+                                    35 => 'Jumlah tambang',
+                                    // Sosial dan Agama
+                                    // Sarana Ibadah
+                                    36 => 'Jumlah masjid',
+                                    37 => 'Jumlah mushola',
+                                    38 => 'Jumlah gereja Protestan/rumah kebaktian',
+                                    39 => 'Jumlah gereja Katolik/kapel',
+                                    40 => 'Jumlah vihara/sejenis',
+                                    41 => 'Jumlah pura/sejenis',
+                                    // Jumlah Lembaga Sosial Masyarakat
+                                    42 => 'Islam (termasuk Ponpes)',
+                                    43 => 'Katolik',
+                                    44 => 'Protestan',
+                                    45 => 'Budha',
+                                    46 => 'Hindu',
+                                    47 => 'Kepercayaan',
+                                    48 => 'Kepemudaan',
+                                    49 => 'Adat istiadat',
+                                    // Penyandang PMKS
+                                    50 => 'Jumlah penyandang PMKS',
+                                    // Perumahan
+                                    // Rumah
+                                    51 => 'Jumlah rumah permanen',
+                                    52 => 'Jumlah rumah semi permanen',
+                                    53 => 'Jumlah rumah non-permanen',
+                                    // Jalan
+                                    // Jalan
+                                    54 => 'Panjang jalan negara',
+                                    55 => 'Panjang jalan propinsi',
+                                    56 => 'Panjang jalan kabupaten',
+                                    // Bangunan dan Produksi
+                                    // Bangunan Bersejarah
+                                    57 => 'Jumlah bangunan bersejarah',
+                                    // Produksi
+                                    58 => 'Jumlah produksi komoditas pertanian',
+                                    59 => 'Jumlah produksi komoditas industri pengolahan',
+                                    60 => 'Harga produksi (di tingkat produsen)',
+                                    61 => 'Omset pedagang',
+                                    62 => 'Jumlah penumpang transportasi',
+                                    // Harga
+                                    63 => 'Harga konstruksi untuk per M2 untuk rumah',
+                                    64 => 'Harga konstruksi untuk per M2 untuk bangunan gedung',
+                                    65 => 'Harga konstruksi untuk per M2 untuk jalan',
+                                    66 => 'Harga konstruksi untuk per M2 untuk jembatan',
+                                    67 => 'Harga konstruksi untuk per M2 untuk dermaga/pelabuhan',
+                                    68 => 'Harga sewa rumah',
+                                ];
 
-                            <tr>
-                                <td rowspan="4">Tenaga Kesehatan</td>
-                                <td>Jumlah dokter</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah paramedis</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah bidan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah kader kesehatan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
+                                $groups_data_dasar_sebelum_bencana = [
+                                    'Penduduk-Wilayah' => [1, 2, 3],
+                                    'Sarana Kesehatan' => [4, 5, 6, 7, 8],
+                                    'Tenaga Kesehatan' => [9, 10, 11, 12],
+                                    'Kunjungan ke PUSKESMAS' => [13],
+                                    'Balita' => [14, 15, 16, 17],
+                                    'Manula' => [18],
+                                    'Penerima JPS Kesehatan' => [19],
+                                    'Sanitasi' => [20, 21],
+                                    'Kondisi Keluarga' => [22, 23, 24, 25],
+                                    'Unit Kegiatan Ekonomi' => [26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
+                                    'Sarana Ibadah' => [36, 37, 38, 39, 40, 41],
+                                    'Jumlah Lembaga Sosial Masyarakat' => [42, 43, 44, 45, 46, 47, 48, 49],
+                                    'Penyandang PMKS' => [50],
+                                    'Rumah' => [51, 52, 53],
+                                    'Jalan' => [54, 55, 56],
+                                    'Bangunan Bersejarah' => [57],
+                                    'Produksi' => [58, 59, 60, 61, 62],
+                                    'Harga' => [63, 64, 65, 66, 67, 68],
+                                ];
+                            @endphp
 
-                            <tr>
-                                <td>Kunjungan ke PUSKESMAS</td>
-                                <td>Jumlah kunjungan ke PUSKESMAS</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
+                            @foreach ($groups_data_dasar_sebelum_bencana as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slugs_data_dasar_sebelum_bencana[$idx] ?? 'dll'; @endphp
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $groupName }}</td>
+                                        @endif
+                                        <td>{{ $slug }}</td>
+                                        <td><input type="text" class="form-input" style="width: 100%;" name="data_dasar_sebelum_bencana[{{ $idx }}]"></td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
 
-                            <tr>
-                                <td rowspan="4">Balita</td>
-                                <td>Jumlah balita</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah balita gizi buruk</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah balita gizi kurang</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah balita ditimbang di Posyandu</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <tr>
-                                <td>Manula</td>
-                                <td>Jumlah manula</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <tr>
-                                <td>Penerima JPS Kesehatan</td>
-                                <td>Jumlah penerima JPS kesehatan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <tr>
-                                <td rowspan="2">Sanitasi</td>
-                                <td>Jumlah cakupan rumah dengan air bersih</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah cakupan rumah dengan jamban (MCK)</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <!-- Ekonomi -->
-                            <tr>
-                                <td rowspan="4">Kondisi Keluarga</td>
-                                <td>Jumlah Keluarga Pra-Sejahtera/Miskin</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah Keluarga Sejahtera -1</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah Penduduk Miskin</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah Keluarga Penerima Beras Miskin</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <tr>
-                                <td rowspan="10">Unit Kegiatan Ekonomi</td>
-                                <td>Jumlah rumah tangga pertanian</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah rumah tangga peternak</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah rumah tangga perikanan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah rumah tangga perkebunan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah industri kecil-menengah</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah pedagang kecil-menengah</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah koperasi/lembaga ekonomi masyarakat</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah tempat wisata umum / tempat menarik</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah pasar</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah tambang</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <!-- Sosial dan Agama -->
-                            <tr>
-                                <td rowspan="6">Sarana Ibadah</td>
-                                <td>Jumlah masjid</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah mushola</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah gereja Protestan/rumah kebaktian</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah gereja Katolik/kapel</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah vihara/sejenis</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah pura/sejenis</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <tr>
-                                <td rowspan="8">Jumlah Lembaga Sosial Masyarakat</td>
-                                <td>Islam (termasuk Ponpes)</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Katolik</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Protestan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Budha</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Hindu</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Kepercayaan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Kepemudaan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Adat istiadat</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <tr>
-                                <td>Penyandang PMKS</td>
-                                <td>Jumlah penyandang PMKS</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <!-- Perumahan -->
-                            <tr>
-                                <td rowspan="3">Rumah</td>
-                                <td>Jumlah rumah permanen</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah rumah semi permanen</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah rumah non-permanen</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <!-- Jalan -->
-                            <tr>
-                                <td rowspan="3">Jalan</td>
-                                <td>Panjang jalan negara</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Panjang jalan propinsi</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Panjang jalan kabupaten</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <!-- Bangunan dan Produksi -->
-                            <tr>
-                                <td>Bangunan Bersejarah</td>
-                                <td>Jumlah bangunan bersejarah</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <tr>
-                                <td rowspan="5">Produksi</td>
-                                <td>Jumlah produksi komoditas pertanian</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah produksi komoditas industri pengolahan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Harga produksi (di tingkat produsen)</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Omset pedagang</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah penumpang transportasi</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-
-                            <!-- Harga -->
-                            <tr>
-                                <td rowspan="6">Harga</td>
-                                <td>Harga konstruksi untuk per M2 untuk rumah</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Harga konstruksi untuk per M2 untuk bangunan gedung</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Harga konstruksi untuk per M2 untuk jalan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Harga konstruksi untuk per M2 untuk jembatan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Harga konstruksi untuk per M2 untuk dermaga/pelabuhan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Harga sewa rumah</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
                         </tbody>
                     </table>
 
@@ -671,42 +489,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Sejarah bencana di masa lalu</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Kronologis kejadian bencana saat ini</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Wilayah yang terdampak bencana saat ini</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah korban meninggal dunia</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah korban luka-luka</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah korban yang mengunsi</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
-                            </tr>
-                            <tr>
-                                <td>Kerusakan dan kerugian yang dialami</td>
-                                <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
-                                </td>
-                            </tr>
+                            @php
+                                $slug_data_sekunder_akibat_bencana_umum = [
+                                    1 => 'Sejarah bencana di masa lalu',
+                                    2 => 'Kronologis kejadian bencana saat ini',
+                                    3 => 'Wilayah yang terdampak bencana saat ini',
+                                    4 => 'Jumlah korban meninggal dunia',
+                                    5 => 'Jumlah korban luka-luka',
+                                    6 => 'Jumlah korban yang mengunsi',
+                                    7 => 'Kerusakan dan kerugian yang dialami',
+                                ];
+                            @endphp
+
+                            @foreach ($slug_data_sekunder_akibat_bencana_umum as $idx => $slug)
+                                @php $slug = $slug_data_sekunder_akibat_bencana_umum[$idx] ?? 'dll'; @endphp
+                                <tr>
+                                    <td>{{ $slug }}</td>
+                                    <td>
+                                        <textarea name="data_sekunder_akibat_bencana_umum[{{ $idx }}]" class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -733,75 +536,52 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>
-                                    <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong>
-                                    <ul>
-                                        <li class="form-list-item">Pertanian pangan dan sayuran: <input type="text" class="form-input" style="width: 300px;" name="rt_pertanian"></li>
-                                        <li class="form-list-item">Peternakan: <input type="text" class="form-input" style="width: 300px;" name="rt_peternakan"></li>
-                                        <li class="form-list-item">Perikanan: <input type="text" class="form-input" style="width: 300px;" name="rt_perikanan"></li>
-                                        <li class="form-list-item">Perkebunan: <input type="text" class="form-input" style="width: 300px;" name="rt_perkebunan"></li>
-                                        <li class="form-list-item">Lainnya: <input type="text" class="form-input" style="width: 300px;" name="rt_lainnya"></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>
-                                    <strong>Bentuk gangguan kegiatan ekonomi, pada:</strong>
-                                    <ul>
-                                        <li class="form-list-item">Pertanian pangan dan sayuran: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_pertanian"></li>
-                                        <li class="form-list-item">Peternakan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_peternakan"></li>
-                                        <li class="form-list-item">Perikanan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_perikanan"></li>
-                                        <li class="form-list-item">Perkebunan: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_perkebunan"></li>
-                                        <li class="form-list-item">Lainnya: berupa <input type="text" class="form-input" style="width: 250px;" name="gangguan_lainnya"></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>
-                                    <div class="mb-3">
-                                        <strong>Jenis produk pertanian lokal khas yang terkena dampak bencana:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="produk_pertanian_terdampak"></textarea>
-                                    </div>
+                            @php
+                                $slug_data_sekunder_akibat_bencana_khusus_opd_1 = [
+                                    1 => 'Pertanian pangan dan sayuran',
+                                    2 => 'Peternakan',
+                                    3 => 'Perikanan',
+                                    4 => 'Perkebunan',
+                                    5 => 'Lainnya',
+                                    6 => 'Pertanian pangan dan sayuran: berupa',
+                                    7 => 'Peternakan: berupa',
+                                    8 => 'Perikanan: berupa',
+                                    9 => 'Perkebunan: berupa',
+                                    10 => 'Lainnya: berupa',
+                                    11 => 'Jenis produk pertanian lokal khas yang terkena dampak bencana',
+                                    12 => 'Seberapa berat dampak bencana terhadap produk tersebut',
+                                    13 => 'Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut',
+                                    14 => 'Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana',
+                                    15 => 'Sebutkan bentuk-bentuk organisasi/lembaga tersebut',
+                                    16 => 'Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut',
+                                    17 => 'Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut',
+                                ];
 
-                                    <div class="mb-3">
-                                        <strong>Seberapa berat dampak bencana terhadap produk tersebut:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="dampak_produk_pertanian"></textarea>
-                                    </div>
+                                $groups_data_sekunder_akibat_bencana_khusus_opd_1 = [
+                                    'Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:' => [1, 2, 3, 4, 5],
+                                    'Bentuk gangguan kegiatan ekonomi, pada:' => [6, 7, 8, 9, 10],
+                                    'Dampak pada produk pertanian lokal khas' => [11, 12, 13],
+                                    'Dampak pada organisasi/lembaga pertanian' => [14, 15, 16, 17],
+                                ];
+                            @endphp
 
-                                    <div>
-                                        <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut:</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #333; margin-top: 5px;" name="pemulihan_produk_pertanian"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>
-                                    <div class="mb-3">
-                                        <strong>Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana .... unit.</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
+                            @foreach ($groups_data_sekunder_akibat_bencana_khusus_opd_1 as $groupName => $indexes)
+                                @foreach ($indexes as $idx)
+                                    @php $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_1[$idx] ?? 'dll'; @endphp
+                                    <tr>
+                                        @if ($loop->first)
+                                            <td rowspan="{{ count($indexes) }}">{{ $loop->parent->iteration }}</td> {{-- nomor grup: 1,2,... --}}
+                                        @endif
 
-                                    <div class="mb-3">
-                                        <strong>Sebutkan bentuk-bentuk organisasi/lembaga tersebut..........</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
-
-                                    <div>
-                                        <strong>Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut.......</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
-                                    <div>
-                                        <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut.......</strong><br>
-                                        <textarea class="form-input" rows="2" style="width: 100%; border: none; border-bottom: 1px dotted #999; margin-top: 5px;"></textarea>
-                                    </div>
-
-                                </td>
-                            </tr>
+                                        <td>
+                                            @if ($loop->first)
+                                                <strong>{{ $groupName }}</strong><br>
+                                            @endif
+                                            {{ $slug }}</br><input type="text" class="form-input" style="width: 300px;" name="data_sekunder_akibat_bencana_khusus_opd_1[{{ $idx }}]">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -1244,59 +1024,5 @@
     `);
             previewWindow.document.close();
         }
-
-        // Auto-fill helper functions
-        function autoFillFromLocation() {
-            const wilayahInput = document.querySelector('input[name="wilayah_bencana"]');
-            if (wilayahInput && wilayahInput.value) {
-                // Auto-fill based on common data for the area
-                autoFillCommonData(wilayahInput.value.toLowerCase());
-            }
-        }
-
-        function autoFillCommonData(location) {
-            // Example auto-fill based on Indonesian administrative data
-            const commonData = {
-                'default': {
-                    'nama_opd_1': 'Dinas Pertanian',
-                    'nama_opd_2': 'Dinas Perindustrian dan Perdagangan',
-                    'nama_opd_sosial': 'Dinas Sosial',
-                    'nama_opd_pendidikan': 'Dinas Pendidikan',
-                    'nama_opd_kesehatan': 'Dinas Kesehatan',
-                    'nama_opd_sekretariat': 'Sekretariat Daerah'
-                }
-            };
-
-            // Apply default values if fields are empty
-            Object.keys(commonData.default).forEach(fieldName => {
-                const field = document.querySelector(`input[name="${fieldName}"]`);
-                if (field && !field.value) {
-                    field.value = commonData.default[fieldName];
-                }
-            });
-
-            // Auto-fill current date for OPD dates
-            const today = new Date().toISOString().split('T')[0];
-            const dateFields = ['tanggal_opd_1', 'tanggal_opd_2', 'tanggal_opd_sosial', 'tanggal_opd_pendidikan', 'tanggal_opd_kesehatan', 'tanggal_opd_sekretariat'];
-
-            dateFields.forEach(fieldName => {
-                const field = document.querySelector(`input[name="${fieldName}"]`);
-                if (field && !field.value) {
-                    field.value = today;
-                }
-            });
-        }
-
-        // Auto-fill when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auto-fill common OPD names and current dates
-            autoFillCommonData();
-
-            // Add event listener for wilayah bencana input
-            const wilayahInput = document.querySelector('input[name="wilayah_bencana"]');
-            if (wilayahInput) {
-                wilayahInput.addEventListener('blur', autoFillFromLocation);
-            }
-        });
     </script>
 @endsection
