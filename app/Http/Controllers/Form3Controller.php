@@ -25,7 +25,10 @@ class Form3Controller extends Controller
           // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form3.form3', compact('bencana'));
+        // Check for existing Form3 data for this bencana
+        $existingData = Form3::where('bencana_id', $bencana_id)->first();
+        
+        return view('forms.form3.form3', compact('bencana', 'existingData'));
     }
 
 public function store(\App\Http\Requests\StoreForm3Request $request)
