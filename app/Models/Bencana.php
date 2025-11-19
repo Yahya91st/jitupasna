@@ -61,4 +61,9 @@ class Bencana extends Model
     {
         return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
     }
+
+    public function pendataan()
+    {
+        return $this->hasOne(Pendataan::class, 'bencana_id', 'id');
+    }
 }

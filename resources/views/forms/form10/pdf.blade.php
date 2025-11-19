@@ -6,150 +6,453 @@
     <title>Formulir 10 - Analisa Data Akibat</title>
     <style>
         @page {
-            size: landscape;
-            margin: 1cm;
+            margin: 0.5cm;
+            size: A4 landscape;
         }
+        
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            font-size: 11px;
-            line-height: 1.4;
+            font-family: 'Times New Roman', serif;
+            font-size: 8pt;
+            line-height: 1.2;
+            margin: 0.5cm;
+            color: #333;
         }
-        .header {
+        
+        .document-title {
             text-align: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 8px;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid #0066cc;
         }
-        .header h2 {
-            margin: 0;
-            padding: 0;
-            font-size: 14px;
+        
+        .document-title h5 {
+            margin: 0.1rem 0;
             font-weight: bold;
+            color: #333;
+            font-size: 10pt;
         }
-        .header p {
-            margin: 0;
-            padding: 0;
-            font-size: 11px;
+        
+        .document-title h5:first-child {
+            color: #0066cc;
+            margin-bottom: 0.1rem;
+            font-size: 9pt;
         }
+        
+        .section-header {
+            font-size: 8pt;
+            font-weight: bold;
+            background: #f0f0f0;
+            color: #333;
+            padding: 3px 6px;
+            margin: 6px 0 3px 0;
+            border-left: 3px solid #0066cc;
+            letter-spacing: 0.2px;
+        }
+        
+        .form-section {
+            margin-bottom: 3px;
+        }
+        
+        .form-label {
+            display: inline-block;
+            width: 140px;
+            vertical-align: top;
+            font-weight: 600;
+            color: #555;
+            font-size: 8pt;
+        }
+        
+        .form-value {
+            color: #000;
+            font-weight: normal;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin: 4px 0;
+            font-size: 8pt;
         }
-        table, th, td {
-            border: 1px solid #000;
-        }
-        th, td {
-            padding: 4px 8px;
+        
+        table th, table td {
+            border: 1px solid #333;
+            padding: 3px 5px;
             vertical-align: top;
+            min-height: 20px;
         }
-        th {
-            background-color: #f2f2f2;
-            text-align: left;
-            font-weight: bold;
-        }
-        .section-title {
-            font-weight: bold;
-            margin: 12px 0 4px 0;
-        }
-        .page-break {
-            page-break-after: always;
-        }
-        .footer {
-            text-align: right;
-            margin-top: 20px;
-            padding-top: 8px;
-            border-top: 1px solid #ddd;
-            font-size: 10px;
-        }
-        .info-table {
-            margin-bottom: 15px;
-        }
-        .data-table th {
-            background-color: #e6e6e6;
+        
+        table th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
             text-align: center;
-            vertical-align: middle;
         }
-        .data-table td {
-            vertical-align: top;
+        
+        .label {
+            font-weight: 600;
+            width: 35%;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .value {
+            width: 65%;
+            background: white;
+            color: #000;
+        }
+        
+        .text-content {
+            margin: 0;
+            padding: 3px 5px;
+            background: white;
+            font-size: 8pt;
+            min-height: 12px;
+            color: #000;
+            line-height: 1.2;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-left {
+            text-align: left;
+        }
+        
+        .font-bold {
+            font-weight: bold;
+        }
+        
+        .empty-row td {
+            min-height: 30px;
+            padding: 8px 5px;
+        }
+        
+        .signature-section {
+            position: relative;
+            text-align: right;
+            margin-top: 8px;
+            page-break-inside: avoid;
+        }
+        
+        .signature-box {
+            display: inline-block;
+            text-align: center;
+            width: 150px;
+            float: right;
+        }
+        
+        .signature-name {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 35px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        p {
+            margin: 2px 0;
+            line-height: 1.2;
+            font-size: 8pt;
+        }
+        
+        strong {
+            font-weight: 600;
+        }
+        
+        @media print {
+            body { 
+                font-size: 8pt;
+            }
+            .page-break {
+                page-break-before: always;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="header">
-        <h2>FORMULIR 10 - ANALISA DATA AKIBAT TERHADAP AKSES, FUNGSI, DAN RESIKO</h2>
-        <p>Pengkajian Kebutuhan Pascabencana (JITUPASNA)</p>
+    <!-- Document Header -->
+    <div class="document-title">
+        <h5><strong>Formulir 10</strong></h5>
+        <h5>Analisa Data Akibat terhadap Akses, Fungsi, dan Resiko (PDNA)</h5>
     </div>
 
-    <div>
-        <h3>A. INFORMASI BENCANA</h3>
-        <table class="info-table">
-            <tr>
-                <th width="15%">Nama Bencana</th>
-                <td width="35%">{{ $analisa->bencana->kategori_bencana->nama }}</td>
-                <th width="15%">Tanggal Kejadian</th>
-                <td width="35%">{{ $analisa->bencana->tanggal }}</td>
-            </tr>
-            <tr>
-                <th>Lokasi</th>
-                <td>
-                    @foreach($analisa->bencana->desa as $desa)
-                        {{ $desa->nama }}@if(!$loop->last), @endif
-                    @endforeach
-                </td>
-                <th>Referensi</th>
-                <td>{{ $analisa->bencana->Ref }}</td>
-            </tr>
-        </table>
-
-        <h3>B. ANALISA DATA AKIBAT</h3>
-        <table class="info-table">
-            <tr>
-                <th width="15%">Sektor</th>
-                <td width="35%">{{ $analisa->sektor }}</td>
-                <th width="15%">Sub Sektor</th>
-                <td width="35%">{{ $analisa->sub_sektor }}</td>
-            </tr>
-            <tr>
-                <th>Lokasi</th>
-                <td colspan="3">{{ $analisa->lokasi }}</td>
-            </tr>
-        </table>
-        
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th width="25%">Hasil Pengolahan Data Survey</th>
-                    <th width="25%">Hasil Wawancara/FGD</th>
-                    <th width="25%">Hasil Pendataan ke SKPD</th>
-                    <th width="25%">Kebutuhan-Kegiatan Pemulihan</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{!! nl2br(e($analisa->hasil_survey)) !!}</td>
-                    <td>{!! nl2br(e($analisa->hasil_wawancara)) !!}</td>
-                    <td>{!! nl2br(e($analisa->hasil_pendataan_skpd)) !!}</td>
-                    <td>{!! nl2br(e($analisa->kebutuhan_pemulihan)) !!}</td>
-                </tr>
-            </tbody>
-        </table>        <div class="footer">
-            <table style="border: none; width: 100%;">
-                <tr style="border: none;">
-                    <td style="border: none; text-align: left; width: 60%;">
-                        <p>Dokumen dibuat pada: {{ \Carbon\Carbon::now()->format('d F Y, H:i') }}</p>
-                    </td>
-                    <td style="border: none; text-align: right; width: 40%;">
-                        <p>{{ \Carbon\Carbon::now()->format('Y-m-d') }}</p>
-                        <br><br><br>
-                        <p>____________________</p>
-                        <p>(Petugas yang mengisi)</p>
-                    </td>
-                </tr>
-            </table>
-        </div>
+    <!-- A. INFORMASI BENCANA -->
+    <div class="section-header">A. INFORMASI BENCANA</div>
+    <div class="form-section">
+        <p>
+            <span class="form-label">Nama Bencana</span>: <span class="form-value">{{ $form->bencana->kategori_bencana->nama }}</span>
+        </p>
+        <p>
+            <span class="form-label">Referensi</span>: <span class="form-value">{{ $form->bencana->Ref }}</span>
+        </p>
+        <p>
+            <span class="form-label">Tanggal Bencana</span>: <span class="form-value">{{ \Carbon\Carbon::parse($form->bencana->tanggal)->format('d F Y') }}</span>
+        </p>
+        <p>
+            <span class="form-label">Lokasi Bencana</span>: <span class="form-value">
+                @foreach($form->bencana->desa as $desa)
+                    {{ $desa->nama }}@if(!$loop->last), @endif
+                @endforeach
+            </span>
+        </p>
     </div>
+
+    <!-- B. ANALISA DATA AKIBAT -->
+    <div class="section-header">B. ANALISA DATA AKIBAT</div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2" width="5%">No</th>
+                <th rowspan="2" width="15%">Sektor-sub.sektor</th>
+                <th rowspan="2" width="12%">Lokasi</th>
+                <th colspan="3" width="48%">Akibat terhadap akses, fungsi dan resiko</th>
+                <th rowspan="2" width="20%">Kebutuhan-kegiatan pemulihan</th>
+            </tr>
+            <tr>
+                <th width="16%">Point penting hasil pengolahan data survey</th>
+                <th width="16%">Point penting hasil wawancara/FGD</th>
+                <th width="16%">Point penting hasil pendataan ke SKPD</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 1. Perumahan -->
+            <tr>
+                <td class="text-center font-bold">1</td>
+                <td class="font-bold">Perumahan</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-size: 7pt;">Analisa kebutuhan pemulihan pada tiap-tiap sektor/sub-sektor dengan melihat pada akibat yang telah diidentifikasi !</td>
+            </tr>
+            <tr class="empty-row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="empty-row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="empty-row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+            <!-- 2. Infrastruktur -->
+            <tr>
+                <td class="text-center font-bold">2</td>
+                <td class="font-bold">Infrastruktur</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Transportasi</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Energi</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>dll</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+            <!-- 3. Ekonomi Produktif -->
+            <tr>
+                <td class="text-center font-bold">3</td>
+                <td class="font-bold">Ekonomi Produktif</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Pertanian</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Peternakan</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Perikanan</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>dll</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+            <!-- 4. Sosial -->
+            <tr>
+                <td class="text-center font-bold">4</td>
+                <td class="font-bold">Sosial</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Pendidikan</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Kesehatan</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Agama</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Budaya</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>dll</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+            <!-- 5. Lintas sektor -->
+            <tr>
+                <td class="text-center font-bold">5</td>
+                <td class="font-bold">Lintas sektor</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Pemerintahan</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Lingkungan hidup</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>dll</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+            <!-- Jumlah Kebutuhan -->
+            <tr>
+                <td colspan="2" class="text-center font-bold">Jumlah Kebutuhan</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

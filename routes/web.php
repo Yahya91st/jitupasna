@@ -710,6 +710,7 @@ Route::prefix('/forms')
             Route::get('/show/{id}', [Form10Controller::class, 'show'])->name('show');
             Route::get('/edit/{id}', [Form10Controller::class, 'edit'])->name('edit');
             Route::patch('/update/{id}', [Form10Controller::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [Form10Controller::class, 'destroy'])->name('destroy');
             Route::get('/pdf/{id}', [Form10Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form10Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/contoh-pdf', [Form10Controller::class, 'contohPdf'])->name('contoh-pdf');

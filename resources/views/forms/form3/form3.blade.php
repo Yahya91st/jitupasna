@@ -328,7 +328,7 @@
                     <p>
                         <span class="form-label">Wilayah bencana</span>
                         <span>Kab/kota/kecamatan: </span>
-                        <input type="text" class="form-input" style="width: 300px;" name="wilayah_bencana">
+                        <input type="text" class="form-input" style="width: 300px;" name="wilayah_bencana" value="{{ $existingData->wilayah_bencana ?? '' }}">
                     </p>
 
                     <table class="form-table three-column-table">
@@ -344,38 +344,38 @@
                             <tr>
                                 <td rowspan="3">Penduduk-Wilayah</td>
                                 <td>Jumlah laki-laki</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_laki_laki" value="{{ $existingData->jumlah_laki_laki ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah perempuan</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_perempuan" value="{{ $existingData->jumlah_perempuan ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah rumah tangga</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_rumah_tangga" value="{{ $existingData->jumlah_rumah_tangga ?? '' }}"></td>
                             </tr>
 
                             <!-- Kesehatan -->
                             <tr>
                                 <td rowspan="5">Sarana Kesehatan</td>
                                 <td>Jumlah rumah sakit</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_rumah_sakit" value="{{ $existingData->jumlah_rumah_sakit ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah PUSKESMAS</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_puskesmas" value="{{ $existingData->jumlah_puskesmas ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah PUSKESMAS Pembantu</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_puskesmas_pembantu" value="{{ $existingData->jumlah_puskesmas_pembantu ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah POLINDES</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_polindes" value="{{ $existingData->jumlah_polindes ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah POSYANDU</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="jumlah_posyandu" value="{{ $existingData->jumlah_posyandu ?? '' }}"></td>
                             </tr>
 
                             <tr>
@@ -674,37 +674,37 @@
                             <tr>
                                 <td>Sejarah bencana di masa lalu</td>
                                 <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
+                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;" name="sejarah_bencana">{{ $existingData->sejarah_bencana ?? '' }}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Kronologis kejadian bencana saat ini</td>
                                 <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
+                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;" name="kronologis_bencana">{{ $existingData->kronologis_bencana ?? '' }}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Wilayah yang terdampak bencana saat ini</td>
                                 <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
+                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;" name="wilayah_terdampak">{{ $existingData->wilayah_terdampak ?? '' }}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Jumlah korban meninggal dunia</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="korban_meninggal" value="{{ $existingData->korban_meninggal ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah korban luka-luka</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="korban_luka" value="{{ $existingData->korban_luka ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Jumlah korban yang mengunsi</td>
-                                <td><input type="text" class="form-input" style="width: 100%;"></td>
+                                <td><input type="text" class="form-input" style="width: 100%;" name="korban_mengungsi" value="{{ $existingData->korban_mengungsi ?? '' }}"></td>
                             </tr>
                             <tr>
                                 <td>Kerusakan dan kerugian yang dialami</td>
                                 <td>
-                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;"></textarea>
+                                    <textarea class="form-input" rows="3" style="width: 100%; border: none; border-bottom: 1px dotted #999;" name="kerusakan_kerugian">{{ $existingData->kerusakan_kerugian ?? '' }}</textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -717,11 +717,11 @@
                     <table class="form-table">
                         <tr>
                             <td style="width: 30%;">Nama OPD</td>
-                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_1"></td>
+                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_1" value="{{ $existingData->nama_opd_1 ?? '' }}"></td>
                         </tr>
                         <tr>
                             <td>Tgl/Bln/Thn</td>
-                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_1"></td>
+                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_1" value="{{ $existingData->tanggal_opd_1 ?? '' }}"></td>
                         </tr>
                     </table>
 
@@ -738,11 +738,11 @@
                                 <td>
                                     <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong>
                                     <ul>
-                                        <li class="form-list-item">Pertanian pangan dan sayuran: <input type="text" class="form-input" style="width: 300px;" name="rt_pertanian"></li>
-                                        <li class="form-list-item">Peternakan: <input type="text" class="form-input" style="width: 300px;" name="rt_peternakan"></li>
-                                        <li class="form-list-item">Perikanan: <input type="text" class="form-input" style="width: 300px;" name="rt_perikanan"></li>
-                                        <li class="form-list-item">Perkebunan: <input type="text" class="form-input" style="width: 300px;" name="rt_perkebunan"></li>
-                                        <li class="form-list-item">Lainnya: <input type="text" class="form-input" style="width: 300px;" name="rt_lainnya"></li>
+                                        <li class="form-list-item">Pertanian pangan dan sayuran: <input type="text" class="form-input" style="width: 300px;" name="rt_pertanian" value="{{ $existingData->rt_pertanian ?? '' }}"></li>
+                                        <li class="form-list-item">Peternakan: <input type="text" class="form-input" style="width: 300px;" name="rt_peternakan" value="{{ $existingData->rt_peternakan ?? '' }}"></li>
+                                        <li class="form-list-item">Perikanan: <input type="text" class="form-input" style="width: 300px;" name="rt_perikanan" value="{{ $existingData->rt_perikanan ?? '' }}"></li>
+                                        <li class="form-list-item">Perkebunan: <input type="text" class="form-input" style="width: 300px;" name="rt_perkebunan" value="{{ $existingData->rt_perkebunan ?? '' }}"></li>
+                                        <li class="form-list-item">Lainnya: <input type="text" class="form-input" style="width: 300px;" name="rt_lainnya" value="{{ $existingData->rt_lainnya ?? '' }}"></li>
                                     </ul>
                                 </td>
                             </tr>
@@ -1417,5 +1417,59 @@
     `);
             previewWindow.document.close();
         }
+
+        // Auto-fill helper functions
+        function autoFillFromLocation() {
+            const wilayahInput = document.querySelector('input[name="wilayah_bencana"]');
+            if (wilayahInput && wilayahInput.value) {
+                // Auto-fill based on common data for the area
+                autoFillCommonData(wilayahInput.value.toLowerCase());
+            }
+        }
+
+        function autoFillCommonData(location) {
+            // Example auto-fill based on Indonesian administrative data
+            const commonData = {
+                'default': {
+                    'nama_opd_1': 'Dinas Pertanian',
+                    'nama_opd_2': 'Dinas Perindustrian dan Perdagangan',
+                    'nama_opd_sosial': 'Dinas Sosial',
+                    'nama_opd_pendidikan': 'Dinas Pendidikan',
+                    'nama_opd_kesehatan': 'Dinas Kesehatan',
+                    'nama_opd_sekretariat': 'Sekretariat Daerah'
+                }
+            };
+
+            // Apply default values if fields are empty
+            Object.keys(commonData.default).forEach(fieldName => {
+                const field = document.querySelector(`input[name="${fieldName}"]`);
+                if (field && !field.value) {
+                    field.value = commonData.default[fieldName];
+                }
+            });
+
+            // Auto-fill current date for OPD dates
+            const today = new Date().toISOString().split('T')[0];
+            const dateFields = ['tanggal_opd_1', 'tanggal_opd_2', 'tanggal_opd_sosial', 'tanggal_opd_pendidikan', 'tanggal_opd_kesehatan', 'tanggal_opd_sekretariat'];
+            
+            dateFields.forEach(fieldName => {
+                const field = document.querySelector(`input[name="${fieldName}"]`);
+                if (field && !field.value) {
+                    field.value = today;
+                }
+            });
+        }
+
+        // Auto-fill when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-fill common OPD names and current dates
+            autoFillCommonData();
+            
+            // Add event listener for wilayah bencana input
+            const wilayahInput = document.querySelector('input[name="wilayah_bencana"]');
+            if (wilayahInput) {
+                wilayahInput.addEventListener('blur', autoFillFromLocation);
+            }
+        });
     </script>
 @endsection
