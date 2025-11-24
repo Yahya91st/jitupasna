@@ -681,12 +681,12 @@
                     <table class="form-table">
                         <tr>
                             <td style="width: 30%;">Nama OPD</td>
-                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_sosial" placeholder="OPD yang terkait dengan Bidang Sosial dan Keagamaan">
+                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_3" placeholder="OPD yang terkait dengan Bidang Sosial dan Keagamaan">
                             </td>
                         </tr>
                         <tr>
                             <td>Tgl/Bln/Thn</td>
-                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_sosial"></td>
+                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_3"></td>
                         </tr>
                     </table>
 
@@ -747,12 +747,12 @@
                     <table class="table table-bordered form-table" border="1">
                         <tr>
                             <td style="width: 30%;">Nama OPD</td>
-                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_pendidikan" placeholder="OPD yang terkait dengan Pendidikan">
+                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_4" placeholder="OPD yang terkait dengan Pendidikan">
                             </td>
                         </tr>
                         <tr>
                             <td>Tgl/Bln/Thn</td>
-                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_pendidikan"></td>
+                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_4"></td>
                         </tr>
                     </table>
 
@@ -808,12 +808,12 @@
                     <table class="table table-bordered form-table" border="1">
                         <tr>
                             <td style="width: 30%;">Nama OPD</td>
-                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_sekretariat" placeholder="OPD Sekretariat Daerah">
+                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_5" placeholder="OPD Sekretariat Daerah">
                             </td>
                         </tr>
                         <tr>
                             <td>Tgl/Bln/Thn</td>
-                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_sekretariat"></td>
+                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_5"></td>
                         </tr>
                     </table>
 
@@ -882,12 +882,12 @@
                     <table class="table table-bordered form-table" border="1">
                         <tr>
                             <td style="width: 30%;">Nama OPD</td>
-                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_kesehatan" placeholder="Dinas Kesehatan">
+                            <td>: <input type="text" class="form-input" style="width: calc(100% - 10px);" name="nama_opd_6" placeholder="Dinas Kesehatan">
                             </td>
                         </tr>
                         <tr>
                             <td>Tgl/Bln/Thn</td>
-                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_kesehatan"></td>
+                            <td>: <input type="date" class="form-input" style="width: calc(100% - 10px);" name="tanggal_opd_6"></td>
                         </tr>
                     </table>
 
@@ -971,12 +971,191 @@
                         <button type="button" class="btn btn-secondary" onclick="previewForm()">
                             <i class="bi bi-eye"></i> Preview
                         </button>
+                        <button type="button" class="btn btn-outline-primary" onclick="autofillSample()">Autofill Sample</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="toggleJsonInput()">Load JSON</button>
+                        <button type="button" class="btn btn-outline-danger" onclick="clearAutofill()">Clear</button>
+                    </div>
+
+                    <div id="autofillJsonWrap" style="display:none; text-align:center; margin-top:10px;">
+                        <textarea id="autofillJson" placeholder='{"wilayah_bencana":"...","data_dasar_sebelum_bencana":{"1":"100",...}}' style="width:90%; height:100px; font-family:monospace;"></textarea>
+                        <div style="margin-top:6px;">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="applyJson()">Apply JSON</button>
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleJsonInput()">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>
     </form>
 
     <script>
+        function setValue(name, val) {
+            const els = document.getElementsByName(name);
+            if (!els || els.length === 0) return;
+            Array.from(els).forEach(el => {
+                if (el.type === 'checkbox' || el.type === 'radio') {
+                    el.checked = Array.isArray(val) ? val.includes(el.value) : Boolean(val);
+                } else {
+                    el.value = val ?? '';
+                }
+                el.dispatchEvent(new Event('input', {
+                    bubbles: true
+                }));
+            });
+        }
+
+        // helper: parse name like "a[b][c]" => ['a','b','c']
+        function parseNameToPath(name) {
+            const parts = [];
+            name.split('[').forEach((p, i) => {
+                const clean = p.replace(/\]?$/, '');
+                if (clean !== '') parts.push(clean);
+            });
+            return parts;
+        }
+
+        // set nested object value by path array
+        function setByPath(obj, path, value) {
+            let cur = obj;
+            for (let i = 0; i < path.length; i++) {
+                const p = path[i];
+                if (i === path.length - 1) {
+                    cur[p] = value;
+                } else {
+                    cur[p] = cur[p] || {};
+                    cur = cur[p];
+                }
+            }
+        }
+
+        function exportJson() {
+            const obj = exportFormToJson();
+            const txt = JSON.stringify(obj, null, 2);
+            navigator.clipboard?.writeText(txt).then(() => {
+                alert('Form JSON copied to clipboard.');
+            }).catch(() => {
+                // fallback show textarea
+                const w = window.open('', '_blank');
+                w.document.write('<pre>' + txt + '</pre>');
+            });
+        }
+
+
+        // build JSON object from form (useful export)
+        function exportFormToJson() {
+            const out = {};
+            document.querySelectorAll('form [name]').forEach(el => {
+                const name = el.getAttribute('name');
+                const path = parseNameToPath(name);
+                let val;
+                if (el.type === 'checkbox') {
+                    val = el.checked ? el.value : '';
+                } else if (el.type === 'radio') {
+                    if (!el.checked) return; // skip unchecked radios
+                    val = el.value;
+                } else {
+                    val = el.value;
+                }
+                // if the name is simple single key => set directly
+                if (path.length === 1) {
+                    out[path[0]] = val;
+                } else {
+                    // nested: build nested object
+                    let head = path[0];
+                    out[head] = out[head] || {};
+                    setByPath(out[head], path.slice(1), val);
+                }
+            });
+            return out;
+        }
+
+        // applyData: accepts nested objects/arrays; keys like data_dasar_sebelum_bencana:{1:"10"} will set data_dasar_sebelum_bencana[1]
+        function applyData(data) {
+            for (const key in data) {
+                const value = data[key];
+                if (value && typeof value === 'object' && !Array.isArray(value)) {
+                    // iterate keys and set name[key2]
+                    for (const k2 in value) {
+                        setValue(`${key}[${k2}]`, value[k2]);
+                    }
+                } else if (Array.isArray(value)) {
+                    // array -> set name[index] for numeric indices or checkboxes if names match
+                    value.forEach((v, i) => setValue(`${key}[${i}]`, v));
+                } else {
+                    setValue(key, value);
+                }
+            }
+        }
+
+        function autofillSample() {
+            const sample = {
+                wilayah_bencana: "Kab. Contoh / Kec. Contoh",
+                nama_opd_1: "Dinas Contoh",
+                tanggal_opd_1: "2025-11-20",
+                nama_opd_2: "Dinas Perdagangan",
+                tanggal_opd_2: "2025-11-20",
+                nama_opd_3: "Dinas Pendidikan",
+                tanggal_opd_3: "2025-11-20",
+                nama_opd_4: "opd4",
+                tanggal_opd_4: "2025-11-20",
+                nama_opd_5: "opd5",
+                tanggal_opd_5: "2025-11-20",
+                nama_opd_6: "opd6",
+                tanggal_opd_6: "2025-11-20",
+                def_perdagangan_kecil: "Contoh: kios kecil",
+                def_perdagangan_besar: "Contoh: distributor",
+                data_dasar_sebelum_bencana: {},
+                data_sekunder_akibat_bencana_umum: {}
+            };
+            // numeric sample untuk 1..68
+            for (let i = 1; i <= 68; i++) sample.data_dasar_sebelum_bencana[i] = (i % 2 === 0) ? (i * 10).toString() : (i * 5).toString();
+            // beberapa teks untuk sekunder umum
+            sample.data_sekunder_akibat_bencana_umum[1] = "Sejarah contoh";
+            sample.data_sekunder_akibat_bencana_umum[2] = "Kronologi contoh";
+            sample.data_sekunder_akibat_bencana_umum[3] = "Wilayah contoh";
+            // juga isi kelompok-kelompok OPD khusus (jika field ada)
+            for (let g = 1; g <= 6; g++) {
+                const key = `data_sekunder_akibat_bencana_khusus_opd_${g}`;
+                sample[key] = {};
+                // fill a few sample indexes (safe: will only set inputs that exist)
+                for (let j = 1; j <= 20; j++) sample[key][j] = `Contoh ${g}-${j}`;
+            }
+            applyData(sample);
+            alert('Sample data applied ke seluruh field yang ada di form.');
+        }
+
+
+        function toggleJsonInput() {
+            const w = document.getElementById('autofillJsonWrap');
+            w.style.display = (w.style.display === 'none' || w.style.display === '') ? 'block' : 'none';
+        }
+
+        function applyJson() {
+            try {
+                const raw = document.getElementById('autofillJson').value;
+                if (!raw) return alert('JSON kosong');
+                const obj = JSON.parse(raw);
+                applyData(obj);
+                toggleJsonInput();
+                alert('JSON applied.');
+            } catch (e) {
+                alert('JSON invalid: ' + e.message);
+            }
+        }
+
+        function clearAutofill() {
+            const container = document.querySelector('.container');
+            if (!container) return;
+            container.querySelectorAll('input, textarea, select').forEach(el => {
+                if (el.type === 'hidden') return;
+                el.value = '';
+                if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+                el.dispatchEvent(new Event('input', {
+                    bubbles: true
+                }));
+            });
+            alert('Form cleared.');
+        }
+
         function resetForm() {
             if (confirm('Apakah Anda yakin ingin mereset semua data form?')) {
                 document.querySelector('form').reset();

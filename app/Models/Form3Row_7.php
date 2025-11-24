@@ -9,6 +9,8 @@ class Form3Row_7 extends Model
 
     protected $fillable = [
         'form3_id',
+        'pertanyaan',
+        'jawaban',
     ];
 
     public function form3()

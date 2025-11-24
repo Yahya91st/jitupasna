@@ -10,13 +10,13 @@ return new class extends Migration
         Schema::create('form3_rows_1', function (Blueprint $table) {
             $table->id();
             $table->foreignId('form3_id')->constrained('form3')->cascadeOnDelete();
-            $table->string('Kategori')->nullable();   
-            $table->string('Sub-Kategori')->nullable();
-            $table->string('Jawaban')->nullable();
+            $table->string('kategori')->nullable();   
+            $table->string('sub_kategori')->nullable();
+            $table->string('jawaban')->nullable();
             $table->timestamps();
 
 
-            $table->index(['form3_id', 'item_index']);
+            $table->index(['form3_id']);
         });
     }
 
