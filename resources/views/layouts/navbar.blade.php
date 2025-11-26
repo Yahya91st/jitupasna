@@ -35,7 +35,7 @@
                         srcset="">
 
                 </div>
-                <div class="d-none d-md-block d-lg-inline-block">PENGKAJIAN KEBUTUHAN
+                <div class="d-none d-md-block d-lg-inline-block" style="color: #F28705; font-weight: 600;">PENGKAJIAN KEBUTUHAN
                     PASCABENCANA</div>
             </li>
             <li class="dropdown">

@@ -10,9 +10,17 @@
         padding: 0.15rem 0.3rem !important;
         font-size: 0.95rem;
     }
+    
+    /* Style khusus untuk judul utama */
+    .main-title {
+        background: linear-gradient(135deg, #ff8a50, #ff6b35);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 </style>
     <div class="container mt-4">
-        <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
+        <h5 class="text-center fw-bold main-title">Formulir 04<br>Pengumpulan Data Sektor</h5>
         <p class="fw-bold">Format 1a: Pengumpulan Data Sektor Perumahan</p>
         
         <form action="{{ isset($edit) && $edit ? route('forms.form4.format1.update', $data->id) : route('forms.form4.format1.store') }}" method="POST">

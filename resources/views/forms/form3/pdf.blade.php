@@ -931,21 +931,7 @@
                 <tr>
                     <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">1</td>
                     <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                        <strong>Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana</strong><br>
-                        <div style="margin: 8px 0; line-height: 1.5;">
-                            .....................................................................................................................................................................................................................................................................<br>
-                            .....................................................................................................................................................................................................................................................................<br>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center; font-weight: bold;">NO</td>
-                    <td style="border: 1px solid black; padding: 4px; vertical-align: top; background-color: #f0f0f0; font-weight: bold; text-align: center;">POKOK BAHASAN</td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">1</td>
-                    <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                        <strong>bencana</strong> (adari faktor pumberi pendidik, sarana/prasarana maupun bencana alam)<br>
+                        <strong>Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana</strong><div><br>(dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam)<br></div> 
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br>
