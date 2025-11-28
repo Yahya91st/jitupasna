@@ -16,7 +16,7 @@
         }
 
         .card-header-custom {
-            background: linear-gradient(to right, #4a6cf7, #28bafd);
+            background: linear-gradient(to right, #F28705, #e67e22);
             color: white;
             border-radius: 0.5rem 0.5rem 0 0;
             padding: 1rem 1.5rem;
@@ -41,8 +41,8 @@
         }
 
         .btn-edit {
-            background-color: #ffc107;
-            color: #212529;
+            background-color: #F28705;
+            color: white;
         }
 
         .btn-pdf {
@@ -51,7 +51,7 @@
         }
 
         .btn-preview {
-            background-color: #0dcaf0;
+            background-color: #17a2b8;
             color: white;
         }
     </style>
@@ -60,7 +60,7 @@
 @section('content')
     <div class="page-heading">
         <div class="page-title mb-4">
-            <h3>Formulir 01 - Surat Permohonan Keterlibatan dalam PDNA</h3>
+            <h3 style="color: #F28705;">Formulir 01 - Surat Permohonan Keterlibatan dalam PDNA</h3>
             <p class="text-subtitle text-muted">Surat Permohonan Keterlibatan dalam Pengkajian Kebutuhan Pascabencana (PDNA)</p>
         </div>
 
@@ -128,7 +128,7 @@
                                         <div class="col-md-6">
                                             <div class="d-flex align-items-center p-3 bg-light rounded mb-3">
                                                 <div class="me-3">
-                                                    <i class="bi bi-person-plus fs-3 text-primary"></i>
+                                                    <i class="bi bi-person-plus fs-3" style="color: #F28705;"></i>
                                                 </div>
                                                 <div>
                                                     <h6 class="mb-0">Dibuat Oleh: <strong>{{ $form->createdBy->name ?? 'Unknown' }}</strong></h6>
@@ -140,7 +140,7 @@
                                             <div class="col-md-6">
                                                 <div class="d-flex align-items-center p-3 bg-light rounded mb-3">
                                                     <div class="me-3">
-                                                        <i class="bi bi-pencil-square fs-3 text-success"></i>
+                                                        <i class="bi bi-pencil-square fs-3" style="color: #F28705;"></i>
                                                     </div>
                                                     <div>
                                                         <h6 class="mb-0">Diperbarui Oleh: <strong>{{ $form->updatedBy->name ?? 'Unknown' }}</strong></h6>

@@ -98,7 +98,7 @@
                                         <i class="bx bx-x d-block d-sm-none"></i>
                                         <span class="d-none d-sm-block">Close</span>
                                     </button>
-                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                    <button type="submit" class="btn mr-1 mb-1" style="background-color: #F28705; color: white; border: none;">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -136,7 +136,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
                                         data-dismiss="modal">{{ __('Reset') }}</button>
-                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                    <button type="submit" class="btn mr-1 mb-1" style="background-color: #F28705; color: white; border: none;">Submit</button>
                                 </div>
                             </form>
                         </div>

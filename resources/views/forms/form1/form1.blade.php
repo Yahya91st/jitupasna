@@ -88,7 +88,7 @@
     }
 
     .document-title h5:first-child {
-        color: #ff6b35;
+        color: #F28705;
         margin-bottom: 0.3rem;
     }
 

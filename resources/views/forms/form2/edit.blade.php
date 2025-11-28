@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-heading">
     <div class="page-title mb-4">
-        <h3>Edit Formulir 02 - Surat Keputusan Pembentukan Tim Kerja</h3>
+        <h3 style="color: #F28705;">Edit Formulir 02 - Surat Keputusan Pembentukan Tim Kerja</h3>
         <p class="text-subtitle text-muted">Edit formulir keputusan pembentukan tim kerja untuk pengkajian kebutuhan pascabencana</p>
     </div>
 
@@ -21,7 +21,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Edit Data Surat Keputusan</h4>
+            <h4 class="card-title" style="color: #F28705;">Edit Data Surat Keputusan</h4>
         </div>
         <div class="card-body">
             <form action="{{ route('forms.form2.update', $keputusan->id) }}" method="POST">
@@ -32,7 +32,7 @@
                 <!-- 1. Informasi Umum -->
                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="mt-3 mb-4">1. Informasi Umum</h5>
+                        <h5 class="mt-3 mb-4" style="color: #F28705;">1. Informasi Umum</h5>
                     </div>
                 </div>
 
@@ -95,7 +95,7 @@
                 <!-- 2. Dasar Hukum -->
                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="mt-5 mb-4">2. Dasar Hukum</h5>
+                        <h5 class="mt-5 mb-4" style="color: #F28705;">2. Dasar Hukum</h5>
                     </div>
                 </div>
 
@@ -126,7 +126,7 @@
                 <!-- 3. Keputusan -->
                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="mt-5 mb-4">3. Keputusan</h5>
+                        <h5 class="mt-5 mb-4" style="color: #F28705;">3. Keputusan</h5>
                     </div>
                 </div>
 
@@ -172,7 +172,7 @@
                 <!-- 4. Penetapan dan Tembusan -->
                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="mt-5 mb-4">4. Penetapan dan Tembusan</h5>
+                        <h5 class="mt-5 mb-4" style="color: #F28705;">4. Penetapan dan Tembusan</h5>
                     </div>
                 </div>
 
@@ -209,8 +209,8 @@
                 <!-- Submit Button -->
                 <div class="row mt-5">
                     <div class="col-md-12 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary me-2">Update</button>
-                        <a href="{{ route('forms.form2.show', $keputusan->id) }}" class="btn btn-secondary">Batal</a>
+                        <button type="submit" class="btn me-2" style="background-color: #F28705; color: white; border: none;">Update</button>
+                        <a href="{{ route('forms.form2.show', $keputusan->id) }}" class="btn" style="background-color: #6c757d; color: white; border: none;">Batal</a>
                     </div>
                 </div>
             </form>
@@ -220,7 +220,7 @@
     <!-- Preview Section (Optional) -->
     <div class="card mt-4">
         <div class="card-header">
-            <h4 class="card-title">Preview Surat Keputusan</h4>
+            <h4 class="card-title" style="color: #F28705;">Preview Surat Keputusan</h4>
         </div>
         <div class="card-body">
             <p class="text-muted">Data yang telah diisi akan ditampilkan dalam format surat keputusan di sini.</p>

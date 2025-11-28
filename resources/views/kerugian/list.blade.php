@@ -1,21 +1,206 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    /* Container & Layout */
+    .list-container {
+        max-width: 1200px;
+        font-family: 'Times New Roman', serif;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Card Styling */
+    .main-card {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    /* Header Styling */
+    .card-header {
+        background: #F28705;
+        color: white;
+        padding: 15px 20px;
+        border-bottom: none;
+    }
+
+    .card-header h4 {
+        margin: 0;
+        font-weight: 600;
+        color: white;
+    }
+
+    /* Page Title Styling */
+    .page-heading h3 {
+        color: #F28705;
+        font-weight: 600;
+        font-family: 'Times New Roman', serif;
+    }
+
+    /* Alert Styling */
+    .alert-info {
+        background: white;
+        border: 2px solid #6c757d;
+        color: #6c757d;
+        border-radius: 4px;
+    }
+
+    .alert-info .alert-heading {
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    /* Table Styling */
+    .table {
+        border: 1px solid #ddd;
+        margin-bottom: 1.5rem;
+        font-size: 14px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .table td, .table th {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background: #f9f9f9;
+        color: #333;
+        font-weight: 600;
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(108, 117, 125, 0.05);
+        transition: background-color 0.2s ease;
+    }
+
+    /* Button Styling */
+    .btn {
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-orange {
+        background: #F28705;
+        color: white;
+        border: none;
+    }
+
+    .btn-orange:hover {
+        background: #e07404;
+        color: white;
+    }
+
+    .btn-primary {
+        background: #F28705;
+        border-color: #F28705;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #e07404;
+        border-color: #e07404;
+        color: white;
+    }
+
+    .btn-danger {
+        background: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #0056b3;
+        border-color: #0056b3;
+        color: white;
+    }
+
+    /* Modal Styling */
+    .modal-header {
+        background: #6c757d;
+        color: white;
+        border-bottom: none;
+    }
+
+    .modal-header h4 {
+        color: white;
+        font-weight: 600;
+    }
+
+    .modal-header .close {
+        color: white;
+        opacity: 0.8;
+    }
+
+    /* Form Styling */
+    .form-group label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .form-select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-select:focus {
+        border-color: #6c757d;
+        box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+    }
+
+    /* Location List Styling */
+    .location-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .location-list li {
+        padding: 2px 0;
+        color: #555;
+        font-size: 14px;
+    }
+
+    /* Card Content */
+    .card-content {
+        padding: 20px;
+    }
+</style>
+<div class="list-container">
     <div class="page-heading">
-    <div class="page-title mb-4">
-        <h3>Pilih Kejadian Bencana</h3>
-        <p class="text-subtitle text-muted">Silahkan pilih kejadian bencana untuk melihat data kerugian</p>
+        <div class="page-title mb-4">
+            <h3>Pilih Kejadian Bencana</h3>
+            <p class="text-subtitle text-muted">Silahkan pilih kejadian bencana untuk melihat data kerugian</p>
+        </div>
     </div>
-</div>
 
 <div class="row" id="table-striped">
         <div class="col-12">
-            <div class="card">
+            <div class="main-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Daftar Kejadian Bencana</h4>
                     <div>
                         <button class="btn btn-danger" type="button" data-toggle="modal"
-                            data-target="#inlineForm">Filter</button>
+                            data-target="#inlineForm" style="font-weight: 500;">Filter</button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -50,12 +235,14 @@
                                         </td>
                                         <td class="text-bold-500">{{ $item->tanggal }}</td>
                                         <td>
-                                            @foreach ($item->desa as $desa)
-                                                <li> {{ $desa->nama }}</li>
-                                            @endforeach
+                                            <ul class="location-list">
+                                                @foreach ($item->desa as $desa)
+                                                    <li>{{ $desa->nama }}</li>
+                                                @endforeach
+                                            </ul>
                                         </td>
                                         <td>
-                                            <a href="{{ route('kerugian.detail', $item->id) }}" class="btn btn-primary">
+                                            <a href="{{ route('kerugian.detail', $item->id) }}" class="btn btn-orange" style="font-weight: 500;">
                                                 <i class="fa fa-chart-bar mr-1"></i>
                                                 Lihat Data Kerugian
                                             </a>
@@ -98,8 +285,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
-                                        data-dismiss="modal">{{ __('Reset') }}</button>
-                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                        data-dismiss="modal" style="font-weight: 500;">{{ __('Reset') }}</button>
+                                    <button type="submit" class="btn btn-orange mr-1 mb-1" style="font-weight: 500;">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -108,6 +295,7 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
 <script>
     function resetFilters() {

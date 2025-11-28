@@ -17,7 +17,7 @@
     }
 </style>
 <div class="container mt-4">
-    <h5 class="text-center fw-bold">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
+    <h5 class="text-center fw-bold" style="color: #F28705;">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
     <p class="fw-bold">Format 4: Sektor Perlindungan Sosial</p>
     <form action="{{ route('forms.form4.store-format4') }}" method="POST">
         @csrf

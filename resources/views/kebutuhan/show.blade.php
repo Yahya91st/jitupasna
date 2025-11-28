@@ -1,28 +1,241 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="page-title">
-    <div class="row">
-        <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Detail Kebutuhan Pascabencana</h3>
-            <p class="text-subtitle text-muted">Detail kebutuhan pascabencana</p>
-        </div>
-        <div class="col-12 col-md-6 order-md-2 order-first">
-            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-md-end">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('kebutuhan.index') }}">Kebutuhan</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
-                </ol>
-            </nav>
+<style>
+    * {
+        font-family: 'Times New Roman', Times, serif;
+    }
+    
+    .main-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border: none;
+        overflow: hidden;
+    }
+    
+    .orange-header {
+        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+        color: white;
+        padding: 20px;
+        margin: -1px -1px 20px -1px;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .orange-header h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.8rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .orange-header p {
+        margin: 5px 0 0 0;
+        opacity: 0.9;
+    }
+    
+    .breadcrumb {
+        background: transparent;
+        margin: 0;
+    }
+    
+    .breadcrumb-item a {
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: white;
+    }
+    
+    .breadcrumb-item.active {
+        color: white;
+    }
+    
+    .detail-card {
+        background: white;
+        border-radius: 12px;
+        border: 3px solid #F28705;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        border-bottom: none;
+        border-radius: 12px 12px 0 0;
+    }
+    
+    .card-header h4 {
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .card-primary .card-header {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    }
+    
+    .card-danger .card-header {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    }
+    
+    .card-warning .card-header {
+        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    }
+    
+    .card-success .card-header {
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    }
+    
+    .summary-card {
+        background: white;
+        border-radius: 12px;
+        border: 2px solid #e9ecef;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .summary-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    
+    .btn-outline-primary {
+        border: 2px solid #F28705;
+        color: #F28705;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-primary:hover {
+        background: #F28705;
+        border-color: #F28705;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline-warning {
+        border: 2px solid #ffc107;
+        color: #ffc107;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-warning:hover {
+        background: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline-danger {
+        border: 2px solid #dc3545;
+        color: #dc3545;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-danger:hover {
+        background: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #e07600 0%, #f57c00 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(242, 135, 5, 0.4);
+    }
+    
+    .btn-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+        border: none;
+        color: #212529;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-warning:hover {
+        background: linear-gradient(135deg, #e0a800 0%, #d39e00 100%);
+        transform: translateY(-2px);
+    }
+    
+    .table thead th {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        border: none;
+        padding: 15px 12px;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #fff8f0;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.1);
+    }
+    
+    .badge {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 6px 12px;
+    }
+    
+    .form-group label {
+        color: #495057;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    .form-group p {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="container-fluid">
+<div class="main-card">
+    <div class="orange-header">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Detail Kebutuhan Pascabencana</h3>
+                <p class="text-subtitle">Detail kebutuhan pascabencana</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-md-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('kebutuhan.index') }}">Kebutuhan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
 
-<section class="section">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Detail Bencana</h4>
-        </div>
+    <div style="padding: 20px;">
+        <div class="detail-card">
+            <div class="card-header">
+                <h4 class="card-title">Detail Bencana</h4>
+            </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -75,14 +288,14 @@
             </div>        </div>
     </div>    
     
-    <!-- Rekap Section -->
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="card-title">
-                <i class="fas fa-chart-pie me-2"></i>
-                Data Rekap Bencana
-                <small id="last-updated" class="text-muted ms-2"></small>
-            </h4>
+        <!-- Rekap Section -->
+        <div class="detail-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title">
+                    <i class="fas fa-chart-pie me-2"></i>
+                    Data Rekap Bencana
+                    <small id="last-updated" class="text-muted ms-2"></small>
+                </h4>
             <div>
                 <!-- @if($rekaps->count() > 0)
                     <a href="{{ route('rekap.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-info btn-sm">
@@ -102,7 +315,7 @@
                 <!-- Rekap Summary Cards -->
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <div class="card bg-primary text-white mb-0">
+                        <div class="summary-card bg-primary text-white mb-0">
                             <div class="card-body text-center py-3">
                                 <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
                                 <small>Total Rekap</small>
@@ -110,7 +323,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card bg-danger text-white mb-0">
+                        <div class="summary-card bg-danger text-white mb-0">
                             <div class="card-body text-center py-3">
                                 @php
                                     // Hitung total kerusakan seluruh rekap (format1-17)
@@ -130,7 +343,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card bg-warning text-white mb-0">
+                        <div class="summary-card bg-warning text-white mb-0">
                             <div class="card-body text-center py-3">
                                 <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
                                 <small>Total Kerugian</small>
@@ -138,7 +351,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card bg-success text-white mb-0">
+                        <div class="summary-card bg-success text-white mb-0">
                             <div class="card-body text-center py-3">
                                 <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
                                 <small>Verified</small>
@@ -237,6 +450,8 @@
             @endif
         </div>
     </div>
+</div>
+</div>
     
 </section>
 @endsection

@@ -17,7 +17,7 @@
     }
 </style>
 <div class="container mt-4">
-    <h5 class="text-center fw-bold">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
+    <h5 class="text-center fw-bold" style="color: #F28705;">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
     <p class="fw-bold">Format 2: Sektor Pendidikan</p>
     <form action="{{ isset($edit) && $edit ? route('forms.form4.format2.update', $data['id'] ?? '') : route('forms.form4.format2.store') }}" method="POST">
         @csrf
@@ -190,7 +190,7 @@
         </div>
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+                <button type="submit" class="btn" style="background-color: #F28705; color: white; border: none;">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
             </div>
         </div>
     </form>

@@ -15,7 +15,7 @@
 
 
     <div class="container mt-4">
-        <h5 class="text-center fw-bold">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
+        <h5 class="text-center fw-bold"style="color: #F28705;">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
         <p class="fw-bold">Format 13: Sektor Industri dan UMKM</p>
 
         <form action="{{ route('forms.form4.format13.store') }}" method="POST">

@@ -5,16 +5,16 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
+                    <h5 class="card-title mb-0 text-white">
                         <i class="fas fa-chart-pie me-2"></i>
                         Rekap Data Bencana
                     </h5>
                     <div>
-                        <a href="{{ route('rekap.index') }}" class="btn btn-info btn-sm">
+                        <a href="{{ route('rekap.index') }}" class="btn btn-light btn-sm">
                             <i class="fas fa-eye me-1"></i>Lihat Semua Rekap
                         </a>
-                        <a href="{{ route('rekap.dashboard') }}" class="btn btn-primary btn-sm">
+                        <a href="{{ route('rekap.dashboard') }}" class="btn btn-warning btn-sm">
                             <i class="fas fa-tachometer-alt me-1"></i>Dashboard
                         </a>
                     </div>
@@ -23,7 +23,7 @@
                     <!-- Summary Cards -->
                     <div class="row mb-3" style="margin: 15px;">
                         <div class="col-md-3">
-                            <div class="card bg-primary text-white mb-0">
+                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
                                 <div class="card-body text-center py-3">
                                     <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
                                     <small>Total Rekap</small>
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card bg-danger text-white mb-0">
+                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ff7043 0%, #ff3d00 100%);">
                                 <div class="card-body text-center py-3">
                                     <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerusakan'], 0, ',', '.') }}</h4>
                                     <small>Total Kerusakan</small>
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card bg-warning text-white mb-0">
+                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ffb74d 0%, #ff9800 100%);">
                                 <div class="card-body text-center py-3">
                                     <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
                                     <small>Total Kerugian</small>
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card bg-success text-white mb-0">
+                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ff8a50 0%, #ff5722 100%);">
                                 <div class="card-body text-center py-3">
                                     <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
                                     <small>Verified</small>
@@ -136,10 +136,10 @@
     <div class="row" id="table-striped">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Data Kerusakan Dampak Bencana</h4>
+                <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
+                    <h4 class="card-title mb-0 text-white">Data Kerusakan Dampak Bencana</h4>
                     {{-- <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a> --}}
-                    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#inlineForm">Filter</button>
+                    <button class="btn btn-light" type="button" data-toggle="modal" data-target="#inlineForm">Filter</button>
                 </div>
                 <div class="card-content">
                     <div class="table-responsive">
@@ -163,9 +163,10 @@
                                         <td>
                                             <div class="btn-group mb-1">
                                                 <div class="dropdown dropdown-color-icon">
-                                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                                    <button class="btn dropdown-toggle" type="button"
                                                         id="dropdownMenuButtonEmoji" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
+                                                        aria-haspopup="true" aria-expanded="false"
+                                                        style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%); color: white; border: none;">
                                                         Aksi
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonEmoji">
@@ -224,9 +225,10 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
+                                <button type="button" class="btn btn-secondary" onclick="resetFilters()"
                                     data-dismiss="modal">{{ __('Reset') }}</button>
-                                <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                <button type="submit" class="btn mr-1 mb-1" 
+                                    style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%); color: white; border: none;">Submit</button>
                             </div>
                         </form>
                     </div>

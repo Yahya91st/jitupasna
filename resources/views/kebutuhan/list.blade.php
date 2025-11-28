@@ -2,67 +2,209 @@
 
 @section('styles')
 <style>
+    * {
+        font-family: 'Times New Roman', Times, serif;
+    }
+    
+    .main-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border: none;
+        overflow: hidden;
+    }
+    
+    .orange-header {
+        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+        color: white;
+        padding: 20px;
+        margin: -1px -1px 20px -1px;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .orange-header h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.8rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .orange-header p {
+        margin: 5px 0 0 0;
+        opacity: 0.9;
+    }
+    
+    .detail-card {
+        background: white;
+        border-radius: 12px;
+        border: 3px solid #F28705;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        border-bottom: none;
+        border-radius: 12px 12px 0 0;
+    }
+    
+    .card-header h4 {
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .card-primary .card-header {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    }
+    
+    .card-danger .card-header {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    }
+    
+    .card-warning .card-header {
+        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    }
+    
+    .card-success .card-header {
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    }
+    
+    .card-info .card-header {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    }
+    
+    .card-secondary .card-header {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    }
+    
+    .card-light .card-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #495057;
+    }
+    
     .text-end.fw-bold {
-        background-color: #f8f9fa;
-        color: #0d6efd;
+        background-color: #fff8f0;
+        color: #F28705;
+        padding: 8px;
+        border-radius: 5px;
     }
     
     .numeric-total {
-        font-size: 1.1em;
-        color: #198754;
-    }
-    
-    .numeric-column {
-        position: relative;
-    }
-    
-    .numeric-column::after {
-        content: "Rp";
-        position: absolute;
-        left: 10px;
-        color: #6c757d;
+        font-size: 1.2em;
+        color: #28a745;
+        font-weight: 700;
     }
     
     .highlight-table {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-        border-radius: 0.25rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 12px;
+        border: 2px solid #e9ecef;
+        overflow: hidden;
     }
     
     .progress-bar-container {
         background-color: #f8f9fa;
-        border-radius: 4px;
-        padding: 4px;
-        margin-bottom: 5px;
+        border-radius: 8px;
+        padding: 6px;
+        margin-bottom: 10px;
     }
     
     .progress-label {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 2px;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #495057;
     }
     
     .progress-bar {
-        height: 20px;
-        border-radius: 4px;
-        transition: width 0.6s ease;
+        height: 25px;
+        border-radius: 8px;
+        transition: width 0.8s ease;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    .table thead th {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        border: none;
+        padding: 15px 12px;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #fff8f0;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.1);
+    }
+    
+    .accordion-button {
+        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+    }
+    
+    .accordion-button:not(.collapsed) {
+        background: linear-gradient(135deg, #e07600 0%, #f57c00 100%);
+        color: white;
+    }
+    
+    .accordion-button:focus {
+        border-color: #F28705;
+        box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.25);
+    }
+    
+    .list-group-item {
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .list-group-item:hover {
+        background-color: #fff8f0;
+        border-color: #F28705;
+    }
+    
+    .badge {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 6px 12px;
+    }
+    
+    .fw-bold {
+        font-weight: 700 !important;
+    }
+    
+    .text-primary {
+        color: #F28705 !important;
     }
 </style>
 @endsection
 
 @section('content')
-<div class="page-title">
-    <div class="row">
-        <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Ringkasan Tabel Berdasarkan Form</h3>
-            <p class="text-subtitle text-muted">Daftar tabel kerusakan dan kerugian pada setiap form</p>
-        </div>
+<div class="container-fluid">
+<div class="main-card">
+    <div class="orange-header">
+        <h3>Ringkasan Tabel Berdasarkan Form</h3>
+        <p class="text-subtitle">Daftar tabel kerusakan dan kerugian pada setiap form</p>
     </div>
-</div>
 
-<section class="section">    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-            <h4 class="card-title">Rekap Total Nilai Kerusakan & Kerugian</h4>
-        </div>
+    <div style="padding: 20px;">
+        <div class="detail-card mb-4">
+            <div class="card-header">
+                <h4 class="card-title">Rekap Total Nilai Kerusakan & Kerugian</h4>
+            </div>
         <div class="card-body">
             <div class="row">
                 @php
@@ -512,5 +654,7 @@
             </div>
         </div>
     </div>
-</section>
+    </div>
+</div>
+</div>
 @endsection

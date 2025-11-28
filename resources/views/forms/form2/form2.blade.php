@@ -39,7 +39,7 @@
  
     <div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">    
         <div class="text-center mb-4">
-            <h5><strong>Formulir 02</strong></h5>
+            <h5><strong><span style="color: #F28705;">Formulir 02</span></strong></h5>
             <h5>Surat Keputusan Pembentukan Tim Kerja Pengkajian Kebutuhan Pascabencana</h5>
         </div>
         <div class="card">

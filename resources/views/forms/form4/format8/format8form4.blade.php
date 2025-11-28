@@ -12,7 +12,7 @@
     }
 </style>
 <div class="container mt-4">
-    <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
+    <h5 class="text-center fw-bold" style="color: #F28705;" >Formulir 04<br>Pengumpulan Data Sektor</h5>
     <p class="fw-bold">Format 8: Sektor Listrik</p> 
 
     <form method="POST" action="{{ route('forms.form4.store-format8') }}">

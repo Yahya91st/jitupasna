@@ -1,14 +1,157 @@
 @extends('layouts.main')
 <style>
+    /* Container & Layout */
+    .edit-container {
+        max-width: 1200px;
+        font-family: 'Times New Roman', serif;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Card Styling */
+    .main-card {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    /* Header Styling */
+    .card-header {
+        background: #F28705;
+        color: white;
+        padding: 15px 20px;
+        border-bottom: none;
+    }
+
+    .card-header h4 {
+        margin: 0;
+        font-weight: 600;
+        color: white;
+    }
+
+    /* Table Styling */
+    .table {
+        border: 1px solid #ddd;
+        margin-bottom: 1.5rem;
+        font-size: 14px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .table td, .table th {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background: #f9f9f9;
+        color: #333;
+        font-weight: 600;
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+    }
+
+    /* Form Styling */
+    .form-group label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #F28705;
+        box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.25);
+    }
+
+    /* Button Styling */
+    .btn {
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        padding: 10px 20px;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-orange {
+        background: #F28705;
+        color: white;
+        border: none;
+    }
+
+    .btn-orange:hover {
+        background: #e07404;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        color: white;
+    }
+
+    /* Detail Card Styling */
+    .detail-card {
+        border: 3px solid #F28705;
+        border-radius: 6px;
+        margin-top: 10px;
+    }
+
+    /* Location List Styling */
+    .location-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .location-list li {
+        padding: 2px 0;
+        color: #555;
+        font-size: 14px;
+    }
+
     .row {
         margin-bottom: 20px;
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .edit-container {
+            padding: 10px;
+        }
+        
+        .main-card {
+            margin-bottom: 15px;
+        }
+    }
 </style>
 @section('content')
+<div class="edit-container">
     <section id="multiple-column-form">
         <div class="row match-height">
             <div class="col-12">
-                <div class="card">
+                <div class="main-card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title mb-0">Informasi Bencana</h4>
                     </div>
@@ -26,16 +169,18 @@
                                     <td>{{ $bencana->id }}</td>
                                     <td>{{ $bencana->kategori_bencana->nama }}</td>
                                     <td>
-                                        @foreach ($bencana->desa as $desa)
-                                            <li> {{ $desa->nama }}</li>
-                                        @endforeach
+                                        <ul class="location-list">
+                                            @foreach ($bencana->desa as $desa)
+                                                <li>{{ $desa->nama }}</li>
+                                            @endforeach
+                                        </ul>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="card">
+                <div class="main-card">
                     <form class="form" id="kerusakan-form" action="{{ route('kerugian.update', ['id' => $kerugian->id]) }}"
                         method="POST">
                         @method('PATCH')
@@ -45,7 +190,7 @@
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <div class="card" style="border: 4px solid #ddd; margin-top: 10px">
+                                <div class="card detail-card">
                                     <div class="card-content">
                                         <div class="card-body">
                                             <div class="row">
@@ -104,7 +249,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-secondary mr-1 mb-1">Submit</button>
+                                    <button type="submit" class="btn btn-orange mr-1 mb-1">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -115,6 +260,7 @@
         </div>
         </div>
     </section>
+</div>
 @endsection
 @push('script')
     <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>

@@ -2,17 +2,13 @@
 
 @section('content')
     <style>
-        /* Container & Layout - Kombinasi Form3 & Form6 */
-        * {
-            font-family: 'Times New Roman', serif;
-        }
-
-        .container {
+        /* Container & Layout */
+        .form-container {
             max-width: 900px;
+            font-family: 'Times New Roman', serif;
             margin: 0 auto;
             padding: 20px;
             background: white;
-            color: #333;
             border-radius: 6px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
@@ -32,7 +28,7 @@
         }
 
         .form-header h5:first-child {
-            color: #0066cc;
+            color: #F28705;
             margin-bottom: 0.3rem;
         }
 
@@ -48,42 +44,40 @@
             font-size: 16px;
         }
 
-        /* Table Styling - Kombinasi Form3 & Form6 */
-        .form-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 14px;
+        /* Table Styling */
+        .table {
             border: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+            font-size: 14px;
             border-radius: 4px;
             overflow: hidden;
         }
 
-        .form-table th,
-        .form-table td {
+        .table td,
+        .table th {
+            padding: 8px 12px;
             border: 1px solid #ddd;
-            padding: 12px 8px;
-            text-align: left;
-            vertical-align: top;
+            vertical-align: middle;
         }
 
-        .form-table th {
-            background-color: #f9f9f9;
+        .table thead th {
+            background: #f9f9f9;
+            color: #333;
             font-weight: 600;
             text-align: center;
-            color: #333;
+            border-bottom: 2px solid #ddd;
         }
 
-        .form-table tbody tr:nth-child(odd) {
+        .table tbody tr:nth-child(odd) {
             background-color: #ffffff;
         }
 
-        .form-table tbody tr:nth-child(even) {
+        .table tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        .form-table tbody tr:hover {
-            background-color: rgba(0, 102, 204, 0.05);
+        .table tbody tr:hover {
+            background-color: rgba(242, 135, 5, 0.05);
             transition: background-color 0.2s ease;
         }
 
@@ -94,56 +88,51 @@
             font-weight: bold;
         }
 
-        /* Form Inputs - Dari Form3 */
-        .form-input {
+        /* Form Inputs */
+        .inline-input {
             background: transparent;
             border: none;
             border-bottom: 1px dotted #333;
             font-family: 'Times New Roman', serif;
             font-size: 14px;
-            color: #333;
+            color: inherit;
             outline: none;
-            padding: 6px 8px;
+            padding: 2px 4px;
             transition: border-color 0.3s ease;
-            line-height: 1.5;
         }
 
-        .form-input:focus {
-            border-bottom-color: #0066cc;
-            background-color: rgba(0, 102, 204, 0.05);
+        .inline-input:focus {
+            border-bottom-color: #F28705;
+            background-color: rgba(242, 135, 5, 0.05);
         }
 
-        textarea.form-input {
-            border: 1px dotted #333;
-            padding: 8px;
-            border-radius: 3px;
-            resize: vertical;
-            min-height: 60px;
+        /* Radio Button/Checkbox Styling */
+        input[type="radio"],
+        input[type="checkbox"] {
+            transform: scale(1.1);
+            margin-right: 0.5rem;
+            margin-left: 0.2rem;
+            accent-color: #F28705;
+            vertical-align: middle;
         }
 
-        textarea.form-input:focus {
-            border-color: #0066cc;
-            background-color: rgba(0, 102, 204, 0.05);
-        }
-
-        /* Radio Button Styling - Updated from Checkbox */
-        .radio-group {
+        .checkbox-group {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            align-items: center;
-            padding: 0.3rem 0;
+            flex-direction: column;
+            gap: 0.4rem;
+            align-items: flex-start;
+            padding: 0.2rem 0;
         }
 
-        .radio-item {
+        .checkbox-item {
             display: flex;
             align-items: center;
-            margin-right: 1.2rem;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.2rem;
             white-space: nowrap;
+            line-height: 1.4;
         }
 
-        .radio-item label {
+        .checkbox-item label {
             margin: 0;
             font-weight: 500;
             cursor: pointer;
@@ -151,41 +140,26 @@
             color: #333;
         }
 
-        input[type="radio"] {
-            transform: scale(1.1);
-            margin-right: 0.5rem;
-            margin-left: 0.2rem;
-            accent-color: #0066cc;
-            vertical-align: middle;
-        }
-
-        /* Card Styling - Dari Form6 */
-        .card {
+        /* Card Styling */
+        .main-card {
             background: white;
-            border: none;
-            box-shadow: none;
             border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .card-header {
-            background-color: #f9f9f9;
-            border-bottom: 1px solid #ddd;
-            padding: 15px 20px;
-        }
-
-        .card-title {
-            color: #333;
-            font-weight: bold;
-            margin: 0;
+               overflow: hidden;
         }
 
         .card-body {
             padding: 20px;
         }
 
-        /* Button Styling - Kombinasi Form3 & Form6 */
-        .form-button {
+        /* Button Styling */
+        .action-buttons {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
             margin: 0 5px;
             padding: 8px 16px;
             border-radius: 4px;
@@ -193,35 +167,34 @@
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
-            font-family: 'Times New Roman', serif;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 500;
         }
 
-        .form-button:hover {
+        .btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .form-button.btn-success {
+        .btn-success {
             background: #28a745;
             color: white;
         }
 
-        .form-button.btn-warning {
+        .btn-warning {
             background: #ffc107;
             color: #212529;
         }
 
-        .form-button.btn-info {
+        .btn-info {
             background: #17a2b8;
             color: white;
         }
 
-        .form-button.btn-secondary {
+        .btn-secondary {
             background: #6c757d;
             color: white;
         }
@@ -256,24 +229,24 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .container {
+            .form-container {
                 padding: 10px;
             }
 
-            .form-table {
+            .table {
                 font-size: 12px;
             }
 
-            .form-input {
+            .inline-input {
                 font-size: 12px;
             }
 
-            .radio-group {
+            .checkbox-group {
                 flex-direction: column;
                 align-items: flex-start;
             }
 
-            .form-button {
+            .btn {
                 margin: 2px;
                 padding: 6px 12px;
                 font-size: 12px;
@@ -282,31 +255,19 @@
 
         /* Print Styles */
         @media print {
-            .form-table {
-                border: 2px solid #000 !important;
-            }
-
-            .form-table th,
-            .form-table td {
-                border: 1px solid #000 !important;
-            }
-
-            .form-input {
-                border-bottom: 1px solid #000 !important;
-            }
-
-            .form-button {
+            .action-buttons {
                 display: none !important;
             }
 
-            .alert {
-                display: none !important;
-            }
-
-            .container {
+            .form-container {
                 box-shadow: none;
                 margin: 0;
                 padding: 10px;
+            }
+
+            .main-card {
+                box-shadow: none;
+                border: 1px solid #000;
             }
 
             body {
@@ -315,8 +276,8 @@
             }
         }
     </style>
-    <div class="container">
-        <!-- Document Header - Style dari Form6 -->
+    <div class="form-container">
+        <!-- Document Header -->
         <div class="form-header">
             <h5><strong>Formulir 07</strong></h5>
             <h5>Diskusi Kelompok Terfokus (FGD)</h5>
@@ -336,12 +297,8 @@
             </div>
         @endif
 
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Input Data FGD</h4>
-            </div>
-            <div class="card-content">
-                <div class="card-body">
+        <div class="main-card">
+            <div class="card-body">
                     <form action="{{ route('forms.form7.store') }}" method="POST" class="form form-vertical">
                         @csrf
 
@@ -350,7 +307,7 @@
                             INFORMASI UMUM
                         </div>
 
-                        <table class="form-table">
+                        <table class="table table-bordered">
                             <tbody>
                                 <!-- Hidden Bencana Selection -->
                                 <tr style="display: none;">
@@ -371,19 +328,19 @@
                                 </tr>
                                 <tr>
                                     <td width="25%">Desa/kelurahan asal:</td>
-                                    <td width="25%"><input type="text" name="desa_kelurahan" class="form-input @error('desa_kelurahan') is-invalid @enderror" value="{{ old('desa_kelurahan') }}" required></td>
+                                    <td width="25%"><input type="text" name="desa_kelurahan" class="inline-input @error('desa_kelurahan') is-invalid @enderror" value="{{ old('desa_kelurahan') }}" required></td>
                                     <td width="25%">Kecamatan asal:</td>
-                                    <td width="25%"><input type="text" name="kecamatan" class="form-input @error('kecamatan') is-invalid @enderror" value="{{ old('kecamatan') }}" required></td>
+                                    <td width="25%"><input type="text" name="kecamatan" class="inline-input @error('kecamatan') is-invalid @enderror" value="{{ old('kecamatan') }}" required></td>
                                 </tr>
                                 <tr>
                                     <td>Kabupaten asal:</td>
-                                    <td><input type="text" name="kabupaten" class="form-input @error('kabupaten') is-invalid @enderror" value="{{ old('kabupaten') }}" required></td>
+                                    <td><input type="text" name="kabupaten" class="inline-input @error('kabupaten') is-invalid @enderror" value="{{ old('kabupaten') }}" required></td>
                                     <td>Tanggal:</td>
-                                    <td><input type="date" name="tanggal" class="form-input @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', date('Y-m-d')) }}" required></td>
+                                    <td><input type="date" name="tanggal" class="inline-input @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', date('Y-m-d')) }}" required></td>
                                 </tr>
                                 <tr>
                                     <td>Km dari Bencana:</td>
-                                    <td><input type="number" name="jarak_bencana" class="form-input @error('jarak_bencana') is-invalid @enderror" value="{{ old('jarak_bencana') }}" required min="0"></td>
+                                    <td><input type="number" name="jarak_bencana" class="inline-input @error('jarak_bencana') is-invalid @enderror" value="{{ old('jarak_bencana') }}" required min="0"></td>
                                     <td colspan="2"><small>(diisi oleh fasilitator/pencatat)</small></td>
                                 </tr>
                             </tbody>
@@ -394,30 +351,30 @@
                             INFORMASI SESI
                         </div>
 
-                        <table class="form-table">
+                        <table class="table table-bordered">
                             <tbody>
                                 <tr>
                                     <td width="25%">Tempat sesi:</td>
-                                    <td width="25%"><input type="text" name="tempat_sesi" class="form-input @error('tempat_sesi') is-invalid @enderror" value="{{ old('tempat_sesi') }}" required></td>
+                                    <td width="25%"><input type="text" name="tempat_sesi" class="inline-input @error('tempat_sesi') is-invalid @enderror" value="{{ old('tempat_sesi') }}" required></td>
                                     <td width="15%">Desa/kel:</td>
-                                    <td width="35%"><input type="text" name="desa_sesi" class="form-input" value="{{ old('desa_sesi') }}"></td>
+                                    <td width="35%"><input type="text" name="desa_sesi" class="inline-input" value="{{ old('desa_sesi') }}"></td>
                                 </tr>
                                 <tr>
                                     <td>Kec:</td>
-                                    <td colspan="3"><input type="text" name="kec_sesi" class="form-input" value="{{ old('kec_sesi') }}"></td>
+                                    <td colspan="3"><input type="text" name="kec_sesi" class="inline-input" value="{{ old('kec_sesi') }}"></td>
                                 </tr>
                                 <tr>
                                     <td>Jumlah peserta:</td>
-                                    <td><input type="number" id="jumlah_peserta" name="jumlah_peserta" class="form-input @error('jumlah_peserta') is-invalid @enderror" value="{{ old('jumlah_peserta') }}" required min="1"></td>
+                                    <td><input type="number" id="jumlah_peserta" name="jumlah_peserta" class="inline-input @error('jumlah_peserta') is-invalid @enderror" value="{{ old('jumlah_peserta') }}" required min="1"></td>
                                     <td colspan="2">
-                                        (perempuan: <input type="number" id="jumlah_perempuan" name="jumlah_perempuan" class="form-input @error('jumlah_perempuan') is-invalid @enderror" value="{{ old('jumlah_perempuan') }}" required min="0" style="width: 50px; display: inline;">
-                                        laki-laki: <input type="number" id="jumlah_laki_laki" name="jumlah_laki_laki" class="form-input @error('jumlah_laki_laki') is-invalid @enderror" value="{{ old('jumlah_laki_laki') }}" required min="0" style="width: 50px; display: inline;">)
+                                        (perempuan: <input type="number" id="jumlah_perempuan" name="jumlah_perempuan" class="inline-input @error('jumlah_perempuan') is-invalid @enderror" value="{{ old('jumlah_perempuan') }}" required min="0" style="width: 50px; display: inline;">
+                                        laki-laki: <input type="number" id="jumlah_laki_laki" name="jumlah_laki_laki" class="inline-input @error('jumlah_laki_laki') is-invalid @enderror" value="{{ old('jumlah_laki_laki') }}" required min="0" style="width: 50px; display: inline;">)
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">
                                         <strong>Gambaran komposisi peserta, misalnya pekerjaan, status sosial, kelompok umur, dsb.</strong><br>
-                                        <textarea name="komposisi_peserta" class="form-input @error('komposisi_peserta') is-invalid @enderror" rows="3" style="height: 60px;" required>{{ old('komposisi_peserta') }}</textarea>
+                                        <textarea name="komposisi_peserta" class="inline-input @error('komposisi_peserta') is-invalid @enderror" rows="3" style="height: 60px; width: 100%;" required>{{ old('komposisi_peserta') }}</textarea>
                                     </td>
                                 </tr>
                             </tbody>
@@ -428,7 +385,7 @@
                             PENYELENGGARA
                         </div>
 
-                        <table class="form-table">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th width="50%">Penyelenggara</th>
@@ -437,11 +394,11 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Fasilitator: <input type="text" name="fasilitator" class="form-input @error('fasilitator') is-invalid @enderror" value="{{ old('fasilitator') }}" required></td>
+                                    <td>Fasilitator: <input type="text" name="fasilitator" class="inline-input @error('fasilitator') is-invalid @enderror" value="{{ old('fasilitator') }}" required></td>
                                     <td style="height: 40px;"></td>
                                 </tr>
                                 <tr>
-                                    <td>Pencatat: <input type="text" name="pencatat" class="form-input @error('pencatat') is-invalid @enderror" value="{{ old('pencatat') }}" required></td>
+                                    <td>Pencatat: <input type="text" name="pencatat" class="inline-input @error('pencatat') is-invalid @enderror" value="{{ old('pencatat') }}" required></td>
                                     <td style="height: 40px;"></td>
                                 </tr>
                             </tbody>
@@ -452,18 +409,18 @@
                             CHECKLIST PERSIAPAN
                         </div>
 
-                        <table class="form-table">
+                        <table class="table table-bordered">
                             <tbody>
                                 <tr>
                                     <td width="5%">1.</td>
                                     <td width="70%">Persiapan pra-FGD:</td>
                                     <td width="25%">
-                                        <div class="radio-group">
-                                            <div class="radio-item">
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="prep_ya" name="persiapan_pra_fgd" value="1">
                                                 <label for="prep_ya"> Ya</label>
                                             </div>
-                                            <div class="radio-item">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="prep_tidak" name="persiapan_pra_fgd" value="0">
                                                 <label for="prep_tidak"> Tidak</label>
                                             </div>
@@ -474,12 +431,12 @@
                                     <td>2.</td>
                                     <td>Pembagian tugas pelaksana</td>
                                     <td>
-                                        <div class="radio-group">
-                                            <div class="radio-item">
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="tugas_ya" name="pembagian_tugas_pelaksana" value="1">
                                                 <label for="tugas_ya"> Ya</label>
                                             </div>
-                                            <div class="radio-item">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="tugas_tidak" name="pembagian_tugas_pelaksana" value="0">
                                                 <label for="tugas_tidak"> Tidak</label>
                                             </div>
@@ -490,12 +447,12 @@
                                     <td>3.</td>
                                     <td>Perkenalan dan pengantar</td>
                                     <td>
-                                        <div class="radio-group">
-                                            <div class="radio-item">
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="perkenalan_ya" name="perkenalan_pengantar" value="1">
                                                 <label for="perkenalan_ya"> Ya</label>
                                             </div>
-                                            <div class="radio-item">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="perkenalan_tidak" name="perkenalan_pengantar" value="0">
                                                 <label for="perkenalan_tidak"> Tidak</label>
                                             </div>
@@ -506,12 +463,12 @@
                                     <td>4.</td>
                                     <td>Pembahasan</td>
                                     <td>
-                                        <div class="radio-group">
-                                            <div class="radio-item">
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="pembahasan_ya" name="pembahasan" value="1">
                                                 <label for="pembahasan_ya"> Ya</label>
                                             </div>
-                                            <div class="radio-item">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="pembahasan_tidak" name="pembahasan" value="0">
                                                 <label for="pembahasan_tidak"> Tidak</label>
                                             </div>
@@ -522,12 +479,12 @@
                                     <td>5.</td>
                                     <td>Pendalaman/Tanya jawab</td>
                                     <td>
-                                        <div class="radio-group">
-                                            <div class="radio-item">
+                                        <div class="checkbox-group">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="tanya_ya" name="pendalaman_tanya_jawab" value="1">
                                                 <label for="tanya_ya"> Ya</label>
                                             </div>
-                                            <div class="radio-item">
+                                            <div class="checkbox-item">
                                                 <input type="radio" id="tanya_tidak" name="pendalaman_tanya_jawab" value="0">
                                                 <label for="tanya_tidak"> Tidak</label>
                                             </div>
@@ -574,35 +531,35 @@
                                     <td>1</td>
                                     <td>Bagaimana akses terhadap hak bekerja setelah bencana?</td>
                                     <td>
-                                        <textarea name="akses_hak_bekerja" class="form-input" rows="2" style="height: 60px;">{{ old('akses_hak_bekerja') }}</textarea>
+                                        <textarea name="akses_hak_bekerja" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('akses_hak_bekerja') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
                                     <td>Bagaimana akses terhadap jaminan sosial setelah bencana?</td>
                                     <td>
-                                        <textarea name="akses_hak_jamsos" class="form-input" rows="2" style="height: 60px;">{{ old('akses_hak_jamsos') }}</textarea>
+                                        <textarea name="akses_hak_jamsos" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('akses_hak_jamsos') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
                                     <td>Bagaimana perlindungan keluarga setelah bencana?</td>
                                     <td>
-                                        <textarea name="akses_hak_perlindungan" class="form-input" rows="2" style="height: 60px;">{{ old('akses_hak_perlindungan') }}</textarea>
+                                        <textarea name="akses_hak_perlindungan" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('akses_hak_perlindungan') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>4</td>
                                     <td>Bagaimana akses terhadap pelayanan kesehatan setelah bencana?</td>
                                     <td>
-                                        <textarea name="akses_hak_kesehatan" class="form-input" rows="2" style="height: 60px;">{{ old('akses_hak_kesehatan') }}</textarea>
+                                        <textarea name="akses_hak_kesehatan" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('akses_hak_kesehatan') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>5</td>
                                     <td>Bagaimana akses terhadap pendidikan setelah bencana?</td>
                                     <td>
-                                        <textarea name="akses_hak_pendidikan" class="form-input" rows="2" style="height: 60px;">{{ old('akses_hak_pendidikan') }}</textarea>
+                                        <textarea name="akses_hak_pendidikan" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('akses_hak_pendidikan') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -612,28 +569,28 @@
                                     <td>6</td>
                                     <td>Bagaimana fungsi pranata sosial setelah bencana?</td>
                                     <td>
-                                        <textarea name="fungsi_pranata_sosial" class="form-input" rows="2" style="height: 60px;">{{ old('fungsi_pranata_sosial') }}</textarea>
+                                        <textarea name="fungsi_pranata_sosial" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('fungsi_pranata_sosial') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>7</td>
                                     <td>Bagaimana fungsi pranata ekonomi setelah bencana?</td>
                                     <td>
-                                        <textarea name="fungsi_pranata_ekonomi" class="form-input" rows="2" style="height: 60px;">{{ old('fungsi_pranata_ekonomi') }}</textarea>
+                                        <textarea name="fungsi_pranata_ekonomi" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('fungsi_pranata_ekonomi') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>8</td>
                                     <td>Bagaimana fungsi pranata agama setelah bencana?</td>
                                     <td>
-                                        <textarea name="fungsi_pranata_agama" class="form-input" rows="2" style="height: 60px;">{{ old('fungsi_pranata_agama') }}</textarea>
+                                        <textarea name="fungsi_pranata_agama" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('fungsi_pranata_agama') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>9</td>
                                     <td>Bagaimana fungsi pranata pemerintahan setelah bencana?</td>
                                     <td>
-                                        <textarea name="fungsi_pranata_pemerintahan" class="form-input" rows="2" style="height: 60px;">{{ old('fungsi_pranata_pemerintahan') }}</textarea>
+                                        <textarea name="fungsi_pranata_pemerintahan" class="inline-input" rows="2" style="height: 60px; width: 100%;">{{ old('fungsi_pranata_pemerintahan') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -643,38 +600,38 @@
                                     <td>10</td>
                                     <td>Karakter sosial yang paling rentan dan cara membantu</td>
                                     <td>
-                                        <textarea name="resiko_kerentanan_sosial" class="form-input" rows="3" style="height: 80px;">{{ old('resiko_kerentanan_sosial') }}</textarea>
+                                        <textarea name="resiko_kerentanan_sosial" class="inline-input" rows="3" style="height: 80px; width: 100%;">{{ old('resiko_kerentanan_sosial') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>11</td>
                                     <td>Karakter ekonomi yang paling rentan dan cara membantu</td>
                                     <td>
-                                        <textarea name="resiko_kerentanan_ekonomi" class="form-input" rows="3" style="height: 80px;">{{ old('resiko_kerentanan_ekonomi') }}</textarea>
+                                        <textarea name="resiko_kerentanan_ekonomi" class="inline-input" rows="3" style="height: 80px; width: 100%;">{{ old('resiko_kerentanan_ekonomi') }}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>12</td>
                                     <td>Karakter geografis yang paling rentan dan cara membantu</td>
                                     <td>
-                                        <textarea name="resiko_kerentanan_geografis" class="form-input" rows="3" style="height: 80px;">{{ old('resiko_kerentanan_geografis') }}</textarea>
+                                        <textarea name="resiko_kerentanan_geografis" class="inline-input" rows="3" style="height: 80px; width: 100%;">{{ old('resiko_kerentanan_geografis') }}</textarea>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <!-- Tombol Aksi -->
-                        <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
-                            <button type="submit" class="form-button btn-success">
+                        <div class="action-buttons">
+                            <button type="submit" class="btn btn-success">
                                 <i class="bi bi-save"></i> Simpan Data
                             </button>
-                            <button type="reset" class="form-button btn-warning" onclick="resetForm()">
+                            <button type="reset" class="btn btn-warning" onclick="resetForm()">
                                 <i class="bi bi-arrow-clockwise"></i> Reset
                             </button>
-                            <button type="button" class="form-button btn-info" onclick="printForm()">
+                            <button type="button" class="btn btn-info" onclick="printForm()">
                                 <i class="bi bi-printer"></i> Cetak
                             </button>
-                            <button type="button" class="form-button btn-secondary" onclick="previewForm()">
+                            <button type="button" class="btn btn-secondary" onclick="previewForm()">
                                 <i class="bi bi-eye"></i> Preview
                             </button>
                         </div>

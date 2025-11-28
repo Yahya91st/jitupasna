@@ -7,9 +7,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Data Kategori Bangunan</h4>
                     <div>
-                        <button class="btn btn-danger" type="button" data-toggle="modal"
+                        <button class="btn" style="background-color: #007bff; color: white; border: none;" type="button" data-toggle="modal"
                             data-target="#FormUntukUpdate">Filter</button>
-                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#inlineForm">
+                        <button type="button" class="btn" style="background-color: #28a745; color: white; border: none;" data-toggle="modal" data-target="#inlineForm">
                             Tambah Data
                         </button>
                     </div>
@@ -73,7 +73,7 @@
                                                                     <span class="d-none d-sm-block">Close</span>
                                                                 </button>
                                                                 <button type="submit"
-                                                                    class="btn btn-primary mr-1 mb-1">Submit</button>
+                                                                    class="btn mr-1 mb-1" style="background-color: #F28705; color: white; border: none;">Submit</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -117,7 +117,7 @@
                                         <i class="bx bx-x d-block d-sm-none"></i>
                                         <span class="d-none d-sm-block">Close</span>
                                     </button>
-                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                    <button type="submit" class="btn mr-1 mb-1" style="background-color: #F28705; color: white; border: none;">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -146,7 +146,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
                                         data-dismiss="modal">{{ __('Reset') }}</button>
-                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
+                                    <button type="submit" class="btn mr-1 mb-1" style="background-color: #F28705; color: white; border: none;">Submit</button>
                                 </div>
                             </form>
                         </div>

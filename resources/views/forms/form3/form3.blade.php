@@ -28,7 +28,7 @@
         }
 
         .document-title h5:first-child {
-            color: #ff6b35;
+            color: #F28705;
             margin-bottom: 0.3rem;
         }
 
@@ -96,7 +96,7 @@
         }
 
         .form-table tbody tr:hover {
-            background-color: rgba(0, 102, 204, 0.05);
+            background-color: rgba(242, 135, 5, 0.05);
             transition: background-color 0.2s ease;
         }
 
@@ -170,8 +170,8 @@
         }
 
         .form-input:focus {
-            border-bottom-color: #0066cc;
-            background-color: rgba(0, 102, 204, 0.05);
+            border-bottom-color: #F28705;
+            background-color: rgba(242, 135, 5, 0.05);
         }
 
         textarea.form-input {
@@ -184,8 +184,8 @@
         }
 
         textarea.form-input:focus {
-            border-color: #0066cc;
-            background-color: rgba(0, 102, 204, 0.05);
+            border-color: #F28705;
+            background-color: rgba(242, 135, 5, 0.05);
         }
 
         .form-label {
@@ -243,17 +243,17 @@
         }
 
         .btn-success {
-            background: #28a745;
+            background: #F28705;
             color: white;
         }
 
         .btn-warning {
-            background: #ffc107;
-            color: #212529;
+            background: #6c757d;
+            color: white;
         }
 
         .btn-info {
-            background: #17a2b8;
+            background: #6c757d;
             color: white;
         }
 
@@ -659,7 +659,7 @@
                         </tbody>
                     </table>
 
-                    <div class="mt-3" style="background: #f9f9f9; padding: 15px; border-radius: 4px; border-left: 3px solid #0066cc;">
+                    <div class="mt-3" style="background: #f9f9f9; padding: 15px; border-radius: 4px; border-left: 3px solid #F28705;">
                         <p style="margin-bottom: 10px;"><em><strong>Catatan:</strong> perlunya menjabarkan batasan operasional/pengertian dari setiap istilah:</em></p>
                         <div style="margin-bottom: 8px;">
                             Perdagangan kecil adalah <input type="text" class="form-input" style="width: calc(100% - 200px);" name="def_perdagangan_kecil">
@@ -971,15 +971,15 @@
                         <button type="button" class="btn btn-secondary" onclick="previewForm()">
                             <i class="bi bi-eye"></i> Preview
                         </button>
-                        <button type="button" class="btn btn-outline-primary" onclick="autofillSample()">Autofill Sample</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="toggleJsonInput()">Load JSON</button>
-                        <button type="button" class="btn btn-outline-danger" onclick="clearAutofill()">Clear</button>
+                        <button type="button" class="btn" style="background: #F28705; color: white; border: none;" onclick="autofillSample()">Autofill Sample</button>
+                        <button type="button" class="btn" style="background: #6c757d; color: white; border: none;" onclick="toggleJsonInput()">Load JSON</button>
+                        <button type="button" class="btn" style="background: #6c757d; color: white; border: none;" onclick="clearAutofill()">Clear</button>
                     </div>
 
                     <div id="autofillJsonWrap" style="display:none; text-align:center; margin-top:10px;">
                         <textarea id="autofillJson" placeholder='{"wilayah_bencana":"...","data_dasar_sebelum_bencana":{"1":"100",...}}' style="width:90%; height:100px; font-family:monospace;"></textarea>
                         <div style="margin-top:6px;">
-                            <button type="button" class="btn btn-sm btn-primary" onclick="applyJson()">Apply JSON</button>
+                            <button type="button" class="btn btn-sm" style="background: #F28705; color: white; border: none;" onclick="applyJson()">Apply JSON</button>
                             <button type="button" class="btn btn-sm btn-secondary" onclick="toggleJsonInput()">Cancel</button>
                         </div>
                     </div>

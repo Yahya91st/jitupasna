@@ -8,7 +8,7 @@
                     <h4 class="card-title mb-0">Data Satuan</h4>
                     <div>
                         {{-- <button class="btn btn-danger">Filter</button> --}}
-                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#inlineForm">
+                        <button type="button" class="btn" style="background-color: #28a745; color: white; border: none;" data-toggle="modal" data-target="#inlineForm">
                             Tambah Data
                         </button>
                     </div>

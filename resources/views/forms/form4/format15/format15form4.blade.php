@@ -12,7 +12,7 @@
     }
 </style>
 <div class="container mt-4">
-    <h5 class="text-center fw-bold">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
+    <h5 class="text-center fw-bold"style="color: #F28705;">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
     <p class="fw-bold">Format 15: Sektor Pariwisata</p>
 
     <form action="{{ isset($edit) && $edit ? route('forms.form4.format15.update', $data->id) : route('forms.form4.format15.store') }}" method="POST">

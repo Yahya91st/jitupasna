@@ -1,13 +1,138 @@
 @extends('layouts.main')
 
 @section('content')
+<style>
+    * {
+        font-family: 'Times New Roman', Times, serif;
+    }
+    
+    .main-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border: none;
+        overflow: hidden;
+    }
+    
+    .orange-header {
+        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+        color: white;
+        padding: 20px;
+        margin: -1px -1px 20px -1px;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .orange-header h4 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .table-container {
+        padding: 0 20px 20px 20px;
+    }
+    
+    .table thead th {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        border: none;
+        padding: 15px 12px;
+        font-weight: 600;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+    
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #fff8f0;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(242, 135, 5, 0.15);
+    }
+    
+    .table td {
+        padding: 15px 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #e07600 0%, #f57c00 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(242, 135, 5, 0.4);
+    }
+    
+    .dropdown-item {
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #fff8f0;
+        color: #F28705;
+    }
+    
+    .pagination {
+        margin-top: 20px;
+    }
+    
+    .pagination .page-link {
+        color: #F28705;
+        border: 1px solid #e9ecef;
+        padding: 10px 15px;
+        margin: 0 2px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination .page-link:hover {
+        background-color: #F28705;
+        color: white;
+        border-color: #F28705;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #F28705;
+        border-color: #F28705;
+        color: white;
+        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
+    }
+    
+    .text-bold-500 {
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    h6 {
+        color: #6c757d;
+        font-weight: 600;
+        margin: 0;
+    }
+</style>
+
+<div class="container-fluid">
     <div class="row" id="table-striped">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Data kerugian Akibat Bencana</h4>
+            <div class="card main-card">
+                <div class="orange-header">
+                    <h4>Data Kerugian Akibat Bencana</h4>
                 </div>
-                <div class="card-content">
+                <div class="table-container">
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
@@ -71,6 +196,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -83,4 +209,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection

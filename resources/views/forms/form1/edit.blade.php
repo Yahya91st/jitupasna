@@ -45,7 +45,7 @@
 
 <div class="container" style="max-width: 800px; font-family: Times New Roman, serif;">
     <div class="text-center mb-4">
-        <h5><strong>Edit Formulir 01</strong></h5>
+        <h5 style="color: #F28705;"><strong>Edit Formulir 01</strong></h5>
         <h5>Surat Permohonan Keterlibatan dalam Pengkajian Kebutuhan Pascabencana (PDNA)</h5>
     </div>
     <div class="card">

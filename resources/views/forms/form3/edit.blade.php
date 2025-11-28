@@ -3,14 +3,14 @@
 @section('content')
 <div class="container mx-auto px-4 py-6">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-2xl font-bold">Edit Formulir 03 - Pendataan ke OPD</h1>
-        <a href="{{ route('forms.form3.show',  $form->id) }}" class="btn btn-secondary">
+        <h1 class="text-2xl font-bold" style="color: #F28705;">Edit Formulir 03 - Pendataan ke OPD</h1>
+        <a href="{{ route('forms.form3.show',  $form->id) }}" class="btn" style="background: #6c757d; color: white; border: none;">
             <i class="fa fa-arrow-left"></i> Kembali
         </a>
     </div>
     
     @if(isset($bencana))
-        <div class="alert alert-light-primary color-primary mb-4">
+        <div class="alert" style="background: rgba(242, 135, 5, 0.1); border-left: 3px solid #F28705; color: #F28705;" class="mb-4">
             <p>Bencana: {{ $bencana->kategori_bencana->nama }}</p>
             <p>Tanggal: {{ $bencana->tanggal }}</p>
             <p>Lokasi: 
@@ -28,7 +28,7 @@
         <input type="hidden" name="bencana_id" value="{{  $form->bencana_id }}">
         
         <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Data Surat</h2>
+            <h2 class="text-xl font-semibold mb-4" style="color: #F28705;">Data Surat</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -81,7 +81,7 @@
         </div>
         
         <div class="flex justify-end mt-4">
-            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            <button type="submit" class="btn" style="background: #F28705; color: white; border: none;">Simpan Perubahan</button>
         </div>
     </form>
 </div>

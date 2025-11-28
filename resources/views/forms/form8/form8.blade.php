@@ -2,13 +2,10 @@
 
 @section('content')
     <style>
-        /* Container & Layout - Kombinasi Form3 & Form6 */
-        * {
-            font-family: 'Times New Roman', serif;
-        }
-
-        .container {
+        /* Container & Layout */
+        .form-container {
             max-width: 1200px;
+            font-family: 'Times New Roman', serif;
             margin: 0 auto;
             padding: 20px;
             background: white;
@@ -32,21 +29,23 @@
         }
 
         .form-header h5:first-child {
-            color: #0066cc;
+            color: #F28705;
             margin-bottom: 0.3rem;
         }
 
-        .form-table {
+        .table {
             width: 100%;
             border-collapse: collapse;
             font-size: 10px;
             table-layout: fixed;
+            border: 1px solid #ddd;
+            font-family: 'Times New Roman', serif;
         }
 
-        .form-table th,
-        .form-table td {
+        .table th,
+        .table td {
             padding: 2px 2px;
-            border: 1px solid #333;
+            border: 1px solid #ddd;
             text-align: center;
             vertical-align: middle;
             word-break: break-word;
@@ -56,38 +55,48 @@
             font-size: 10px;
         }
 
-        .form-table input[type="text"] {
+        .table input[type="text"] {
             width: 100%;
             font-size: 10px;
             padding: 2px 2px;
             box-sizing: border-box;
+            background: transparent;
+            border: none;
+            border-bottom: 1px dotted #333;
+            font-family: 'Times New Roman', serif;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .table input[type="text"]:focus {
+            border-bottom-color: #F28705;
+            background-color: rgba(242, 135, 5, 0.05);
         }
 
         @media (max-width: 900px) {
-
-            .form-table,
-            .form-table th,
-            .form-table td {
+            .table,
+            .table th,
+            .table td {
                 font-size: 8px;
                 padding: 1px 1px;
             }
 
-            .form-table input[type="text"] {
+            .table input[type="text"] {
                 font-size: 8px;
                 padding: 1px 1px;
             }
         }
 
-        .form-table tbody tr:nth-child(odd) {
+        .table tbody tr:nth-child(odd) {
             background-color: #ffffff;
         }
 
-        .form-table tbody tr:nth-child(even) {
+        .table tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        .form-table tbody tr:hover {
-            background-color: rgba(0, 102, 204, 0.05);
+        .table tbody tr:hover {
+            background-color: rgba(242, 135, 5, 0.05);
             transition: background-color 0.2s ease;
         }
 
@@ -109,7 +118,7 @@
             font-size: 11px;
             text-align: center;
             vertical-align: middle;
-            border: 1px solid #333;
+            border: 1px solid #ddd;
             min-height: 25px;
         }
 
@@ -130,7 +139,7 @@
 
         .data-row td[contenteditable="true"]:focus {
             background-color: #e6f3ff;
-            outline: 2px solid #0066cc;
+            outline: 2px solid #F28705;
             outline-offset: -2px;
         }
 
@@ -139,20 +148,27 @@
             font-weight: bold;
             text-align: center;
             background-color: #e9ecef !important;
-            border-top: 2px solid #333;
+            border-top: 2px solid #ddd;
         }
 
         .total-row td {
             background-color: #e9ecef !important;
             font-weight: 700;
             color: #333;
-            border: 1px solid #333;
+            border: 1px solid #ddd;
             padding: 8px 4px;
             font-size: 12px;
         }
 
-        /* Button Styling - Kombinasi Form3 & Form6 */
-        .form-button {
+        /* Button Styling */
+        .action-buttons {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
             margin: 0 5px;
             padding: 8px 16px;
             border-radius: 4px;
@@ -168,7 +184,7 @@
             gap: 0.5rem;
         }
 
-        .form-button:hover {
+        .btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
@@ -203,27 +219,27 @@
 
         /* Responsive */
         @media (max-width: 1200px) {
-            .container {
+            .form-container {
                 max-width: 100%;
                 padding: 10px;
             }
 
-            .form-table {
+            .table {
                 font-size: 11px;
             }
 
-            .form-table th,
-            .form-table td {
+            .table th,
+            .table td {
                 padding: 4px;
             }
         }
 
         @media (max-width: 768px) {
-            .form-table {
+            .table {
                 font-size: 10px;
             }
 
-            .form-button {
+            .btn {
                 margin: 2px;
                 padding: 6px 12px;
                 font-size: 12px;
@@ -232,24 +248,24 @@
 
         /* Print Styles */
         @media print {
-            .form-table {
+            .table {
                 page-break-inside: auto;
                 border: 2px solid #000 !important;
             }
 
-            .form-table tr {
+            .table tr {
                 page-break-inside: avoid;
                 page-break-after: auto;
             }
 
-            .form-table td,
-            .form-table th {
+            .table td,
+            .table th {
                 border: 1px solid #000 !important;
                 print-color-adjust: exact;
                 -webkit-print-color-adjust: exact;
             }
 
-            .form-table thead th {
+            .table thead th {
                 background-color: #b3b3b3 !important;
                 border-bottom: 2px solid #000 !important;
             }
@@ -260,17 +276,18 @@
                 background-color: #e9ecef !important;
             }
 
-            .form-button {
+            .btn {
                 display: none !important;
             }
 
-            .container {
+            .form-container {
                 box-shadow: none;
                 margin: 0;
                 padding: 10px;
             }
 
             body {
+                font-family: 'Times New Roman', serif;
                 font-size: 12pt;
                 line-height: 1.4;
             }
@@ -281,14 +298,14 @@
         @csrf
         <input type="hidden" name="form_type" value="form8">
         <input type="hidden" name="bencana_id" value="{{ request('bencana_id') }}">
-        <div class="container">
+        <div class="form-container">
             <!-- Document Header - Style dari Form6 -->
             <div class="form-header">
                 <h5><strong>Formulir 08</strong></h5>
                 <h5>Formulir Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian</h5>
             </div>
             <div class="table-responsive-custom" style="overflow-x:auto; width:100%;">
-                <table class="form-table">
+                <table class="table">
                     <thead>
                         <tr>
                             <th class="table-header" rowspan="2" style="width: 3%;">No</th>
@@ -346,7 +363,7 @@
             </div>
 
             <!-- Tombol Aksi -->
-            <div class="d-flex gap-2 justify-content-center mt-4 mb-3">
+            <div class="action-buttons">
                 <button type="submit" class="btn btn-success">
                     <i class="bi bi-save"></i> Simpan Data
                 </button>
@@ -401,7 +418,7 @@
                 function previewForm() {
                     // Create preview window
                     const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
-                    const formContent = document.querySelector('.container').cloneNode(true);
+                    const formContent = document.querySelector('.form-container').cloneNode(true);
 
                     // Remove buttons from preview
                     const buttons = formContent.querySelectorAll('button');
@@ -413,8 +430,8 @@
                     <title>Preview Form 8 - Analisis Kerusakan dan Kerugian</title>
                     <style>
                         body { font-family: 'Times New Roman', serif; padding: 20px; }
-                        .form-table { border-collapse: collapse; width: 100%; font-size: 12px; }
-                        .form-table td, .form-table th { border: 1px solid #000; padding: 4px; text-align: center; }
+                        .table { border-collapse: collapse; width: 100%; font-size: 12px; }
+                        .table td, .table th { border: 1px solid #000; padding: 4px; text-align: center; }
                         .table-header { background-color: #b3b3b3; }
                     </style>
                 </head>

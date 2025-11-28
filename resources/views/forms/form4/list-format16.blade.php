@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Daftar Laporan Sektor Pemerintahan (Format 16)</h1>
+    <h1 class="text-2xl font-bold mb-6" style="color: #F28705;">Daftar Laporan Sektor Pemerintahan (Format 16)</h1>
     
     @if($bencana)
         <div class="alert alert-light-primary color-primary mb-4">

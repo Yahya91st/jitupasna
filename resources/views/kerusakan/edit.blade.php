@@ -17,8 +17,8 @@
         <div class="row match-height">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="card-title mb-0">Informasi Bencana</h4>
+                    <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
+                        <h4 class="card-title mb-0 text-white">Informasi Bencana</h4>
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0">
@@ -50,10 +50,10 @@
                         method="POST">
                         @csrf
                         @method('PATCH')
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title mb-0">Update Data Kerusakan</h4>
+                        <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
+                            <h4 class="card-title mb-0 text-white">Update Data Kerusakan</h4>
                             <div>
-                                <button class="btn btn-danger">Petunjuk Penggunaan</button>
+                                <button class="btn btn-warning">Petunjuk Penggunaan</button>
                             </div>
                         </div>
                         <div class="card-content">
@@ -84,7 +84,7 @@
                                 @foreach ($kerusakan->detail as $details)
                                     <input type="hidden" name="details[{{ $loop->index }}][id]"
                                         value="{{ $details->id }}">
-                                    <div class="card-content" style="border: 4px solid #ddd; margin-top: 10px">
+                                    <div class="card-content" style="border: 3px solid #ff8c42; border-radius: 8px; margin-top: 10px; background: linear-gradient(135deg, #fff8f5 0%, #fff 100%);"
                                         <div class="card-body">
                                             @if ($details->hsd->tipe == 1)
                                                 <!-- Bahan -->
@@ -261,7 +261,7 @@
                                     </div>
                                 @endforeach
                                 <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-secondary mr-1 mb-1 mt-2">Submit</button>
+                                    <button type="submit" class="btn mr-1 mb-1 mt-2" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%); color: white; border: none;">Submit</button>
                                 </div>
                             </div>
                         </div>
