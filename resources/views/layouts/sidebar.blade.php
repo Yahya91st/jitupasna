@@ -103,7 +103,6 @@
     border-radius: 6px;
     margin: 0.25rem 0 0 0.5rem;
     padding: 0.25rem;
-    border-left: 3px solid var(--orange-primary);
 }
 
 .submenu li {

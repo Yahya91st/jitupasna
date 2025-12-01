@@ -27,7 +27,7 @@
         }
         
         .document-title h5:first-child {
-            color: #0066cc;
+            color: #F28705;
             margin-bottom: 0.1rem;
             font-size: 9pt;
         }
