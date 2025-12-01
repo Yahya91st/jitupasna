@@ -115,18 +115,26 @@ public function store(StoreForm3Request $request)
         'Harga' => [63,64,65,66,67,68],
     ];
 
-    foreach ($validated['data_dasar_sebelum_bencana'] as $index => $value) {
+    // helper: cari nama grup berdasarkan index
+    $findGroupByIndex = function(array $groups, int $idx) {
+        foreach ($groups as $gName => $indexes) {
+            if (in_array($idx, $indexes, true)) return $gName;
+        }
+        return 'Lainnya';
+    };
+    foreach ($validated['data_dasar_sebelum_bencana'] ?? [] as $index => $value) {
         $idx = (int) $index;
         $slug = $slugs_data_dasar_sebelum_bencana[$idx] ?? null;
+        $groupName = $findGroupByIndex($groups_data_dasar_sebelum_bencana, $idx);
 
         Form3Row_1::create([
             'form3_id'     => $form->id,
-            'kategori'     => $groupName ?? 'Lainnya',
-            'sub_kategori' => $slugs_data_dasar_sebelum_bencana[$index] ?? null,
+            'kategori'     => $groupName,
+            'sub_kategori' => $slug,
             'jawaban'      => is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : (string) $value,
         ]);
     }
-    
+
     $slug_data_sekunder_akibat_bencana_umum = [
     1 => 'Sejarah bencana di masa lalu',
     2 => 'Kronologis kejadian bencana saat ini',
@@ -175,17 +183,18 @@ public function store(StoreForm3Request $request)
         'Dampak pada organisasi/lembaga pertanian' => [14, 15, 16, 17],
     ];
 
-    foreach($validated['data_sekunder_akibat_bencana_khusus_opd_1'] as $index => $value) {
+    foreach($validated['data_sekunder_akibat_bencana_khusus_opd_1'] ?? [] as $index => $value) {
         $idx = (int) $index;
         $slug = $slug_data_sekunder_akibat_bencana_khusus_opd_1[$idx] ?? null;
+        $groupName = $findGroupByIndex($groups_data_sekunder_akibat_bencana_khusus_opd_1, $idx);
 
         Form3Row_3::create([
-            'form3_id' => $form->id,
-            'grup' => $groupName ?? 'Lainnya',
-            'pertanyaan' => $slug_data_sekunder_akibat_bencana_khusus_opd_1[$index] ?? null,
-            'jawaban'      => is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : (string) $value,
+            'form3_id'   => $form->id,
+            'grup'       => $groupName,
+            'pertanyaan' => $slug,
+            'jawaban'    => is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : (string) $value,
         ]);
-    }         
+    }
     
     $slug_data_sekunder_akibat_bencana_khusus_opd_2 = [
         1 => 'Perdagangan kecil :',
@@ -387,11 +396,11 @@ public function store(StoreForm3Request $request)
     
         return redirect()->route('forms.form3.show', $form->id)
             ->with('success', 'Formulir berhasil disimpan.');
-}
+    }
 
     public function show($id)
     {
-        $form = Form3::with(['bencana'])->findOrFail($id);
+        $form = Form3::with(['bencana','rows1','rows2','rows3','rows4','rows5','rows6','rows7','rows8'])->findOrFail($id);
         return view('forms.form3.show', compact('form'));
     }
 

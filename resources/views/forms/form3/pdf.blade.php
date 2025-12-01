@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Form 3 - Pendataan OPD</title>
     <style>
@@ -7,7 +8,7 @@
             margin: 8mm;
             size: A4;
         }
-        
+
         body {
             font-family: 'Times New Roman', serif;
             font-size: 8pt;
@@ -16,14 +17,14 @@
             padding: 0;
             color: #000;
         }
-        
+
         .document-header {
             text-align: center;
             margin-bottom: 8px;
             border-bottom: 1px solid #000;
             padding-bottom: 4px;
         }
-        
+
         .document-title {
             font-size: 10pt;
             font-weight: bold;
@@ -31,25 +32,25 @@
             margin: 0 0 2px 0;
             letter-spacing: 0.5px;
         }
-        
+
         .document-subtitle {
             font-size: 9pt;
             font-weight: normal;
             margin: 0;
         }
-        
+
         .header-info {
             margin-bottom: 8px;
             background-color: #f8f9fa;
             padding: 4px;
             border: 1px solid #ddd;
         }
-        
+
         .header-info p {
             margin: 1px 0;
             font-size: 8pt;
         }
-        
+
         .section-header {
             font-size: 9pt;
             font-weight: bold;
@@ -60,7 +61,7 @@
             border: 1px solid #000;
             text-align: center;
         }
-        
+
         .subsection-header {
             font-size: 8pt;
             font-weight: bold;
@@ -69,7 +70,7 @@
             background-color: #f8f9fa;
             border-left: 2px solid #000;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -77,11 +78,13 @@
             font-size: 7pt;
             table-layout: fixed;
         }
-        
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #000;
         }
-        
+
         th {
             background-color: #e9ecef;
             font-weight: bold;
@@ -90,7 +93,7 @@
             font-size: 7pt;
             word-wrap: break-word;
         }
-        
+
         td {
             padding: 2px;
             text-align: left;
@@ -100,23 +103,23 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         .category-cell {
             width: 20%;
-            font-weight: bold; 
-            background-color: #f9f9f9; 
-            text-align: center; 
+            font-weight: bold;
+            background-color: #f9f9f9;
+            text-align: center;
             vertical-align: middle;
             font-size: 7pt;
             padding: 2px;
         }
-        
+
         .subcategory-cell {
             width: 50%;
             font-size: 7pt;
             padding: 2px;
         }
-        
+
         .answer-cell {
             width: 30%;
             text-align: right;
@@ -124,7 +127,7 @@
             padding: 2px;
             padding-right: 6px;
         }
-        
+
         .text-content {
             margin: 2px 0;
             padding: 3px;
@@ -133,83 +136,101 @@
             font-size: 8pt;
             min-height: 15px;
         }
-        
+
         .number-cell {
             text-align: right;
             padding-right: 6px;
             font-size: 7pt;
             width: 30%;
         }
-        
+
         @media print {
-            body { 
-                font-size: 7pt; 
+            body {
+                font-size: 7pt;
                 line-height: 1.0;
             }
+
             .document-header {
                 margin-bottom: 4px;
                 padding-bottom: 2px;
             }
+
             .section-header {
                 margin: 4px 0 2px 0;
                 padding: 2px;
                 font-size: 8pt;
             }
+
             .subsection-header {
                 margin: 2px 0 1px 0;
                 padding: 2px;
                 font-size: 7pt;
             }
+
             table {
                 margin: 1px 0;
             }
-            th, td {
+
+            th,
+            td {
                 padding: 1px;
                 font-size: 7pt;
             }
+
             .category-cell {
                 font-size: 6pt;
             }
+
             .subcategory-cell {
                 font-size: 6pt;
             }
+
             .answer-cell {
                 font-size: 6pt;
             }
         }
-        
+
         @media print {
-            body { 
-                font-size: 7pt; 
+            body {
+                font-size: 7pt;
                 line-height: 1.0;
             }
+
             .document-header {
                 margin-bottom: 4px;
                 padding-bottom: 2px;
             }
+
             .section-header {
                 margin: 4px 0 2px 0;
                 padding: 2px;
                 font-size: 8pt;
             }
+
             .subsection-header {
                 margin: 2px 0 1px 0;
                 padding: 2px;
                 font-size: 7pt;
             }
+
             table {
                 margin: 1px 0;
             }
-            th, td {
+
+            th,
+            td {
                 padding: 1px;
                 font-size: 6pt;
             }
+
             .category-cell {
                 font-size: 6pt;
             }
+
             .subcategory-cell {
                 font-size: 6pt;
             }
+
             .answer-cell {
                 font-size: 6pt;
             }
@@ -221,22 +242,78 @@
         <div class="document-title">Formulir 3 - Pendataan Ke OPD</div>
         <div class="document-subtitle">Data Dasar dan Sekunder Akibat Bencana</div>
     </div>
-    
+
     <div class="header-info">
         <p><strong>Bencana:</strong> {{ $form->bencana->kategori_bencana->nama }}</p>
         <p><strong>Tanggal Kejadian:</strong> {{ $form->bencana->tanggal }}</p>
-        <p><strong>Lokasi:</strong> 
-            @foreach($form->bencana->desa as $desa)
-                {{ $desa->nama }}@if(!$loop->last), @endif
+        <p><strong>Lokasi:</strong>
+            @foreach ($form->bencana->desa as $desa)
+                {{ $desa->nama }}@if (!$loop->last)
+                    ,
+                @endif
             @endforeach
         </p>
     </div>
-    
+    <h4>Data Dasar Sebelum Bencana</h4>
+    @foreach ($form->rows1 as $r)
+        <div>
+            <strong>{{ $r->kategori }}</strong> — {{ $r->sub_kategori }}:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+    <h4>Data Sekunder Akibat Bencana Umum</h4>
+    @foreach ($form->rows2 as $r)
+        <div>
+            <strong>{{ $r->pertanyaan }}</strong>:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+    <h4>Data Sekunder Khusus (OPD 1)</h4>
+    @foreach ($form->rows3 as $r)
+        <div>
+            <strong>{{ $r->grup }}</strong> — {{ $r->pertanyaan }}:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+    <h4>Data Sekunder Khusus (OPD 2)</h4>
+    @foreach ($form->rows4 as $r)
+        <div>
+            <strong>{{ $r->pertanyaan }}</strong>:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+    <h4>Data Sekunder Khusus (OPD 3)</h4>
+    @foreach ($form->rows5 as $r)
+        <div>
+            <strong>{{ $r->pertanyaan }}</strong>:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+    <h4>Data Sekunder Khusus (OPD 4)</h4>
+    @foreach ($form->rows6 as $r)
+        <div>
+            <strong>{{ $r->pertanyaan }}</strong>:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+    <h4>Data Sekunder Khusus (OPD 5)</h4>
+    @foreach ($form->rows7 as $r)
+        <div>
+            <strong>{{ $r->pertanyaan }}</strong>:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+    <h4>Data Sekunder Khusus (OPD 6)</h4>
+    @foreach ($form->rows8 as $r)
+        <div>
+            <strong>{{ $r->pertanyaan }}</strong>:
+            <div>{!! nl2br(e($r->jawaban)) !!}</div>
+        </div>
+    @endforeach
+
     <!-- 1. DATA DASAR SEBELUM BENCANA -->
     <div class="section-header">1. Data Dasar Sebelum Bencana</div>
-    
-    
-    
+
     <table>
         <tr>
             <th style="width: 20%; font-size: 7pt;">Kategori</th>
@@ -256,7 +333,7 @@
             <td class="subcategory-cell">Jumlah rumah tangga</td>
             <td class="answer-cell">{{ number_format($form->penduduk_rumah_tangga ?: 0) }}</td>
         </tr>
-        
+
         <tr>
             <td rowspan="5" class="category-cell">Kesehatan</td>
             <td class="subcategory-cell">Jumlah rumah sakit</td>
@@ -278,7 +355,7 @@
             <td class="subcategory-cell">Jumlah POSYANDU</td>
             <td class="answer-cell">{{ number_format($form->posyandu ?: 0) }}</td>
         </tr>
-        
+
         <tr>
             <td rowspan="4" class="category-cell">Tenaga Kesehatan</td>
             <td class="subcategory-cell">Jumlah dokter</td>
@@ -296,13 +373,13 @@
             <td class="subcategory-cell">Jumlah kader kesehatan</td>
             <td class="answer-cell">{{ number_format($form->kader_kesehatan ?: 0) }}</td>
         </tr>
-        
+
         <tr>
             <td class="category-cell">Kunjungan ke PUSKESMAS</td>
             <td class="subcategory-cell">Jumlah kunjungan ke PUSKESMAS</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="4" class="category-cell">Balita</td>
             <td class="subcategory-cell">Jumlah balita</td>
@@ -320,19 +397,19 @@
             <td class="subcategory-cell">Jumlah balita ditimbang di Posyandu</td>
             <td class="answer-cell">{{ number_format($form->ditimbang_posyandu ?: 0) }}</td>
         </tr>
-        
+
         <tr>
             <td class="category-cell">Manula</td>
             <td class="subcategory-cell">Jumlah manula</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td class="category-cell">Penerima JPS Kesehatan</td>
             <td class="subcategory-cell">Jumlah penerima JPS kesehatan</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="2" class="category-cell">Sanitasi</td>
             <td class="subcategory-cell">Jumlah cakupan rumah dengan air bersih</td>
@@ -342,7 +419,7 @@
             <td class="subcategory-cell">Jumlah cakupan rumah dengan jamban (MCK)</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="4" class="category-cell">Ekonomi Kondisi Keluarga</td>
             <td class="subcategory-cell">Jumlah Keluarga Pra-Sejahtera/Miskin</td>
@@ -360,7 +437,7 @@
             <td class="subcategory-cell">Jumlah Keluarga Penerima Beras Miskin</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="10" class="category-cell">Unit Kegiatan Ekonomi</td>
             <td class="subcategory-cell">Jumlah rumah tangga pertanian</td>
@@ -402,7 +479,7 @@
             <td class="subcategory-cell">Jumlah tambang</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="6" class="category-cell">Sosial Dan Agama Sarana Ibadah</td>
             <td class="subcategory-cell">Jumlah masjid</td>
@@ -428,7 +505,7 @@
             <td class="subcategory-cell">Jumlah pura/sejenis</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="8" class="category-cell">Jumlah Lembaga Sosial Masyarakat</td>
             <td class="subcategory-cell">Islam (termasuk Ponpes)</td>
@@ -462,13 +539,13 @@
             <td class="subcategory-cell">Adat istiadat</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td class="category-cell">Penyandang PMKS</td>
             <td class="subcategory-cell">Jumlah penyandang PMKS</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="3" class="category-cell">Rumah</td>
             <td class="subcategory-cell">Jumlah rumah permanen</td>
@@ -482,7 +559,7 @@
             <td class="subcategory-cell">Jumlah rumah non-permanen</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="3" class="category-cell">Jalan</td>
             <td class="subcategory-cell">Panjang jalan negara</td>
@@ -496,13 +573,13 @@
             <td class="subcategory-cell">Panjang jalan kabupaten</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td class="category-cell">Bangunan Bersejarah</td>
             <td class="subcategory-cell">Jumlah bangunan bersejarah</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="2" class="category-cell">Produksi</td>
             <td class="subcategory-cell">Jumlah produksi komoditas pertanian</td>
@@ -512,7 +589,7 @@
             <td class="subcategory-cell">Jumlah produksi komoditas industri pengolahan</td>
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
-        
+
         <tr>
             <td rowspan="6" class="category-cell">Harga</td>
             <td class="subcategory-cell">Harga konstruksi untuk per M2 untuk rumah</td>
@@ -539,15 +616,15 @@
             <td class="answer-cell">Data tidak tersedia</td>
         </tr>
     </table>
-    
+
     <!-- Sumber data -->
     <div style="font-size: 7pt; margin: 10px 0; font-style: italic;">
         Sumber data: badan pusat statistik (BPS), daerah (Prov, Kab/Kota) dalam angka, data kecamatan/kelurahan serta data program pembangunan
     </div>
-    
+
     <!-- 2. FORMULIR ISIAN DATA SEKUNDER AKIBAT BENCANA (UMUM) -->
     <div class="section-header">2. Formulir Isian Data Sekunder Akibat Bencana (Umum)</div>
-    
+
     <table>
         <tr>
             <th style="width: 50%; font-size: 7pt; background-color: #e9ecef;">Pertanyaan</th>
@@ -582,10 +659,10 @@
             <td style="padding: 4px; font-size: 7pt;">{{ $form->bencana->pendataan->kerusakan_kerugian ?? 'Data tidak tersedia dalam database' }}</td>
         </tr>
     </table>
-    
+
     <!-- 3. FORMULIR ISIAN DATA SEKUNDER AKIBAT BENCANA (KHUSUS) -->
     <div class="section-header">3. Formulir Isian Data Sekunder Akibat Bencana (Khusus)</div>
-    
+
     <!-- Header Box -->
     <div style="border: 1px solid black; padding: 8px; margin-bottom: 15px;">
         <div style="margin-bottom: 8px;">
@@ -598,7 +675,7 @@
             <strong>Tgl/Bln/Thn :</strong> {{ $form->tanggal_fgd ? $form->tanggal_fgd->format('d/m/Y') : '....................................................................' }}
         </div>
     </div>
-    
+
     <!-- Tabel Pokok Bahasan dengan format konsisten -->
     <table style="width: 100%; border-collapse: collapse; font-size: 7pt;">
         <thead>
@@ -608,71 +685,109 @@
             </tr>
         </thead>
         <tbody>
-        <tr>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">1</td>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong><br>
-                <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
-                    <tr><td style="width: 180px; border: none; padding: 1px 0;">Pertanian pangan dan sayuran</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 1px 0;">Peternakan</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 1px 0;">Perikanan</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 1px 0;">Perkebunan</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 1px 0;">Lainnya</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">2</td>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                <strong>Bentuk gangguan kegiatan ekonomi yang paling parah:</strong><br>
-                <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
-                    <tr><td style="width: 180px; border: none; padding: 3px 0;">Pertanian pangan dan sayuran</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                    <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 3px 0;">Peternakan</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                    <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 3px 0;">Perikanan</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                    <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 3px 0;">Perkebunan</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                    <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                    <tr><td style="width: 180px; border: none; padding: 3px 0;">Lainnya</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">3</td>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                <strong>Jenis produk pertanian lokal khas yang terkena dampak bencana :</strong><br>
-                <br><br>
-                
-                <strong>Seberapa berat dampak bencana terhadap produk tersebut;</strong><br>
-                <br><br>
-                
-                <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut;</strong><br>
-            </td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">4</td>
-            <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                <strong>Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana</strong><br>
-                .................................... unit.<br><br>
-                
-                <strong>Sebutkan bentuk-bentuk organisasi/lembaga tersebut</strong><br>
-                .....................................................................................................................................................................................................................................................................<br><br>
-                
-                <strong>Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut</strong><br>
-                .....................................................................................................................................................................................................................................................................<br><br>
-                
-                <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut</strong><br>
-                .....................................................................................................................................................................................................................................................................
-            </td>
-        </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">1</td>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                    <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong><br>
+                    <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 1px 0;">Pertanian pangan dan sayuran</td>
+                            <td style="border: none; padding: 1px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 1px 0;">Peternakan</td>
+                            <td style="border: none; padding: 1px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 1px 0;">Perikanan</td>
+                            <td style="border: none; padding: 1px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 1px 0;">Perkebunan</td>
+                            <td style="border: none; padding: 1px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 1px 0;">Lainnya</td>
+                            <td style="border: none; padding: 1px 0;">:</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">2</td>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                    <strong>Bentuk gangguan kegiatan ekonomi yang paling parah:</strong><br>
+                    <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 3px 0;">Pertanian pangan dan sayuran</td>
+                            <td style="border: none; padding: 3px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 3px 0;">Peternakan</td>
+                            <td style="border: none; padding: 3px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 3px 0;">Perikanan</td>
+                            <td style="border: none; padding: 3px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 3px 0;">Perkebunan</td>
+                            <td style="border: none; padding: 3px 0;">:</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 180px; border: none; padding: 3px 0;">Lainnya</td>
+                            <td style="border: none; padding: 3px 0;">:</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">3</td>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                    <strong>Jenis produk pertanian lokal khas yang terkena dampak bencana :</strong><br>
+                    <br><br>
+
+                    <strong>Seberapa berat dampak bencana terhadap produk tersebut;</strong><br>
+                    <br><br>
+
+                    <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan produk tersebut;</strong><br>
+                </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">4</td>
+                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                    <strong>Jumlah organisasi/lembaga pertanian di lokasi bencana yang terkena dampak bencana</strong><br>
+                    .................................... unit.<br><br>
+
+                    <strong>Sebutkan bentuk-bentuk organisasi/lembaga tersebut</strong><br>
+                    .....................................................................................................................................................................................................................................................................<br><br>
+
+                    <strong>Seberapa berat dampak bencana terhadap organisasi/lembaga pertanian tersebut</strong><br>
+                    .....................................................................................................................................................................................................................................................................<br><br>
+
+                    <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga pertanian tersebut</strong><br>
+                    .....................................................................................................................................................................................................................................................................
+                </td>
+            </tr>
         </tbody>
     </table>
-    
+
     <!-- 4. FORMULIR LANJUTAN: SATUAN KERJA PERANGKAT DAERAH -->
     <div style="page-break-inside: avoid; page-break-before: auto;">
         <div class="section-header">4. FORMULIR LANJUTAN: SATUAN KERJA PERANGKAT DAERAH</div>
-        
+
         <!-- Header Box -->
         <div style="border: 1px solid black; padding: 8px; margin-bottom: 15px;">
             <div style="margin-bottom: 8px;">
@@ -680,13 +795,13 @@
             </div>
             <div style="margin-bottom: 8px; font-style: italic; text-align: left; font-size: 6pt;">
                 (OPD yang terkait dengan Bidang Non Pertanian: Perdagangan,Perindustrian, Koperasi, Usaha Kecil Menengah dll)<br>
-                
+
             </div>
             <div>
                 <strong>Tgl/Bln/Thn :</strong> ....................................................................
             </div>
         </div>
-        
+
         <!-- Tabel Pokok Bahasan dengan format konsisten dengan bagian 3 -->
         <table style="width: 100%; border-collapse: collapse; font-size: 7pt;">
             <thead>
@@ -696,101 +811,153 @@
                 </tr>
             </thead>
             <tbody>
-            <tr>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">1</td>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                    <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong><br>
-                    <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Perdagangan kecil</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Perdagangan menengah</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Perdagangan besar</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Industri kecil (rakyat)</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Industri menengah</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                        <tr><td colspan="2" style="border: none; padding: 1px 0; font-style: italic;">Lanjutan</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Industri besar</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Koperasi</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 1px 0;">Lainnya</td><td style="border: none; padding: 1px 0;">:</td></tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">2</td>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                    <strong>Bentuk gangguan kegiatan ekonomi yang paling parah:</strong><br>
-                    <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
-                        <tr><td style="width: 180px; border: none; padding: 3px 0;">Perdagangan Kecil</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                        <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 3px 0;">Perdagangan Menengah</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                        <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 3px 0;">Perdagangan besar</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                        <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 3px 0;">Industri kecil-menengah</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                        <tr><td colspan="2" style="border: none; padding: 2px 0;"></td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 3px 0;">Industri besar</td><td style="border: none; padding: 3px 0;">:</td></tr>
-                        <tr><td style="width: 180px; border: none; padding: 3px 0;">Lainnya</td><td style="border: none; padding: 3px 0;">: berupa ......................................................................................................</td></tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">3</td>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                    <strong>Jenis produk industri lokal khas yang terkena dampak bencana:</strong><br>
-                    <div style="margin: 8px 0; line-height: 1.5;">
-                        .....................................................................................................................................................................................................................................................................<br>
-                        .....................................................................................................................................................................................................................................................................<br><br>
-                    </div>
-                    
-                    <strong>Seberapa berat dampak bencana terhadap produk tersebut;</strong><br>
-                    <div style="margin: 8px 0; line-height: 1.5;">
-                        .....................................................................................................................................................................................................................................................................<br>
-                        .....................................................................................................................................................................................................................................................................<br><br>
-                    </div>
-                    
-                    <strong>Kegiatan yang dibutuhkan untuk pemulihan produk tersebut;</strong><br>
-                    <div style="margin: 8px 0; line-height: 1.5;">
-                        .....................................................................................................................................................................................................................................................................<br>
-                        .....................................................................................................................................................................................................................................................................<br>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">4</td>
-                <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                    <strong>Jumlah organisasi/lembaga koperasi di lokasi bencana yang terkena dampak bencana</strong><br>
-                    ......................................... unit.<br><br>
-                    
-                    <strong>Sebutkan bentuk dampak terhadap organisasi/lembaga koperasi tersebut</strong><br>
-                    <div style="margin: 8px 0; line-height: 1.5;">
-                        .....................................................................................................................................................................................................................................................................<br>
-                        .....................................................................................................................................................................................................................................................................<br><br>
-                    </div>
-                    
-                    <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga koperasi tersebut</strong><br>
-                    <div style="margin: 8px 0; line-height: 1.5;">
-                        .....................................................................................................................................................................................................................................................................<br>
-                        .....................................................................................................................................................................................................................................................................<br>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <!-- Catatan -->
-    <div style="font-size: 7pt; margin: 10px 0; line-height: 1.3;">
-        <strong>Catatan :</strong> perlunya menjabarkan batasan operasional/pengertian dari setiap istilah<br>
-        Perdagangan kecil adalah ...<br>
-        Perdagangan besar adalah ...<br>
-        Industry kecil adalah ...<br>
-        Industry besar adalah ....
+                <tr>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">1</td>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                        <strong>Rumah tangga yang terkena bencana dan terganggu kegiatan ekonominya:</strong><br>
+                        <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Perdagangan kecil</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Perdagangan menengah</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Perdagangan besar</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Industri kecil (rakyat)</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Industri menengah</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border: none; padding: 1px 0; font-style: italic;">Lanjutan</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Industri besar</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Koperasi</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 1px 0;">Lainnya</td>
+                                <td style="border: none; padding: 1px 0;">:</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">2</td>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                        <strong>Bentuk gangguan kegiatan ekonomi yang paling parah:</strong><br>
+                        <table style="width: 100%; border: none; margin-top: 4px;" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 3px 0;">Perdagangan Kecil</td>
+                                <td style="border: none; padding: 3px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 3px 0;">Perdagangan Menengah</td>
+                                <td style="border: none; padding: 3px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 3px 0;">Perdagangan besar</td>
+                                <td style="border: none; padding: 3px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 3px 0;">Industri kecil-menengah</td>
+                                <td style="border: none; padding: 3px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border: none; padding: 2px 0;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 3px 0;">Industri besar</td>
+                                <td style="border: none; padding: 3px 0;">:</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; border: none; padding: 3px 0;">Lainnya</td>
+                                <td style="border: none; padding: 3px 0;">: berupa ......................................................................................................</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">3</td>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                        <strong>Jenis produk industri lokal khas yang terkena dampak bencana:</strong><br>
+                        <div style="margin: 8px 0; line-height: 1.5;">
+                            .....................................................................................................................................................................................................................................................................<br>
+                            .....................................................................................................................................................................................................................................................................<br><br>
+                        </div>
+
+                        <strong>Seberapa berat dampak bencana terhadap produk tersebut;</strong><br>
+                        <div style="margin: 8px 0; line-height: 1.5;">
+                            .....................................................................................................................................................................................................................................................................<br>
+                            .....................................................................................................................................................................................................................................................................<br><br>
+                        </div>
+
+                        <strong>Kegiatan yang dibutuhkan untuk pemulihan produk tersebut;</strong><br>
+                        <div style="margin: 8px 0; line-height: 1.5;">
+                            .....................................................................................................................................................................................................................................................................<br>
+                            .....................................................................................................................................................................................................................................................................<br>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">4</td>
+                    <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
+                        <strong>Jumlah organisasi/lembaga koperasi di lokasi bencana yang terkena dampak bencana</strong><br>
+                        ......................................... unit.<br><br>
+
+                        <strong>Sebutkan bentuk dampak terhadap organisasi/lembaga koperasi tersebut</strong><br>
+                        <div style="margin: 8px 0; line-height: 1.5;">
+                            .....................................................................................................................................................................................................................................................................<br>
+                            .....................................................................................................................................................................................................................................................................<br><br>
+                        </div>
+
+                        <strong>Kegiatan pemulihan yang dibutuhkan untuk pemulihan organisasi/lembaga koperasi tersebut</strong><br>
+                        <div style="margin: 8px 0; line-height: 1.5;">
+                            .....................................................................................................................................................................................................................................................................<br>
+                            .....................................................................................................................................................................................................................................................................<br>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Catatan -->
+        <div style="font-size: 7pt; margin: 10px 0; line-height: 1.3;">
+            <strong>Catatan :</strong> perlunya menjabarkan batasan operasional/pengertian dari setiap istilah<br>
+            Perdagangan kecil adalah ...<br>
+            Perdagangan besar adalah ...<br>
+            Industry kecil adalah ...<br>
+            Industry besar adalah ....
+        </div>
     </div>
-    </div>
-    
+
     <!-- SATUAN KERJA PERANGKAT DAERAH (TABEL KEDUA) -->
     <div style="page-break-inside: avoid; margin-top: 20px;">
         <div style="text-align: center; font-weight: bold; font-size: 8pt; margin-bottom: 10px;">
             SATUAN KERJA PERANGKAT DAERAH
         </div>
-        
+
         <!-- Header Box -->
         <div style="border: 1px solid black; padding: 8px; margin-bottom: 15px;">
             <div style="margin-bottom: 8px;">
@@ -803,7 +970,7 @@
                 <strong>Tgl/Bln/Thn :</strong> ....................................................................
             </div>
         </div>
-        
+
         <!-- Tabel Pokok Bahasan -->
         <table style="width: 100%; border-collapse: collapse; font-size: 7pt;">
             <thead>
@@ -860,7 +1027,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk pemulihan kegiatan tersebut tercibit;</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -877,7 +1044,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk penanganan permasalahan sosial tersebut;</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -899,13 +1066,13 @@
             </tbody>
         </table>
     </div>
-    
+
     <!-- SATUAN KERJA PERANGKAT DAERAH (TABEL KETIGA - DINAS PENDIDIKAN) -->
     <div style="page-break-inside: avoid; margin-top: 20px;">
         <div style="text-align: center; font-weight: bold; font-size: 8pt; margin-bottom: 10px;">
             SATUAN KERJA PERANGKAT DAERAH
         </div>
-        
+
         <!-- Header Box -->
         <div style="border: 1px solid black; padding: 8px; margin-bottom: 15px;">
             <div style="margin-bottom: 8px;">
@@ -918,7 +1085,7 @@
                 <strong>Tgl/Bln/Thn :</strong> ....................................................................
             </div>
         </div>
-        
+
         <!-- Tabel Pokok Bahasan -->
         <table style="width: 100%; border-collapse: collapse; font-size: 7pt;">
             <thead>
@@ -931,7 +1098,8 @@
                 <tr>
                     <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">1</td>
                     <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
-                        <strong>Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana</strong><div><br>(dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam)<br></div> 
+                        <strong>Permasalahan umum yang menghambat pelaksanaan pendidikan pada masa sebelum bencana</strong>
+                        <div><br>(dari faktor pemberi layanan, penduduk, infrastruktur maupun bentang alam)<br></div>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br>
@@ -946,7 +1114,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Berapa jumlah persentase diantara mereka yang terindikasi mengalami trauma?</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -963,13 +1131,13 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk pengurusan permasalahan tersebut;</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Jumlah sasaran</strong> ........................................................................................................<br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -985,7 +1153,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk mengatasi permasalahan guru yang meninggal/berpindah :</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -996,13 +1164,13 @@
             </tbody>
         </table>
     </div>
-    
+
     <!-- SATUAN KERJA PERANGKAT DAERAH (TABEL KEEMPAT - PEKERJAAN DAERAH) -->
     <div style="page-break-inside: avoid; margin-top: 20px;">
         <div style="text-align: center; font-weight: bold; font-size: 8pt; margin-bottom: 10px;">
             SATUAN KERJA PERANGKAT DAERAH
         </div>
-        
+
         <!-- Header Box -->
         <div style="border: 1px solid black; padding: 8px; margin-bottom: 15px;">
             <div style="margin-bottom: 8px;">
@@ -1015,7 +1183,7 @@
                 <strong>Tgl/Bln/Thn :</strong> ..................................................................
             </div>
         </div>
-        
+
         <!-- Tabel Pokok Bahasan -->
         <table style="width: 100%; border-collapse: collapse; font-size: 7pt;">
             <thead>
@@ -1033,21 +1201,21 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br>
 
-                             <strong>Jenis gangguan</strong> 
-                        <div style="margin: 8px 0; line-height: 1.5;">
-                            .....................................................................................................................................................................................................................................................................<br>
-                            .....................................................................................................................................................................................................................................................................<br><br>
-                        </div>
-                        
-                        <strong>Kebutuhan dukungan untuk pemulihan</strong>
-                        <div style="margin: 8px 0; line-height: 1.5;">
-                            .....................................................................................................................................................................................................................................................................<br>
-                            .....................................................................................................................................................................................................................................................................<br>
-                        </div>
+                            <strong>Jenis gangguan</strong>
+                            <div style="margin: 8px 0; line-height: 1.5;">
+                                .....................................................................................................................................................................................................................................................................<br>
+                                .....................................................................................................................................................................................................................................................................<br><br>
+                            </div>
+
+                            <strong>Kebutuhan dukungan untuk pemulihan</strong>
+                            <div style="margin: 8px 0; line-height: 1.5;">
+                                .....................................................................................................................................................................................................................................................................<br>
+                                .....................................................................................................................................................................................................................................................................<br>
+                            </div>
                         </div>
                     </td>
                 </tr>
-    
+
                 <tr>
                     <td style="border: 1px solid black; padding: 4px; vertical-align: top; text-align: center;">3</td>
                     <td style="border: 1px solid black; padding: 4px; vertical-align: top;">
@@ -1057,7 +1225,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Apakah sistem tersebut terganggu akibat bencana? Jelaskan</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1074,7 +1242,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Apakah sistem tersebut terganggu akibat bencana? Jelaskan</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1090,7 +1258,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk mengatasi hal tersebut</strong> ........................................<br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1107,7 +1275,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk pengurusan permasalahan tersebut;</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1123,7 +1291,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Dukungan yang dibutuhkan untuk mengatasi permasalahan tersebut;</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1134,13 +1302,13 @@
             </tbody>
         </table>
     </div>
-    
+
     <!-- SATUAN KERJA PERANGKAT DAERAH (TABEL KELIMA - DINAS KESEHATAN) -->
     <div style="page-break-inside: avoid; margin-top: 20px;">
         <div style="text-align: center; font-weight: bold; font-size: 8pt; margin-bottom: 10px;">
             SATUAN KERJA PERANGKAT DAERAH
         </div>
-        
+
         <!-- Header Box -->
         <div style="border: 1px solid black; padding: 8px; margin-bottom: 15px;">
             <div style="margin-bottom: 8px;">
@@ -1153,7 +1321,7 @@
                 <strong>Tgl/Bln/Thn :</strong> ....................................................................
             </div>
         </div>
-        
+
         <!-- Tabel Pokok Bahasan -->
         <table style="width: 100%; border-collapse: collapse; font-size: 7pt;">
             <thead>
@@ -1181,7 +1349,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Berapa jumlah/persentase diantara mereka yang terindikasi mengalami trauma?</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1209,7 +1377,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut;</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1237,7 +1405,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap balita</strong>............<br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1254,7 +1422,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap ibu hamil</strong>........<br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1271,7 +1439,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk mengatasi dampak bencana terhadap lansia</strong>........<br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1288,7 +1456,7 @@
                             .....................................................................................................................................................................................................................................................................<br>
                             .....................................................................................................................................................................................................................................................................<br><br>
                         </div>
-                        
+
                         <strong>Kegiatan yang dibutuhkan untuk pengurangan permasalahan tersebut;</strong><br>
                         <div style="margin: 8px 0; line-height: 1.5;">
                             .....................................................................................................................................................................................................................................................................<br>
@@ -1310,10 +1478,11 @@
             </tbody>
         </table>
     </div>
-    
+
     <div style="margin-top: 20px; border-top: 1px solid #000; padding-top: 10px; font-size: 8pt; color: #666;">
         <p><strong>Tanggal Pengisian:</strong> {{ $form->created_at ? $form->created_at->format('d F Y H:i') : 'Tidak tersedia' }}</p>
         <p><strong>Terakhir Diupdate:</strong> {{ $form->updated_at ? $form->updated_at->format('d F Y H:i') : 'Tidak tersedia' }}</p>
     </div>
-</body>
+    </body>
+
 </html>
