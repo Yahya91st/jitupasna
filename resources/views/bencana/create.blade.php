@@ -95,8 +95,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form" action="{{ route('bencana.store') }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form class="form" action="{{ route('bencana.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 col-12">
@@ -117,38 +116,46 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="last-name-column">Tanggal Bencana</label>
-                                            <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                                name="tanggal">
+                                            <input type="date" id="last-name-column" class="form-control" placeholder="" name="tanggal">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="first-name-column">Kecamatan</label>
-                                            <div class="form-group">
-                                                <select class="choices form-select" name="kecamatan_id" id="kecamatan">
-                                                    <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                                    @foreach ($kecamatan as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->nama }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                            <label for="province">Provinsi</label>
+                                            <select id="province" name="province_code" class="form-control">
+                                                <option value="">Memuat provinsi...</option>
+                                            </select>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="first-name-column">Desa</label>
-                                            <div class="form-group">
-                                                <select id="desa" multiple="multiple-remove" name="desa_ids[]">
-                                                </select>
-                                            </div>
+                                            <label for="regency">Kabupaten</label>
+                                            <select id="regency" name="regency_code" class="form-control">
+                                                <option value="">Pilih Kabupaten/Kota</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div id="map" style="height: 400px; width: 100%;"></div>
-                                    <input type="hidden" name="latitude" id="latitude">
-                                    <input type="hidden" name="longitude" id="longitude">
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="kecamatan">Kecamatan</label>
+                                            <select id="kecamatan" name="district_code" class="form-control">
+                                                <option value="">Pilih Kecamatan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="desa">Desa</label>
+                                            <select id="desa" name="village_code" class="form-control" multiple>
+                                                <!-- jika tidak multi, hapus atribut multiple -->
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-12">
@@ -162,13 +169,9 @@
                                         <div class="form-group">
                                             <div class="card-body">
                                                 <div class="form-group">
-                                                    <div class="card-header pb-4 border-dashed rounded"
-                                                        style="border: 1px dashed rgb(94, 87, 87);">
-                                                        <div
-                                                            class="profile-img-edit position-relative d-flex justify-content-center align-items-center">
-                                                            <img src="/frontend/dist/assets/images/avatar/no-image.png"
-                                                                id="firstImage" alt="profile-pic"
-                                                                class="theme-color-default-img profile-pic rounded avatar-100">
+                                                    <div class="card-header pb-4 border-dashed rounded" style="border: 1px dashed rgb(94, 87, 87);">
+                                                        <div class="profile-img-edit position-relative d-flex justify-content-center align-items-center">
+                                                            <img src="/frontend/dist/assets/images/avatar/no-image.png" id="firstImage" alt="profile-pic" class="theme-color-default-img profile-pic rounded avatar-100">
                                                         </div>
                                                     </div>
                                                     <input type="hidden" id="croppedImageData" name="avatar">
@@ -189,13 +192,10 @@
                                                             </div>
                                                             <div>
                                                                 <button type="button" id="chooseImageButton">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="2rem"
-                                                                        height="2rem" viewBox="0 0 24 24">
-                                                                        <path fill="#5A8DEE"
-                                                                            d="M11 16V7.85l-2.6 2.6L7 9l5-5l5 5l-1.4 1.45l-2.6-2.6V16zm-5 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z" />
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24">
+                                                                        <path fill="#5A8DEE" d="M11 16V7.85l-2.6 2.6L7 9l5-5l5 5l-1.4 1.45l-2.6-2.6V16zm-5 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z" />
                                                                     </svg>
-                                                                    <input type="file" name="image" class="image"
-                                                                        id="imageInput" style="display: none;">
+                                                                    <input type="file" name="image" class="image" id="imageInput" style="display: none;">
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -216,8 +216,7 @@
             </div>
         </div>
         <!-- Modal for image preview and cropping -->
-        <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog"
-            aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -251,128 +250,88 @@
     </section>
 @endsection
 @push('script')
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARVEALROScbJQGyveyCs0HgnYsEiWUF-U"></script>
-    <script>
-        let map, marker;
-
-        function initMap() {
-            var center = { lat: -2.5489, lng: 118.0149 };
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
-                center: center
-            });
-
-            // Klik di peta untuk ambil lokasi
-            map.addListener('click', function(event) {
-                var lat = event.latLng.lat();
-                var lng = event.latLng.lng();
-
-                // Isi input hidden
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lng;
-
-                // Tampilkan marker di lokasi yang diklik
-                if (marker) {
-                    marker.setMap(null);
-                }
-                marker = new google.maps.Marker({
-                    position: { lat: lat, lng: lng },
-                    map: map
-                });
-            });
-        }
-
-        window.onload = initMap;
-    </script>    
-    <script>
-        var bs_modal = $('#modal');
-        var image = document.getElementById('image');
-        var cropper, reader, file;
-
-        $("body").on("change", ".image", function(e) {
-            var files = e.target.files;
-            var maxFileSizeInBytes = 10 * 1024 * 1024;
-            var allowedExtensions = ['jpg', 'jpeg', 'png'];
-
-            if (files && files.length > 0) {
-                file = files[0];
-
-                var fileExtension = file.name.split('.').pop().toLowerCase();
-
-                if (!allowedExtensions.includes(fileExtension)) {
-                    // Display an error message
-                    alert("Only .jpg, .jpeg, and .png files are allowed.");
-
-                    // Optionally, clear the file input
-                    $(this).val('');
-                    return; // Exit the function early
-                }
-
-                if (file.size > maxFileSizeInBytes) {
-                    // Display an error message
-                    alert("File size exceeds the maximum allowed size.");
-
-                    // Optionally, clear the file input
-                    $(this).val('');
-                    return; // Exit the function early
-                }
-
-
-                var done = function(url) {
-                    image.src = url;
-                    bs_modal.modal('show');
-                };
-
-
-                if (URL) {
-                    done(URL.createObjectURL(file));
-                } else if (FileReader) {
-                    reader = new FileReader();
-                    reader.onload = function(e) {
-                        done(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-            // Reset the value of the file input to trigger change event even if the same file is selected again
-            $(this).val('');
-        });
-
-        bs_modal.on('shown.bs.modal', function() {
-            cropper = new Cropper(image, {
-                aspectRatio: 1,
-                viewMode: 1,
-                autoCropArea: 1,
-                dragMode: 'move',
-                preview: '.preview'
-            });
-        }).on('hidden.bs.modal', function() {
-            cropper.destroy();
-            cropper = null;
-        });
-
-        $("#crop").click(function() {
-            canvas = cropper.getCroppedCanvas({
-                width: 300, // Lebar canvas yang diinginkan
-                height: 300 // Tinggi canvas yang diinginkan
-            });
-            var croppedImage = canvas.toDataURL(); // Get the cropped image as base64 data URL
-            $("#firstImage").attr("src",
-                croppedImage); // Set the src attribute of the image element on the main page
-            $("#croppedImageData").val(
-                croppedImage); // Set the cropped image data to a hidden input field in the form
-            bs_modal.modal('hide'); // Close the modal
-            // $("#mainPage").show(); // Show the submit button on the main page
-        });
-
-        document.getElementById('chooseImageButton').addEventListener('click', function() {
-            document.getElementById('imageInput').click();
-        })
-    </script>
     <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- Image cropper ---
+            var bs_modal = $('#modal');
+            var image = document.getElementById('image');
+            var cropper, reader, file;
+
+            $("body").on("change", ".image", function(e) {
+                var files = e.target.files;
+                var maxFileSizeInBytes = 10 * 1024 * 1024;
+                var allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+                if (files && files.length > 0) {
+                    file = files[0];
+                    var fileExtension = file.name.split('.').pop().toLowerCase();
+
+                    if (!allowedExtensions.includes(fileExtension)) {
+                        alert("Only .jpg, .jpeg, and .png files are allowed.");
+                        $(this).val('');
+                        return;
+                    }
+
+                    if (file.size > maxFileSizeInBytes) {
+                        alert("File size exceeds the maximum allowed size.");
+                        $(this).val('');
+                        return;
+                    }
+
+                    var done = function(url) {
+                        image.src = url;
+                        bs_modal.modal('show');
+                    };
+
+                    if (window.URL) {
+                        done(URL.createObjectURL(file));
+                    } else if (FileReader) {
+                        reader = new FileReader();
+                        reader.onload = function() {
+                            done(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+                $(this).val('');
+            });
+
+            bs_modal.on('shown.bs.modal', function() {
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    autoCropArea: 1,
+                    dragMode: 'move',
+                    preview: '.preview'
+                });
+            }).on('hidden.bs.modal', function() {
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null;
+                }
+            });
+
+            $("#crop").click(function() {
+                if (!cropper) return;
+                var canvas = cropper.getCroppedCanvas({
+                    width: 300,
+                    height: 300
+                });
+                var croppedImage = canvas.toDataURL();
+                $("#firstImage").attr("src", croppedImage);
+                $("#croppedImageData").val(croppedImage);
+                bs_modal.modal('hide');
+            });
+
+            document.getElementById('chooseImageButton').addEventListener('click', function() {
+                document.getElementById('imageInput').click();
+            });
+
+            // --- Quill editors ---
             function initializeQuill(selector) {
                 return new Quill(selector, {
                     theme: 'snow',
@@ -413,65 +372,220 @@
                 });
             }
 
-            // Inisialisasi Quill untuk masing-masing editor
-            const descriptionEditor = initializeQuill('#full');
-            const notesEditor = initializeQuill('#full-nama');
+            var descriptionEditor = document.querySelector('#full') ? initializeQuill('#full') : null;
+            var notesEditor = document.querySelector('#full-nama') ? initializeQuill('#full-nama') : null;
 
-            // Mengatur nilai hidden input saat form disubmit
-            document.querySelector('form').onsubmit = function() {
-                document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
-                document.querySelector('#nama').value = notesEditor.root.innerHTML;
+            var form = document.querySelector('form');
+            if (form) {
+                form.onsubmit = function() {
+                    if (descriptionEditor && document.querySelector('#deskripsi')) {
+                        document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
+                    }
+                    if (notesEditor && document.querySelector('#nama')) {
+                        document.querySelector('#nama').value = notesEditor.root.innerHTML;
+                    }
+                };
+            }
 
-                console.log('satuan:', descriptionEditor.root.innerHTML);
-                console.log('Catatan:', notesEditor.root.innerHTML);
-            };
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Choices for Kecamatan
-            var choicesKecamatan = new Choices('#kecamatan');
+            // --- Wilayah selects (single DOMContentLoaded handler) ---
+            var $prov = document.getElementById('province');
+            var $reg = document.getElementById('regency');
+            var $kec = document.getElementById('kecamatan');
+            var $desa = document.getElementById('desa');
 
-            // Initialize Choices for Desa with multiple selection
-            var choicesDesa = new Choices('#desa', {
-                removeItemButton: true,
-                maxItemCount: -1, // Unlimited items
-                placeholder: true,
-                placeholderValue: 'Select Desa...',
-                searchResultLimit: 5,
-                renderChoiceLimit: 5
-            });
+            if ($prov && $reg && $kec && $desa) {
+                const apiBase = 'https://wilayah.id/api';
+                const choicesDesa = new Choices('#desa', {
+                    removeItemButton: true,
+                    placeholderValue: 'Pilih Desa...'
+                });
 
-            // Event listener for Kecamatan change
-            document.getElementById('kecamatan').addEventListener('change', function() {
-                var kecamatanId = this.value;
-
-                if (kecamatanId) {
-                    fetch(`/bencana/get-desa/${kecamatanId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Clear previous options
-                            choicesDesa.clearStore();
-
-                            // Add new options
-                            choicesDesa.setChoices(
-                                data.desaTerkait.map(desa => ({
-                                    value: desa.id,
-                                    label: desa.nama,
-                                    selected: false,
-                                    disabled: false
-                                })),
-                                'value',
-                                'label',
-                                false
-                            );
-                        })
-                        .catch(error => console.error('Error fetching desa:', error));
-                } else {
-                    // Clear options if no Kecamatan is selected
-                    choicesDesa.clearStore();
+                function cacheGet(key) {
+                    try {
+                        return JSON.parse(sessionStorage.getItem(key));
+                    } catch {
+                        return null;
+                    }
                 }
-            });
-        });
+
+                function cacheSet(key, val) {
+                    try {
+                        sessionStorage.setItem(key, JSON.stringify(val));
+                    } catch {}
+                }
+
+                function setOptions($el, list, placeholder = 'Pilih...') {
+                    const normalized = Array.isArray(list) ? list : (list && list.data ? list.data : []);
+                    $el.innerHTML = `<option value="">${placeholder}</option>`;
+                    normalized.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item.code ?? item.id ?? '';
+                        opt.textContent = item.name ?? item.nama ?? opt.value;
+                        $el.appendChild(opt);
+                    });
+                    try {
+                        $el.selectedIndex = 0;
+                    } catch (e) {}
+                    console.log(`[wilayah] setOptions for #${$el.id} count=`, normalized.length);
+                }
+
+                function fetchJson(url) {
+                    return fetch(url).then(r => {
+                        if (!r.ok) throw new Error('Network response not ok');
+                        return r.json();
+                    });
+                }
+
+                (function loadProvinces() {
+                    const key = 'wilayah:provinces';
+                    const cached = cacheGet(key);
+                    if (cached) {
+                        setOptions($prov, cached, 'Pilih Provinsi');
+                        return;
+                    }
+
+                    fetchJson(`${apiBase}/provinces.json`)
+                        .then(resp => {
+                            const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                            cacheSet(key, list);
+                            setOptions($prov, list, 'Pilih Provinsi');
+                        })
+                        .catch(() => {
+                            fetchJson('/wilayah/provinces')
+                                .then(localResp => {
+                                    const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
+                                    cacheSet(key, list);
+                                    setOptions($prov, list, 'Pilih Provinsi');
+                                })
+                                .catch(err => {
+                                    console.error('[wilayah] loadProvinces failed', err);
+                                    setOptions($prov, [], 'Error memuat provinsi');
+                                });
+                        });
+                })
+                ();
+
+                $prov.addEventListener('change', function() {
+                    try {
+                        const code = this.value;
+                        console.log('[wilayah] province.change, code=', code);
+                        setOptions($reg, [], 'Memuat...');
+                        setOptions($kec, [], 'Pilih Kecamatan');
+                        choicesDesa.clearStore();
+
+                        if (!code) {
+                            setOptions($reg, [], 'Pilih Kabupaten/Kota');
+                            return;
+                        }
+
+                        const key = `wilayah:regencies:${code}`;
+                        const cached = cacheGet(key);
+                        if (cached) {
+                            setOptions($reg, cached, 'Pilih Kabupaten/Kota');
+                            return;
+                        }
+
+                        const externalUrl = `${apiBase}/regencies/${encodeURIComponent(code)}.json`;
+                        fetchJson(externalUrl)
+                            .then(resp => {
+                                const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                                cacheSet(key, list);
+                                setOptions($reg, list, 'Pilih Kabupaten/Kota');
+                            })
+                            .catch(() => {
+                                fetchJson(`/wilayah/regencies/${encodeURIComponent(code)}`)
+                                    .then(localResp => {
+                                        const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
+                                        cacheSet(key, list);
+                                        setOptions($reg, list, 'Pilih Kabupaten/Kota');
+                                    })
+                                    .catch(err => {
+                                        console.error('[wilayah] reg local error', err);
+                                        setOptions($reg, [], 'Error memuat kabupaten');
+                                    });
+                            });
+                    } catch (e) {
+                        console.error('[wilayah] province.change handler error', e);
+                        setOptions($reg, [], 'Error memuat kabupaten');
+                    }
+                });
+
+                $reg.addEventListener('change', function() {
+                    const code = this.value;
+                    setOptions($kec, [], 'Memuat...');
+                    choicesDesa.clearStore();
+                    if (!code) {
+                        setOptions($kec, [], 'Pilih Kecamatan');
+                        return;
+                    }
+
+                    const key = `wilayah:districts:${code}`;
+                    const cached = cacheGet(key);
+                    if (cached) {
+                        setOptions($kec, cached, 'Pilih Kecamatan');
+                        return;
+                    }
+
+                    fetchJson(`${apiBase}/districts/${encodeURIComponent(code)}.json`)
+                        .then(resp => {
+                            const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                            cacheSet(key, list);
+                            setOptions($kec, list, 'Pilih Kecamatan');
+                        })
+                        .catch(() => {
+                            fetchJson(`/wilayah/districts/${encodeURIComponent(code)}`)
+                                .then(localResp => {
+                                    const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
+                                    cacheSet(key, list);
+                                    setOptions($kec, list, 'Pilih Kecamatan');
+                                })
+                                .catch(err => {
+                                    console.error('[wilayah] kec local error', err);
+                                    setOptions($kec, [], 'Error memuat kecamatan');
+                                });
+                        });
+                });
+
+                $kec.addEventListener('change', function() {
+                    const code = this.value;
+                    choicesDesa.clearStore();
+                    if (!code) return;
+
+                    const key = `wilayah:villages:${code}`;
+                    const cached = cacheGet(key);
+                    if (cached) {
+                        choicesDesa.setChoices(cached.map(v => ({
+                            value: v.code,
+                            label: v.name
+                        })), 'value', 'label', false);
+                        return;
+                    }
+
+                    fetchJson(`${apiBase}/villages/${encodeURIComponent(code)}.json`)
+                        .then(resp => {
+                            const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                            cacheSet(key, list);
+                            choicesDesa.setChoices(list.map(v => ({
+                                value: v.code,
+                                label: v.name
+                            })), 'value', 'label', false);
+                        })
+                        .catch(() => {
+                            fetchJson(`/wilayah/villages/${encodeURIComponent(code)}`)
+                                .then(localResp => {
+                                    const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
+                                    cacheSet(key, list);
+                                    choicesDesa.setChoices(list.map(v => ({
+                                        value: v.code,
+                                        label: v.name
+                                    })), 'value', 'label', false);
+                                })
+                                .catch(err => {
+                                    console.error('[wilayah] village local error', err);
+                                });
+                        });
+                });
+            }
+        }); // end DOMContentLoaded
     </script>
 @endpush
