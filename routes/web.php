@@ -45,6 +45,12 @@ use App\Http\Controllers\Form11Controller;
 use App\Http\Controllers\Form12Controller;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/wilayah/provinces', [\App\Http\Controllers\WilayahController::class, 'provinces']);
+Route::get('/wilayah/regencies/{code}', [\App\Http\Controllers\WilayahController::class, 'regencies']);
+Route::get('/wilayah/districts/{code}', [\App\Http\Controllers\WilayahController::class, 'districts']);
+Route::get('/wilayah/villages/{code}', [\App\Http\Controllers\WilayahController::class, 'villages']);
+
+
 Route::get('/', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
