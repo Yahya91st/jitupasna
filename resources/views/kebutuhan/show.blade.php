@@ -2,226 +2,266 @@
 
 @section('content')
 <style>
-    * {
-        font-family: 'Times New Roman', Times, serif;
+    /* Container & Layout */
+    .page-container {
+        padding: 20px;
     }
-    
+
+    /* Card Styling */
     .main-card {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        border: none;
-        overflow: hidden;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
     }
-    
-    .orange-header {
-        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
-        color: white;
+
+    /* Header Styling */
+    .page-header {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
-        margin: -1px -1px 20px -1px;
-        border-radius: 15px 15px 0 0;
+        margin-bottom: 1.5rem;
     }
-    
-    .orange-header h3 {
+
+    .page-header h3 {
+        margin: 0 0 5px 0;
+        font-weight: bold;
+        color: #F28705;
+        font-size: 1.6rem;
+    }
+
+    .page-header p {
         margin: 0;
-        font-weight: 600;
-        font-size: 1.8rem;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        color: #666;
     }
-    
-    .orange-header p {
-        margin: 5px 0 0 0;
-        opacity: 0.9;
-    }
-    
+
+    /* Breadcrumb */
     .breadcrumb {
         background: transparent;
-        margin: 0;
+        margin: 10px 0 0 0;
+        padding: 0;
     }
-    
+
     .breadcrumb-item a {
-        color: rgba(255,255,255,0.8);
+        color: #F28705;
         text-decoration: none;
     }
-    
+
     .breadcrumb-item a:hover {
-        color: white;
+        text-decoration: underline;
     }
-    
+
     .breadcrumb-item.active {
-        color: white;
+        color: #666;
     }
-    
-    .detail-card {
-        background: white;
-        border-radius: 12px;
-        border: 3px solid #F28705;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
-    }
-    
+
+    /* Card Header */
     .card-header {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-        border-bottom: none;
-        border-radius: 12px 12px 0 0;
+        background: #f9f9f9;
+        color: #333;
+        font-weight: 600;
+        padding: 15px 20px;
+        border-bottom: 2px solid #ddd;
     }
-    
+
     .card-header h4 {
         margin: 0;
         font-weight: 600;
+        font-size: 1.1rem;
     }
-    
-    .card-primary .card-header {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+
+    .card-body {
+        padding: 20px;
     }
-    
-    .card-danger .card-header {
-        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    }
-    
-    .card-warning .card-header {
-        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-    }
-    
-    .card-success .card-header {
-        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-    }
-    
+
+    /* Summary Cards */
     .summary-card {
         background: white;
-        border-radius: 12px;
-        border: 2px solid #e9ecef;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        margin-bottom: 1rem;
     }
-    
+
     .summary-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    }
-    
-    .btn-outline-primary {
-        border: 2px solid #F28705;
-        color: #F28705;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-outline-primary:hover {
-        background: #F28705;
-        border-color: #F28705;
-        color: white;
         transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     }
-    
-    .btn-outline-warning {
-        border: 2px solid #ffc107;
-        color: #ffc107;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+
+    .summary-card.bg-primary {
+        background: #F28705 !important;
     }
-    
-    .btn-outline-warning:hover {
-        background: #ffc107;
-        border-color: #ffc107;
-        color: #212529;
-        transform: translateY(-2px);
+
+    .summary-card.bg-danger {
+        background: #dc3545 !important;
     }
-    
-    .btn-outline-danger {
-        border: 2px solid #dc3545;
-        color: #dc3545;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+
+    .summary-card.bg-warning {
+        background: #ffc107 !important;
     }
-    
-    .btn-outline-danger:hover {
-        background: #dc3545;
-        border-color: #dc3545;
-        color: white;
-        transform: translateY(-2px);
+
+    .summary-card.bg-success {
+        background: #28a745 !important;
     }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
-        border: none;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
-    }
-    
-    .btn-primary:hover {
-        background: linear-gradient(135deg, #e07600 0%, #f57c00 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(242, 135, 5, 0.4);
-    }
-    
-    .btn-warning {
-        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-        border: none;
-        color: #212529;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-warning:hover {
-        background: linear-gradient(135deg, #e0a800 0%, #d39e00 100%);
-        transform: translateY(-2px);
-    }
-    
-    .table thead th {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-        border: none;
-        padding: 15px 12px;
-        font-weight: 600;
-        text-align: center;
-    }
-    
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-    
-    .table tbody tr:hover {
-        background-color: #fff8f0;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.1);
-    }
-    
-    .badge {
-        border-radius: 8px;
-        font-weight: 500;
-        padding: 6px 12px;
-    }
-    
+
+    /* Form Group */
     .form-group label {
-        color: #495057;
+        color: #333;
         font-weight: 600;
         margin-bottom: 5px;
+        font-size: 14px;
     }
-    
+
     .form-group p {
-        color: #6c757d;
+        color: #666;
         margin-bottom: 0;
+        font-size: 14px;
+    }
+
+    /* Table Styling */
+    .table {
+        border: 1px solid #ddd;
+        margin-bottom: 0;
+        font-size: 14px;
+    }
+
+    .table thead th {
+        background: #f9f9f9;
+        color: #333;
+        font-weight: 600;
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+        padding: 12px 10px;
+    }
+
+    .table tbody td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        vertical-align: middle;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(242, 135, 5, 0.08);
+        transition: background-color 0.2s ease;
+    }
+
+    /* Button Styling */
+    .btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-weight: 500;
+        margin: 2px;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: #F28705;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #d97604;
+        color: white;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-warning:hover {
+        background: #e0a800;
+    }
+
+    .btn-outline-primary {
+        border: 1px solid #F28705;
+        color: #F28705;
+        background: white;
+    }
+
+    .btn-outline-primary:hover {
+        background: #F28705;
+        color: white;
+    }
+
+    .btn-outline-warning {
+        border: 1px solid #ffc107;
+        color: #ffc107;
+        background: white;
+    }
+
+    .btn-outline-warning:hover {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-outline-danger {
+        border: 1px solid #dc3545;
+        color: #dc3545;
+        background: white;
+    }
+
+    .btn-outline-danger:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    /* Badge */
+    .badge {
+        border-radius: 4px;
+        font-weight: 500;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 10px;
+        }
+
+        .page-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .table {
+            font-size: 12px;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
     }
 </style>
 
-<div class="container-fluid">
-<div class="main-card">
-    <div class="orange-header">
+<div class="page-container">
+    <!-- Page Header -->
+    <div class="page-header">
         <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
+            <div class="col-12 col-md-8">
                 <h3>Detail Kebutuhan Pascabencana</h3>
-                <p class="text-subtitle">Detail kebutuhan pascabencana</p>
+                <p>Detail kebutuhan pascabencana</p>
             </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-md-end">
+            <div class="col-12 col-md-4">
+                <nav aria-label="breadcrumb" class="float-start float-md-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('kebutuhan.index') }}">Kebutuhan</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Detail</li>
@@ -231,11 +271,11 @@
         </div>
     </div>
 
-    <div style="padding: 20px;">
-        <div class="detail-card">
-            <div class="card-header">
-                <h4 class="card-title">Detail Bencana</h4>
-            </div>
+    <!-- Detail Bencana -->
+    <div class="main-card">
+        <div class="card-header">
+            <h4>Detail Bencana</h4>
+        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -285,48 +325,36 @@
                         @endif
                     </div>
                 </div>
-            </div>        </div>
-    </div>    
-    
-        <!-- Rekap Section -->
-        <div class="detail-card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="card-title">
-                    <i class="fas fa-chart-pie me-2"></i>
-                    Data Rekap Bencana
-                    <small id="last-updated" class="text-muted ms-2"></small>
-                </h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rekap Section -->
+    <div class="main-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Data Rekap Bencana</h4>
             <div>
-                <!-- @if($rekaps->count() > 0)
-                    <a href="{{ route('rekap.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-info btn-sm">
-                        <i class="fas fa-eye me-1"></i>Lihat Semua Rekap
-                    </a>                
-                @endif                 -->
-                <button id="sync-rekap-btn" class="btn btn-warning btn-sm" title="Sinkronisasi Data Rekap">
-                    <i class="fas fa-sync-alt me-1"></i>Sync Data
+                <button id="sync-rekap-btn" class="btn btn-warning" title="Sinkronisasi Data Rekap">
+                    Sync Data
                 </button>
-                <!-- <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus me-1"></i>Tambah Rekap
-                </a> -->
             </div>
         </div>
         <div class="card-body">
             @if($rekaps->count() > 0)
-                <!-- Rekap Summary Cards -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="summary-card bg-primary text-white mb-0">
+                <!-- Summary Cards -->
+                <div class="row mb-3">
+                    <div class="col-md-3 col-6 mb-2">
+                        <div class="summary-card bg-primary text-white">
                             <div class="card-body text-center py-3">
                                 <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
                                 <small>Total Rekap</small>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="summary-card bg-danger text-white mb-0">
+                    <div class="col-md-3 col-6 mb-2">
+                        <div class="summary-card bg-danger text-white">
                             <div class="card-body text-center py-3">
                                 @php
-                                    // Hitung total kerusakan seluruh rekap (format1-17)
                                     $totalKerusakan = 0;
                                     foreach ($rekaps as $rekap) {
                                         for ($i = 1; $i <= 17; $i++) {
@@ -342,16 +370,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="summary-card bg-warning text-white mb-0">
+                    <div class="col-md-3 col-6 mb-2">
+                        <div class="summary-card bg-warning text-white">
                             <div class="card-body text-center py-3">
                                 <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
                                 <small>Total Kerugian</small>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="summary-card bg-success text-white mb-0">
+                    <div class="col-md-3 col-6 mb-2">
+                        <div class="summary-card bg-success text-white">
                             <div class="card-body text-center py-3">
                                 <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
                                 <small>Verified</small>
@@ -360,10 +388,10 @@
                     </div>
                 </div>
 
-                <!-- Rekap Table -->
+                <!-- Data Table -->
                 <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead class="table-light">
+                    <table class="table table-bordered">
+                        <thead>
                             <tr>
                                 <th>Format</th>
                                 <th>Lokasi</th>
@@ -376,7 +404,7 @@
                         <tbody>
                             @foreach($rekaps as $rekap)
                                 <tr>
-                                    <td>
+                                    <td style="text-align: center;">
                                         @php
                                             $format = '-';
                                             for ($i = 1; $i <= 17; $i++) {
@@ -393,7 +421,7 @@
                                         <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
                                         <small class="text-muted">{{ $rekap->nama_distrik ?? '-' }}</small>
                                     </td>
-                                    <td>
+                                    <td style="text-align: right;">
                                         @php
                                             $totalKerusakan = 0;
                                             for ($i = 1; $i <= 17; $i++) {
@@ -403,12 +431,12 @@
                                                 }
                                             }
                                         @endphp
-                                        <strong>Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</strong>
+                                        Rp {{ number_format($totalKerusakan, 0, ',', '.') }}
                                     </td>
-                                    <td>
-                                        <strong>Rp {{ number_format($rekap->total_kerugian, 0, ',', '.') }}</strong>
+                                    <td style="text-align: right;">
+                                        Rp {{ number_format($rekap->total_kerugian, 0, ',', '.') }}
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         @php
                                             $statusClass = match($rekap->status) {
                                                 'completed' => 'bg-success',
@@ -420,18 +448,16 @@
                                             {{ ucfirst($rekap->status) }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail">
-                                                <i class="fas fa-eye"></i> Detail
-                                            </a>
-                                            <a href="{{ route('rekap.edit', $rekap->id) }}" class="btn btn-sm btn-outline-warning" title="Edit">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
-                                            <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-outline-danger" title="PDF" target="_blank">
-                                                <i class="fas fa-file-pdf"></i> PDF
-                                            </a>
-                                        </div>
+                                    <td style="text-align: center;">
+                                        <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-outline-primary">
+                                            Detail
+                                        </a>
+                                        <a href="{{ route('rekap.edit', $rekap->id) }}" class="btn btn-outline-warning">
+                                            Edit
+                                        </a>
+                                        <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-outline-danger" target="_blank">
+                                            PDF
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -439,21 +465,17 @@
                     </table>
                 </div>
             @else
-                <div class="text-center py-4">
-                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                    <h5>Belum ada data rekap</h5>
-                    <p class="text-muted mb-3">Belum ada data rekap untuk bencana ini. Mulai dengan menambahkan rekap baru.</p>
+                <div class="text-center py-5">
+                    <h5 class="text-muted">Belum ada data rekap</h5>
+                    <p class="text-muted">Belum ada data rekap untuk bencana ini.</p>
                     <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-                        <i class="fas fa-plus me-1"></i>Tambah Rekap Pertama
+                        Tambah Rekap Pertama
                     </a>
                 </div>
             @endif
         </div>
     </div>
 </div>
-</div>
-    
-</section>
 @endsection
 
 @push('script')

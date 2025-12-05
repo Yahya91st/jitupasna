@@ -4,16 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Bencana;
 use App\Models\DetailKerusakan;
-use App\Models\EnvironmentalReport;
 use App\Models\FormPerumahan;
 use App\Models\Format1Form4;
 use App\Models\Format2Form4;
-use App\Models\GovernmentReport;
 use App\Models\Kerugian;
 use App\Models\Kerusakan;
 use App\Models\Pendataan;
-use App\Models\TransportationReport;
-use App\Models\Fgd;
 use App\Models\Rekap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +20,21 @@ class KebutuhanController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */    public function index()
+     */    
+    public function index(Request $request)
     {
-        // Redirect to the bencana listing with source=kebutuhan
-        return redirect()->route('bencana.index', ['source' => 'kebutuhan']);
+        $bencana_id = $request->input('bencana_id');
+        $bencana = null;
+        
+        // Redirect to bencana selection page if no bencana_id is provided
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', ['source' => 'kebutuhan']);
+        }
+        
+        // Get bencana details if ID is provided
+        $bencana = Bencana::findOrFail($bencana_id);
+
+        return view('kebutuhan.index', compact('bencana'));
     }
 
     /**
@@ -58,13 +65,7 @@ class KebutuhanController extends Controller
                     ['name' => 'transportation_reports', 'description' => 'Kerusakan dan kerugian transportasi', 'count' => TransportationReport::count(), 'model' => 'TransportationReport']
                 ]
             ],
-            'form7' => [
-                'name' => 'Form 7',
-                'description' => 'Tabel dengan penilaian kualitatif kerusakan/kerugian',
-                'tables' => [
-                    ['name' => 'fgd', 'description' => 'Penilaian kualitatif kerusakan/kerugian', 'count' => Fgd::count(), 'model' => 'Fgd']
-                ]
-            ],
+
             'general' => [
                 'name' => 'Tabel Umum',
                 'description' => 'Digunakan di berbagai form',
@@ -247,9 +248,7 @@ class KebutuhanController extends Controller
         
         // Get data from Form4 tables
         $perumahan = Format1Form4::where('bencana_id', $id)->get();
-        $government = GovernmentReport::where('bencana_id', $id)->get();
-        $environment = EnvironmentalReport::where('bencana_id', $id)->get();
-        $transportation = TransportationReport::where('bencana_id', $id)->get();
+
         
         // Get data from Form4 Format2 (Pendidikan)
         $format2 = Format2Form4::where('bencana_id', $id)->get();
@@ -261,8 +260,6 @@ class KebutuhanController extends Controller
         $totalKerugianFormat2 = 0; // Tidak dipakai lagi, hanya kerusakan
         
         // Get data from Form7
-        $fgd = Fgd::where('bencana_id', $id)->first();
-        
         // Get additional data from detail_kerusakan related to this kerusakan
         $detailKerusakan = [];
         foreach ($kerusakan as $item) {
@@ -297,38 +294,13 @@ class KebutuhanController extends Controller
             $numericData['detail_kerusakan'] = $detailNumeric;
         }
         
-        // For Environmental Reports
-        $envTable = Schema::getColumnListing('environmental_reports');
-        $envNumeric = $this->extractNumericColumns('environmental_reports', $envTable, $environment);
-        if (!empty($envNumeric)) {
-            $numericData['environmental_reports'] = $envNumeric;
-        }
-        
-        // For Government Reports
-        $govTable = Schema::getColumnListing('government_reports');
-        $govNumeric = $this->extractNumericColumns('government_reports', $govTable, $government);
-        if (!empty($govNumeric)) {
-            $numericData['government_reports'] = $govNumeric;
-        }
-        
         // For Form Perumahan
         $perumahanTable = Schema::getColumnListing('form_perumahan');
         $perumahanNumeric = $this->extractNumericColumns('form_perumahan', $perumahanTable, $perumahan);
         if (!empty($perumahanNumeric)) {
             $numericData['form_perumahan'] = $perumahanNumeric;
         }
-        
-        // Calculate environmental loss and damage
-        $environmentalTotals = [
-            'damage' => $environment->sum('total_kerusakan'),
-            'loss' => $environment->sum('total_kerugian')
-        ];
-        
-        // Calculate government loss and damage
-        $governmentTotals = [
-            'damage' => $government->sum('total_kerusakan'),
-            'loss' => $government->sum('total_kerugian')
-        ];
+
         
         // Calculate totals
         $totalKerusakan = $kerusakan->sum('BiayaKeseluruhan');
@@ -341,11 +313,7 @@ class KebutuhanController extends Controller
         $totals = [
             'kerusakan' => $totalKerusakan,
             'kerugian' => $totalKerugian,
-            'lingkungan' => $environmentalTotals,
-            'pemerintah' => $governmentTotals,
-            'total' => $totalKerusakan + $totalKerugian + 
-                       $environmentalTotals['damage'] + $environmentalTotals['loss'] + 
-                       $governmentTotals['damage'] + $governmentTotals['loss'],
+            'total' => $totalKerusakan + $totalKerugian,
             'total_kerusakan' => $totalKerusakanFormat1, // pastikan tidak hilang
             'total_kerusakan_format2' => $totalKerusakanFormat2,
             'total_kerugian_format2' => $totalKerugianFormat2
@@ -390,12 +358,7 @@ class KebutuhanController extends Controller
             'totalKerusakanFormat2',
             'totalKerugianFormat2',
             'kerugian',
-            'pendataan',
             'perumahan',
-            'government',
-            'environment',
-            'transportation',
-            'fgd',
             'totals',
             'numericData',
             'detailKerusakan',

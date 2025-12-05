@@ -1089,11 +1089,11 @@
         function autofillSample() {
             const sample = {
                 wilayah_bencana: "Kab. Contoh / Kec. Contoh",
-                nama_opd_1: "Dinas Contoh",
+                nama_opd_1: "opd1",
                 tanggal_opd_1: "2025-11-20",
-                nama_opd_2: "Dinas Perdagangan",
+                nama_opd_2: "opd2",
                 tanggal_opd_2: "2025-11-20",
-                nama_opd_3: "Dinas Pendidikan",
+                nama_opd_3: "opd3",
                 tanggal_opd_3: "2025-11-20",
                 nama_opd_4: "opd4",
                 tanggal_opd_4: "2025-11-20",

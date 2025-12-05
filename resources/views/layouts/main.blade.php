@@ -30,7 +30,7 @@
 
         /* Hover effect untuk sidebar */
         .sidebar-item:hover>.sidebar-link {
-             background-color: rgba(90, 141, 238, 0.1);
+            background-color: rgba(90, 141, 238, 0.1);
             border-left: 3px solid #5A8DEE;
             color: #5A8DEE;
             font-weight: bold;
@@ -58,9 +58,7 @@
             content: "";
             position: absolute;
             left: -10px;
-            top: 50%;
             width: 5px;
-            height: 5px;
             border-radius: 50%;
             background-color: #5A8DEE;
             transform: translateY(-50%);

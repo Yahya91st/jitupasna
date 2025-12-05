@@ -1,64 +1,192 @@
 @extends('layouts.main')
 
 @section('content')
-    <!-- Rekap Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
-                    <h5 class="card-title mb-0 text-white">
-                        <i class="fas fa-chart-pie me-2"></i>
-                        Rekap Data Bencana
-                    </h5>
-                    <div>
-                        <a href="{{ route('rekap.index') }}" class="btn btn-light btn-sm">
-                            <i class="fas fa-eye me-1"></i>Lihat Semua Rekap
-                        </a>
-                        <a href="{{ route('rekap.dashboard') }}" class="btn btn-warning btn-sm">
-                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
-                        </a>
+<style>
+    .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .main-card {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #f9f9f9;
+        padding: 15px 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-header h4,
+    .card-header h5 {
+        margin: 0;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .summary-card {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .summary-card h4 {
+        color: #F28705;
+        font-weight: 700;
+        margin: 10px 0;
+    }
+
+    .summary-card small {
+        color: #666;
+        font-weight: 600;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .table th {
+        background: #f9f9f9;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background: rgba(242, 135, 5, 0.08);
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-right: 5px;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: #F28705;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #d97604;
+        color: white;
+    }
+
+    .btn-light {
+        background: white;
+        color: #F28705;
+        border: 1px solid #F28705;
+    }
+
+    .btn-light:hover {
+        background: #F28705;
+        color: white;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .modal-header {
+        background: #f9f9f9;
+        border-bottom: 1px solid #ddd;
+    }
+
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 10px;
+        }
+
+        .table th,
+        .table td {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <div class="main-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>Rekap Data Bencana</h5>
+            <div>
+                <a href="{{ route('rekap.index') }}" class="btn btn-light btn-sm">
+                    Lihat Semua
+                </a>
+                <a href="{{ route('rekap.dashboard') }}" class="btn btn-primary btn-sm">
+                    Dashboard
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="summary-card">
+                        <small>Total Rekap</small>
+                        <h4>{{ $rekapSummary['total_rekaps'] }}</h4>
                     </div>
                 </div>
-                <div class="card-content">
-                    <!-- Summary Cards -->
-                    <div class="row mb-3" style="margin: 15px;">
-                        <div class="col-md-3">
-                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
-                                    <small>Total Rekap</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ff7043 0%, #ff3d00 100%);">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerusakan'], 0, ',', '.') }}</h4>
-                                    <small>Total Kerusakan</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ffb74d 0%, #ff9800 100%);">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
-                                    <small>Total Kerugian</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-white mb-0" style="background: linear-gradient(135deg, #ff8a50 0%, #ff5722 100%);">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
-                                    <small>Verified</small>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-3">
+                    <div class="summary-card">
+                        <small>Total Kerusakan</small>
+                        <h4>Rp {{ number_format($rekapSummary['total_kerusakan'], 0, ',', '.') }}</h4>
                     </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-card">
+                        <small>Total Kerugian</small>
+                        <h4>Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-card">
+                        <small>Verified</small>
+                        <h4>{{ $rekapSummary['verified_rekaps'] }}</h4>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Recent Rekap Table -->
-                    <div class="table-responsive" style="margin: 15px;">
-                        <h6 class="mb-3">10 Rekap Terbaru:</h6>
+            <div class="table-responsive">
+                <h6 class="mb-3">10 Rekap Terbaru:</h6>
                         <table class="table table-sm">
                             <thead class="table-light">
                                 <tr>
@@ -106,43 +234,30 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-outline-danger" title="PDF" target="_blank">
-                                                    <i class="fas fa-file-pdf"></i>
-                                                </a>
-                                            </div>
+                                            <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-primary">Detail</a>
+                                            <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-primary" target="_blank">PDF</a>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
                                         <td colspan="7" class="text-center py-4">
-                                            <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
                                             <p class="text-muted mb-0">Belum ada data rekap</p>
                                         </td>
                                     </tr>
                                 @endforelse
                             </tbody>
-                        </table>
-                    </div>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Original Kerusakan Section -->
-    <div class="row" id="table-striped">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
-                    <h4 class="card-title mb-0 text-white">Data Kerusakan Dampak Bencana</h4>
-                    {{-- <a href="{{ route('bencana.create') }}" class="btn btn-primary">Tambah Data Bencana</a> --}}
-                    <button class="btn btn-light" type="button" data-toggle="modal" data-target="#inlineForm">Filter</button>
-                </div>
-                <div class="card-content">
-                    <div class="table-responsive">
+    <div class="main-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Data Kerusakan Dampak Bencana</h4>
+            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#inlineForm">Filter</button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
                                 <tr>
@@ -161,81 +276,52 @@
                                         <td>{{ $item->kategori_bangunan->nama }}</td>
                                         <td>{{ 'Rp ' . number_format($item->BiayaKeseluruhan, 2, ',', '.') }}</td>
                                         <td>
-                                            <div class="btn-group mb-1">
-                                                <div class="dropdown dropdown-color-icon">
-                                                    <button class="btn dropdown-toggle" type="button"
-                                                        id="dropdownMenuButtonEmoji" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false"
-                                                        style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%); color: white; border: none;">
-                                                        Aksi
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonEmoji">
-                                                        <a href="{{ route('kerusakan.edit', $item->id) }}"
-                                                            class="dropdown-item">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem"
-                                                                height="1.5rem" viewBox="0 0 24 24">
-                                                                <g fill="none" stroke="#5A8DEE" stroke-linecap="round"
-                                                                    stroke-linejoin="round" stroke-width="2">
-                                                                    <path
-                                                                        d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1" />
-                                                                    <path
-                                                                        d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3" />
-                                                                </g>
-                                                            </svg>
-                                                            Update Data
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <a href="{{ route('kerusakan.edit', $item->id) }}" class="btn btn-sm btn-primary">
+                                                Edit
+                                            </a>
                                     </tr>
                                 @endforeach
                             </tbody>
-                        </table>
-                        <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
-                            {{ $kerusakan->links() }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel33">Form Kategori Bencana</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <i data-feather="x"></i>
-                            </button>
-                        </div>
-                        <form action="{{ route('kerusakan.index') }}" method="GET" id="filterForm">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="first-name-column">Kategori Bangunan</label>
-                                    <div class="form-group">
-                                        <select class="form-select" name="kategori_bangunan_id" id="kategori_bangunan_id">
-                                            <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                            @foreach ($kategoribangunan as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ request()->input('kategori_bangunan_id') == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" onclick="resetFilters()"
-                                    data-dismiss="modal">{{ __('Reset') }}</button>
-                                <button type="submit" class="btn mr-1 mb-1" 
-                                    style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%); color: white; border: none;">Submit</button>
-                            </div>
-                        </form>
+                    </table>
+                    <div style="margin-top: 15px;">
+                        {{ $kerusakan->links() }}
                     </div>
                 </div>
             </div>
         </div>
+    <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">Filter Kategori Bangunan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('kerusakan.index') }}" method="GET" id="filterForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="kategori_bangunan_id">Kategori Bangunan</label>
+                            <select class="form-select" name="kategori_bangunan_id" id="kategori_bangunan_id">
+                                <option selected disabled value="">Pilih...</option>
+                                @foreach ($kategoribangunan as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ request()->input('kategori_bangunan_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="resetFilters()" data-dismiss="modal">Reset</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 @endsection
 <script>
     function resetFilters() {

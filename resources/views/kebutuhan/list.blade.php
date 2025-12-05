@@ -2,209 +2,273 @@
 
 @section('styles')
 <style>
-    * {
-        font-family: 'Times New Roman', Times, serif;
+    :root {
+        --orange-primary: #F28705;
+        --orange-gradient: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
     }
-    
+
+    .page-container {
+        padding: 2rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-header h2 {
+        color: var(--orange-primary);
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.75rem;
+    }
+
+    .page-header p {
+        color: #6c757d;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
     .main-card {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         overflow: hidden;
+        margin-bottom: 1.5rem;
     }
-    
-    .orange-header {
-        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+
+    .card-header-gradient {
+        background: var(--orange-gradient);
+        padding: 1.5rem;
+    }
+
+    .card-header-gradient h4 {
         color: white;
-        padding: 20px;
-        margin: -1px -1px 20px -1px;
-        border-radius: 15px 15px 0 0;
-    }
-    
-    .orange-header h3 {
         margin: 0;
         font-weight: 600;
-        font-size: 1.8rem;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        font-size: 1.25rem;
     }
-    
-    .orange-header p {
-        margin: 5px 0 0 0;
-        opacity: 0.9;
+
+    .card-body {
+        padding: 1.5rem;
     }
-    
-    .detail-card {
+
+    .summary-card {
         background: white;
         border-radius: 12px;
-        border: 3px solid #F28705;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        text-align: center;
+        height: 100%;
     }
-    
-    .card-header {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-        border-bottom: none;
-        border-radius: 12px 12px 0 0;
-    }
-    
-    .card-header h4 {
-        margin: 0;
+
+    .summary-card h5 {
+        color: #495057;
         font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1rem;
     }
-    
-    .card-primary .card-header {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+
+    .summary-card .total {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--orange-primary);
     }
-    
-    .card-danger .card-header {
-        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+
+    .table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
     }
-    
-    .card-warning .card-header {
-        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+        border-collapse: collapse;
     }
-    
-    .card-success .card-header {
-        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+
+    .table thead th {
+        background: #f8f9fa;
+        color: #495057;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 1rem;
+        border-bottom: 2px solid #dee2e6;
     }
-    
-    .card-info .card-header {
-        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-    }
-    
-    .card-secondary .card-header {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-    }
-    
-    .card-light .card-header {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #dee2e6;
         color: #495057;
     }
-    
-    .text-end.fw-bold {
-        background-color: #fff8f0;
-        color: #F28705;
-        padding: 8px;
-        border-radius: 5px;
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+        transition: background-color 0.2s ease;
     }
-    
-    .numeric-total {
-        font-size: 1.2em;
-        color: #28a745;
-        font-weight: 700;
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
     }
-    
-    .highlight-table {
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border-radius: 12px;
-        border: 2px solid #e9ecef;
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .text-end {
+        text-align: right;
+    }
+
+    .fw-bold {
+        font-weight: 600;
+    }
+
+    .accordion-item {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 1rem;
         overflow: hidden;
     }
-    
-    .progress-bar-container {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 6px;
-        margin-bottom: 10px;
-    }
-    
-    .progress-label {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-        font-weight: 500;
-        color: #495057;
-    }
-    
-    .progress-bar {
-        height: 25px;
-        border-radius: 8px;
-        transition: width 0.8s ease;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-    
-    .table thead th {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-        border: none;
-        padding: 15px 12px;
-        font-weight: 600;
-        text-align: center;
-    }
-    
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-    
-    .table tbody tr:hover {
-        background-color: #fff8f0;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.1);
-    }
-    
+
     .accordion-button {
-        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+        background: var(--orange-gradient);
         color: white;
         border: none;
         font-weight: 600;
+        padding: 1rem 1.5rem;
     }
-    
+
     .accordion-button:not(.collapsed) {
-        background: linear-gradient(135deg, #e07600 0%, #f57c00 100%);
+        background: linear-gradient(135deg, #d97604 0%, #e68900 100%);
         color: white;
     }
-    
+
     .accordion-button:focus {
-        border-color: #F28705;
         box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.25);
+        border: none;
     }
-    
+
+    .accordion-button::after {
+        filter: brightness(0) invert(1);
+    }
+
+    .accordion-body {
+        padding: 1.5rem;
+    }
+
+    .accordion-body h5 {
+        color: #495057;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
     .list-group-item {
-        border: 1px solid #e9ecef;
-        transition: all 0.3s ease;
+        border: 1px solid #dee2e6;
+        padding: 0.75rem 1rem;
+        transition: all 0.2s ease;
     }
-    
+
     .list-group-item:hover {
-        background-color: #fff8f0;
-        border-color: #F28705;
+        background: rgba(242, 135, 5, 0.08);
     }
-    
+
     .badge {
-        border-radius: 8px;
+        background: #17a2b8;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
         font-weight: 500;
-        padding: 6px 12px;
     }
-    
-    .fw-bold {
-        font-weight: 700 !important;
+
+    .alert-info {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+        border: none;
+        border-left: 4px solid #2196F3;
+        color: #004085;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
     }
-    
-    .text-primary {
-        color: #F28705 !important;
+
+    .inner-card {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+
+    .inner-card-header {
+        background: #f8f9fa;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .inner-card-header h5,
+    .inner-card-header h6 {
+        margin: 0;
+        color: #495057;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .inner-card-body {
+        padding: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 1rem;
+        }
+
+        .page-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .card-header-gradient h4 {
+            font-size: 1.1rem;
+        }
+
+        .summary-card .total {
+            font-size: 1.5rem;
+        }
+
+        .table thead th,
+        .table tbody td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .accordion-button {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
     }
 </style>
 @endsection
 
 @section('content')
-<div class="container-fluid">
-<div class="main-card">
-    <div class="orange-header">
-        <h3>Ringkasan Tabel Berdasarkan Form</h3>
-        <p class="text-subtitle">Daftar tabel kerusakan dan kerugian pada setiap form</p>
+<div class="page-container">
+    <div class="page-header">
+        <h2>
+            <i data-feather="bar-chart-2" style="width: 28px; height: 28px; margin-right: 8px;"></i>
+            Ringkasan Tabel Berdasarkan Form
+        </h2>
+        <p>Daftar tabel kerusakan dan kerugian pada setiap form</p>
     </div>
 
-    <div style="padding: 20px;">
-        <div class="detail-card mb-4">
-            <div class="card-header">
-                <h4 class="card-title">Rekap Total Nilai Kerusakan & Kerugian</h4>
-            </div>
+    <!-- Summary Card -->
+    <div class="main-card mb-4">
+        <div class="card-header-gradient">
+            <h4>
+                <i data-feather="pie-chart" style="width: 20px; height: 20px; margin-right: 8px;"></i>
+                Rekap Total Nilai Kerusakan & Kerugian
+            </h4>
+        </div>
         <div class="card-body">
             <div class="row">
                 @php
@@ -218,8 +282,8 @@
                         
                         // Determine which form this table belongs to
                         $formKey = null;
-                        foreach ($tables as $key =>  $form) {
-                            foreach ( $form['tables'] as $tableInfo) {
+                        foreach ($tables as $key => $form) {
+                            foreach ($form['tables'] as $tableInfo) {
                                 if ($tableInfo['name'] === $tableName) {
                                     $formKey = $key;
                                     break 2;
@@ -237,116 +301,50 @@
                 }
                 @endphp
                 
-                <div class="col-md-6">
-                    <div class="card highlight-table">
-                        <div class="card-header bg-danger text-white">
-                            <h5 class="mb-0">Total Kerusakan & Kerugian</h5>
-                        </div>
-                        <div class="card-body">
-                            <h2 class="numeric-total">Rp {{ number_format($grandTotal, 0, ',', '.') }}</h2>
-                        </div>
+                <div class="col-md-6 mb-3">
+                    <div class="summary-card">
+                        <h5>
+                            <i data-feather="dollar-sign" style="width: 18px; height: 18px; margin-right: 6px;"></i>
+                            Total Kerusakan & Kerugian
+                        </h5>
+                        <div class="total">Rp {{ number_format($grandTotal, 0, ',', '.') }}</div>
                     </div>
                 </div>
                 
-                <div class="col-md-6">
-                    <div class="card highlight-table">
-                        <div class="card-header bg-info text-white">
-                            <h5 class="mb-0">Distribusi per Form</h5>
-                        </div>
-                        <div class="card-body p-0">
+                <div class="col-md-6 mb-3">
+                    <div class="summary-card">
+                        <h5>
+                            <i data-feather="trending-up" style="width: 18px; height: 18px; margin-right: 6px;"></i>
+                            Distribusi per Form
+                        </h5>
+                        <div class="table-container">
                             <table class="table table-striped mb-0">
-                                @foreach($totalByForm as $formKey => $total)
-                                    <tr>
-                                        <td>{{ $tables[$formKey]['name'] }}</td>
-                                        <td class="text-end fw-bold">Rp {{ number_format($total, 0, ',', '.') }}</td>
-                                    </tr>
-                                @endforeach
+                                <tbody>
+                                    @foreach($totalByForm as $formKey => $total)
+                                        <tr>
+                                            <td>{{ $tables[$formKey]['name'] }}</td>
+                                            <td class="text-end fw-bold">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
-                        </div>                </div>
-            </div>
-            
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="card highlight-table">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="mb-0">Visualisasi Distribusi Nilai</h5>
-                        </div>
-                        <div class="card-body">
-                            <h6>Distribusi Berdasarkan Form</h6>
-                            @foreach($totalByForm as $formKey => $total)
-                                @php 
-                                    $percentage = $grandTotal > 0 ? ($total / $grandTotal * 100) : 0;
-                                    
-                                    // Generate a color based on the form key
-                                    $colors = ['primary', 'success', 'danger', 'warning', 'info'];
-                                    $colorIndex = array_search($formKey, array_keys($totalByForm)) % count($colors);
-                                    $color = $colors[$colorIndex];
-                                @endphp
-                                <div class="progress-label">
-                                    <span>{{ $tables[$formKey]['name'] }}</span>
-                                    <span>{{ number_format($percentage, 1) }}% (Rp {{ number_format($total, 0, ',', '.') }})</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar bg-{{ $color }}" role="progressbar" 
-                                         style="width: {{ $percentage }}%" 
-                                         aria-valuenow="{{ $percentage }}" 
-                                         aria-valuemin="0" 
-                                         aria-valuemax="100"></div>
-                                </div>
-                            @endforeach
-                            
-                            <h6 class="mt-4">Distribusi Berdasarkan Tabel</h6>
-                            @php
-                                $tablePercentages = [];
-                                foreach ($tableTotals as $tableName => $columnTotals) {
-                                    $tableTotal = array_sum($columnTotals);
-                                    if ($tableTotal > 0) {
-                                        $tablePercentages[$tableName] = [
-                                            'total' => $tableTotal,
-                                            'percentage' => $grandTotal > 0 ? ($tableTotal / $grandTotal * 100) : 0
-                                        ];
-                                    }
-                                }
-                                
-                                // Sort by total descending
-                                uasort($tablePercentages, function($a, $b) {
-                                    return $b['total'] <=> $a['total'];
-                                });
-                            @endphp
-                            
-                            @foreach($tablePercentages as $tableName => $data)
-                                @php 
-                                    // Generate a color
-                                    $colors = ['primary', 'success', 'danger', 'warning', 'info', 'secondary', 'dark'];
-                                    $colorIndex = array_search($tableName, array_keys($tablePercentages)) % count($colors);
-                                    $color = $colors[$colorIndex];
-                                @endphp
-                                <div class="progress-label">
-                                    <span>{{ $tableName }}</span>
-                                    <span>{{ number_format($data['percentage'], 1) }}% (Rp {{ number_format($data['total'], 0, ',', '.') }})</span>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar bg-{{ $color }}" role="progressbar" 
-                                         style="width: {{ $data['percentage'] }}%" 
-                                         aria-valuenow="{{ $data['percentage'] }}" 
-                                         aria-valuemin="0" 
-                                         aria-valuemax="100"></div>
-                                </div>
-                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
     
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Ringkasan Tabel Berdasarkan Form</h4>
+    <!-- Form Tables Summary -->
+    <div class="main-card">
+        <div class="card-header-gradient">
+            <h4>
+                <i data-feather="grid" style="width: 20px; height: 20px; margin-right: 8px;"></i>
+                Ringkasan Tabel Berdasarkan Form
+            </h4>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-container">
                 <table class="table table-bordered mb-0">
                     <thead>
                         <tr>
@@ -357,25 +355,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($tables as $formKey =>  $form)
+                        @foreach($tables as $formKey => $form)
                             @php
                                 $isFirstRow = true;
-                                $rowCount = count( $form['tables']);
+                                $rowCount = count($form['tables']);
                                 $rowCount = $rowCount > 0 ? $rowCount : 1;
                             @endphp
                             
-                            @if(empty( $form['tables']))
+                            @if(empty($form['tables']))
                                 <tr>
-                                    <td>{{  $form['name'] }}</td>
+                                    <td>{{ $form['name'] }}</td>
                                     <td>-</td>
-                                    <td>{{  $form['description'] }}</td>
+                                    <td>{{ $form['description'] }}</td>
                                     <td>-</td>
                                 </tr>
                             @else
-                                @foreach( $form['tables'] as $index => $table)
+                                @foreach($form['tables'] as $index => $table)
                                     <tr>
                                         @if($isFirstRow)
-                                            <td rowspan="{{ $rowCount }}">{{  $form['name'] }}</td>
+                                            <td rowspan="{{ $rowCount }}">{{ $form['name'] }}</td>
                                             @php $isFirstRow = false; @endphp
                                         @endif
                                         <td>{{ $table['name'] }}</td>
@@ -390,9 +388,14 @@
             </div>
         </div>
     </div>
-      <div class="card mt-4">
-        <div class="card-header">
-            <h4 class="card-title">Kolom-kolom Terkait Kerusakan dan Kerugian</h4>
+
+    <!-- Table Columns Accordion -->
+    <div class="main-card mt-4">
+        <div class="card-header-gradient">
+            <h4>
+                <i data-feather="columns" style="width: 20px; height: 20px; margin-right: 8px;"></i>
+                Kolom-kolom Terkait Kerusakan dan Kerugian
+            </h4>
         </div>
         <div class="card-body">
             <div class="accordion" id="tableColumnsAccordion">
@@ -402,13 +405,18 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapse{{ str_replace('_', '', $tableName) }}" aria-expanded="false"
                                 aria-controls="collapse{{ str_replace('_', '', $tableName) }}">
+                                <i data-feather="database" style="width: 18px; height: 18px; margin-right: 8px;"></i>
                                 Tabel: {{ $tableName }}
                             </button>
                         </h2>
                         <div id="collapse{{ str_replace('_', '', $tableName) }}" class="accordion-collapse collapse"
                             aria-labelledby="heading{{ str_replace('_', '', $tableName) }}"
                             data-bs-parent="#tableColumnsAccordion">
-                            <div class="accordion-body">                                <h5>Kolom Terkait</h5>
+                            <div class="accordion-body">
+                                <h5>
+                                    <i data-feather="list" style="width: 16px; height: 16px; margin-right: 6px;"></i>
+                                    Kolom Terkait
+                                </h5>
                                 <ul class="list-group mb-4">
                                     @foreach($tableColumns as $column)
                                         <li class="list-group-item">
@@ -421,12 +429,15 @@
                                 </ul>
                                 
                                 @if(isset($tableTotals[$tableName]) && count($tableTotals[$tableName]) > 0)
-                                <div class="card mb-4">
-                                    <div class="card-header bg-success text-white">
-                                        <h5 class="mb-0">Total Nilai Kerusakan/Kerugian</h5>
+                                <div class="inner-card mb-4">
+                                    <div class="inner-card-header">
+                                        <h5>
+                                            <i data-feather="dollar-sign" style="width: 16px; height: 16px; margin-right: 6px;"></i>
+                                            Total Nilai Kerusakan/Kerugian
+                                        </h5>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
+                                    <div class="inner-card-body">
+                                        <div class="table-container">
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr>
@@ -449,8 +460,11 @@
                                 @endif
                                 
                                 @if(isset($sampleData[$tableName]) && $sampleData[$tableName]->count() > 0)
-                                    <h5>Data Sampel (5 entri teratas)</h5>
-                                    <div class="table-responsive">
+                                    <h5>
+                                        <i data-feather="file-text" style="width: 16px; height: 16px; margin-right: 6px;"></i>
+                                        Data Sampel (5 entri teratas)
+                                    </h5>
+                                    <div class="table-container">
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                                 <tr>
@@ -461,7 +475,8 @@
                                             </thead>
                                             <tbody>
                                                 @foreach($sampleData[$tableName] as $item)
-                                                    <tr>                                                        @foreach($tableColumns as $column)
+                                                    <tr>
+                                                        @foreach($tableColumns as $column)
                                                             <td @if(isset($numericColumns[$tableName]) && in_array($column, $numericColumns[$tableName])) class="text-end fw-bold" @endif>
                                                                 @if(property_exists($item, $column) || isset($item->$column))
                                                                     @if(isset($numericColumns[$tableName]) && in_array($column, $numericColumns[$tableName]) && is_numeric($item->$column))
@@ -481,7 +496,10 @@
                                     </div>
                                     
                                     @if(isset($relationshipData[$tableName]) && count($relationshipData[$tableName]) > 0)
-                                        <h5 class="mt-4">Data Relasi</h5>
+                                        <h5 class="mt-4">
+                                            <i data-feather="link" style="width: 16px; height: 16px; margin-right: 6px;"></i>
+                                            Data Relasi
+                                        </h5>
                                         <div class="accordion mt-2" id="relationAccordion{{ str_replace('_', '', $tableName) }}">
                                             @foreach($sampleData[$tableName] as $index => $item)
                                                 <div class="accordion-item">
@@ -498,17 +516,18 @@
                                                         <div class="accordion-body">
                                                             @foreach($relationshipData[$tableName] as $relation)
                                                                 @if(isset($item->$relation) && $item->$relation)
-                                                                    <div class="card mb-3">
-                                                                        <div class="card-header bg-light">
-                                                                            <h6 class="mb-0">Relasi: {{ ucfirst($relation) }}</h6>
+                                                                    <div class="inner-card mb-3">
+                                                                        <div class="inner-card-header">
+                                                                            <h6>Relasi: {{ ucfirst($relation) }}</h6>
                                                                         </div>
-                                                                        <div class="card-body">
+                                                                        <div class="inner-card-body">
                                                                             @if(is_object($item->$relation))
                                                                                 @if(method_exists($item->$relation, 'toArray'))
                                                                                     @php $relationData = $item->$relation->toArray(); @endphp
                                                                                     @if(is_array($relationData))
                                                                                         <ul class="list-group">
-                                                                                            @foreach($relationData as $key => $value)                                                                                            @if(!is_array($value) && !is_object($value))
+                                                                                            @foreach($relationData as $key => $value)
+                                                                                                @if(!is_array($value) && !is_object($value))
                                                                                                     <li class="list-group-item">
                                                                                                         <strong>{{ $key }}:</strong> 
                                                                                                         @if(is_numeric($value) && 
@@ -539,7 +558,8 @@
                                                                                                 @php $relItemData = $relItem->toArray(); @endphp
                                                                                                 <li class="list-group-item">
                                                                                                     <ul>
-                                                                                                        @foreach($relItemData as $relKey => $relValue)                                                                                                            @if(!is_array($relValue) && !is_object($relValue))
+                                                                                                        @foreach($relItemData as $relKey => $relValue)
+                                                                                                            @if(!is_array($relValue) && !is_object($relValue))
                                                                                                                 <li><strong>{{ $relKey }}:</strong> 
                                                                                                                 @if(is_numeric($relValue) && 
                                                                                                                     (strpos(strtolower($relKey), 'biaya') !== false || 
@@ -580,7 +600,8 @@
                                         </div>
                                     @endif
                                 @else
-                                    <div class="alert alert-info">
+                                    <div class="alert-info">
+                                        <i data-feather="alert-circle" style="width: 18px; height: 18px; margin-right: 6px;"></i>
                                         Tidak ada data sampel untuk ditampilkan
                                     </div>
                                 @endif
@@ -589,14 +610,19 @@
                     </div>
                 @endforeach
             </div>
-        </div>    </div>
+        </div>
+    </div>
 
-    <div class="card mt-4">
-        <div class="card-header">
-            <h4 class="card-title">Hubungan Antar Tabel</h4>
+    <!-- Relationships Table -->
+    <div class="main-card mt-4">
+        <div class="card-header-gradient">
+            <h4>
+                <i data-feather="share-2" style="width: 20px; height: 20px; margin-right: 8px;"></i>
+                Hubungan Antar Tabel
+            </h4>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-container">
                 <table class="table table-bordered mb-0">
                     <thead>
                         <tr>
@@ -611,50 +637,55 @@
                             <td>kerusakan</td>
                             <td>detail</td>
                             <td>detail_kerusakan</td>
-                            <td>hasMany</td>
+                            <td><span class="badge bg-success">hasMany</span></td>
                         </tr>
                         <tr>
                             <td>kerusakan</td>
                             <td>bencana</td>
                             <td>bencanas</td>
-                            <td>belongsTo</td>
+                            <td><span class="badge bg-primary">belongsTo</span></td>
                         </tr>
                         <tr>
                             <td>kerusakan</td>
                             <td>kategori_bangunan</td>
                             <td>kategori_bangunan</td>
-                            <td>belongsTo</td>
+                            <td><span class="badge bg-primary">belongsTo</span></td>
                         </tr>
                         <tr>
                             <td>detail_kerusakan</td>
                             <td>satuan</td>
                             <td>satuan</td>
-                            <td>belongsTo</td>
+                            <td><span class="badge bg-primary">belongsTo</span></td>
                         </tr>
                         <tr>
                             <td>detail_kerusakan</td>
                             <td>hsd</td>
                             <td>hsd</td>
-                            <td>belongsTo</td>
+                            <td><span class="badge bg-primary">belongsTo</span></td>
                         </tr>
                         <tr>
                             <td>kerugian</td>
                             <td>bencana</td>
                             <td>bencanas</td>
-                            <td>belongsTo</td>
+                            <td><span class="badge bg-primary">belongsTo</span></td>
                         </tr>
                         <tr>
                             <td>pendataan</td>
                             <td>bencana</td>
                             <td>bencanas</td>
-                            <td>belongsTo</td>
+                            <td><span class="badge bg-primary">belongsTo</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    </div>
 </div>
-</div>
+
+<script>
+    // Initialize Feather icons
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+</script>
 @endsection

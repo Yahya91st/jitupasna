@@ -1,3 +1,29 @@
+<style>
+nav.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-toggler-icon,
+.sidebar-toggler .navbar-toggler-icon {
+    display: inline-block;
+}
+
+nav.navbar img,
+nav.navbar .avatar {
+    display: block;
+    vertical-align: middle;
+}
+
+body.has-fixed-navbar .main-content {
+    padding-top: var(--navbar-height, 56px);
+}
+</style>
 <nav class="navbar navbar-header navbar-expand navbar-light">
     <a class="sidebar-toggler" href="#"><span class="navbar-toggler-icon"></span></a>
     <button class="btn navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -31,15 +57,14 @@
             </li>
             <li class="dropdown nav-icon mr-2">
                 <div class="avatar mr-1">
-                    <img src="{{ asset('frontend/dist/assets/images/avatar/unslogo.png') }}" alt=""
-                        srcset="">
+                    <img src="{{ asset('frontend/dist/assets/images/avatar/unslogo.png') }}" alt=""srcset="">
 
                 </div>
                 <div class="d-none d-md-block d-lg-inline-block" style="color: #F28705; font-weight: 600;">PENGKAJIAN KEBUTUHAN
                     PASCABENCANA</div>
             </li>
             <li class="dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user" style="background: transparent !important;">
                     {{-- <div class="avatar mr-1">
                         <img src="{{ asset('frontend/dist/assets/images/avatar/avatar-s-1.png') }}" alt=""
                             srcset="">

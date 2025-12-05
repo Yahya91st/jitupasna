@@ -2,210 +2,218 @@
 
 @section('content')
 <style>
-    * {
-        font-family: 'Times New Roman', Times, serif;
+    .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
     }
-    
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h2 {
+        color: #F28705;
+        font-weight: 600;
+        margin: 0;
+    }
+
     .main-card {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        border: none;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         overflow: hidden;
     }
-    
-    .orange-header {
-        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
-        color: white;
-        padding: 20px;
-        margin: -1px -1px 20px -1px;
-        border-radius: 15px 15px 0 0;
+
+    .card-header {
+        background: #f9f9f9;
+        padding: 15px 20px;
+        border-bottom: 1px solid #ddd;
     }
-    
-    .orange-header h4 {
+
+    .card-header h4 {
         margin: 0;
+        color: #333;
         font-weight: 600;
-        font-size: 1.5rem;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-    
-    .table-container {
-        padding: 0 20px 20px 20px;
+
+    .table-responsive {
+        padding: 20px;
     }
-    
-    .table thead th {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-        border: none;
-        padding: 15px 12px;
-        font-weight: 600;
-        text-align: center;
-        font-size: 0.95rem;
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
     }
-    
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-    
-    .table tbody tr:hover {
-        background-color: #fff8f0;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(242, 135, 5, 0.15);
-    }
-    
+
+    .table th,
     .table td {
-        padding: 15px 12px;
-        vertical-align: middle;
-        border-bottom: 1px solid #e9ecef;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
     }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
-        border: none;
+
+    .table th {
+        background: #f9f9f9;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background: rgba(242, 135, 5, 0.08);
+    }
+
+    .btn {
+        display: inline-block;
         padding: 8px 16px;
-        border-radius: 8px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
         font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
     }
-    
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: #F28705;
+        color: white;
+    }
+
     .btn-primary:hover {
-        background: linear-gradient(135deg, #e07600 0%, #f57c00 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(242, 135, 5, 0.4);
+        background: #d97604;
+        color: white;
     }
-    
+
+    .dropdown-menu {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
     .dropdown-item {
         padding: 10px 15px;
+        color: #333;
         transition: all 0.3s ease;
     }
-    
+
     .dropdown-item:hover {
-        background-color: #fff8f0;
+        background: rgba(242, 135, 5, 0.08);
         color: #F28705;
     }
-    
+
     .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
         margin-top: 20px;
     }
-    
+
     .pagination .page-link {
         color: #F28705;
-        border: 1px solid #e9ecef;
-        padding: 10px 15px;
-        margin: 0 2px;
-        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-decoration: none;
         transition: all 0.3s ease;
     }
-    
+
     .pagination .page-link:hover {
-        background-color: #F28705;
+        background: #F28705;
         color: white;
         border-color: #F28705;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
     }
-    
+
     .pagination .page-item.active .page-link {
-        background-color: #F28705;
+        background: #F28705;
         border-color: #F28705;
         color: white;
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
     }
-    
-    .text-bold-500 {
-        font-weight: 600;
-        color: #495057;
-    }
-    
-    h6 {
-        color: #6c757d;
-        font-weight: 600;
-        margin: 0;
+
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 10px;
+        }
+
+        .table th,
+        .table td {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
     }
 </style>
 
-<div class="container-fluid">
-    <div class="row" id="table-striped">
-        <div class="col-12">
-            <div class="card main-card">
-                <div class="orange-header">
-                    <h4>Data Kerugian Akibat Bencana</h4>
-                </div>
-                <div class="table-container">
-                    <div class="table-responsive">
-                        <table class="table table-striped mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Bencana Ref</th>
-                                    <th>Ref</th>
-                                    <th>Sektor Terdampak</th>
-                                    <th>Jumlah Terdampak</th>
-                                    <th>Estimasi Nilai Ekonomi</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($kerugian as $item)
-                                    <tr>
-                                        <td class="text-bold-500">{{ $item->bencana->Ref }}</td>
-                                        <td class="text-bold-500">{{ $item->Ref }}</td>
-                                        <td>
-                                            @if ($item->tipe == 1)
-                                                <h6>Pariwisata</h6>
-                                            @elseif ($item->tipe == 2)
-                                                <h6>Pertanian</h6>
-                                            @elseif ($item->tipe == 3)
-                                                <h6>Transportasi</h6>
-                                            @endif
-                                        </td>
-                                        <td class="text-bold-500">{{ $item->kuantitas }} {{ $item->satuan }}</td>
-                                        <td>{{ 'Rp ' . number_format($item->BiayaKeseluruhan, 2, ',', '.') }}</td>
-                                        <td>
-                                            <div class="btn-group mb-1">
-                                                <div class="dropdown dropdown-color-icon">
-                                                    <button class="btn btn-primary dropdown-toggle" type="button"
-                                                        id="dropdownMenuButtonEmoji" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
-                                                        Aksi
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonEmoji">
-                                                        <a href="{{ route('kerugian.edit', $item->id) }}"
-                                                            class="dropdown-item">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem"
-                                                                height="1.5rem" viewBox="0 0 24 24">
-                                                                <g fill="none" stroke="#5A8DEE" stroke-linecap="round"
-                                                                    stroke-linejoin="round" stroke-width="2">
-                                                                    <path
-                                                                        d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1" />
-                                                                    <path
-                                                                        d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3" />
-                                                                </g>
-                                                            </svg>
-                                                            Update Data
-                                                        </a>
-                                                        {{-- <a href="{{ route('bencana.show', $item->id) }}"
-                                                            class="dropdown-item">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="2rem"
-                                                                height="2rem" viewBox="0 0 24 24">
-                                                                <path fill="#5A8DEE"
-                                                                    d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0" />
-                                                            </svg>
-                                                            Detail
-                                                        </a> --}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
-                            {{ $kerugian->links() }}
-                        </div>
-                    </div>
-                </div>
+<div class="page-container">
+    <div class="page-header">
+        <h2>Data Kerugian Akibat Bencana</h2>
+    </div>
+
+    <div class="main-card">
+        <div class="card-header">
+            <h4>Daftar Kerugian</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">Bencana Ref</th>
+                        <th style="width: 10%;">Ref</th>
+                        <th style="width: 18%;">Sektor Terdampak</th>
+                        <th style="width: 18%;">Jumlah Terdampak</th>
+                        <th style="width: 22%;">Estimasi Nilai Ekonomi</th>
+                        <th style="width: 20%;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($kerugian as $item)
+                        <tr>
+                            <td style="text-align: center; font-weight: 600;">{{ $item->bencana->Ref }}</td>
+                            <td style="text-align: center; font-weight: 600;">{{ $item->Ref }}</td>
+                            <td>
+                                @if ($item->tipe == 1)
+                                    Pariwisata
+                                @elseif ($item->tipe == 2)
+                                    Pertanian
+                                @elseif ($item->tipe == 3)
+                                    Transportasi
+                                @endif
+                            </td>
+                            <td style="text-align: center; font-weight: 600;">{{ $item->kuantitas }} {{ $item->satuan }}</td>
+                            <td style="text-align: right;">{{ 'Rp ' . number_format($item->BiayaKeseluruhan, 2, ',', '.') }}</td>
+                            <td style="text-align: center;">
+                                <div class="btn-group">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenu{{ $item->id }}" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            Aksi
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu{{ $item->id }}">
+                                            <a href="{{ route('kerugian.edit', $item->id) }}" class="dropdown-item">
+                                                Edit
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="bd-example">
+                {{ $kerugian->links() }}
             </div>
         </div>
     </div>

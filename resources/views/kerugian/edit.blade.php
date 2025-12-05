@@ -1,14 +1,24 @@
 @extends('layouts.main')
+
+@section('content')
 <style>
-    /* Container & Layout */
-    .edit-container {
-        max-width: 1200px;
-        font-family: 'Times New Roman', serif;
+    .page-container {
+        max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
     }
 
-    /* Card Styling */
+    .page-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h2 {
+        color: #F28705;
+        font-weight: 600;
+        margin: 0;
+    }
+
     .main-card {
         background: white;
         border-radius: 6px;
@@ -17,71 +27,91 @@
         overflow: hidden;
     }
 
-    /* Header Styling */
     .card-header {
-        background: #F28705;
-        color: white;
+        background: #f9f9f9;
         padding: 15px 20px;
-        border-bottom: none;
+        border-bottom: 1px solid #ddd;
     }
 
     .card-header h4 {
         margin: 0;
+        color: #333;
         font-weight: 600;
-        color: white;
+        font-size: 18px;
     }
 
-    /* Table Styling */
+    .card-body {
+        padding: 20px;
+    }
+
     .table {
-        border: 1px solid #ddd;
-        margin-bottom: 1.5rem;
-        font-size: 14px;
-        border-radius: 4px;
-        overflow: hidden;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
     }
 
-    .table td, .table th {
+    .table th,
+    .table td {
         padding: 12px 15px;
         border: 1px solid #ddd;
-        vertical-align: middle;
+        text-align: left;
     }
 
-    .table thead th {
+    .table th {
         background: #f9f9f9;
-        color: #333;
         font-weight: 600;
-        text-align: center;
-        border-bottom: 2px solid #ddd;
+        color: #333;
     }
 
-    /* Form Styling */
+    .table tbody tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background: rgba(242, 135, 5, 0.08);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
     .form-group label {
+        display: block;
         font-weight: 600;
         color: #333;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
     }
 
     .form-control {
+        width: 100%;
+        padding: 10px 12px;
         border: 1px solid #ddd;
         border-radius: 4px;
-        padding: 8px 12px;
         font-size: 14px;
         transition: border-color 0.3s ease;
     }
 
     .form-control:focus {
+        outline: none;
         border-color: #F28705;
         box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.25);
     }
 
-    /* Button Styling */
+    .form-control:disabled {
+        background: #f9f9f9;
+        cursor: not-allowed;
+    }
+
     .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border: none;
         border-radius: 4px;
         font-size: 14px;
         font-weight: 500;
-        transition: all 0.3s ease;
+        cursor: pointer;
         text-decoration: none;
-        padding: 10px 20px;
+        transition: all 0.3s ease;
     }
 
     .btn:hover {
@@ -89,177 +119,133 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
-    .btn-orange {
+    .btn-primary {
         background: #F28705;
         color: white;
-        border: none;
     }
 
-    .btn-orange:hover {
-        background: #e07404;
+    .btn-primary:hover {
+        background: #d97604;
         color: white;
     }
 
-    .btn-secondary {
-        background: #6c757d;
-        color: white;
-        border: none;
-    }
-
-    .btn-secondary:hover {
-        background: #5a6268;
-        color: white;
-    }
-
-    /* Detail Card Styling */
     .detail-card {
-        border: 3px solid #F28705;
+        border: 2px solid #ddd;
         border-radius: 6px;
+        padding: 20px;
+        background: #fafafa;
         margin-top: 10px;
     }
 
-    /* Location List Styling */
-    .location-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .location-list li {
-        padding: 2px 0;
-        color: #555;
-        font-size: 14px;
-    }
-
-    .row {
-        margin-bottom: 20px;
-    }
-
-    /* Responsive adjustments */
     @media (max-width: 768px) {
-        .edit-container {
+        .page-container {
             padding: 10px;
         }
-        
-        .main-card {
-            margin-bottom: 15px;
+
+        .table th,
+        .table td {
+            padding: 8px 10px;
+            font-size: 13px;
         }
     }
 </style>
-@section('content')
-<div class="edit-container">
-    <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-12">
-                <div class="main-card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="card-title mb-0">Informasi Bencana</h4>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Bencana ID</th>
-                                    <th>Bencana</th>
-                                    <th>Lokasi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ $bencana->id }}</td>
-                                    <td>{{ $bencana->kategori_bencana->nama }}</td>
-                                    <td>
-                                        <ul class="location-list">
-                                            @foreach ($bencana->desa as $desa)
-                                                <li>{{ $desa->nama }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="main-card">
-                    <form class="form" id="kerusakan-form" action="{{ route('kerugian.update', ['id' => $kerugian->id]) }}"
-                        method="POST">
-                        @method('PATCH')
-                        @csrf
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title mb-0">Update Data Kerugian</h4>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="card detail-card">
-                                    <div class="card-content">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-3 col-12">
-                                                    <div class="form-group">
-                                                        <label for="tipe-0">Sektor yang Terkena Dampak</label>
-                                                        <input type="text"class="form-control" value="Pertanian"
-                                                            disabled>
-                                                        <input type="hidden" id="tipe-0" class="form-control"
-                                                            placeholder="" name="tipe" value="2">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-12">
-                                                    <div class="form-group">
-                                                        <label for="nama-0">Nilai Ekonomi Rata-Rata</label>
-                                                        <input type="text" id="nilai-ekonomi" class="form-control"
-                                                            placeholder="" name="nilai_ekonomi"
-                                                            value="{{ number_format($kerugian->nilai_ekonomi, 0, ',', '.') }}">
-                                                        <input type="hidden" id="nilai-ekonomi-hidden"
-                                                            name="nilai_ekonomi_hidden"
-                                                            value="{{ $kerugian->nilai_ekonomi }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-12">
-                                                    <div class="form-group">
-                                                        <label for="satuan_id-0">Satuan</label>
-                                                        <select class="choices form-select" name="satuan_id"
-                                                            id="satuan_id-0">
-                                                            <option selected disabled value="">
-                                                                {{ __('Pilih...') }}</option>
-                                                            @foreach ($satuan as $item)
-                                                                <option value="{{ $item->id }}"
-                                                                    {{ (old('satuan_id') ?? $kerugian->satuan_id) == $item->id ? 'selected' : '' }}>
-                                                                    {{ $item->nama }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-12">
-                                                    <div class="form-group">
-                                                        <label for="kuantitas-0">Jumlah Terkena Dampak</label>
-                                                        <input type="number" id="kuantitas-0" class="form-control"
-                                                            placeholder="" name="kuantitas"
-                                                            value="{{ $kerugian->kuantitas }}" step="0.01"
-                                                            min="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 col-12">
-                                                    <div class="form-group">
-                                                        <label for="exampleFormControlTextarea1">Deskripsi</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi">{{ $kerugian->deskripsi }}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-orange mr-1 mb-1">Submit</button>
-                                </div>
+
+<div class="page-container">
+    <div class="page-header">
+        <h2>Edit Data Kerugian</h2>
+    </div>
+
+    <div class="main-card">
+        <div class="card-header">
+            <h4>Informasi Bencana</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">ID</th>
+                        <th style="width: 30%;">Bencana</th>
+                        <th style="width: 60%;">Lokasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ $bencana->id }}</td>
+                        <td>{{ $bencana->kategori_bencana->nama }}</td>
+                        <td>
+                            @foreach ($bencana->desa as $index => $desa)
+                                {{ $desa->nama }}{{ $index < count($bencana->desa) - 1 ? ', ' : '' }}
+                            @endforeach
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="main-card">
+        <div class="card-header">
+            <h4>Form Edit Kerugian</h4>
+        </div>
+        <div class="card-body">
+            <form class="form" action="{{ route('kerugian.update', ['id' => $kerugian->id]) }}" method="POST">
+                @method('PATCH')
+                @csrf
+                
+                <div class="detail-card">
+                    <div class="row">
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label for="tipe-0">Sektor yang Terkena Dampak</label>
+                                <input type="text" class="form-control" value="Pertanian" disabled>
+                                <input type="hidden" id="tipe-0" name="tipe" value="2">
                             </div>
                         </div>
-                    </form>
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label for="nilai-ekonomi">Nilai Ekonomi Rata-Rata</label>
+                                <input type="text" id="nilai-ekonomi" class="form-control" name="nilai_ekonomi"
+                                    value="{{ number_format($kerugian->nilai_ekonomi, 0, ',', '.') }}">
+                                <input type="hidden" id="nilai-ekonomi-hidden" name="nilai_ekonomi_hidden"
+                                    value="{{ $kerugian->nilai_ekonomi }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label for="satuan_id-0">Satuan</label>
+                                <select class="choices form-select" name="satuan_id" id="satuan_id-0">
+                                    <option selected disabled value="">{{ __('Pilih...') }}</option>
+                                    @foreach ($satuan as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ (old('satuan_id') ?? $kerugian->satuan_id) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label for="kuantitas-0">Jumlah Terkena Dampak</label>
+                                <input type="number" id="kuantitas-0" class="form-control" name="kuantitas"
+                                    value="{{ $kerugian->kuantitas }}" step="0.01" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <label for="deskripsi">Deskripsi</label>
+                                <textarea class="form-control" id="deskripsi" rows="3" name="deskripsi">{{ $kerugian->deskripsi }}</textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="col-12 d-flex justify-content-end" style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
-        </div>
-        </div>
-    </section>
+    </div>
 </div>
 @endsection
 @push('script')

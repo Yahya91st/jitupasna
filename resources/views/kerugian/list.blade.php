@@ -2,172 +2,158 @@
 
 @section('content')
 <style>
-    /* Container & Layout */
-    .list-container {
-        max-width: 1200px;
-        font-family: 'Times New Roman', serif;
-        margin: 0 auto;
-        padding: 20px;
+    :root {
+        --orange-primary: #F28705;
+        --orange-gradient: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
     }
 
-    /* Card Styling */
+    .page-container {
+        padding: 2rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-header h3 {
+        color: var(--orange-primary);
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.75rem;
+    }
+
+    .page-header p {
+        color: #6c757d;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
     .main-card {
         background: white;
-        border-radius: 6px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         overflow: hidden;
     }
 
-    /* Header Styling */
-    .card-header {
-        background: #F28705;
-        color: white;
-        padding: 15px 20px;
-        border-bottom: none;
+    .card-header-gradient {
+        background: var(--orange-gradient);
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .card-header h4 {
+    .card-header-gradient h4 {
+        color: white;
         margin: 0;
         font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    .btn-filter {
+        background: transparent;
+        border: 2px solid white;
         color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
     }
 
-    /* Page Title Styling */
-    .page-heading h3 {
-        color: #F28705;
-        font-weight: 600;
-        font-family: 'Times New Roman', serif;
-    }
-
-    /* Alert Styling */
-    .alert-info {
+    .btn-filter:hover {
         background: white;
-        border: 2px solid #6c757d;
-        color: #6c757d;
-        border-radius: 4px;
+        color: var(--orange-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .alert-info .alert-heading {
-        color: #6c757d;
-        font-weight: 600;
+    .card-body {
+        padding: 1.5rem;
     }
 
-    /* Table Styling */
-    .table {
-        border: 1px solid #ddd;
+    .alert-info {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+        border: none;
+        border-left: 4px solid #2196F3;
+        color: #004085;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
         margin-bottom: 1.5rem;
-        font-size: 14px;
-        border-radius: 4px;
-        overflow: hidden;
     }
 
-    .table td, .table th {
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        vertical-align: middle;
+    .alert-info h5 {
+        color: #004085;
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+    }
+
+    .alert-info p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+        border-collapse: collapse;
     }
 
     .table thead th {
-        background: #f9f9f9;
-        color: #333;
+        background: #f8f9fa;
+        color: #495057;
         font-weight: 600;
-        text-align: center;
-        border-bottom: 2px solid #ddd;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 1rem;
+        border-bottom: 2px solid #dee2e6;
+        white-space: nowrap;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #dee2e6;
+        color: #495057;
     }
 
     .table tbody tr:hover {
-        background-color: rgba(108, 117, 125, 0.05);
+        background-color: #f8f9fa;
         transition: background-color 0.2s ease;
     }
 
-    /* Button Styling */
-    .btn {
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-
-    .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn-orange {
-        background: #F28705;
-        color: white;
-        border: none;
-    }
-
-    .btn-orange:hover {
-        background: #e07404;
-        color: white;
-    }
-
-    .btn-primary {
-        background: #F28705;
-        border-color: #F28705;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background: #e07404;
-        border-color: #e07404;
-        color: white;
-    }
-
-    .btn-danger {
-        background: #007bff;
-        border-color: #007bff;
-        color: white;
-    }
-
-    .btn-danger:hover {
-        background: #0056b3;
-        border-color: #0056b3;
-        color: white;
-    }
-
-    /* Modal Styling */
-    .modal-header {
-        background: #6c757d;
-        color: white;
+    .table tbody tr:last-child td {
         border-bottom: none;
     }
 
-    .modal-header h4 {
-        color: white;
-        font-weight: 600;
+    .bencana-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .modal-header .close {
-        color: white;
-        opacity: 0.8;
+    .bencana-info {
+        display: flex;
+        align-items: center;
     }
 
-    /* Form Styling */
-    .form-group label {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 5px;
+    .bencana-name {
+        font-weight: 500;
+        color: #212529;
     }
 
-    .form-select {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 8px 12px;
-        font-size: 14px;
-        transition: border-color 0.3s ease;
-    }
-
-    .form-select:focus {
-        border-color: #6c757d;
-        box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
-    }
-
-    /* Location List Styling */
     .location-list {
         list-style: none;
         padding: 0;
@@ -175,131 +161,325 @@
     }
 
     .location-list li {
-        padding: 2px 0;
-        color: #555;
-        font-size: 14px;
+        padding: 0.25rem 0;
+        color: #495057;
+        position: relative;
+        padding-left: 1rem;
     }
 
-    /* Card Content */
-    .card-content {
-        padding: 20px;
+    .location-list li:before {
+        content: "•";
+        color: var(--orange-primary);
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+    }
+
+    .btn-view {
+        background: var(--orange-gradient);
+        color: white;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.875rem;
+        display: inline-block;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-view:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(242, 135, 5, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .pagination-container {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .pagination .page-link {
+        color: var(--orange-primary);
+        border: 1px solid #dee2e6;
+        margin: 0 2px;
+        border-radius: 6px;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #fff3e0;
+        border-color: var(--orange-primary);
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--orange-primary);
+        border-color: var(--orange-primary);
+        color: white;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background: var(--orange-gradient);
+        color: white;
+        border: none;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-header h4 {
+        color: white;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .modal-header .close {
+        color: white;
+        opacity: 0.8;
+        text-shadow: none;
+        padding: 0;
+        margin: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .modal-header .close:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+        padding: 1rem 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.9rem;
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 0.625rem 0.875rem;
+        font-size: 0.9rem;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background-color: white;
+    }
+
+    .form-select:focus {
+        border-color: var(--orange-primary);
+        box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.25);
+        outline: none;
+    }
+
+    .btn-orange {
+        background: var(--orange-gradient);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-orange:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(242, 135, 5, 0.3);
+        color: white;
+    }
+
+    .btn-light-secondary {
+        background: #f8f9fa;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+        padding: 0.5rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-light-secondary:hover {
+        background: #e9ecef;
+        border-color: #adb5bd;
+    }
+
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 1rem;
+        }
+
+        .card-header-gradient {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .card-header-gradient h4 {
+            font-size: 1.1rem;
+        }
+
+        .table thead th,
+        .table tbody td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .bencana-img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .btn-view {
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+        }
     }
 </style>
-<div class="list-container">
-    <div class="page-heading">
-        <div class="page-title mb-4">
-            <h3>Pilih Kejadian Bencana</h3>
-            <p class="text-subtitle text-muted">Silahkan pilih kejadian bencana untuk melihat data kerugian</p>
+
+<div class="page-container">
+    <div class="page-header">
+        <h3>Pilih Kejadian Bencana</h3>
+        <p>Silahkan pilih kejadian bencana untuk melihat data kerugian</p>
+    </div>
+
+    <div class="main-card">
+        <div class="card-header-gradient">
+            <h4>Daftar Kejadian Bencana</h4>
+            <button class="btn-filter" type="button" data-toggle="modal" data-target="#inlineForm">
+                <i data-feather="filter" style="width: 16px; height: 16px; margin-right: 6px;"></i>
+                Filter
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="alert-info">
+                <h5><i data-feather="info" style="width: 18px; height: 18px; margin-right: 6px;"></i>Informasi</h5>
+                <p>Pilih bencana untuk melihat semua data kerugian yang telah diinput pada formulir-formulir pendataan.</p>
+            </div>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ref</th>
+                            <th>Bencana</th>
+                            <th>Tanggal</th>
+                            <th>Lokasi (Kelurahan/Desa)</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($bencana as $item)
+                            <tr>
+                                <td>{{ $item->Ref }}</td>
+                                <td>
+                                    <div class="bencana-info">
+                                        <img class="bencana-img"
+                                            src="{{ asset('/frontend/dist/assets/images/avatar/' . $item['gambar']) }}"
+                                            alt="{{ $item->kategori_bencana->nama }}">
+                                        <div class="bencana-name">{{ $item->kategori_bencana->nama }}</div>
+                                    </div>
+                                </td>
+                                <td>{{ $item->tanggal }}</td>
+                                <td>
+                                    <ul class="location-list">
+                                        @foreach ($item->desa as $desa)
+                                            <li>{{ $desa->nama }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>
+                                    <a href="{{ route('kerugian.detail', $item->id) }}" class="btn-view">
+                                        <i data-feather="eye" style="width: 14px; height: 14px; margin-right: 4px;"></i>
+                                        Lihat Data
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-container">
+                {{ $bencana->links() }}
+            </div>
         </div>
     </div>
 
-<div class="row" id="table-striped">
-        <div class="col-12">
-            <div class="main-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Daftar Kejadian Bencana</h4>
-                    <div>
-                        <button class="btn btn-danger" type="button" data-toggle="modal"
-                            data-target="#inlineForm" style="font-weight: 500;">Filter</button>
-                    </div>
+    <!-- Filter Modal -->
+    <div class="modal fade" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">
+                        <i data-feather="filter" style="width: 20px; height: 20px; margin-right: 8px;"></i>
+                        Filter Bencana
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
-                <div class="card-content">
-                    <div class="alert alert-info">
-                        <h5 class="alert-heading"><i data-feather="info"></i> Informasi</h5>
-                        <p>Pilih bencana untuk melihat semua data kerugian yang telah diinput pada formulir-formulir pendataan.</p>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Ref</th>
-                                    <th>Bencana</th>
-                                    <th>Tanggal</th>
-                                    <th>Lokasi (Kelurahan/Desa)</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($bencana as $item)
-                                    <tr>
-                                        <td>{{ $item->Ref }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img class="rounded img-fluid avatar-40 me-3 bg-soft-primary"
-                                                    src="{{ asset('/frontend/dist/assets/images/avatar/' . $item['gambar']) }}"
-                                                    alt="profile" style="width: 100px; height: 100px; margin-right: 10px;">
-                                                <div class="d-flex flex-column">
-                                                    <h6 class="mb-0">{{ $item->kategori_bencana->nama }}</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-bold-500">{{ $item->tanggal }}</td>
-                                        <td>
-                                            <ul class="location-list">
-                                                @foreach ($item->desa as $desa)
-                                                    <li>{{ $desa->nama }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('kerugian.detail', $item->id) }}" class="btn btn-orange" style="font-weight: 500;">
-                                                <i class="fa fa-chart-bar mr-1"></i>
-                                                Lihat Data Kerugian
-                                            </a>
-                                        </td>
-                                    </tr>
+                <form action="{{ route('kerugian.list') }}" method="GET" id="filterForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="kategori_bencana_id">Kategori Bencana</label>
+                            <select class="form-select" name="kategori_bencana_id" id="kategori_bencana_id">
+                                <option selected disabled value="">Pilih Kategori...</option>
+                                @foreach ($kategoribencana as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ request()->input('kategori_bencana_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama }}
+                                    </option>
                                 @endforeach
-                            </tbody>
-                        </table>
-                        <div class="bd-example" style="margin-left: 10px; margin-top:10px; margin-right:10px">
-                            {{ $bencana->links() }}
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog"
-                    aria-labelledby="myModalLabel33" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel33">Filter Bencana</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <i data-feather="x"></i>
-                                </button>
-                            </div>                            
-                            <form action="{{ route('kerugian.list') }}" method="GET" id="filterForm">
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="first-name-column">Kategori Bencana</label>
-                                        <div class="form-group">
-                                            <select class="form-select" name="kategori_bencana_id" id="kategori_bencana_id">
-                                                <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                                @foreach ($kategoribencana as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ request()->input('kategori_bencana_id') == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light-secondary" onclick="resetFilters()"
-                                        data-dismiss="modal" style="font-weight: 500;">{{ __('Reset') }}</button>
-                                    <button type="submit" class="btn btn-orange mr-1 mb-1" style="font-weight: 500;">Submit</button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-light-secondary" onclick="resetFilters()" data-dismiss="modal">
+                            <i data-feather="x" style="width: 14px; height: 14px; margin-right: 4px;"></i>
+                            Reset
+                        </button>
+                        <button type="submit" class="btn-orange">
+                            <i data-feather="check" style="width: 14px; height: 14px; margin-right: 4px;"></i>
+                            Terapkan Filter
+                        </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-@endsection
+
 <script>
     function resetFilters() {
         document.getElementById('kategori_bencana_id').value = '';
         document.getElementById('filterForm').submit();
     }
+
+    // Initialize Feather icons
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
 </script>
+@endsection

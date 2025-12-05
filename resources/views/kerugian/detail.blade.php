@@ -3,10 +3,7 @@
 @section('content')
 <style>
     /* Container & Layout */
-    .detail-container {
-        max-width: 1200px;
-        font-family: 'Times New Roman', serif;
-        margin: 0 auto;
+    .page-container {
         padding: 20px;
     }
 
@@ -15,30 +12,75 @@
         background: white;
         border-radius: 6px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        overflow: hidden;
+        margin-bottom: 1.5rem;
     }
 
-    /* Header Styling */
+    /* Page Header */
+    .page-header {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 1.5rem;
+    }
+
+    .page-header h3 {
+        margin: 0 0 5px 0;
+        font-weight: bold;
+        color: #F28705;
+        font-size: 1.6rem;
+    }
+
+    .page-header p {
+        margin: 0;
+        color: #666;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        background: transparent;
+        margin: 10px 0 0 0;
+        padding: 0;
+    }
+
+    .breadcrumb-item a {
+        color: #F28705;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item a:hover {
+        text-decoration: underline;
+    }
+
+    .breadcrumb-item.active {
+        color: #666;
+    }
+
+    /* Card Header */
     .card-header {
-        background: #F28705;
-        color: white;
+        background: #f9f9f9;
+        color: #333;
+        font-weight: 600;
         padding: 15px 20px;
-        border-bottom: none;
+        border-bottom: 2px solid #ddd;
     }
 
     .card-header h4, .card-header h5 {
         margin: 0;
         font-weight: 600;
-        color: white;
+        font-size: 1.1rem;
+    }
+
+    .card-body {
+        padding: 20px;
     }
 
     /* Summary Cards */
     .summary-card {
         border-radius: 6px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         transition: transform 0.2s ease;
-        margin-bottom: 20px;
+        margin-bottom: 1rem;
     }
 
     .summary-card:hover {
@@ -49,14 +91,12 @@
     /* Table Styling */
     .table {
         border: 1px solid #ddd;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0;
         font-size: 14px;
-        border-radius: 4px;
-        overflow: hidden;
     }
 
     .table td, .table th {
-        padding: 8px 12px;
+        padding: 10px 12px;
         border: 1px solid #ddd;
         vertical-align: middle;
     }
@@ -69,18 +109,28 @@
         border-bottom: 2px solid #ddd;
     }
 
+    .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
     .table tbody tr:hover {
-        background-color: rgba(108, 117, 125, 0.05);
+        background-color: rgba(242, 135, 5, 0.08);
         transition: background-color 0.2s ease;
     }
 
     /* Button Styling */
     .btn {
+        padding: 8px 16px;
         border-radius: 4px;
         font-size: 14px;
         font-weight: 500;
+        border: none;
+        cursor: pointer;
         transition: all 0.3s ease;
         text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
     }
 
     .btn:hover {
@@ -88,65 +138,80 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
-    .btn-orange {
+    .btn-primary {
         background: #F28705;
         color: white;
-        border: none;
     }
 
-    .btn-orange:hover {
-        background: #e07404;
+    .btn-primary:hover {
+        background: #d97604;
         color: white;
     }
 
-    /* Form Group Styling */
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+        color: white;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-warning:hover {
+        background: #e0a800;
+    }
+
+    /* Form Group */
     .form-group label {
         font-weight: 600;
         color: #333;
         margin-bottom: 5px;
+        font-size: 14px;
     }
 
     .form-group p {
-        color: #555;
+        color: #666;
         margin-bottom: 0;
         padding: 8px 0;
+        font-size: 14px;
     }
 
-    /* Breadcrumb styling */
-    .breadcrumb-item a {
-        text-decoration: none;
-        transition: color 0.3s ease;
-        color: #6c757d;
-    }
-
-    .breadcrumb-item a:hover {
-        color: #5a6268 !important;
-    }
-
-    /* Responsive adjustments */
+    /* Responsive */
     @media (max-width: 768px) {
-        .detail-container {
+        .page-container {
             padding: 10px;
         }
         
-        .main-card {
-            margin-bottom: 15px;
+        .page-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .table {
+            font-size: 12px;
         }
         
-        .card-body {
-            padding: 15px !important;
+        .btn {
+            padding: 6px 12px;
+            font-size: 12px;
         }
     }
 </style>
-<div class="detail-container">
-    <div class="page-title">
+<div class="page-container">
+    <!-- Page Header -->
+    <div class="page-header">
         <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3 style="color: #6c757d; font-weight: 600;">Detail Data Kerugian</h3>
-                <p class="text-subtitle text-muted">Detail data kerugian akibat bencana</p>
+            <div class="col-12 col-md-8">
+                <h3>Detail Data Kerugian</h3>
+                <p>Detail data kerugian akibat bencana</p>
             </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-md-end">
+            <div class="col-12 col-md-4">
+                <nav aria-label="breadcrumb" class="float-start float-md-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('kerugian.list') }}">Kerugian</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Detail</li>
@@ -156,12 +221,12 @@
         </div>
     </div>
 
-    <section class="section">
-        <div class="main-card">
-            <div class="card-header">
-                <h4 class="card-title">Detail Bencana</h4>
-            </div>
-            <div class="card-body" style="padding: 20px;">
+    <!-- Detail Bencana -->
+    <div class="main-card">
+        <div class="card-header">
+            <h4>Detail Bencana</h4>
+        </div>
+        <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -196,49 +261,43 @@
     </div>
     
     <div class="main-card">
-        <div class="card-header d-flex justify-content-between">
-            <h4 class="card-title">Ringkasan Data Kerugian</h4>
-            <a href="{{ route('kerugian.create', $bencana->id) }}" class="btn" style="background: white; color: #F28705; border: 1px solid white; font-weight: 500;">
-                <i data-feather="plus-circle"></i> Tambah Data Kerugian
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Ringkasan Data Kerugian</h4>
+            <a href="{{ route('kerugian.create', $bencana->id) }}" class="btn btn-success">
+                Tambah Data Kerugian
             </a>
         </div>
-        <div class="card-body" style="padding: 20px;">
-            <!-- Dashboard summary cards -->
-            <div class="row mb-4">
-                <div class="col-md-6">
+        <div class="card-body">
+            <!-- Summary Cards -->
+            <div class="row mb-3">
+                <div class="col-md-6 mb-2">
                     <div class="card text-white summary-card" style="background: #F28705;">
-                        <div class="card-body">
-                            <h5>Total Kerugian</h5>
-                            <h3>Rp {{ number_format($totalKerugian ?? 0, 0, ',', '.') }}</h3>
-                            <div class="progress progress-white mt-2" style="height: 10px;">
-                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                        <div class="card-body text-center py-3">
+                            <h5 class="mb-2">Total Kerugian</h5>
+                            <h3 class="mb-0">Rp {{ number_format($totalKerugian ?? 0, 0, ',', '.') }}</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card summary-card" style="background: white; border: 2px solid #F28705; color: #F28705;">
-                        <div class="card-body">
-                            <h5>Jumlah Sektor Terdampak</h5>
-                            <h3>{{ $jumlahSektor ?? 0 }} sektor</h3>
-                            <div class="progress mt-2" style="height: 10px; background-color: #f8f9fa;">
-                                <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #F28705;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                <div class="col-md-6 mb-2">
+                    <div class="card summary-card" style="background: #28a745; color: white;">
+                        <div class="card-body text-center py-3">
+                            <h5 class="mb-2">Jumlah Sektor Terdampak</h5>
+                            <h3 class="mb-0">{{ $jumlahSektor ?? 0 }} sektor</h3>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Kerugian List -->
-            <div class="main-card mb-4">
-                <div class="card-header" style="background: #6c757d;">
-                    <h5 class="card-title text-white">Daftar Kerugian</h5>
+            <!-- Data Table -->
+            <div class="main-card mb-3">
+                <div class="card-header">
+                    <h5>Daftar Kerugian</h5>
                 </div>
                 <div class="card-body">
                     @if (count($kerugianData ?? []) > 0)
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead class="bg-light">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
                                         <th>Ref</th>
                                         <th>Sektor Terdampak</th>
@@ -264,11 +323,11 @@
                                                 @endif
                                             </td>
                                             <td>{{ $kerugian->kuantitas }} {{ optional($kerugian->satuan)->nama ?? '' }}</td>
-                                            <td class="text-end">Rp {{ number_format($kerugian->BiayaKeseluruhan ?? 0, 0, ',', '.') }}</td>
+                                            <td style="text-align: right;">Rp {{ number_format($kerugian->BiayaKeseluruhan ?? 0, 0, ',', '.') }}</td>
                                             <td>{{ Str::limit($kerugian->deskripsi ?? 'Tidak ada deskripsi', 50) }}</td>
-                                            <td>
-                                                <a href="{{ route('kerugian.edit', $kerugian->id) }}" class="btn btn-sm btn-warning">
-                                                    <i class="fa fa-edit"></i> Edit
+                                            <td style="text-align: center;">
+                                                <a href="{{ route('kerugian.edit', $kerugian->id) }}" class="btn btn-warning">
+                                                    Edit
                                                 </a>
                                             </td>
                                         </tr>
@@ -277,23 +336,22 @@
                             </table>
                         </div>
                     @else
-                        <div class="text-center p-4">
-                            <img src="{{ asset('frontend/dist/assets/images/no-data.svg') }}" alt="No Data" class="img-fluid mb-3" style="max-height: 150px;">
-                            <h5>Belum ada data kerugian</h5>
-                            <p class="text-muted mb-3">Tidak ada data kerugian yang tersedia untuk bencana ini.</p>
-                            <a href="{{ route('kerugian.create', $bencana->id) }}" class="btn btn-orange" style="font-weight: 500;">
-                                <i class="fa fa-plus-circle mr-1"></i> Tambah Data Kerugian
+                        <div class="text-center py-5">
+                            <h5 class="text-muted">Belum ada data kerugian</h5>
+                            <p class="text-muted">Tidak ada data kerugian yang tersedia untuk bencana ini.</p>
+                            <a href="{{ route('kerugian.create', $bencana->id) }}" class="btn btn-primary">
+                                Tambah Data Kerugian
                             </a>
                         </div>
                     @endif
                 </div>
             </div>
             
-            <!-- Category breakdown -->
+            <!-- Chart -->
             @if(count($kerugianBySektor ?? []) > 0)
-            <div class="main-card mb-4">
-                <div class="card-header" style="background: #F28705;">
-                    <h5 class="card-title text-white">Kerugian Berdasarkan Sektor</h5>
+            <div class="main-card">
+                <div class="card-header">
+                    <h5>Kerugian Berdasarkan Sektor</h5>
                 </div>
                 <div class="card-body">
                     <div class="chart-container" style="position: relative; height:300px;">
@@ -304,7 +362,6 @@
             @endif
         </div>
     </div>
-</section>
 </div>
 
 @if(count($kerugianBySektor ?? []) > 0)

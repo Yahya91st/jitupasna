@@ -8,7 +8,10 @@
             font-family: 'Times New Roman', serif;
             line-height: 1.2;
             font-size: 9pt;
-            margin: 0.8cm;
+            margin-left:3.5cm ;
+            margin-right:3cm ;
+            margin-top: 1cm;
+            margin-bottom: 2.5cm;
             color: #333;
         }
         
@@ -53,7 +56,7 @@
         
         .form-label {
             display: inline-block;
-            width: 100px;
+            width: 70px;
             vertical-align: top;
             font-weight: 500;
             color: #333;
@@ -61,7 +64,7 @@
         }
         
         .form-indent {
-            margin-left: 105px;
+            margin-left: 70px;
         }
         
         .meeting-details {
@@ -133,9 +136,9 @@
     </div>
     
     <!-- Letter Details -->
-    <div class="form-section">
+    <div style="" class="form-section">
         <p>
-            <span class="form-label">Nomor</span>: {{ $form->nomor_surat ?? '...........................' }}
+            <span class="form-label" style="text-size-adjust: ">Nomor</span>: {{ $form->nomor_surat ?? '...........................' }}
             @if($form->nomor_surat_date)
                 , {{ \Carbon\Carbon::parse($form->nomor_surat_date)->format('d F Y') }}
             @endif
@@ -159,7 +162,7 @@
     <!-- Recipient Section -->
     <div class="form-section">
         <p style="margin-bottom: 0.2em; margin-top: 0.5em;">
-            <span class="form-label" style="margin-bottom: 4px; display: block; margin-left: 105px;">
+            <span class="form-label" style="margin-bottom: 4px; display: block; margin-left: 70px;">
                 <strong>Kepada Yth</strong>
             </span>
             <span class="form-indent">{{ $form->kepada_jabatan ?? 'Direktur ........ Kementerian/lembaga.....' }}</span>
@@ -167,19 +170,20 @@
                 <br><span class="form-indent">(atau Kepala OPD .... )</span>
             @endif
             <br>
-            <span class="form-indent">di {{ $form->lokasi_pdna ?? '................' }}</span>
+            <span class="form-indent">di</span><br>
+            <span class="form-indent">{{ $form->lokasi_pdna ?? '................' }}</span>
         </p>
     </div>
 
     <!-- Letter Content -->
     <div class="form-section">
-        <p style="text-align: justify; margin-bottom: 0.2em;">
+        <p style="text-align: justify; margin-bottom: 0.2em; margin-left: 70px;">
             Berkenaan dengan akan diadakannya Pengkajian Kebutuhan 
             Pascabencana (PDNA) di <strong>{{ $form->lokasi_pdna ?? '................' }}</strong>, bersama ini kami memohon 
             keterlibatan perwakilan resmi instansi Bapak/Ibu dalam kegiatan tersebut.
         </p>
         
-        <p style="margin-bottom: 0.2em;">
+        <p style="margin-bottom: 0.2em; margin-left: 70px;">
             Untuk konsolidasi awal, mohon kiranya perwakilan resmi instansi 
             Bapak/Ibu dapat hadir pada pertemuan yang akan diadakan pada:
         </p>
@@ -188,19 +192,19 @@
     <!-- Meeting Details -->
     <div class="meeting-details">
         <p>
-            <span class="form-label">Hari/tanggal</span>: {{ $form->hari_tanggal ?? '................................' }}
+            <span class="form-label" style="margin-left: 110px;">Hari/tanggal</span>: {{ $form->hari_tanggal ?? '................................' }}
         </p>
         
         <p>
-            <span class="form-label">Waktu</span>: {{ $form->waktu ?? '................................' }}
+            <span class="form-label" style="margin-left: 110px;">Waktu</span>: {{ $form->waktu ?? '................................' }}
         </p>
         
         <p>
-            <span class="form-label">Tempat</span>: {{ $form->tempat ?? '................................' }}
+            <span class="form-label" style="margin-left: 110px;">Tempat</span>: {{ $form->tempat ?? '................................' }}
         </p>
         
         <p>
-            <span class="form-label">Agenda</span>: 
+            <span class="form-label" style="margin-left: 110px;">Agenda</span>: 
             @if($form->agenda)
                 @php
                     $agenda_lines = explode("\n", $form->agenda);
@@ -220,17 +224,17 @@
                     @if($index == 0)
                         {{ $line }}
                     @else
-                        <br><span style="margin-left: 105px;">{{ $line }}</span>
+                        <br><span style="margin-left: 186px;">{{ $line }}</span>
                     @endif
                 @endforeach
             @else
                 - Konsolidasi awal<br>
-                <span style="margin-left: 105px;">- Persiapan Pengkajian Kebutuhan Pascabencana (PDNA)</span>
+                <span style="margin-left: 0px;">- Persiapan Pengkajian Kebutuhan Pascabencana (PDNA)</span>
             @endif
         </p>
     </div>
     
-    <div class="form-section">
+    <div class="form-section" style="margin-left: 70px;">
         <p>Demikian atas kerjasamanya diucapkan terima kasih.</p>
     </div>
     

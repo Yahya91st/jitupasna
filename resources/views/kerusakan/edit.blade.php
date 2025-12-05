@@ -1,277 +1,351 @@
 @extends('layouts.main')
+
+@section('content')
 <style>
-    .row {
+    .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h2 {
+        color: #F28705;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .main-card {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #f9f9f9;
+        padding: 15px 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-header h4 {
+        margin: 0;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .table th {
+        background: #f9f9f9;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    .table tbody tr:hover {
+        background: rgba(242, 135, 5, 0.08);
+    }
+
+    .form-group {
         margin-bottom: 20px;
     }
 
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #F28705;
+        box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.25);
+    }
+
+    .form-control:disabled,
+    .form-control[readonly] {
+        background: #f9f9f9;
+        cursor: not-allowed;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: #F28705;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #d97604;
+        color: white;
+    }
+
+    .detail-card {
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        padding: 20px;
+        background: #fafafa;
+        margin-top: 15px;
+    }
+
     #quill-deskripsi {
-        width: 100% !important;
-        height: 20px !important;
         min-height: 150px;
-        /* Sesuaikan dengan tinggi minimal yang Anda inginkan */
-        box-sizing: border-box;
+        background: white;
+    }
+
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 10px;
+        }
+
+        .table th,
+        .table td {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
     }
 </style>
-@section('content')
-    <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
-                        <h4 class="card-title mb-0 text-white">Informasi Bencana</h4>
+
+<div class="page-container">
+    <div class="page-header">
+        <h2>Edit Data Kerusakan</h2>
+    </div>
+
+    <div class="main-card">
+        <div class="card-header">
+            <h4>Informasi Bencana</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 15%">Bencana Ref</th>
+                        <th style="width: 15%">Ref</th>
+                        <th style="width: 30%">Bencana</th>
+                        <th style="width: 40%">Lokasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ $bencana->Ref }}</td>
+                        <td>{{ $kerusakan->Ref }}</td>
+                        <td>{{ $bencana->kategori_bencana->nama }}</td>
+                        <td>
+                            @foreach ($bencana->desa as $index => $desa)
+                                {{ $desa->nama }}{{ $index < count($bencana->desa) - 1 ? ', ' : '' }}
+                            @endforeach
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="main-card">
+        <form class="form" id="kerusakan-form" action="{{ route('kerusakan.update', $kerusakan->id) }}" method="POST">
+            @csrf
+            @method('PATCH')
+            <div class="card-header">
+                <h4>Update Data Kerusakan</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="kategori_bangunan_id">Tipe Bangunan</label>
+                            <select class="choices form-select" name="kategori_bangunan_id">
+                                <option selected disabled value="">Pilih...</option>
+                                @foreach ($kategoribangunan as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ (old('kategori_bangunan_id') ?? $kerusakan->kategori_bangunan_id) == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Bencana Ref</th>
-                                    <th>Ref</th>
-                                    <th>Bencana</th>
-                                    <th>Lokasi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ $bencana->Ref }}</td>
-                                    <td>{{ $kerusakan->Ref }}</td>
-                                    <td>{{ $bencana->kategori_bencana->nama }}</td>
-                                    <td>
-                                        @foreach ($bencana->desa as $desa)
-                                            <li> {{ $desa->nama }}</li>
-                                        @endforeach
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="deskripsi">Deskripsi</label>
+                            <div id="quill-deskripsi"></div>
+                            <input type="hidden" id="deskripsi" name="deskripsi">
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <form class="form" id="kerusakan-form" action="{{ route('kerusakan.update', $kerusakan->id) }}"
-                        method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);">
-                            <h4 class="card-title mb-0 text-white">Update Data Kerusakan</h4>
-                            <div>
-                                <button class="btn btn-warning">Petunjuk Penggunaan</button>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="first-name-column">Tipe Bangunan</label>
-                                            <select class="choices form-select" name="kategori_bangunan_id">
-                                                <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                                @foreach ($kategoribangunan as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ (old('kategori_bangunan_id') ?? $kerusakan->kategori_bangunan_id) == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="company-column">Deskripsi</label>
-                                            <div id="quill-deskripsi" style="width: 100%;"></div>
-                                            <input type="hidden" id="deskripsi" name="deskripsi">
-                                        </div>
+                @foreach ($kerusakan->detail as $details)
+                    <input type="hidden" name="details[{{ $loop->index }}][id]" value="{{ $details->id }}">
+                    <div class="detail-card">
+                        @if ($details->hsd->tipe == 1)
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Tipe</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][tipe]" readonly value="Bahan">
                                     </div>
                                 </div>
-                                @foreach ($kerusakan->detail as $details)
-                                    <input type="hidden" name="details[{{ $loop->index }}][id]"
-                                        value="{{ $details->id }}">
-                                    <div class="card-content" style="border: 3px solid #ff8c42; border-radius: 8px; margin-top: 10px; background: linear-gradient(135deg, #fff8f5 0%, #fff 100%);"
-                                        <div class="card-body">
-                                            @if ($details->hsd->tipe == 1)
-                                                <!-- Bahan -->
-                                                <div class="row">
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="tipe-{{ $loop->index }}">Tipe</label>
-                                                            <input type="text" id="tipe-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][tipe]" readonly
-                                                                value="Bahan">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="nama-{{ $loop->index }}">Nama</label>
-                                                            <input type="text" id="nama-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][nama]"
-                                                                value="{{ $details->hsd->nama }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="satuan_id-{{ $loop->index }}">Satuan</label>
-                                                            <input type="text" id="satuan-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][satuan]"
-                                                                value="{{ $details->hsd->satuan }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="harga-{{ $loop->index }}">Harga Tiap
-                                                                Satuan</label>
-                                                            <input type="text" id="harga-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][harga]"
-                                                                value="{{ 'Rp ' . number_format($details->hsd->harga, 2, ',', '.') }}"
-                                                                readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="kuantitas-{{ $loop->index }}">Jumlah
-                                                                Kuantitas</label>
-                                                            <input type="text" id="kuantitas-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][kuantitas]"
-                                                                value="{{ $details->kuantitas_per_satuan }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @elseif($details->hsd->tipe == 2)
-                                                <!-- Upah -->
-                                                <div class="row">
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="tipe-{{ $loop->index }}">Tipe</label>
-                                                            <input type="text" id="tipe-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][tipe]" readonly
-                                                                value="Upah">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="nama-{{ $loop->index }}">Nama</label>
-                                                            <input type="text" id="nama-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][nama]"
-                                                                value="{{ $details->hsd->nama }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="satuan_id-{{ $loop->index }}">Satuan</label>
-                                                            <input type="text" id="satuan-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][satuan]"
-                                                                value="{{ $details->hsd->satuan }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="upah-{{ $loop->index }}">Upah Tiap Satuan</label>
-                                                            <input type="text" id="harga-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][harga]"
-                                                                value="{{ 'Rp ' . number_format($details->hsd->harga, 2, ',', '.') }}"
-                                                                readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="jumlah_hari-{{ $loop->index }}">Kuantias
-                                                                Berdasarkan Satuan</label>
-                                                            <input type="number" id="jumlah_hari-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][kuantitas]"
-                                                                value="{{ $details->kuantitas_per_satuan }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="jumlah_pekerja-{{ $loop->index }}">Jumlah
-                                                                Pekerja</label>
-                                                            <input type="text" id="kuantitas-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][kuantitas_item]"
-                                                                value="{{ $details->kuantitas_item }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @elseif($details->hsd->tipe == 3)
-                                                <!-- Alat -->
-                                                <div class="row">
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="tipe-{{ $loop->index }}">Tipe</label>
-                                                            <input type="text" id="tipe-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][tipe]" readonly
-                                                                value="Alat">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="nama-{{ $loop->index }}">Nama</label>
-                                                            <input type="text" id="nama-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][nama]"
-                                                                value="{{ $details->hsd->nama }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="satuan_id-{{ $loop->index }}">Satuan</label>
-                                                            <input type="text" id="satuan-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][satuan]"
-                                                                value="{{ $details->hsd->satuan }}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="harga-{{ $loop->index }}">Harga Tiap
-                                                                Satuan</label>
-                                                            <input type="text" id="harga-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][harga]"
-                                                                value="{{ 'Rp ' . number_format($details->hsd->harga, 2, ',', '.') }}"
-                                                                readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-12">
-                                                        <div class="form-group">
-                                                            <label for="jumlah_alat-{{ $loop->index }}">Kuantias</label>
-                                                            <input type="number" id="jumlah_hari-{{ $loop->index }}"
-                                                                class="form-control"
-                                                                name="details[{{ $loop->index }}][kuantitas]"
-                                                                value="{{ $details->kuantitas_per_satuan }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Nama</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][nama]" value="{{ $details->hsd->nama }}" readonly>
                                     </div>
-                                @endforeach
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn mr-1 mb-1 mt-2" style="background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%); color: white; border: none;">Submit</button>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Satuan</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][satuan]" value="{{ $details->hsd->satuan }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Harga per Satuan</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][harga]" value="{{ 'Rp ' . number_format($details->hsd->harga, 2, ',', '.') }}" readonly>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Jumlah Kuantitas</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][kuantitas]" value="{{ $details->kuantitas_per_satuan }}">
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif($details->hsd->tipe == 2)
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Tipe</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][tipe]" readonly value="Upah">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Nama</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][nama]" value="{{ $details->hsd->nama }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Satuan</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][satuan]" value="{{ $details->hsd->satuan }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Upah per Satuan</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][harga]" value="{{ 'Rp ' . number_format($details->hsd->harga, 2, ',', '.') }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label>Kuantitas Berdasarkan Satuan</label>
+                                        <input type="number" class="form-control" name="details[{{ $loop->index }}][kuantitas]" value="{{ $details->kuantitas_per_satuan }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label>Jumlah Pekerja</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][kuantitas_item]" value="{{ $details->kuantitas_item }}">
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif($details->hsd->tipe == 3)
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Tipe</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][tipe]" readonly value="Alat">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Nama</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][nama]" value="{{ $details->hsd->nama }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Satuan</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][satuan]" value="{{ $details->hsd->satuan }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Harga per Satuan</label>
+                                        <input type="text" class="form-control" name="details[{{ $loop->index }}][harga]" value="{{ 'Rp ' . number_format($details->hsd->harga, 2, ',', '.') }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label>Kuantitas</label>
+                                        <input type="number" class="form-control" name="details[{{ $loop->index }}][kuantitas]" value="{{ $details->kuantitas_per_satuan }}">
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+
+                <div class="col-12 d-flex justify-content-end" style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </div>
-        </div>
-        </div>
-        </div>
-    </section>
+        </form>
+    </div>
+</div>
 @endsection
 @push('script')
     <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>

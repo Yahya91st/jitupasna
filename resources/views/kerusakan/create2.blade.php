@@ -1,62 +1,186 @@
 @extends('layouts.main')
+
+@section('content')
 <style>
-    .row {
+    .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h2 {
+        color: #F28705;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .main-card {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #f9f9f9;
+        padding: 15px 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-header h4 {
+        margin: 0;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .detail-card {
+        background: #fafafa;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        padding: 20px;
         margin-bottom: 20px;
     }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #F28705;
+        box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.25);
+        outline: none;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-right: 5px;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: #F28705;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #d97604;
+        color: white;
+    }
+
+    .delete-icon {
+        cursor: pointer;
+        color: #dc3545;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .delete-icon:hover {
+        color: #a71d2a;
+    }
+
+    .row {
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 10px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .detail-card {
+            padding: 15px;
+        }
+    }
 </style>
-@section('content')
-    <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-12">
-                <div class="card">
-                    <form class="form" id="kerusakan-form" action="{{ route('kerusakan.store', ['id' => $bencana->id]) }}"
-                        method="POST">
-                        @csrf
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title mb-0">Tambah Data Kerusakan</h4>
-                            <div>
-                                {{-- <button class="btn btn-danger">Petunjuk Penggunaan</button> --}}
-                            </div>
+
+<div class="page-container">
+    <div class="page-header">
+        <h2>Tambah Data Kerusakan</h2>
+    </div>
+
+    <div class="main-card">
+        <form class="form" id="kerusakan-form" action="{{ route('kerusakan.store', ['id' => $bencana->id]) }}" method="POST">
+            @csrf
+            <div class="card-header">
+                <h4>Form Data Kerusakan</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="kategori_bangunan_id">Kategori Bangunan</label>
+                            <select class="choices form-select" name="kategori_bangunan_id" id="kategori_bangunan_id">
+                                <option selected disabled value="">Pilih...</option>
+                                @foreach ($kategoribangunan as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('kategori_bangunan_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="first-name-column">Tipe Bangunan</label>
-                                            <select class="choices form-select" name="kategori_bangunan_id">
-                                                <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                                @foreach ($kategoribangunan as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ old('kategori_bangunan_id') == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="company-column">Deskripsi</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="deskripsi"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="additional-details"></div>
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="button" id="add-detail-btn" class="btn btn-primary mr-1 mb-1">Tambah
-                                        Detail</button>
-                                </div>
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-secondary mr-1 mb-1 mt-2">Submit</button>
-                                </div>
-                    </form>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="deskripsi">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" rows="3" name="deskripsi"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="additional-details"></div>
+
+                <div class="d-flex justify-content-end" style="margin-top: 20px;">
+                    <button type="button" id="add-detail-btn" class="btn btn-primary">Tambah Detail</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </div>
-        </div>
-        </div>
-        </div>
-    </section>
+        </form>
+    </div>
+</div>
 @endsection
 @push('script')
     <script>
@@ -66,75 +190,56 @@
             const newDetail = document.createElement('div');
             newDetail.classList.add('card');
             newDetail.innerHTML = `
-   <div class="card-content" style="border: 4px solid #ddd; margin-top: 10px">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6 col-12">
-                <div class="form-group">
-                    <label for="tipe-${detailCount}">Tipe</label>
-                    <select class="choices form-select tipe-select" name="details[${detailCount}][tipe]"
-                        id="tipe-${detailCount}">
-                        <option selected disabled value="">{{ __('Pilih...') }}</option>
-                        <option value="1">Bahan</option>
-                        <option value="2">Upah</option>
-                        <option value="3">Alat</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-5 col-12">
-                <div class="form-group">
-                    <label for="nama-${detailCount}">Nama</label>
-                    <input type="text" id="nama-${detailCount}" class="form-control" placeholder=""
-                        name="details[${detailCount}][nama]">
-                </div>
-            </div>
-            <div class="col-md-1 col-12 d-flex align-items-center">
-                <div class="form-group mb-0">
-                    <svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem"
-                        viewBox="0 0 48 48" style="cursor: pointer;">
-                        <g fill="none" stroke="#d51515" stroke-linejoin="round" stroke-width="4">
-                            <path stroke-linecap="round" d="M8 11h32M18 5h12" />
-                            <path d="M12 17h24v23a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3z" />
-                            <path stroke-linecap="round" d="m20 25l8 8m0-8l-8 8" />
-                        </g>
-                    </svg>
-                </div>
+<div class="detail-card">
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="form-group">
+                <label for="tipe-${detailCount}">Tipe</label>
+                <select class="choices form-select tipe-select" name="details[${detailCount}][tipe]" id="tipe-${detailCount}">
+                    <option selected disabled value="">Pilih...</option>
+                    <option value="1">Bahan</option>
+                    <option value="2">Upah</option>
+                    <option value="3">Alat</option>
+                </select>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3 col-12">
-                <div class="form-group">
-                    <label for="satuan_id-${detailCount}">Satuan</label>
-                    <select class="choices form-select" name="details[${detailCount}][satuan_id]"
-                        id="satuan_id-${detailCount}">
-                        <option selected disabled value="">{{ __('Pilih...') }}</option>
-                        @foreach ($satuan as $item)
-                            <option value="{{ $item->id }}">
-                                {{ $item->nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+        <div class="col-md-5 col-12">
+            <div class="form-group">
+                <label for="nama-${detailCount}">Nama</label>
+                <input type="text" id="nama-${detailCount}" class="form-control" name="details[${detailCount}][nama]">
             </div>
-            <div class="col-md-3 col-12">
-                <div class="form-group">
-                    <label for="harga-${detailCount}" id="label-harga-${detailCount}">Harga</label>
-                    <input type="number" id="harga-${detailCount}" class="form-control" placeholder=""
-                        name="details[${detailCount}][harga]">
-                </div>
-            </div>
-            <div class="col-md-3 col-12">
-                <div class="form-group">
-                    <label for="kuantitas-${detailCount}" id="label-JumlahKuantitas-${detailCount}">Jumlah
-                        Kuantitas</label>
-                    <input type="number" id="kuantitas-${detailCount}" class="form-control" placeholder=""
-                        name="details[${detailCount}][kuantitas]">
-                </div>
-            </div>
-
-            <!-- Container for additional kuantitas item -->
-            <div class="col-md-3 col-12" id="kuantitas-item-container-${detailCount}"></div>
         </div>
+        <div class="col-md-1 col-12 d-flex align-items-center">
+            <span class="delete-icon">×</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-12">
+            <div class="form-group">
+                <label for="satuan_id-${detailCount}">Satuan</label>
+                <select class="choices form-select" name="details[${detailCount}][satuan_id]" id="satuan_id-${detailCount}">
+                    <option selected disabled value="">Pilih...</option>
+                    @foreach ($satuan as $item)
+                        <option value="{{ $item->id }}">
+                            {{ $item->nama }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 col-12">
+            <div class="form-group">
+                <label for="harga-${detailCount}" id="label-harga-${detailCount}">Harga per Satuan</label>
+                <input type="number" id="harga-${detailCount}" class="form-control" name="details[${detailCount}][harga]">
+            </div>
+        </div>
+        <div class="col-md-3 col-12">
+            <div class="form-group">
+                <label for="kuantitas-${detailCount}" id="label-JumlahKuantitas-${detailCount}">Jumlah Kuantitas</label>
+                <input type="number" id="kuantitas-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas]">
+            </div>
+        </div>
+        <div class="col-md-3 col-12" id="kuantitas-item-container-${detailCount}"></div>
     </div>
 </div>
 
@@ -154,31 +259,30 @@
 
                 if (this.value == "2" || this.value == "3") {
                     if (this.value == "2") {
-                        hargaLabel.textContent = 'Upah Tiap Satuan Dalam Rupiah';
+                        hargaLabel.textContent = 'Upah per Satuan';
                         JumlahKuantitasLabel.textContent = 'Jumlah Pekerja';
                     } else if (this.value == "3") {
-                        hargaLabel.textContent = 'Harga Tiap Satuan Dalam Rupiah';
+                        hargaLabel.textContent = 'Harga per Satuan';
                         JumlahKuantitasLabel.textContent = 'Jumlah Alat';
                     }
 
                     if (!kuantitasItemContainer.innerHTML) {
                         kuantitasItemContainer.innerHTML = `
                 <div class="form-group">
-                    <label for="kuantitas_item-${detailCount}" id="label-kuantitasItem-${detailCount}">Jumlah Kuantitas Item</label>
-                    <input type="number" id="kuantitas_item-${detailCount}" class="form-control" placeholder="" name="details[${detailCount}][kuantitas_item]">
+                    <label for="kuantitas_item-${detailCount}" id="label-kuantitasItem-${detailCount}">Kuantitas Berdasarkan Satuan</label>
+                    <input type="number" id="kuantitas_item-${detailCount}" class="form-control" name="details[${detailCount}][kuantitas_item]">
                 </div>
             `;
                     }
-                    // Sekarang elemen sudah ada di DOM, kita bisa mengaksesnya
                     const KuantitasItemLabel = newDetail.querySelector(
                         `#label-kuantitasItem-${detailCount}`);
                     if (this.value == "2") {
                         KuantitasItemLabel.textContent = 'Jumlah Hari';
                     } else if (this.value == "3") {
-                        KuantitasItemLabel.textContent = 'Jumlah Berdasarkan Satuan';
+                        KuantitasItemLabel.textContent = 'Kuantitas Berdasarkan Satuan';
                     }
                 } else {
-                    hargaLabel.textContent = 'Harga Tiap Satuan Dalam Rupiah';
+                    hargaLabel.textContent = 'Harga per Satuan';
                     JumlahKuantitasLabel.textContent = 'Jumlah Kuantitas';
                     kuantitasItemContainer.innerHTML = '';
                 }

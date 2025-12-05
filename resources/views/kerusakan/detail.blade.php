@@ -2,15 +2,50 @@
 
 @section('content')
 <style>
-    /* Container & Layout */
-    .detail-container {
-        max-width: 1200px;
-        font-family: 'Times New Roman', serif;
+    .page-container {
+        max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
     }
 
-    /* Card Styling */
+    .page-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h2 {
+        color: #F28705;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .page-header p {
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .breadcrumb {
+        display: flex;
+        justify-content: center;
+        background: transparent;
+        padding: 10px 0;
+        margin: 0;
+    }
+
+    .breadcrumb-item a {
+        color: #F28705;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item a:hover {
+        color: #d97604;
+        text-decoration: underline;
+    }
+
+    .breadcrumb-item.active {
+        color: #666;
+    }
+
     .main-card {
         background: white;
         border-radius: 6px;
@@ -19,80 +54,82 @@
         overflow: hidden;
     }
 
-    /* Header Styling */
     .card-header {
-        background: #6c757d;
-        color: white;
-        padding: 15px 20px;
-        border-bottom: none;
-    }
-
-    .card-header h4, .card-header h5 {
-        margin: 0;
-        font-weight: 600;
-        color: white;
-    }
-
-    /* Section Headers */
-    .section-header {
         background: #f9f9f9;
+        padding: 15px 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-header h4,
+    .card-header h5 {
+        margin: 0;
         color: #333;
         font-weight: 600;
-        padding: 10px 15px;
-        margin: 20px 0 15px 0;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 16px;
     }
 
-    /* Summary Cards */
+    .card-body {
+        padding: 20px;
+    }
+
     .summary-card {
+        background: white;
         border-radius: 6px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
         margin-bottom: 20px;
     }
 
-    .summary-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Table Styling */
-    .table {
-        border: 1px solid #ddd;
-        margin-bottom: 1.5rem;
-        font-size: 14px;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .table td, .table th {
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        vertical-align: middle;
-    }
-
-    .table thead th {
-        background: #f9f9f9;
+    .summary-card h4,
+    .summary-card h5 {
         color: #333;
         font-weight: 600;
-        text-align: center;
-        border-bottom: 2px solid #ddd;
+        margin-bottom: 10px;
+    }
+
+    .summary-card h3 {
+        color: #F28705;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .table th {
+        background: #f9f9f9;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background: #f9f9f9;
     }
 
     .table tbody tr:hover {
-        background-color: rgba(108, 117, 125, 0.05);
-        transition: background-color 0.2s ease;
+        background: rgba(242, 135, 5, 0.08);
     }
 
-    /* Button Styling */
     .btn {
+        display: inline-block;
+        padding: 8px 16px;
+        border: none;
         border-radius: 4px;
         font-size: 14px;
         font-weight: 500;
-        transition: all 0.3s ease;
+        cursor: pointer;
         text-decoration: none;
+        transition: all 0.3s ease;
     }
 
     .btn:hover {
@@ -100,27 +137,37 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
-    .btn-orange {
+    .btn-primary {
         background: #F28705;
         color: white;
-        border: none;
     }
 
-    .btn-orange:hover {
-        background: #e07404;
+    .btn-primary:hover {
+        background: #d97604;
         color: white;
     }
 
-    /* Orange variations for cards */
-    .card-orange-1 { background: #F28705; }
-    .card-orange-2 { background: #dc3545; }
-    .card-orange-3 { background: #ffc107; }
-    .card-orange-4 { background: #28a745; }
-    .card-purple { background: #6f42c1; }
-    .card-teal { background: #17a2b8; }
-    .card-gray { background: #6c757d; }
+    .btn-warning {
+        background: #ffc107;
+        color: #333;
+    }
 
-    /* Form Group Styling */
+    .btn-warning:hover {
+        background: #e0a800;
+        color: #333;
+    }
+
+    .btn-light {
+        background: #F28705;
+        color: white;
+        border: 1px solid #F28705;
+    }
+
+    .btn-light:hover {
+        background: #d97604;
+        color: white;
+    }
+
     .form-group label {
         font-weight: 600;
         color: #333;
@@ -132,107 +179,48 @@
         margin-bottom: 0;
         padding: 8px 0;
     }
-    /* Container wrapper */
-    .detail-wrapper {
-        padding: 20px 0;
-    }
 
-    /* Breadcrumb styling */
-    .breadcrumb-item a {
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .breadcrumb-item a:hover {
-        color: #5a6268 !important;
-    }
-
-    /* Badge styling */
     .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
         font-size: 12px;
         font-weight: 500;
-        border-radius: 4px;
-        padding: 4px 8px;
     }
 
-    /* Responsive adjustments */
+    .text-end {
+        text-align: right;
+    }
+
     @media (max-width: 768px) {
-        .detail-container {
+        .page-container {
             padding: 10px;
         }
-        
-        .main-card {
-            margin-bottom: 15px;
-        }
-        
-        .card-body {
-            padding: 15px !important;
-        }
-        
-        .summary-card {
-            margin-bottom: 15px;
-        }
-    }
 
-    /* Breadcrumb styling */
-    .breadcrumb-item a {
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .breadcrumb-item a:hover {
-        color: #e07404 !important;
-    }
-
-    /* Badge styling */
-    .badge {
-        font-size: 12px;
-        font-weight: 500;
-        border-radius: 4px;
-        padding: 4px 8px;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .detail-container {
-            padding: 10px;
-        }
-        
-        .main-card {
-            margin-bottom: 15px;
-        }
-        
-        .card-body {
-            padding: 15px !important;
+        .table th,
+        .table td {
+            padding: 8px 10px;
+            font-size: 13px;
         }
     }
 </style>
 
-<div class="detail-container">
-<div class="detail-wrapper">
-    <div class="page-title">
-        <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3 style="color: #6c757d; font-weight: 600;">Detail Data Kerusakan</h3>
-                <p class="text-subtitle text-muted">Detail data kerusakan akibat bencana</p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-md-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('kerusakan.list') }}" style="color: #6c757d;">Kerusakan</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+<div class="page-container">
+    <div class="page-header">
+        <h2>Detail Data Kerusakan</h2>
+        <p>Detail data kerusakan akibat bencana</p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('kerusakan.list') }}">Kerusakan</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Detail</li>
+            </ol>
+        </nav>
     </div>
 
-    <section class="section">
-        <div class="main-card">
-            <div class="card-header" style="background: #F28705;">
-                <h4 class="card-title">Detail Bencana</h4>
-            </div>
-            <div class="card-body" style="padding: 20px;">
+    <div class="main-card">
+        <div class="card-header">
+            <h4>Detail Bencana</h4>
+        </div>
+        <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -266,65 +254,51 @@
             </div>
         </div>
         
-        <!-- Rekap Section -->
-        <div class="main-card">
-            <div class="card-header d-flex justify-content-between align-items-center" style="background: #F28705;">
-                <h4 class="card-title">
-                    <i class="fas fa-chart-pie me-2"></i>
-                    Data Rekap Bencana
-                    <small id="last-updated" class="text-white ms-2" style="opacity: 0.8;"></small>
-                </h4>
-                <div>
+    <div class="main-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Data Rekap Bencana</h4>
+            <div>
                     @if($rekaps->count() > 0)
                         <a href="{{ route('rekap.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-light btn-sm">
-                            <i class="fas fa-eye me-1"></i>Lihat Semua Rekap
+                            Lihat Semua
                         </a>
                     @endif
                     <button id="sync-rekap-btn" class="btn btn-warning btn-sm" title="Sinkronisasi Data Rekap">
-                        <i class="fas fa-sync-alt me-1"></i>Sync Data
+                        Sync Data
                     </button>
-                    <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-sm" style="background: white; color: #F28705; border: 1px solid #F28705; font-weight: 500;">
-                        <i class="fas fa-plus me-1"></i>Tambah Rekap
+                    <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-light btn-sm">
+                        Tambah Rekap
                     </a>
                 </div>
             </div>
-            <div class="card-body" style="padding: 20px;">
-                @if($rekaps->count() > 0)
-                    <!-- Rekap Summary Cards -->
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="card text-white mb-0 summary-card" style="background: #6c757d;">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
-                                    <small>Total Rekap</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card mb-0 summary-card" style="background: white; border: 2px solid #6c757d; color: #6c757d;">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerusakan'], 0, ',', '.') }}</h4>
-                                    <small>Total Kerusakan</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-white mb-0 summary-card" style="background: #F28705;">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
-                                    <small>Total Kerugian</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card mb-0 summary-card" style="background: white; border: 2px solid #F28705; color: #F28705;">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
-                                    <small>Verified</small>
-                                </div>
-                            </div>
+        <div class="card-body">
+            @if($rekaps->count() > 0)
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <h5>Total Rekap</h5>
+                            <h3>{{ $rekapSummary['total_rekaps'] }}</h3>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <h5>Total Kerusakan</h5>
+                            <h3>Rp {{ number_format($rekapSummary['total_kerusakan'], 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <h5>Total Kerugian</h5>
+                            <h3>Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <h5>Verified</h5>
+                            <h3>{{ $rekapSummary['verified_rekaps'] }}</h3>
+                        </div>
+                    </div>
+                </div>
 
                     <!-- Rekap Table -->
                 <div class="table-responsive">
@@ -370,75 +344,54 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="{{ route('rekap.edit', $rekap->id) }}" class="btn btn-sm btn-outline-warning" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-outline-danger" title="PDF" target="_blank">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </a>
-                                        </div>
+                                        <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-primary">Detail</a>
+                                        <a href="{{ route('rekap.edit', $rekap->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-primary" target="_blank">PDF</a>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                @else
-                    <div class="text-center py-4">
-                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                        <h5>Belum ada data rekap</h5>
-                        <p class="text-muted mb-3">Belum ada data rekap untuk bencana ini. Mulai dengan menambahkan rekap baru.</p>
-                        <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-orange" style="font-weight: 500;">
-                            <i class="fas fa-plus me-1"></i>Tambah Rekap Pertama
-                        </a>
-                    </div>
-                @endif
+            @else
+                <div class="text-center py-4">
+                    <h5>Belum ada data rekap</h5>
+                    <p class="text-muted mb-3">Belum ada data rekap untuk bencana ini.</p>
+                    <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                        Tambah Rekap Pertama
+                    </a>
+                </div>
+            @endif
             </div>
         </div>
         
-        <div class="main-card">
-            <div class="card-header d-flex justify-content-between" style="background: #F28705;">
-                <h4 class="card-title">Ringkasan Data Kerusakan</h4>
-                <a href="{{ route('kerusakan.create', $bencana->id) }}" class="btn" style="background: white; color: #F28705; border: 1px solid white; font-weight: 500;">
-                    <i data-feather="plus-circle"></i> Tambah Data Kerusakan
-                </a>
-            </div>
-            <div class="card-body" style="padding: 20px;">
-                <!-- Dashboard summary cards -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="card text-white summary-card" style="background: #F28705;">
-                            <div class="card-body">
-                                <h5>Total Kerusakan</h5>
-                                <h3>Rp {{ number_format($totalKerusakan ?? 0, 0, ',', '.') }}</h3>
-                                <div class="progress progress-white mt-2" style="height: 10px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card summary-card" style="background: white; border: 2px solid #F28705; color: #F28705;">
-                            <div class="card-body">
-                                <h5>Jumlah Item Kerusakan</h5>
-                                <h3>{{ $jumlahItem ?? 0 }} item</h3>
-                                <div class="progress mt-2" style="height: 10px; background-color: #f8f9fa;">
-                                    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #F28705;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="main-card">
+        <div class="card-header d-flex justify-content-between">
+            <h4>Ringkasan Data Kerusakan</h4>
+            <a href="{{ route('kerusakan.create', $bencana->id) }}" class="btn btn-light">
+                Tambah Data Kerusakan
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="summary-card">
+                        <h5>Total Kerusakan</h5>
+                        <h3>Rp {{ number_format($totalKerusakan ?? 0, 0, ',', '.') }}</h3>
                     </div>
                 </div>
-
-                <!-- Kerusakan List -->
-                <div class="main-card mb-4">
-                    <div class="card-header" style="background: #F28705;">
-                        <h5 class="card-title text-white">Daftar Kerusakan</h5>
+                <div class="col-md-6">
+                    <div class="summary-card">
+                        <h5>Jumlah Item Kerusakan</h5>
+                        <h3>{{ $jumlahItem ?? 0 }} item</h3>
                     </div>
+                </div>
+            </div>
+
+            <div class="main-card mb-4">
+                <div class="card-header">
+                    <h5>Daftar Kerusakan</h5>
+                </div>
                     <div class="card-body">
                         @if (count($kerusakanData ?? []) > 0)
                             <div class="table-responsive">
@@ -460,11 +413,11 @@
                                                 <td class="text-end">Rp {{ number_format($kerusakan->BiayaKeseluruhan ?? 0, 0, ',', '.') }}</td>
                                                 <td>{{ Str::limit($kerusakan->deskripsi ?? 'Tidak ada deskripsi', 50) }}</td>
                                                 <td>
-                                                    <a href="{{ route('kerusakan.show', $kerusakan->id) }}" class="btn btn-sm btn-info" style="font-weight: 500;">
-                                                        <i class="fa fa-eye"></i> Detail
+                                                    <a href="{{ route('kerusakan.show', $kerusakan->id) }}" class="btn btn-sm btn-primary">
+                                                        Detail
                                                     </a>
                                                     <a href="{{ route('kerusakan.edit', $kerusakan->id) }}" class="btn btn-sm btn-warning">
-                                                        <i class="fa fa-edit"></i> Edit
+                                                        Edit
                                                     </a>
                                                 </td>
                                             </tr>
@@ -472,34 +425,31 @@
                                     </tbody>
                                 </table>
                             </div>
-                        @else
-                            <div class="text-center p-4">
-                                <img src="{{ asset('frontend/dist/assets/images/no-data.svg') }}" alt="No Data" class="img-fluid mb-3" style="max-height: 150px;">
-                                <h5>Belum ada data kerusakan</h5>
-                                <p class="text-muted mb-3">Tidak ada data kerusakan yang tersedia untuk bencana ini.</p>
-                                <a href="{{ route('kerusakan.create', $bencana->id) }}" class="btn btn-orange" style="font-weight: 500;">
-                                    <i class="fa fa-plus-circle mr-1"></i> Tambah Data Kerusakan
-                                </a>
-                            </div>
-                        @endif
+                    @else
+                        <div class="text-center p-4">
+                            <h5>Belum ada data kerusakan</h5>
+                            <p class="text-muted mb-3">Tidak ada data kerusakan yang tersedia untuk bencana ini.</p>
+                            <a href="{{ route('kerusakan.create', $bencana->id) }}" class="btn btn-primary">
+                                Tambah Data Kerusakan
+                            </a>
+                        </div>
+                    @endif
                     </div>
                 </div>
-                @if(count($kerusakanByKategori ?? []) > 0)
-                <div class="main-card mb-4">
-                    <div class="card-header" style="background: #F28705;">
-                        <h5 class="card-title text-white">Kerusakan Berdasarkan Kategori</h5>
-                    </div>
+            @if(count($kerusakanByKategori ?? []) > 0)
+            <div class="main-card mb-4">
+                <div class="card-header">
+                    <h5>Kerusakan Berdasarkan Kategori</h5>
+                </div>
                     <div class="card-body">
                         <div class="chart-container" style="position: relative; height:300px;">
                             <canvas id="kerusakanChart"></canvas>
                         </div>
                     </div>
                 </div>
-                @endif
-            </div>
+            @endif
         </div>
-    </section>
-</div>
+    </div>
 </div>
 
 @if(count($kerusakanByKategori ?? []) > 0 || true)

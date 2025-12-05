@@ -20,17 +20,17 @@ class UserController extends Controller
         
         // Super admin can only see and manage admins, not regular users
         if ($currentUser->hasRole('super-admin')) {
-            $users = User::role(['admin'])->with('roles')->get();
+            $users = User::role(['admin'])->with('roles')->paginate(15);
             $availableRoles = $roles->whereIn('name', ['admin']);
         }
         // Admin can see and manage regular users but not other admins or super-admins
         elseif ($currentUser->hasRole('admin')) {
-            $users = User::role(['user'])->with('roles')->get();
+            $users = User::role(['user'])->with('roles')->paginate(15);
             $availableRoles = $roles->whereIn('name', ['user']);
         }
         // Fallback to showing all users (should not happen due to middleware)
         else {
-            $users = User::with('roles')->get();
+            $users = User::with('roles')->paginate(15);
             $availableRoles = $roles;
         }
         
