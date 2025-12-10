@@ -143,12 +143,53 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail">
+                                                <a href="{{ route('rekap.show', $rekap->id) }}" class="btn btn-sm btn-outline-primary" title="Detail Rekap">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('rekap.edit', $rekap->id) }}" class="btn btn-sm btn-outline-warning" title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-sm btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" title="Isi Format">
+                                                        <i class="fas fa-file-alt"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><h6 class="dropdown-header">Form 4 - 17 Format</h6></li>
+                                                        @for($i = 1; $i <= 17; $i++)
+                                                            @php
+                                                                $formatName = match($i) {
+                                                                    1 => 'Perumahan & Pemukiman',
+                                                                    2 => 'Pendidikan',
+                                                                    3 => 'Kesehatan',
+                                                                    4 => 'Peribadatan',
+                                                                    5 => 'Pemerintahan',
+                                                                    6 => 'Pertanian',
+                                                                    7 => 'Peternakan',
+                                                                    8 => 'Perikanan',
+                                                                    9 => 'Perdagangan',
+                                                                    10 => 'Industri',
+                                                                    11 => 'Transportasi',
+                                                                    12 => 'Komunikasi',
+                                                                    13 => 'Energi',
+                                                                    14 => 'Air Bersih',
+                                                                    15 => 'Lingkungan',
+                                                                    16 => 'Sosial Budaya',
+                                                                    17 => 'Lainnya',
+                                                                };
+                                                                $relationName = "format{$i}Form4";
+                                                                $isFilled = !empty($rekap->$relationName);
+                                                            @endphp
+                                                            <li>
+                                                                <a class="dropdown-item {{ $isFilled ? 'text-success fw-bold' : '' }}" 
+                                                                   href="{{ route('format' . $i . '.form', ['rekap_id' => $rekap->id, 'bencana_id' => $rekap->bencana_id]) }}">
+                                                                    @if($isFilled)
+                                                                        <i class="fas fa-check-circle me-1"></i>
+                                                                    @else
+                                                                        <i class="far fa-circle me-1"></i>
+                                                                    @endif
+                                                                    F{{ $i }}. {{ $formatName }}
+                                                                </a>
+                                                            </li>
+                                                        @endfor
+                                                    </ul>
+                                                </div>
                                                 <a href="{{ route('rekap.pdf', $rekap->id) }}" class="btn btn-sm btn-outline-danger" title="PDF" target="_blank">
                                                     <i class="fas fa-file-pdf"></i>
                                                 </a>

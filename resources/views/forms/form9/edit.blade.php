@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-heading">
     <div class="page-title mb-4">
-        <h3>Edit Formulir 09 - Pengolahan Data dan Kuesioner</h3>
+        <h3 style="color: #F28705;">Edit Formulir 09 - Pengolahan Data dan Kuesioner</h3>
         <p class="text-subtitle text-muted">Edit formulir kuesioner untuk pendataan dampak bencana terhadap masyarakat</p>
     </div>
 
@@ -32,7 +32,7 @@
                 <!-- Data Bencana -->
                 @if(isset($bencana))
                 <div class="col-md-12 mb-4">
-                    <div class="alert alert-light-primary color-primary">
+                    <div class="mb-4" style="background-color: rgba(108, 117, 125, 0.1); border-left: 4px solid #6c757d; padding: 15px; border-radius: 4px;">
                         <p><strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama }}</p>
                         <p><strong>Tanggal:</strong> {{ $bencana->tanggal }}</p>
                         <p><strong>Lokasi:</strong> 
@@ -47,7 +47,7 @@
                 <!-- 1. Informasi Umum -->
                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="mt-3 mb-4">1. Informasi Umum</h5>
+                        <h5 class="mt-3 mb-4" style="color: #F28705;">1. Informasi Umum</h5>
                     </div>
                 </div>
 
@@ -161,8 +161,8 @@
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">Update Kuesioner</button>
-                            <a href="{{ route('forms.form9.show', $form->id) }}" class="btn btn-secondary">Kembali</a>
+                            <button type="submit" class="btn btn-success">Update Kuesioner</button>
+                            <a href="{{ route('forms.form9.show', $form->id) }}" class="btn" style="background-color: #6c757d; color: white;">Kembali</a>
                         </div>
                     </div>
                 </div>

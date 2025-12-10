@@ -5,8 +5,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Edit Formulir 10 - Analisa Data Akibat</h4>
+                <div class="card-header" style="background-color: #F28705; color: white;">
+                    <h4 class="card-title" style="color: white; margin: 0;">Edit Formulir 10 - Analisa Data Akibat</h4>
                 </div>
                 <div class="card-body">
                     @if(session('success'))
@@ -113,8 +113,8 @@
                         
                         <!-- Submit Button -->
                         <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary">Update Data</button>
-                            <a href="{{ route('forms.form10.show', $analisa->id) }}" class="btn btn-secondary">Batal</a>
+                            <button type="submit" class="btn btn-success">Update Data</button>
+                            <a href="{{ route('forms.form10.show', $analisa->id) }}" class="btn" style="background-color: #6c757d; color: white;">Batal</a>
                         </div>
                     </form>
                     <!-- Form end -->

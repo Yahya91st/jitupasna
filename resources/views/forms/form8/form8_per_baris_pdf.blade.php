@@ -29,7 +29,7 @@
             text-align: center;
             margin-bottom: 10px;
             padding-bottom: 6px;
-            border-bottom: 2px solid #333;
+            border-bottom: 2px solid #F28705;
         }
 
         .header h2 {
@@ -38,7 +38,7 @@
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #333;
+            color: #F28705;
         }
 
         .header h3 {
@@ -54,8 +54,8 @@
             line-height: 1.3;
             margin-bottom: 8px;
             padding: 6px 8px;
-            background-color: #f9f9f9;
-            border-left: 3px solid #333;
+            background-color: rgba(242, 135, 5, 0.1);
+            border-left: 3px solid #F28705;
             border-radius: 3px;
         }
 
@@ -64,7 +64,7 @@
             font-size: 8pt;
             margin-bottom: 2px;
             display: block;
-            color: #333;
+            color: #F28705;
         }
 
         .item-card {
@@ -146,7 +146,7 @@
         .kerusakan-value {
             font-size: 8pt;
             font-weight: bold;
-            color: #2563eb;
+            color: #F28705;
         }
 
         .nilai-section {
@@ -187,7 +187,7 @@
         }
 
         .total-section {
-            background-color: #333;
+            background-color: #F28705;
             color: white;
             padding: 6px 8px;
             margin: 8px -8px -8px -8px;
@@ -211,9 +211,9 @@
         .summary-card {
             margin-top: 15px;
             padding: 10px;
-            border: 2px solid #333;
+            border: 2px solid #F28705;
             border-radius: 5px;
-            background-color: #f0f9ff;
+            background-color: rgba(242, 135, 5, 0.05);
         }
 
         .summary-title {
@@ -222,7 +222,7 @@
             text-align: center;
             margin-bottom: 8px;
             text-transform: uppercase;
-            color: #333;
+            color: #F28705;
         }
 
         .summary-grid {

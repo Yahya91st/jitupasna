@@ -1,23 +1,8 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="page-heading">
-    <div class="page-title mb-4">
-        <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Daftar Penilaian Kerusakan dan Kerugian</h3>
-                <p class="text-subtitle text-muted">Daftar data pengolahan dan analisis penilaian kerusakan dan kerugian</p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-md-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Formulir 08</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
+<div class="container mx-auto px-4 py-6">
+    <h1 style="color: #F28705; margin-bottom: 1.5rem;">Daftar Penilaian Kerusakan dan Kerugian (Form 8)</h1>
 
     @if(session('success'))
     <div class="alert alert-success">
@@ -25,31 +10,27 @@
     </div>
     @endif
 
-    <div class="row">
-        <div class="col-md-12 mb-4">
-            <div class="alert alert-light-primary color-primary">
-                <p><strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama }}</p>
-                <p><strong>Tanggal:</strong> {{ $bencana->tanggal }}</p>
-                <p><strong>Lokasi:</strong> 
-                    @foreach($bencana->desa as $desa)
-                        {{ $desa->nama }}@if(!$loop->last), @endif
-                    @endforeach
-                </p>
-            </div>
-        </div>
+    <div class="alert" style="background-color: rgba(108, 117, 125, 0.1); border-left: 4px solid #6c757d; padding: 1rem; margin-bottom: 1.5rem;">
+        <p class="mb-1"><strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama }}</p>
+        <p class="mb-1"><strong>Tanggal:</strong> {{ $bencana->tanggal }}</p>
+        <p class="mb-0"><strong>Lokasi:</strong> 
+            @foreach($bencana->desa as $desa)
+                {{ $desa->nama }}@if(!$loop->last), @endif
+            @endforeach
+        </p>
     </div>
     
     <div class="mb-4">
-        <a href="{{ route('forms.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
+        <a href="{{ route('forms.index', ['bencana_id' => $bencana->id]) }}" class="btn" style="background-color: #6c757d; color: white;">
             <i class="fa fa-arrow-left mr-2"></i> Kembali
         </a>
     </div>
     
-    <div class="card">
-        <!-- Format Baru Form8 -->
-        <div class="card-body border-bottom">
+    <!-- Format Baru Form8 -->
+    <div class="card mb-4">
+        <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">📊 Format Analisis Baru</h5>
+                <h5 class="mb-0">📊 Format Analisis</h5>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
@@ -92,14 +73,9 @@
                 </div>
             </div>
         </div>
-        
-        <div class="card-header">
-            <h4 class="card-title mb-0">Daftar Data Penilaian</h4>
-        </div>
+    </div>
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
+    <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -128,14 +104,14 @@
                                 <td>
                                     <div class="btn-group" style="display: flex; gap: 2px;">
                                         <form action="{{ route('forms.form8.show', $item->id) }}" method="GET" style="display: inline;">
-                                            <button type="submit" class="btn btn-sm btn-info" title="Lihat Detail" style="padding: 4px; min-width: 28px;">
+                                            <button type="submit" class="btn btn-sm" title="Lihat Detail" style="background-color: #6c757d; color: white; padding: 4px; min-width: 28px;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px;">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                                 </svg>
                                             </button>
                                         </form>
                                         <form action="{{ route('forms.form8.edit', $item->id) }}" method="GET" style="display: inline;">
-                                            <button type="submit" class="btn btn-sm btn-warning" title="Edit" style="padding: 4px; min-width: 28px;">
+                                            <button type="submit" class="btn btn-sm" title="Edit" style="background-color: #F28705; color: white; padding: 4px; min-width: 28px;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px;">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                 </svg>
@@ -156,13 +132,15 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-center">Belum ada data penilaian</td>
+                                <td colspan="6" class="text-center py-4">
+                                    <p class="text-muted mb-3">Belum ada data penilaian</p>
+                                    <a href="{{ route('forms.form8.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-sm" style="background-color: #F28705; color: white;">
+                                        <i class="fa fa-plus mr-1"></i> Tambah Data Sekarang
+                                    </a>
+                                </td>
                             </tr>
                         @endif
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
 </div>
 @endsection

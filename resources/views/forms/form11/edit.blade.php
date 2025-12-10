@@ -5,8 +5,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Edit Rekapitulasi Kebutuhan Pascabencana</h4>
+                <div class="card-header" style="background-color: #F28705; color: white;">
+                    <h4 class="card-title" style="color: white; margin: 0;">Edit Rekapitulasi Kebutuhan Pascabencana</h4>
                 </div>
                 <div class="card-body">
                     @if(session('success'))
@@ -163,8 +163,8 @@
                         </div>
                         
                         <div class="form-group d-flex justify-content-between mt-4">
-                            <a href="{{ route('forms.form11.show', $rekapitulasi->id) }}" class="btn btn-secondary">Kembali</a>
-                            <button type="submit" class="btn btn-primary">Perbarui Data</button>
+                            <a href="{{ route('forms.form11.show', $rekapitulasi->id) }}" class="btn" style="background-color: #6c757d; color: white;">Kembali</a>
+                            <button type="submit" class="btn btn-success">Perbarui Data</button>
                         </div>
                     </form>
                 </div>

@@ -2,57 +2,12 @@
 
 @push('style')
     <style>
-        .card-data {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border-radius: 0.5rem;
-            border: none;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-data:hover {
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
         .card-header-custom {
-            background: linear-gradient(to right, #4a6cf7, #28bafd);
+            background-color: #F28705;
             color: white;
             border-radius: 0.5rem 0.5rem 0 0;
             padding: 1rem 1.5rem;
             font-weight: 600;
-        }
-
-        .btn-custom {
-            border-radius: 0.375rem;
-            padding: 0.5rem 1rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .btn-custom:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-back {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-edit {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .btn-pdf {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-preview {
-            background-color: #0dcaf0;
-            color: white;
         }
     </style>
 @endpush
@@ -77,18 +32,18 @@
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between flex-wrap">
                                 <div class="mb-2">
-                                    <a href="{{ route('forms.form10.list', ['bencana_id' => $form->bencana_id]) }}" class="btn btn-custom btn-back me-2">
+                                    <a href="{{ route('forms.form10.list', ['bencana_id' => $form->bencana_id]) }}" class="btn me-2" style="background-color: #6c757d; color: white;">
                                         <i class="bi bi-arrow-left me-1"></i> Kembali
                                     </a>
-                                    <a href="{{ route('forms.form10.edit', $form->id) }}" class="btn btn-custom btn-edit">
+                                    <a href="{{ route('forms.form10.edit', $form->id) }}" class="btn" style="background-color: #F28705; color: white;">
                                         <i class="bi bi-pencil me-1"></i> Edit
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route('forms.form10.pdf', $form->id) }}" class="btn btn-custom btn-pdf me-2" target="_blank">
+                                    <a href="{{ route('forms.form10.pdf', $form->id) }}" class="btn me-2" style="background-color: #dc3545; color: white;" target="_blank">
                                         <i class="bi bi-file-pdf me-1"></i> Download PDF
                                     </a>
-                                    <a href="{{ route('forms.form10.preview-pdf', $form->id) }}" class="btn btn-custom btn-preview" target="_blank">
+                                    <a href="{{ route('forms.form10.preview-pdf', $form->id) }}" class="btn" style="background-color: #0dcaf0; color: white;" target="_blank">
                                         <i class="bi bi-eye me-1"></i> Preview PDF
                                     </a>
                                 </div>
@@ -99,7 +54,7 @@
                     <!-- PDF Preview Section -->
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card card-data">
+                            <div class="card mb-4">
                                 <div class="card-header-custom">
                                     <i class="bi bi-file-pdf me-2"></i>Preview Dokumen - Analisa Data Akibat ({{ $form->tanggal ? \Carbon\Carbon::parse($form->tanggal)->format('d/m/Y') : '-' }})
                                 </div>
@@ -119,7 +74,7 @@
                     <!-- Informasi Pencatatan -->
                     <div class="row mt-4">
                         <div class="col-md-12">
-                            <div class="card card-data">
+                            <div class="card">
                                 <div class="card-header-custom">
                                     <i class="bi bi-clock-history me-2"></i>Informasi Pencatatan
                                 </div>

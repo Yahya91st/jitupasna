@@ -187,7 +187,10 @@ public function generatePdf($id)
      */
     public function edit($id)
     {
+        $penilaian = Form8::with(['bencana.kategori_bencana', 'bencana.desa'])->findOrFail($id);
+        $bencana = $penilaian->bencana;
         
+        return view('forms.form8.edit', compact('penilaian', 'bencana'));
     }
     
     /**
@@ -195,11 +198,41 @@ public function generatePdf($id)
      */
     public function update(Request $request, $id)
     {
-        
+        $validated = $request->validate([
+            'bencana_id' => 'required|exists:bencana,id',
+            'nomor_dokumen' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'tim_penilai' => 'required|string',
+            'metodologi' => 'required|string',
+            'sektor_terkena_dampak' => 'required|string',
+            'dampak_ekonomi' => 'required|string',
+            'dampak_sosial' => 'required|string',
+            'kebutuhan_pemulihan' => 'required|string',
+            'kesimpulan' => 'required|string',
+            'rekomendasi' => 'required|string',
+            'nama_penandatangan' => 'required|string|max:255',
+            'jabatan_penandatangan' => 'required|string|max:255',
+        ]);
+
+        $penilaian = Form8::findOrFail($id);
+        $penilaian->update($validated);
+
+        return redirect()->route('forms.form8.show', $id)->with('success', 'Data berhasil diperbarui!');
     }
+    
     public function destroy($id)
     {
+        $penilaian = Form8::findOrFail($id);
+        $bencana_id = $penilaian->bencana_id;
         
+        // Delete associated rows first
+        $penilaian->rows()->delete();
+        
+        // Delete the main form
+        $penilaian->delete();
+        
+        return redirect()->route('forms.form8.list', ['bencana_id' => $bencana_id])
+            ->with('success', 'Data berhasil dihapus!');
     }
     public function contohPdf()
     {

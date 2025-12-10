@@ -14,7 +14,18 @@ class Form8 extends Model
     protected $fillable = [
         'bencana_id',
         'tanggal',
-        'keterangan',    
+        'keterangan',
+        'nomor_dokumen',
+        'tim_penilai',
+        'metodologi',
+        'sektor_terkena_dampak',
+        'dampak_ekonomi',
+        'dampak_sosial',
+        'kebutuhan_pemulihan',
+        'kesimpulan',
+        'rekomendasi',
+        'nama_penandatangan',
+        'jabatan_penandatangan',
     ];
 
     /**

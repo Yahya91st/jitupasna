@@ -178,9 +178,9 @@ class Form11Controller extends Controller
 
     public function edit($id)
     {
-        $form11 =  Form11::with('rows')->findOrFail($id);
-        $bencanas = Bencana::all();
-        return view('forms.form11.edit', compact('form11', 'bencanas'));
+        $rekapitulasi =  Form11::with('rows')->findOrFail($id);
+        $bencanas = Bencana::with('kategori_bencana')->orderBy('tanggal', 'desc')->get();
+        return view('forms.form11.edit', compact('rekapitulasi', 'bencanas'));
     }
 
     public function update(Request $request, $id)
