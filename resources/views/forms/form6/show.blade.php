@@ -16,7 +16,7 @@
         }
 
         .card-header-custom {
-            background: linear-gradient(to right, #4a6cf7, #28bafd);
+            background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
             color: white;
             border-radius: 0.5rem 0.5rem 0 0;
             padding: 1rem 1.5rem;
@@ -36,13 +36,25 @@
         }
 
         .btn-back {
-            background-color: #6c757d;
-            color: white;
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-back:hover {
+            background: #e9ecef;
+            color: #495057;
         }
 
         .btn-edit {
-            background-color: #ffc107;
-            color: #212529;
+            background: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(242, 135, 5, 0.3);
         }
 
         .btn-pdf {
@@ -50,9 +62,17 @@
             color: white;
         }
 
+        .btn-pdf:hover {
+            background-color: #c82333;
+        }
+
         .btn-preview {
-            background-color: #0dcaf0;
+            background-color: #17a2b8;
             color: white;
+        }
+
+        .btn-preview:hover {
+            background-color: #138496;
         }
 
         .detail-table {
@@ -126,7 +146,7 @@
             top: 0;
             height: 100%;
             width: 4px;
-            background: linear-gradient(to bottom, #4a6cf7, #28bafd);
+            background: linear-gradient(to bottom, #F28705, #ff9800);
             border-radius: 4px;
         }
 

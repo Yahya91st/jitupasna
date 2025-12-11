@@ -224,10 +224,11 @@ public function store(Request $request)
     public function edit($id)
     {
         try {
-            $form = form10::findOrFail($id);
-            $bencana = Bencana::find($form->bencana_id);
+            $analisa = form10::findOrFail($id);
+            $bencana = Bencana::find($analisa->bencana_id);
+            $bencanas = Bencana::with('kategori_bencana')->orderBy('tanggal', 'desc')->get();
             
-            return view('forms.form10.edit', compact('form', 'bencana'));
+            return view('forms.form10.edit', compact('analisa', 'bencana', 'bencanas'));
         } catch (\Exception $e) {
             return back()->with('error', 'Data formulir tidak ditemukan.');
         }

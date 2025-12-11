@@ -43,14 +43,71 @@ class RekapController extends Controller
     }
 
     /**
-     * Show detailed view of a specific rekap
+     * Show form to create new rekap for specific bencana
      */
-    public function show($id)
+    public function create($bencana_id)
     {
-        $rekap = Rekap::with('bencana')->findOrFail($id);
-        $formats = $rekap->getFormatRelationships();
+        $bencana = Bencana::with('kategori_bencana')->findOrFail($bencana_id);
         
-        return view('rekap.show', compact('rekap', 'formats'));
+        return view('rekap.create', compact('bencana'));
+    }
+
+    /**
+     * Store new rekap data
+     */
+    public function store(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'bencana_id' => 'required|exists:bencana,id',
+            'judul' => 'required|string|max:255',
+            'tanggal_rekap' => 'required|date',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        // Ambil data bencana untuk mendapatkan informasi lokasi
+        $bencana = Bencana::findOrFail($validated['bencana_id']);
+        
+        // Parse village_code untuk mendapatkan nama kampung/desa
+        $namaKampung = 'N/A';
+        if (!empty($bencana->village_code)) {
+            $villages = is_string($bencana->village_code) 
+                ? json_decode($bencana->village_code, true) 
+                : $bencana->village_code;
+            
+            if (is_array($villages) && count($villages) > 0) {
+                $villageNames = [];
+                foreach ($villages as $village) {
+                    if (is_array($village)) {
+                        $villageNames[] = $village['name'] ?? $village['code'] ?? '';
+                    } elseif (is_string($village)) {
+                        $villageNames[] = $village;
+                    }
+                }
+                $namaKampung = implode(', ', array_filter($villageNames));
+            }
+        }
+        
+        // Fallback ke desa_kelurahan jika village_code kosong
+        if ($namaKampung === 'N/A' && !empty($bencana->desa_kelurahan)) {
+            $namaKampung = $bencana->desa_kelurahan;
+        }
+        
+        // Ambil nama distrik/kecamatan
+        $namaDistrik = $bencana->kecamatan ?? 'N/A';
+
+        // Simpan data rekap
+        $rekap = Rekap::create([
+            'bencana_id' => $validated['bencana_id'],
+            'judul' => $validated['judul'],
+            'tanggal_rekap' => $validated['tanggal_rekap'],
+            'deskripsi' => $validated['deskripsi'],
+            'nama_kampung' => $namaKampung,
+            'nama_distrik' => $namaDistrik,
+        ]);
+
+        return redirect()->route('bencana.index')
+            ->with('success', 'Rekap bencana berhasil ditambahkan!');
     }
 
     /**

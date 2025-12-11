@@ -32,7 +32,7 @@
     }
 
     .form-header h5:first-child {
-        color: #0066cc;
+        color: #F28705;
         margin-bottom: 0.3rem;
     }
 
@@ -75,7 +75,7 @@
     }
 
     .form-table tbody tr:hover {
-        background-color: rgba(0, 102, 204, 0.05);
+        background-color: rgba(242, 135, 5, 0.05);
         transition: background-color 0.2s ease;
     }
 
@@ -166,7 +166,7 @@
     }
 
     .btn-primary {
-        background: #007bff;
+        background: #6c757d;
         color: white;
     }
 
@@ -190,15 +190,15 @@
     }
 
     .btn-edit {
-        background: #ffc107;
-        color: #212529;
-        border: 1px solid #ffc107;
+        background: #F28705;
+        color: white;
+        border: 1px solid #F28705;
         border-radius: 3px;
     }
 
     .btn-edit:hover {
-        background: #e0a800;
-        border-color: #e0a800;
+        background: #d97704;
+        border-color: #d97704;
         transform: scale(1.05);
     }
 
@@ -358,10 +358,10 @@
 
     <!-- Info Bencana -->
     @if(isset($bencana))
-    <div style="background: #f8f9fa; border-left: 4px solid #0066cc; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #0066cc;">Bencana:</strong> {{ $bencana->kategori_bencana->nama ?? 'N/A' }}</p>
-        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #0066cc;">Tanggal:</strong> {{ $bencana->tanggal ? \Carbon\Carbon::parse($bencana->tanggal)->format('d F Y') : 'N/A' }}</p>
-        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #0066cc;">Lokasi:</strong> 
+    <div style="background: rgba(242, 135, 5, 0.1); border-left: 4px solid #F28705; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #F28705;">Bencana:</strong> {{ $bencana->kategori_bencana->nama ?? 'N/A' }}</p>
+        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #F28705;">Tanggal:</strong> {{ $bencana->tanggal ? \Carbon\Carbon::parse($bencana->tanggal)->format('d F Y') : 'N/A' }}</p>
+        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #F28705;">Lokasi:</strong> 
             @if($bencana->desa && $bencana->desa->count() > 0)
                 @foreach($bencana->desa as $desa)
                     {{ $desa->nama }}@if(!$loop->last), @endif
@@ -370,7 +370,7 @@
                 N/A
             @endif
         </p>
-        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #0066cc;">Total Data:</strong> {{ $allRows->count() }} item</p>
+        <p style="margin: 5px 0; font-size: 13px;"><strong style="color: #F28705;">Total Data:</strong> {{ $allRows->count() }} item</p>
     </div>
     @endif
 

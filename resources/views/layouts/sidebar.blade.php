@@ -244,14 +244,6 @@
         transition: var(--transition);
     }
 
-    .submenu li.active a {
-        color: var(--white) !important;
-        background: var(--orange-gradient) !important;
-        font-weight: 600;
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.25);
-        transform: translateX(4px);
-    }
-
     .submenu li.active a::before {
         background: var(--white);
         width: 6px;
