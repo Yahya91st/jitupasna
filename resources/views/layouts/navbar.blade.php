@@ -1,33 +1,32 @@
 <style>
-nav.navbar {
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1050;
-    display: flex;
-    align-items: center;
-}
+    nav.navbar {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1050;
+        display: flex;
+        align-items: center;
+    }
 
-.navbar-toggler-icon,
-.sidebar-toggler .navbar-toggler-icon {
-    display: inline-block;
-}
+    .navbar-toggler-icon,
+    .sidebar-toggler .navbar-toggler-icon {
+        display: inline-block;
+    }
 
-nav.navbar img,
-nav.navbar .avatar {
-    display: block;
-    vertical-align: middle;
-}
+    nav.navbar img,
+    nav.navbar .avatar {
+        display: block;
+        vertical-align: middle;
+    }
 
-body.has-fixed-navbar .main-content {
-    padding-top: var(--navbar-height, 56px);
-}
+    body.has-fixed-navbar .main-content {
+        padding-top: var(--navbar-height, 56px);
+    }
 </style>
 <nav class="navbar navbar-header navbar-expand navbar-light">
     <a class="sidebar-toggler" href="#"><span class="navbar-toggler-icon"></span></a>
-    <button class="btn navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="btn navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -76,9 +75,7 @@ body.has-fixed-navbar .main-content {
                     <a class="dropdown-item " href="#"><i data-feather="mail"></i> Messages</a>
                     <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a>
                     <div class="dropdown-divider"></div> --}}
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
-                            data-feather="log-out"></i> Logout</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i data-feather="log-out"></i> Logout</a>
                     <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
                         @csrf
                     </form>

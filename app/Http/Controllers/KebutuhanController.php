@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Log;
+use App\Models\Rekap;
 use App\Models\Bencana;
-use App\Models\DetailKerusakan;
-use App\Models\FormPerumahan;
-use App\Models\Format1Form4;
-use App\Models\Format2Form4;
 use App\Models\Kerugian;
 use App\Models\Kerusakan;
 use App\Models\Pendataan;
-use App\Models\Rekap;
+use App\Models\Format1Form4;
+use App\Models\Format2Form4;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\FormPerumahan;
+use App\Models\DetailKerusakan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 
 class KebutuhanController extends Controller
@@ -235,7 +236,8 @@ class KebutuhanController extends Controller
     }
     /**
      * Display the specified resource.
-     */    public function show($id)
+     */    
+    public function show($id)
     {
         $bencana = Bencana::with('kategori_bencana')->findOrFail($id);
         
