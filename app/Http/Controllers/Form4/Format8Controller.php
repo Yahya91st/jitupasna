@@ -244,7 +244,7 @@ class Format8Controller extends Controller
      */
     public function destroy($id)
     {
-        $formListrik = \App\Models\Format8Form4::findOrFail($id);
+        $formListrik = Format8Form4::findOrFail($id);
         $bencana_id = $formListrik->bencana_id;
         $formListrik->delete(); // This will hard delete if model does not use SoftDeletes
         return redirect()->route('forms.form4.list-format8', ['bencana_id' => $bencana_id])

@@ -453,7 +453,6 @@ Route::prefix('/forms')
             Route::get('/format2form4', [Format2Controller::class, 'index'])->name('format2form4');
             Route::get('/format3form4', [Format3Controller::class, 'index'])->name('format3form4');
             Route::get('/format4form4', [Format4Controller::class, 'index'])->name('format4form4');
-            Route::get('/format4form4-alt', [Format4Controller::class, 'index'])->name('format4form4-alt');
             Route::get('/format5form4', [Format5Controller::class, 'index'])->name('format5form4');
             Route::get('/format6form4', [Format6Controller::class, 'index'])->name('format6form4');
             Route::get('/format7form4', [Format7Controller::class, 'index'])->name('format7form4');

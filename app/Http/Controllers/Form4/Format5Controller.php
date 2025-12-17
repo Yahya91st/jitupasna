@@ -42,10 +42,78 @@ class Format5Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Format 5 fields - all others are optional
+                // Gereja
+                'gereja_rb_negeri' => 'nullable|integer',
+                'gereja_rb_swasta' => 'nullable|integer',
+                'gereja_rs_negeri' => 'nullable|integer',
+                'gereja_rs_swasta' => 'nullable|integer',
+                'gereja_rr_negeri' => 'nullable|integer',
+                'gereja_rr_swasta' => 'nullable|integer',
+                'gereja_luas' => 'nullable|numeric',
+                'gereja_harga_bangunan' => 'nullable|numeric',
+                'gereja_harga_peralatan' => 'nullable|numeric',
+                // Kapel
+                'kapel_rb_negeri' => 'nullable|integer',
+                'kapel_rb_swasta' => 'nullable|integer',
+                'kapel_rs_negeri' => 'nullable|integer',
+                'kapel_rs_swasta' => 'nullable|integer',
+                'kapel_rr_negeri' => 'nullable|integer',
+                'kapel_rr_swasta' => 'nullable|integer',
+                'kapel_luas' => 'nullable|numeric',
+                'kapel_harga_bangunan' => 'nullable|numeric',
+                'kapel_harga_peralatan' => 'nullable|numeric',
+                // Masjid
+                'masjid_rb_negeri' => 'nullable|integer',
+                'masjid_rb_swasta' => 'nullable|integer',
+                'masjid_rs_negeri' => 'nullable|integer',
+                'masjid_rs_swasta' => 'nullable|integer',
+                'masjid_rr_negeri' => 'nullable|integer',
+                'masjid_rr_swasta' => 'nullable|integer',
+                'masjid_luas' => 'nullable|numeric',
+                'masjid_harga_bangunan' => 'nullable|numeric',
+                'masjid_harga_peralatan' => 'nullable|numeric',
+                // Musholla
+                'musholla_rb_negeri' => 'nullable|integer',
+                'musholla_rb_swasta' => 'nullable|integer',
+                'musholla_rs_negeri' => 'nullable|integer',
+                'musholla_rs_swasta' => 'nullable|integer',
+                'musholla_rr_negeri' => 'nullable|integer',
+                'musholla_rr_swasta' => 'nullable|integer',
+                'musholla_luas' => 'nullable|numeric',
+                'musholla_harga_bangunan' => 'nullable|numeric',
+                'musholla_harga_peralatan' => 'nullable|numeric',
+                // Pura
+                'pura_rb_negeri' => 'nullable|integer',
+                'pura_rb_swasta' => 'nullable|integer',
+                'pura_rs_negeri' => 'nullable|integer',
+                'pura_rs_swasta' => 'nullable|integer',
+                'pura_rr_negeri' => 'nullable|integer',
+                'pura_rr_swasta' => 'nullable|integer',
+                'pura_luas' => 'nullable|numeric',
+                'pura_harga_bangunan' => 'nullable|numeric',
+                'pura_harga_peralatan' => 'nullable|numeric',
+                // Vihara
+                'vihara_rb_negeri' => 'nullable|integer',
+                'vihara_rb_swasta' => 'nullable|integer',
+                'vihara_rs_negeri' => 'nullable|integer',
+                'vihara_rs_swasta' => 'nullable|integer',
+                'vihara_rr_negeri' => 'nullable|integer',
+                'vihara_rr_swasta' => 'nullable|integer',
+                'vihara_luas' => 'nullable|numeric',
+                'vihara_harga_bangunan' => 'nullable|numeric',
+                'vihara_harga_peralatan' => 'nullable|numeric',
+                // Kerugian / tambahan (opsional)
+                'biaya_tenaga_kerja_hok' => 'nullable|numeric',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                // Totals (opsional)
+                'total_kerusakan' => 'nullable|numeric',
+                'total_kerugian' => 'nullable|numeric',
             ]);
 
             // Save all user input fields as per $fillable
+            
             $data = $request->only((new Format5Form4)->getFillable());
             
             // Ensure numeric fields are properly cast
@@ -112,9 +180,9 @@ class Format5Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
         
         // Get form data for this disaster
-         $form = Format5Form4::where('bencana_id', $bencana_id)->get();
+        $form = Format5Form4::where('bencana_id', $bencana_id)->get();
         $reports =  $form; // For compatibility with the view
-        return view('forms.form4.format5.list-format5', compact('bencana', ' form', 'reports'));
+        return view('forms.form4.format5.list-format5', compact('bencana', 'form', 'reports'));
     }
 
     /**
@@ -169,7 +237,74 @@ class Format5Controller extends Controller
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // All other fields are optional
+                // Gereja
+                'gereja_rb_negeri' => 'nullable|integer',
+                'gereja_rb_swasta' => 'nullable|integer',
+                'gereja_rs_negeri' => 'nullable|integer',
+                'gereja_rs_swasta' => 'nullable|integer',
+                'gereja_rr_negeri' => 'nullable|integer',
+                'gereja_rr_swasta' => 'nullable|integer',
+                'gereja_luas' => 'nullable|numeric',
+                'gereja_harga_bangunan' => 'nullable|numeric',
+                'gereja_harga_peralatan' => 'nullable|numeric',
+                // Kapel
+                'kapel_rb_negeri' => 'nullable|integer',
+                'kapel_rb_swasta' => 'nullable|integer',
+                'kapel_rs_negeri' => 'nullable|integer',
+                'kapel_rs_swasta' => 'nullable|integer',
+                'kapel_rr_negeri' => 'nullable|integer',
+                'kapel_rr_swasta' => 'nullable|integer',
+                'kapel_luas' => 'nullable|numeric',
+                'kapel_harga_bangunan' => 'nullable|numeric',
+                'kapel_harga_peralatan' => 'nullable|numeric',
+                // Masjid
+                'masjid_rb_negeri' => 'nullable|integer',
+                'masjid_rb_swasta' => 'nullable|integer',
+                'masjid_rs_negeri' => 'nullable|integer',
+                'masjid_rs_swasta' => 'nullable|integer',
+                'masjid_rr_negeri' => 'nullable|integer',
+                'masjid_rr_swasta' => 'nullable|integer',
+                'masjid_luas' => 'nullable|numeric',
+                'masjid_harga_bangunan' => 'nullable|numeric',
+                'masjid_harga_peralatan' => 'nullable|numeric',
+                // Musholla
+                'musholla_rb_negeri' => 'nullable|integer',
+                'musholla_rb_swasta' => 'nullable|integer',
+                'musholla_rs_negeri' => 'nullable|integer',
+                'musholla_rs_swasta' => 'nullable|integer',
+                'musholla_rr_negeri' => 'nullable|integer',
+                'musholla_rr_swasta' => 'nullable|integer',
+                'musholla_luas' => 'nullable|numeric',
+                'musholla_harga_bangunan' => 'nullable|numeric',
+                'musholla_harga_peralatan' => 'nullable|numeric',
+                // Pura
+                'pura_rb_negeri' => 'nullable|integer',
+                'pura_rb_swasta' => 'nullable|integer',
+                'pura_rs_negeri' => 'nullable|integer',
+                'pura_rs_swasta' => 'nullable|integer',
+                'pura_rr_negeri' => 'nullable|integer',
+                'pura_rr_swasta' => 'nullable|integer',
+                'pura_luas' => 'nullable|numeric',
+                'pura_harga_bangunan' => 'nullable|numeric',
+                'pura_harga_peralatan' => 'nullable|numeric',
+                // Vihara
+                'vihara_rb_negeri' => 'nullable|integer',
+                'vihara_rb_swasta' => 'nullable|integer',
+                'vihara_rs_negeri' => 'nullable|integer',
+                'vihara_rs_swasta' => 'nullable|integer',
+                'vihara_rr_negeri' => 'nullable|integer',
+                'vihara_rr_swasta' => 'nullable|integer',
+                'vihara_luas' => 'nullable|numeric',
+                'vihara_harga_bangunan' => 'nullable|numeric',
+                'vihara_harga_peralatan' => 'nullable|numeric',
+                // Kerugian / tambahan (opsional)
+                'biaya_tenaga_kerja_hok' => 'nullable|numeric',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                // Totals (opsional)
+                'total_kerusakan' => 'nullable|numeric',
+                'total_kerugian' => 'nullable|numeric',
             ]);
             
             // Get all fillable data from request

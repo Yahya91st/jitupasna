@@ -296,7 +296,7 @@ class Format6Controller extends Controller
      */
     public function destroy($id)
     {
-        $formAirSanitasi = \App\Models\Format6Form4::findOrFail($id);
+        $formAirSanitasi = Format6Form4::findOrFail($id);
         $bencana_id = $formAirSanitasi->bencana_id;
         $formAirSanitasi->delete();
         return redirect()->route('forms.form4.format6.list', ['bencana_id' => $bencana_id])
