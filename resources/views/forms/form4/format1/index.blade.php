@@ -1,253 +1,510 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Form Sektor Perumahan</h1>    <form action="{{ route('forms.form4.store') }}" method="POST" class="space-y-8">
-        @csrf
+<style>
+    /* Kurangi padding pada tabel dan input agar lebih kompak */
+    .table th, .table td {
+        padding: 0.25rem 0.3rem !important;
+    }
+    .table input.form-control {
+        padding: 0.15rem 0.3rem !important;
+        font-size: 0.95rem;
+    }
+    
+    /* Style khusus untuk judul utama */
+    .main-title {
+        background: linear-gradient(135deg, #ff8a50, #ff6b35);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+</style>
+    <div class="container mt-4">
+        <button></button>
+        <h5 class="text-center fw-bold main-title">Formulir 04<br>Pengumpulan Data Sektor</h5>
+        <p class="fw-bold">Format 1a: Pengumpulan Data Sektor Perumahan</p>
         
-        <!-- Identitas Lokasi -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Identitas Lokasi</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Nama Kampung</label>
-                    <input type="text" name="nama_kampung" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Nama Distrik</label>
-                    <input type="text" name="nama_distrik" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
+        <form action="{{ isset($edit) && $edit ? route('forms.form4.format1.update', $data->id) : route('forms.form4.format1.store') }}" method="POST">
+        @csrf
+        @if(isset($edit) && $edit)
+            @method('PATCH')
+        @endif
+        <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}">
+
+        <table class="table table-bordered">
+            <tr>
+                <td style="width: 50%">NAMA KAMPUNG: <input type="text" class="form-control" name="nama_kampung" required value="{{ old('nama_kampung', $data->nama_kampung ?? '') }}"></td>
+                <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}"></td>
+            </tr>
+        </table>
+
+        <table class="table table-bordered text-center align-middle">
+            <thead>
+                <tr>
+                    <th rowspan="2">Perkiraan Kerusakan</th>
+                    <th colspan="3">Jumlah Rumah</th>
+                    <th colspan="2">Harga Satuan</th>
+                </tr>
+                <tr>
+                    <th>Rumah Permanen</th>
+                    <th>Rumah Non Permanen</th>
+                    <th>Jumlah</th>
+                    <th>Permanen</th>
+                    <th>Non Permanen</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1a) JUMLAH RUMAH HANCUR TOTAL</td>
+                    <td><input type="number" class="form-control" name="rumah_hancur_total_permanen" placeholder="0" value="{{ old('rumah_hancur_total_permanen', $data->rumah_hancur_total_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="rumah_hancur_total_non_permanen" placeholder="0" value="{{ old('rumah_hancur_total_non_permanen', $data->rumah_hancur_total_non_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="hancur_total_jumlah" placeholder="0" value="{{ ($data->rumah_hancur_total_permanen ?? 0) + ($data->rumah_hancur_total_non_permanen ?? 0) }}" readonly></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_hancur_total_permanen" placeholder="0" value="{{ old('harga_satuan_hancur_total_permanen', $data->harga_satuan_hancur_total_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_hancur_total_non_permanen" placeholder="0" value="{{ old('harga_satuan_hancur_total_non_permanen', $data->harga_satuan_hancur_total_non_permanen ?? '') }}"></td>
+                </tr>
+                <tr>
+                    <td>1b) JUMLAH RUMAH RUSAK BERAT</td>
+                    <td><input type="number" class="form-control" name="rumah_rusak_berat_permanen" placeholder="0" value="{{ old('rumah_rusak_berat_permanen', $data->rumah_rusak_berat_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="rumah_rusak_berat_non_permanen" placeholder="0" value="{{ old('rumah_rusak_berat_non_permanen', $data->rumah_rusak_berat_non_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="rusak_berat_jumlah" placeholder="0" value="{{ ($data->rumah_rusak_berat_permanen ?? 0) + ($data->rumah_rusak_berat_non_permanen ?? 0) }}" readonly></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_rusak_berat_permanen" placeholder="0" value="{{ old('harga_satuan_rusak_berat_permanen', $data->harga_satuan_rusak_berat_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_rusak_berat_non_permanen" placeholder="0" value="{{ old('harga_satuan_rusak_berat_non_permanen', $data->harga_satuan_rusak_berat_non_permanen ?? '') }}"></td>
+                </tr>
+                <tr>
+                    <td>1c) JUMLAH RUMAH RUSAK SEDANG</td>
+                    <td><input type="number" class="form-control" name="rumah_rusak_sedang_permanen" placeholder="0" value="{{ old('rumah_rusak_sedang_permanen', $data->rumah_rusak_sedang_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="rumah_rusak_sedang_non_permanen" placeholder="0" value="{{ old('rumah_rusak_sedang_non_permanen', $data->rumah_rusak_sedang_non_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="rusak_sedang_jumlah" placeholder="0" value="{{ ($data->rumah_rusak_sedang_permanen ?? 0) + ($data->rumah_rusak_sedang_non_permanen ?? 0) }}" readonly></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_rusak_sedang_permanen" placeholder="0" value="{{ old('harga_satuan_rusak_sedang_permanen', $data->harga_satuan_rusak_sedang_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_rusak_sedang_non_permanen" placeholder="0" value="{{ old('harga_satuan_rusak_sedang_non_permanen', $data->harga_satuan_rusak_sedang_non_permanen ?? '') }}"></td>
+                </tr>
+                <tr>
+                    <td>1d) JUMLAH RUMAH RUSAK RINGAN</td>
+                    <td><input type="number" class="form-control" name="rumah_rusak_ringan_permanen" placeholder="0" value="{{ old('rumah_rusak_ringan_permanen', $data->rumah_rusak_ringan_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="rumah_rusak_ringan_non_permanen" placeholder="0" value="{{ old('rumah_rusak_ringan_non_permanen', $data->rumah_rusak_ringan_non_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="rusak_ringan_jumlah" placeholder="0" value="{{ ($data->rumah_rusak_ringan_permanen ?? 0) + ($data->rumah_rusak_ringan_non_permanen ?? 0) }}" readonly></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_rusak_ringan_permanen" placeholder="0" value="{{ old('harga_satuan_rusak_ringan_permanen', $data->harga_satuan_rusak_ringan_permanen ?? '') }}"></td>
+                    <td><input type="number" class="form-control" name="harga_satuan_rusak_ringan_non_permanen" placeholder="0" value="{{ old('harga_satuan_rusak_ringan_non_permanen', $data->harga_satuan_rusak_ringan_non_permanen ?? '') }}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h6 class="fw-bold mt-4">2. KERUSAKAN PRASARANA LINGKUNGAN</h6>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="5">2.1 JALAN LINGKUNGAN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Rusak Berat</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jalan_rusak_berat" placeholder="0" value="{{ old('jalan_rusak_berat', $data->jalan_rusak_berat ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Satuan/M²</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_satuan_jalan" placeholder="0" value="{{ old('harga_satuan_jalan', $data->harga_satuan_jalan ?? '') }}">
+                        </div>
+                    </td>
+                    <td style="width: 20%"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Sedang</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jalan_rusak_sedang" placeholder="0" value="{{ old('jalan_rusak_sedang', $data->jalan_rusak_sedang ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Ringan</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jalan_rusak_ringan" placeholder="0" value="{{ old('jalan_rusak_ringan', $data->jalan_rusak_ringan ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="5">2.2 SALURAN AIR/GORONG-GORONG</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Rusak Berat</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="saluran_rusak_berat" placeholder="0" value="{{ old('saluran_rusak_berat', $data->saluran_rusak_berat ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Satuan/M²</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_satuan_saluran" placeholder="0" value="{{ old('harga_satuan_saluran', $data->harga_satuan_saluran ?? '') }}">
+                        </div>
+                    </td>
+                    <td style="width: 20%"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Sedang</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="saluran_rusak_sedang" placeholder="0" value="{{ old('saluran_rusak_sedang', $data->saluran_rusak_sedang ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Ringan</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="saluran_rusak_ringan" placeholder="0" value="{{ old('saluran_rusak_ringan', $data->saluran_rusak_ringan ?? '') }}">
+                            <span class="input-group-text">m²</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="5">2.3 BALAI PERTEMUAN RW/RT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Rusak Berat</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="balai_rusak_berat" placeholder="0" value="{{ old('balai_rusak_berat', $data->balai_rusak_berat ?? '') }}">
+                            <span class="input-group-text">UNIT</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Satuan/M²</td>
+                    <td style="width: 25%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_satuan_balai" placeholder="0" value="{{ old('harga_satuan_balai', $data->harga_satuan_balai ?? '') }}">
+                        </div>
+                    </td>
+                    <td style="width: 20%"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Sedang</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="balai_rusak_sedang" placeholder="0" value="{{ old('balai_rusak_sedang', $data->balai_rusak_sedang ?? '') }}">
+                            <span class="input-group-text">UNIT</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>Rusak Ringan</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="balai_rusak_ringan" placeholder="0" value="{{ old('balai_rusak_ringan', $data->balai_rusak_ringan ?? '') }}">
+                            <span class="input-group-text">UNIT</span>
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="my-4">
+
+        <h6 class="fw-bold">II. PERKIRAAN KERUGIAN</h6>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="4">1) BIAYA PEMBERSIHAN PUING</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">A. Jumlah Tenaga Kerja</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="tenaga_kerja_hok" placeholder="0" value="{{ old('tenaga_kerja_hok', $data->tenaga_kerja_hok ?? '') }}">
+                            <span class="input-group-text">HOK</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Upah Harian</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="upah_harian" placeholder="0" value="{{ old('upah_harian', $data->upah_harian ?? '') }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>B. Jumlah Alat Berat</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="alat_berat_hari" placeholder="0" value="{{ old('alat_berat_hari', $data->alat_berat_hari ?? '') }}">
+                            <span class="input-group-text">Hari</span>
+                        </div>
+                    </td>
+                    <td>Biaya per Hari</td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="biaya_per_hari" placeholder="0" value="{{ old('biaya_per_hari', $data->biaya_per_hari ?? '') }}">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr class="bg-light">
+                    <th colspan="4">2) PERKIRAAN JUMLAH RUMAH YANG DISEWAKAN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 15%">Jumlah Rumah</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="jumlah_rumah_disewa" placeholder="0" value="{{ old('jumlah_rumah_disewa', $data->jumlah_rumah_disewa ?? '') }}">
+                            <span class="input-group-text">Unit</span>
+                        </div>
+                    </td>
+                    <td style="width: 15%">Harga Sewa/Bulan</td>
+                    <td style="width: 35%">
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="harga_sewa_per_bulan" placeholder="0" value="{{ old('harga_sewa_per_bulan', $data->harga_sewa_per_bulan ?? '') }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Durasi Sewa</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="durasi_sewa_bulan" placeholder="0" value="{{ old('durasi_sewa_bulan', $data->durasi_sewa_bulan ?? '') }}">
+                            <span class="input-group-text">Bulan</span>
+                        </div>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr class="bg-light">
+                            <th colspan="2">3) PERKIRAAN KEBUTUHAN HUNIAN SEMENTARA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 30%">Tenda</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="jumlah_tenda" placeholder="0" value="{{ old('jumlah_tenda', $data->jumlah_tenda ?? '') }}">
+                                    <span class="input-group-text">Unit</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Barak</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="jumlah_barak" placeholder="0" value="{{ old('jumlah_barak', $data->jumlah_barak ?? '') }}">
+                                    <span class="input-group-text">Unit</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rumah Sementara</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="jumlah_rumah_sementara" placeholder="0" value="{{ old('jumlah_rumah_sementara', $data->jumlah_rumah_sementara ?? '') }}">
+                                    <span class="input-group-text">Unit</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr class="bg-light">
+                            <th colspan="2">4) HARGA SATUAN HUNIAN SEMENTARA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 30%">Tenda</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" name="harga_tenda" placeholder="0" value="{{ old('harga_tenda', $data->harga_tenda ?? '') }}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Barak</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" name="harga_barak" placeholder="0" value="{{ old('harga_barak', $data->harga_barak ?? '') }}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rumah Sementara</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" name="harga_rumah_sementara" placeholder="0" value="{{ old('harga_rumah_sementara', $data->harga_rumah_sementara ?? '') }}">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Perkiraan Kerusakan -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">I. PERKIRAAN KERUSAKAN</h2>
-            
-            <!-- Kerusakan Rumah -->
-            <div class="mb-6">
-                <h3 class="text-lg font-medium mb-4">1. KERUSAKAN RUMAH</h3>
+        <hr class="my-4">
+
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+            </div>
+        </div>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="card mt-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Total Kerusakan (Otomatis)</h5>
+            </div>
+            <div class="card-body text-center">
+                @php
+                    $totalKerusakan = 0;
+                    // 1. Perhitungan kerusakan rumah (gunakan logika yang benar: setiap jenis × harga masing-masing)
+                    $totalKerusakan += ($data->rumah_hancur_total_permanen ?? 0) * ($data->harga_satuan_hancur_total_permanen ?? 0);
+                    $totalKerusakan += ($data->rumah_hancur_total_non_permanen ?? 0) * ($data->harga_satuan_hancur_total_non_permanen ?? 0);
+                    $totalKerusakan += ($data->rumah_rusak_berat_permanen ?? 0) * ($data->harga_satuan_rusak_berat_permanen ?? 0);
+                    $totalKerusakan += ($data->rumah_rusak_berat_non_permanen ?? 0) * ($data->harga_satuan_rusak_berat_non_permanen ?? 0);
+                    $totalKerusakan += ($data->rumah_rusak_sedang_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_permanen ?? 0);
+                    $totalKerusakan += ($data->rumah_rusak_sedang_non_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_non_permanen ?? 0);
+                    $totalKerusakan += ($data->rumah_rusak_ringan_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_permanen ?? 0);
+                    $totalKerusakan += ($data->rumah_rusak_ringan_non_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_non_permanen ?? 0);
+                    
+                    // 2. Perhitungan kerusakan prasarana lingkungan
+                    $totalKerusakan += (($data->jalan_rusak_berat ?? 0) + ($data->jalan_rusak_sedang ?? 0) + ($data->jalan_rusak_ringan ?? 0)) * ($data->harga_satuan_jalan ?? 0);
+                    $totalKerusakan += (($data->saluran_rusak_berat ?? 0) + ($data->saluran_rusak_sedang ?? 0) + ($data->saluran_rusak_ringan ?? 0)) * ($data->harga_satuan_saluran ?? 0);
+                    $totalKerusakan += (($data->balai_rusak_berat ?? 0) + ($data->balai_rusak_sedang ?? 0) + ($data->balai_rusak_ringan ?? 0)) * ($data->harga_satuan_balai ?? 0);
+                    
+                    // 3. Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+                    $totalKerusakan += ($data->tenaga_kerja_hok ?? 0) * ($data->upah_harian ?? 0);
+                    $totalKerusakan += ($data->alat_berat_hari ?? 0) * ($data->biaya_per_hari ?? 0);
+                    
+                    // 4. Biaya rumah sewa (dipindahkan dari kerugian ke kerusakan)
+                    $totalKerusakan += ($data->jumlah_rumah_disewa ?? 0) * ($data->harga_sewa_per_bulan ?? 0) * ($data->durasi_sewa_bulan ?? 0);
+                    
+                    // 5. Biaya hunian sementara (dipindahkan dari kerugian ke kerusakan)
+                    $totalKerusakan += ($data->jumlah_tenda ?? 0) * ($data->harga_tenda ?? 0);
+                    $totalKerusakan += ($data->jumlah_barak ?? 0) * ($data->harga_barak ?? 0);
+                    $totalKerusakan += ($data->jumlah_rumah_sementara ?? 0) * ($data->harga_rumah_sementara ?? 0);
+                @endphp
+                <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
+                <small>Total Kerusakan Format 1</small>
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-calculate totals for housing damage
+            function calculateHouseTotal(type) {
+                const permanen = parseInt(document.querySelector(`input[name="rumah_${type}_permanen"]`).value) || 0;
+                const nonPermanen = parseInt(document.querySelector(`input[name="rumah_${type}_non_permanen"]`).value) || 0;
+                const totalField = document.querySelector(`input[name="${type}_jumlah"]`);
+                if (totalField) {
+                    totalField.value = permanen + nonPermanen;
+                }
+            }
+
+            // Add event listeners for house damage calculations
+            ['hancur_total', 'rusak_sedang', 'rusak_ringan', 'rusak_berat'].forEach(type => {
+                const permanenField = document.querySelector(`input[name="rumah_${type}_permanen"]`);
+                const nonPermanenField = document.querySelector(`input[name="rumah_${type}_non_permanen"]`);
                 
-                <!-- Rumah Permanen -->
-                <div class="mb-4">
-                    <h4 class="font-medium mb-2">Rumah Permanen</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Hancur Total</label>
-                            <input type="number" name="rumah_hancur_total_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Berat</label>
-                            <input type="number" name="rumah_rusak_berat_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Sedang</label>
-                            <input type="number" name="rumah_rusak_sedang_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Ringan</label>
-                            <input type="number" name="rumah_rusak_ringan_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-medium text-gray-700">Harga Satuan</label>
-                        <input type="number" step="0.01" name="harga_satuan_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                </div>
+                if (permanenField) {
+                    permanenField.addEventListener('input', () => calculateHouseTotal(type));
+                }
+                if (nonPermanenField) {
+                    nonPermanenField.addEventListener('input', () => calculateHouseTotal(type));
+                }
+            });
 
-                <!-- Rumah Non-Permanen -->
-                <div class="mb-4">
-                    <h4 class="font-medium mb-2">Rumah Non-Permanen</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Hancur Total</label>
-                            <input type="number" name="rumah_hancur_total_non_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Berat</label>
-                            <input type="number" name="rumah_rusak_berat_non_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Sedang</label>
-                            <input type="number" name="rumah_rusak_sedang_non_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Ringan</label>
-                            <input type="number" name="rumah_rusak_ringan_non_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-medium text-gray-700">Harga Satuan</label>
-                        <input type="number" step="0.01" name="harga_satuan_non_permanen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Prasarana Lingkungan -->
-            <div>
-                <h3 class="text-lg font-medium mb-4">2. KERUSAKAN PRASARANA LINGKUNGAN</h3>
-                
-                <!-- Jalan Lingkungan -->
-                <div class="mb-4">
-                    <h4 class="font-medium mb-2">2.1 JALAN LINGKUNGAN</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Berat (m²)</label>
-                            <input type="number" name="jalan_rusak_berat" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Sedang (m²)</label>
-                            <input type="number" name="jalan_rusak_sedang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Ringan (m²)</label>
-                            <input type="number" name="jalan_rusak_ringan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-medium text-gray-700">Harga Satuan per m²</label>
-                        <input type="number" step="0.01" name="harga_satuan_jalan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                </div>
-
-                <!-- Saluran Air -->
-                <div class="mb-4">
-                    <h4 class="font-medium mb-2">2.2 SALURAN AIR / GORONG-GORONG</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Berat (m²)</label>
-                            <input type="number" name="saluran_rusak_berat" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Sedang (m²)</label>
-                            <input type="number" name="saluran_rusak_sedang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Ringan (m²)</label>
-                            <input type="number" name="saluran_rusak_ringan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-medium text-gray-700">Harga Satuan per m²</label>
-                        <input type="number" step="0.01" name="harga_satuan_saluran" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                </div>
-
-                <!-- Balai Pertemuan -->
-                <div class="mb-4">
-                    <h4 class="font-medium mb-2">2.3 BALAI PERTEMUAN RW/RT</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Berat (unit)</label>
-                            <input type="number" name="balai_rusak_berat" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Rusak Sedang (unit)</label>
-                            <input type="number" name="balai_rusak_sedang" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-medium text-gray-700">Harga Satuan per Unit</label>
-                        <input type="number" step="0.01" name="harga_satuan_balai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Perkiraan Kerugian -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">II. PERKIRAAN KERUGIAN</h2>
+            // Form submission with loading state
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const form = document.querySelector('form');
             
-            <!-- Biaya Pembersihan -->
-            <div class="mb-6">
-                <h3 class="text-lg font-medium mb-4">1. BIAYA PEMBERSIHAN PUING</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Jumlah HOK</label>
-                        <input type="number" name="tenaga_kerja_hok" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Upah Harian</label>
-                        <input type="number" step="0.01" name="upah_harian" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Jumlah Hari Alat Berat</label>
-                        <input type="number" name="alat_berat_hari" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Biaya Alat Berat per Hari</label>
-                        <input type="number" step="0.01" name="biaya_per_hari" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                </div>
+            if (form && submitBtn) {
+                form.addEventListener('submit', function() {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+                });
+            }
+        });
+        </script>
+
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
 
-            <!-- Rumah Disewakan -->
-            <div class="mb-6">
-                <h3 class="text-lg font-medium mb-4">2. PERKIRAAN RUMAH YANG DISEWAKAN</h3>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Harga Sewa per Bulan</label>
-                    <input type="number" step="0.01" name="harga_sewa_per_bulan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
 
-            <!-- Hunian Sementara -->
-            <div>
-                <h3 class="text-lg font-medium mb-4">3. PERKIRAAN KEBUTUHAN HUNIAN SEMENTARA</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Tenda -->
-                    <div>
-                        <h4 class="font-medium mb-2">Tenda</h4>
-                        <div class="space-y-2">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Jumlah Unit</label>
-                                <input type="number" name="jumlah_tenda" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Harga per Unit</label>
-                                <input type="number" step="0.01" name="harga_tenda" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Barak -->
-                    <div>
-                        <h4 class="font-medium mb-2">Barak</h4>
-                        <div class="space-y-2">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Jumlah Unit</label>
-                                <input type="number" name="jumlah_barak" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Harga per Unit</label>
-                                <input type="number" step="0.01" name="harga_barak" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Rumah Sementara -->
-                    <div>
-                        <h4 class="font-medium mb-2">Rumah Sementara</h4>
-                        <div class="space-y-2">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Jumlah Unit</label>
-                                <input type="number" name="jumlah_rumah_sementara" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Harga per Unit</label>
-                                <input type="number" step="0.01" name="harga_rumah_sementara" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
+        @endif
 
-        <!-- Submit Button -->
-        <div class="flex justify-end">
-            <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">
-                Simpan Data
-            </button>
-        </div>
-    </form>
-</div>
+    </div>
 @endsection
+

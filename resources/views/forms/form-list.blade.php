@@ -107,9 +107,6 @@
                             <p class="card-text">Formulir untuk mengumpulkan data per sektor.</p>
                             <div class="d-flex flex-column">
                                 <a href="{{ route('forms.form4.index', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn mb-2" style="background-color: #F28705; color: white; border: none;">Buka Form</a>
-                                <a href="{{ route('forms.form4.list', ['bencana_id' => request()->get('bencana_id')]) }}" class="btn" style="background-color: #6c757d; color: white; border: none;">
-                                    <i class="fa fa-eye"></i> Lihat Data
-                                </a>
                             </div>
                         </div>
                     </div>
