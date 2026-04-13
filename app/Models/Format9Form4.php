@@ -9,7 +9,6 @@ class Format9Form4 extends Model
 {
     protected $table = 'format9_form4s';
     protected $fillable = [
-        'bencana_id',
         'nama_kampung',
         'nama_distrik',
         // Kerusakan Sarana dan Prasarana
@@ -48,6 +47,14 @@ class Format9Form4 extends Model
         'total_kerusakan' => 'decimal:2',
         'total_kerugian' => 'decimal:2',
     ];
+
+    /**
+     * Relationship dengan Rekap
+     */
+    public function rekap(): BelongsTo
+    {
+        return $this->belongsTo(Rekap::class);
+    }
 
     protected static function boot()
     {
@@ -95,13 +102,5 @@ class Format9Form4 extends Model
         $kenaikanBiaya = ($this->kenaikan_biaya_operasional_unit ?? 0) * ($this->kenaikan_biaya_operasional_harga_satuan ?? 0);
         
         return $penurunanPendapatan + $kenaikanBiaya;
-    }
-
-    /**
-     * Get the bencana that owns the Format9Form4.
-     */
-    public function bencana(): BelongsTo
-    {
-        return $this->belongsTo(Bencana::class);
     }
 }

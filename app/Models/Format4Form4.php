@@ -12,7 +12,6 @@ class Format4Form4 extends Model
     protected $table = 'format4_form4s';
 
     protected $fillable = [
-        'bencana_id',
         'nama_kampung',
         'nama_distrik',
         // Panti Asuhan
@@ -38,16 +37,10 @@ class Format4Form4 extends Model
         'total_kerusakan' => 'decimal:2', 'total_kerugian' => 'decimal:2',
     ];
 
-    // Relationship to Bencana
-    public function bencana()
-    {
-        return $this->belongsTo(Bencana::class);
-    }
-
     // Relationship to Rekap
     public function rekap()
     {
-        return $this->hasOne(Rekap::class, 'format4_form4_id');
+        return $this->belongsTo(Rekap::class);
     }
 
     // Calculate total kerusakan (damage) - now includes all kerugian items moved from losses

@@ -40,7 +40,7 @@ class Format1Controller extends Controller
 
             // Validate the request
             $validated = $request->validate([
-                'bencana_id' => 'required|exists:bencana,id',
+                'rekap_id' => 'required|exists:rekap,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
                 'rumah_hancur_total_permanen' => 'nullable|integer',
@@ -129,7 +129,7 @@ class Format1Controller extends Controller
                     'message' => 'Data berhasil disimpan',
                     'data' => $formPerumahan
                 ]);
-            }            return redirect()->route('forms.form4.list-format1', ['bencana_id' => $validated['bencana_id']])
+            }            return redirect()->route('forms.form4.format1.list', ['bencana_id' => $validated['bencana_id']])
                            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {

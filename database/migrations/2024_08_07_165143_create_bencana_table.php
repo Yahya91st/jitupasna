@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('bencana', function (Blueprint $table) {
             $table->id();
-            $table->string('Ref', 192)->nullable();
-            $table->date('tanggal');
+            $table->string('ref')->unique();
             $table->integer('kategori_bencana_id');
-            $table->integer('kecamatan_id');
+            $table->date('tanggal');
+            $table->string('province_code');
+            $table->string('regency_code');
+            $table->string('district_code');
+            $table->string('village_code');
             $table->text('gambar')->nullable();
             $table->text('deskripsi')->nullable();
             $table->timestamps();

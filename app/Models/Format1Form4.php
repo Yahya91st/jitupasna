@@ -14,7 +14,6 @@ class Format1Form4 extends Model
     protected $table = 'format1_form4s';
 
     protected $fillable = [
-        'bencana_id',
         'nama_kampung',
         'nama_distrik',
         'rumah_hancur_total_permanen',
@@ -153,9 +152,9 @@ class Format1Form4 extends Model
     /**
      * Get the bencana that owns this form data
      */
-    public function bencana()
+    public function rekap()
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->belongsTo(Rekap::class, 'bencana_id');
     }
 
     /**

@@ -9,7 +9,6 @@ class Format16Form4 extends Model
 {
     protected $table = 'format16_form4s';
     protected $fillable = [
-        'bencana_id',
         'kabupaten',
         'nama_kampung',
         'nama_distrik',
@@ -89,12 +88,12 @@ class Format16Form4 extends Model
             $format16->total_kerusakan = $format16->getTotalKerusakanAttribute();
         });
     }
-
+    
     /**
-     * Get the bencana that owns the Format16Form4.
+     * Relationship dengan Rekap
      */
-    public function bencana(): BelongsTo
+    public function rekap(): BelongsTo
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->belongsTo(Rekap::class);
     }
 }

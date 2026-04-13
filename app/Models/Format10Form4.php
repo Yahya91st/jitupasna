@@ -9,7 +9,6 @@ class Format10Form4 extends Model
 {
     protected $table = 'format10_form4s';
     protected $fillable = [
-        'bencana_id',
         'nama_kampung',
         'nama_distrik',
         'padi_luas', 'padi_lama_tanam', 'padi_harga', 'padi_total',
@@ -31,12 +30,11 @@ class Format10Form4 extends Model
         'total_kerusakan' => 'decimal:2',
         'total_kerugian' => 'decimal:2',
     ];
-
     /**
-     * Get the bencana that owns the Format10Form4.
+     * Relationship dengan Rekap
      */
-    public function bencana(): BelongsTo
+    public function rekap(): BelongsTo
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->belongsTo(Rekap::class);
     }
 }

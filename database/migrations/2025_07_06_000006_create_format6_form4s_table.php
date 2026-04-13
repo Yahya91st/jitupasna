@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('format6_form4s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bencana_id')->index();
+            $table->foreignId('rekap_id')->constrained('rekap')->onDelete('cascade');
+            
             $table->string('nama_kampung')->nullable();
             $table->string('nama_distrik')->nullable();
             // Sarana Air Minum

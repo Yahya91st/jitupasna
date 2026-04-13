@@ -9,7 +9,6 @@ class Format15Form4 extends Model
 {
     protected $table = 'format15_form4s';
     protected $fillable = [
-        'bencana_id',
         'kabupaten',
         'nama_kampung',
         'nama_distrik',
@@ -37,12 +36,12 @@ class Format15Form4 extends Model
         'kerugian_3_rb_nilai' => 'decimal:2', 'kerugian_3_rs_nilai' => 'decimal:2',
         'kerugian_4_rb_nilai' => 'decimal:2', 'kerugian_4_rs_nilai' => 'decimal:2',
     ];
-
+    
     /**
-     * Get the bencana that owns the Format15Form4.
+     * Relationship dengan Rekap
      */
-    public function bencana(): BelongsTo
+    public function rekap(): BelongsTo
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->belongsTo(Rekap::class);
     }
 }

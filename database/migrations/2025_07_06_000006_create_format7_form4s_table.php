@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('format7_form4s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bencana_id');
+            $table->foreignId('rekap_id')->constrained('rekap')->onDelete('cascade');
+
+            
             $table->string('nama_kampung');
             $table->string('nama_distrik');
             
@@ -93,9 +95,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             
-            // Indexes for better performance
-            $table->index('bencana_id');
-            $table->index(['nama_kampung', 'nama_distrik']);
         });
     }
 

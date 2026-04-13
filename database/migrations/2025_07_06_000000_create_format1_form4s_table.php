@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('format1_form4s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bencana_id');
+            $table->foreignId('rekap_id')->constrained('rekap')->onDelete('cascade');
+
             
             // Basic Information
             $table->string('nama_kampung');

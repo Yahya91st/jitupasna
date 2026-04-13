@@ -9,7 +9,6 @@ class Format11Form4 extends Model
 {
     protected $table = 'format11_form4s';
     protected $fillable = [
-        'bencana_id',
         'nama_kampung',
         'nama_distrik',
         // Kematian Hewan Ternak
@@ -64,12 +63,12 @@ class Format11Form4 extends Model
         'total_kerusakan' => 'decimal:2',
         'total_kerugian' => 'decimal:2',
     ];
-
+    
     /**
-     * Get the bencana that owns the Format11Form4.
+     * Relationship dengan Rekap
      */
-    public function bencana(): BelongsTo
+    public function rekap(): BelongsTo
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->belongsTo(Rekap::class);
     }
 }

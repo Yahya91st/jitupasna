@@ -10,7 +10,8 @@ class CreateFormat4Form4sTable extends Migration
     {
         Schema::create('format4_form4s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bencana_id')->nullable(false);
+            $table->foreignId('rekap_id')->constrained('rekap')->onDelete('cascade');
+            
             $table->string('nama_kampung')->nullable(false);
             $table->string('nama_distrik')->nullable(false);
 
@@ -49,9 +50,6 @@ class CreateFormat4Form4sTable extends Migration
             $table->decimal('total_kerugian', 18, 2)->nullable()->default(0);
 
             $table->timestamps();
-
-            // foreign key
-            $table->foreign('bencana_id')->references('id')->on('bencana')->onDelete('cascade');
         });
     }
 

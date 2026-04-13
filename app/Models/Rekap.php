@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Rekap extends Model
 {
@@ -13,26 +13,9 @@ class Rekap extends Model
     protected $table = 'rekap';
 
     protected $fillable = [
+        'id',
         'bencana_id',
-        'format1_form4_id',
-        'format2_form4_id',
-        'format3_form4_id',
-        'format4_form4_id',
-        'format5_form4_id',
-        'format6_form4_id',
-        'format7_form4_id',
-        'format8_form4_id',
-        'format9_form4_id',
-        'format10_form4_id',
-        'format11_form4_id',
-        'format12_form4_id',
-        'format13_form4_id',
-        'format14_form4_id',
-        'format15_form4_id',
-        'format16_form4_id',
-        'format17_form4_id',
-        'nama_kampung',
-        'nama_distrik',
+        'province_name',
         'catatan',
         'total_kerusakan',
         'total_kerugian',
@@ -40,6 +23,7 @@ class Rekap extends Model
     ];
 
     protected $casts = [
+        'user_id' => 'integer | nullable',
         'total_kerusakan' => 'decimal:2',
         'total_kerugian' => 'decimal:2',
         'status' => 'string',
@@ -52,103 +36,103 @@ class Rekap extends Model
     /**
      * Relationship to Bencana
      */
-    public function bencana(): BelongsTo
+    public function bencana(): HasOne
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->HasOne(Bencana::class);
     }
 
     /**
      * Relationship to Format1Form4
      */
-    public function format1Form4(): BelongsTo
+    public function format1Form4(): HasOne
     {
-        return $this->belongsTo(Format1Form4::class, 'format1_form4_id');
+        return $this->HasOne(Format1Form4::class, 'format1_form4_id');
     }
 
     /**
      * Relationship to Format2Form4
      */
-    public function format2Form4(): BelongsTo
+    public function format2Form4(): HasOne
     {
-        return $this->belongsTo(Format2Form4::class, 'format2_form4_id');
+        return $this->HasOne(Format2Form4::class, 'format2_form4_id');
     }
 
     /**
      * Relationship to Format3Form4 - Format17Form4
      */
-    public function format3Form4(): BelongsTo
+    public function format3Form4(): HasOne
     {
-        return $this->belongsTo(Format3Form4::class, 'format3_form4_id');
+        return $this->HasOne(Format3Form4::class, 'format3_form4_id');
     }
 
-    public function format4Form4(): BelongsTo
+    public function format4Form4(): HasOne
     {
-        return $this->belongsTo(Format4Form4::class, 'format4_form4_id');
+        return $this->HasOne(Format4Form4::class, 'format4_form4_id');
     }
 
-    public function format5Form4(): BelongsTo
+    public function format5Form4(): HasOne
     {
-        return $this->belongsTo(Format5Form4::class, 'format5_form4_id');
+        return $this->HasOne(Format5Form4::class, 'format5_form4_id');
     }
 
-    public function format6Form4(): BelongsTo
+    public function format6Form4(): HasOne
     {
-        return $this->belongsTo(Format6Form4::class, 'format6_form4_id');
+        return $this->HasOne(Format6Form4::class, 'format6_form4_id');
     }
 
-    public function format7Form4(): BelongsTo
+    public function format7Form4(): HasOne
     {
-        return $this->belongsTo(Format7Form4::class, 'format7_form4_id');
+        return $this->HasOne(Format7Form4::class, 'format7_form4_id');
     }
 
-    public function format8Form4(): BelongsTo
+    public function format8Form4(): HasOne
     {
-        return $this->belongsTo(Format8Form4::class, 'format8_form4_id');
+        return $this->HasOne(Format8Form4::class, 'format8_form4_id');
     }
 
-    public function format9Form4(): BelongsTo
+    public function format9Form4(): HasOne
     {
-        return $this->belongsTo(Format9Form4::class, 'format9_form4_id');
+        return $this->HasOne(Format9Form4::class, 'format9_form4_id');
     }
 
-    public function format10Form4(): BelongsTo
+    public function format10Form4(): HasOne
     {
-        return $this->belongsTo(Format10Form4::class, 'format10_form4_id');
+        return $this->HasOne(Format10Form4::class, 'format10_form4_id');
     }
 
-    public function format11Form4(): BelongsTo
+    public function format11Form4(): HasOne
     {
-        return $this->belongsTo(Format11Form4::class, 'format11_form4_id');
+        return $this->HasOne(Format11Form4::class, 'format11_form4_id');
     }
 
-    public function format12Form4(): BelongsTo
+    public function format12Form4(): HasOne
     {
-        return $this->belongsTo(Format12Form4::class, 'format12_form4_id');
+        return $this->HasOne(Format12Form4::class, 'format12_form4_id');
     }
 
-    public function format13Form4(): BelongsTo
+    public function format13Form4(): HasOne
     {
-        return $this->belongsTo(Format13Form4::class, 'format13_form4_id');
+        return $this->HasOne(Format13Form4::class, 'format13_form4_id');
     }
 
-    public function format14Form4(): BelongsTo
+    public function format14Form4(): HasOne
     {
-        return $this->belongsTo(Format14Form4::class, 'format14_form4_id');
+        return $this->HasOne(Format14Form4::class, 'format14_form4_id');
     }
 
-    public function format15Form4(): BelongsTo
+    public function format15Form4(): HasOne
     {
-        return $this->belongsTo(Format15Form4::class, 'format15_form4_id');
+        return $this->HasOne(Format15Form4::class, 'format15_form4_id');
     }
 
-    public function format16Form4(): BelongsTo
+    public function format16Form4(): HasOne
     {
-        return $this->belongsTo(Format16Form4::class, 'format16_form4_id');
+        return $this->HasOne(Format16Form4::class, 'format16_form4_id');
     }
 
-    public function format17Form4(): BelongsTo
+    public function format17Form4(): HasOne
     {
-        return $this->belongsTo(Format17Form4::class, 'format17_form4_id');
+        return $this->HasOne(Format17Form4::class, 'format17_form4_id');
     }
 
     /**

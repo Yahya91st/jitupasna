@@ -12,10 +12,13 @@ class Bencana extends Model
     protected $table = 'bencana';
 
     protected $fillable = [
-        'kategori_bencana_id', 
+        'ref',
+        'kategori_bencana_id',
         'tanggal', 
-        'kecamatan_id', 
-        'Ref',
+        'province_code', 
+        'regency_code', 
+        'district_code',
+        'village_code',
         'deskripsi',
         'gambar'
     ];

@@ -10,7 +10,6 @@ class Format5Form4 extends Model
     protected $table = 'format5_form4s';
 
     protected $fillable = [
-        'bencana_id',
         'nama_kampung',
         'nama_distrik',
         // Gereja
@@ -43,11 +42,11 @@ class Format5Form4 extends Model
     ];
 
     /**
-     * Get the bencana that owns the Format5Form4.
+     * Relationship dengan Rekap
      */
-    public function bencana(): BelongsTo
+    public function rekap(): BelongsTo
     {
-        return $this->belongsTo(Bencana::class);
+        return $this->belongsTo(Rekap::class);
     }
     
     /**

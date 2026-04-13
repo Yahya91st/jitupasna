@@ -538,9 +538,10 @@ document.addEventListener('DOMContentLoaded', function() {
     var $kec = document.getElementById('kecamatan');
     var $desa = document.getElementById('desa');
 
+
     if ($prov && $reg && $kec && $desa) {
-        const apiBase = 'https://wilayah.id/api';
-        
+        const apiBase = '/proxy/wilayah';
+
         // Initialize Choices.js for desa (multi-select)
         const choicesDesa = new Choices('#desa', {
             removeItemButton: true,
@@ -600,8 +601,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            console.log('[wilayah] Fetching provinces from API');
-            fetchJson(`${apiBase}/provinces.json`)
+            fetchJson(`${apiBase}/provinces`)
                 .then(resp => {
                     const list = Array.isArray(resp) ? resp : (resp.data ?? []);
                     if (list.length > 0) {
@@ -612,17 +612,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 })
                 .catch(err => {
-                    console.error('[wilayah] External API failed, trying local:', err);
-                    fetchJson('/wilayah/provinces')
-                        .then(localResp => {
-                            const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
-                            cacheSet(key, list);
-                            setOptions($prov, list, 'Pilih Provinsi');
-                        })
-                        .catch(localErr => {
-                            console.error('[wilayah] Local API also failed:', localErr);
-                            setOptions($prov, [], 'Error memuat provinsi - Refresh halaman');
-                        });
+                    console.error('[wilayah] Local API failed:', err);
+                    setOptions($prov, [], 'Error memuat provinsi - Refresh halaman');
                 });
         })();
 
@@ -649,7 +640,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            fetchJson(`${apiBase}/regencies/${encodeURIComponent(code)}.json`)
+            fetchJson(`${apiBase}/regencies/${encodeURIComponent(code)}`)
                 .then(resp => {
                     const list = Array.isArray(resp) ? resp : (resp.data ?? []);
                     cacheSet(key, list);
@@ -657,16 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(err => {
                     console.error('[wilayah] Regency fetch failed:', err);
-                    fetchJson(`/wilayah/regencies/${encodeURIComponent(code)}`)
-                        .then(localResp => {
-                            const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
-                            cacheSet(key, list);
-                            setOptions($reg, list, 'Pilih Kabupaten/Kota');
-                        })
-                        .catch(localErr => {
-                            console.error('[wilayah] Local regency failed:', localErr);
-                            setOptions($reg, [], 'Error memuat kabupaten');
-                        });
+                    setOptions($reg, [], 'Error memuat kabupaten');
                 });
         });
 
@@ -692,7 +674,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            fetchJson(`${apiBase}/districts/${encodeURIComponent(code)}.json`)
+            fetchJson(`${apiBase}/districts/${encodeURIComponent(code)}`)
                 .then(resp => {
                     const list = Array.isArray(resp) ? resp : (resp.data ?? []);
                     cacheSet(key, list);
@@ -700,16 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(err => {
                     console.error('[wilayah] District fetch failed:', err);
-                    fetchJson(`/wilayah/districts/${encodeURIComponent(code)}`)
-                        .then(localResp => {
-                            const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
-                            cacheSet(key, list);
-                            setOptions($kec, list, 'Pilih Kecamatan');
-                        })
-                        .catch(localErr => {
-                            console.error('[wilayah] Local district failed:', localErr);
-                            setOptions($kec, [], 'Error memuat kecamatan');
-                        });
+                    setOptions($kec, [], 'Error memuat kecamatan');
                 });
         });
 
@@ -740,7 +713,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            fetchJson(`${apiBase}/villages/${encodeURIComponent(code)}.json`)
+            fetchJson(`${apiBase}/villages/${encodeURIComponent(code)}`)
                 .then(resp => {
                     const list = Array.isArray(resp) ? resp : (resp.data ?? []);
                     cacheSet(key, list);
@@ -754,23 +727,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(err => {
                     console.error('[wilayah] Village fetch failed:', err);
-                    fetchJson(`/wilayah/villages/${encodeURIComponent(code)}`)
-                        .then(localResp => {
-                            const list = Array.isArray(localResp) ? localResp : (localResp.data ?? []);
-                            cacheSet(key, list);
-                            choicesDesa.clearStore();
-                            choicesDesa.setChoices(
-                                list.map(v => ({ value: v.code, label: v.name })),
-                                'value',
-                                'label',
-                                true
-                            );
-                        })
-                        .catch(localErr => {
-                            console.error('[wilayah] Local village failed:', localErr);
-                            choicesDesa.clearStore();
-                            choicesDesa.setChoices([{ value: '', label: 'Error memuat desa' }], 'value', 'label', true);
-                        });
+                    choicesDesa.clearStore();
+                    choicesDesa.setChoices([{ value: '', label: 'Error memuat desa' }], 'value', 'label', true);
                 });
         });
     }

@@ -44,11 +44,20 @@ use App\Http\Controllers\Form10Controller;
 use App\Http\Controllers\Form11Controller;
 use App\Http\Controllers\Form12Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WilayahProxyController;
+use App\Http\Controllers\WilayahController;
 
-Route::get('/wilayah/provinces', [\App\Http\Controllers\WilayahController::class, 'provinces']);
-Route::get('/wilayah/regencies/{code}', [\App\Http\Controllers\WilayahController::class, 'regencies']);
-Route::get('/wilayah/districts/{code}', [\App\Http\Controllers\WilayahController::class, 'districts']);
-Route::get('/wilayah/villages/{code}', [\App\Http\Controllers\WilayahController::class, 'villages']);
+
+// Proxy routes for wilayah.id
+Route::get('/proxy/wilayah/provinces', [WilayahProxyController::class, 'provinces']);
+Route::get('/proxy/wilayah/regencies/{province_code}', [WilayahProxyController::class, 'regencies']);
+Route::get('/proxy/wilayah/districts/{regency_code}', [WilayahProxyController::class, 'districts']);
+Route::get('/proxy/wilayah/villages/{district_code}', [WilayahProxyController::class, 'villages']);
+
+Route::get('/wilayah/provinces', [WilayahController::class, 'provinces']);
+Route::get('/wilayah/regencies/{code}', [WilayahController::class, 'regencies']);
+Route::get('/wilayah/districts/{code}', [WilayahController::class, 'districts']);
+Route::get('/wilayah/villages/{code}', [WilayahController::class, 'villages']);
 
 
 Route::get('/', [DashboardController::class, 'index'])

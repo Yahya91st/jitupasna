@@ -12,31 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rekap', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary(); // id sama dengan bencana_id, tanpa auto increment
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('bencana_id');
             
-            // Format 1-17 Form4 IDs - nullable karena tidak semua format harus diisi
-            $table->unsignedBigInteger('format1_form4_id')->nullable();
-            $table->unsignedBigInteger('format2_form4_id')->nullable();
-            $table->unsignedBigInteger('format3_form4_id')->nullable();
-            $table->unsignedBigInteger('format4_form4_id')->nullable();
-            $table->unsignedBigInteger('format5_form4_id')->nullable();
-            $table->unsignedBigInteger('format6_form4_id')->nullable();
-            $table->unsignedBigInteger('format7_form4_id')->nullable();
-            $table->unsignedBigInteger('format8_form4_id')->nullable();
-            $table->unsignedBigInteger('format9_form4_id')->nullable();
-            $table->unsignedBigInteger('format10_form4_id')->nullable();
-            $table->unsignedBigInteger('format11_form4_id')->nullable();
-            $table->unsignedBigInteger('format12_form4_id')->nullable();
-            $table->unsignedBigInteger('format13_form4_id')->nullable();
-            $table->unsignedBigInteger('format14_form4_id')->nullable();
-            $table->unsignedBigInteger('format15_form4_id')->nullable();
-            $table->unsignedBigInteger('format16_form4_id')->nullable();
-            $table->unsignedBigInteger('format17_form4_id')->nullable();
-            
             // Additional fields
-            $table->string('nama_kampung')->nullable();
-            $table->string('nama_distrik')->nullable();
+            $table->string('province_name')->nullable();
             $table->text('catatan')->nullable();
             $table->decimal('total_kerusakan', 15, 2)->default(0);
             $table->decimal('total_kerugian', 15, 2)->default(0);
@@ -49,7 +30,7 @@ return new class extends Migration
             $table->index('bencana_id');
             $table->index('status');
             $table->index(['bencana_id', 'status']);
-            $table->unique(['bencana_id', 'nama_kampung', 'nama_distrik'], 'unique_rekap_per_lokasi');
+            $table->unique(['bencana_id'], 'unique_rekap_per_bencana');
         });
     }
 

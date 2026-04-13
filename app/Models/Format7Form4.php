@@ -13,7 +13,6 @@ class Format7Form4 extends Model
     protected $table = 'format7_form4s';
 
     protected $fillable = [
-        'bencana_id',
         'nama_kampung',
         'nama_distrik',
         
@@ -166,20 +165,13 @@ class Format7Form4 extends Model
         'deleted_at',
     ];
 
-    /**
-     * Relationship dengan Bencana
-     */
-    public function bencana(): BelongsTo
-    {
-        return $this->belongsTo(Bencana::class);
-    }
 
     /**
      * Relationship dengan Rekap
      */
     public function rekap(): BelongsTo
     {
-        return $this->belongsTo(Rekap::class, 'bencana_id', 'bencana_id');
+        return $this->belongsTo(Rekap::class);
     }
 
     /**
