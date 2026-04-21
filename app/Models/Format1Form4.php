@@ -154,7 +154,7 @@ class Format1Form4 extends Model
      */
     public function rekap()
     {
-        return $this->belongsTo(Rekap::class, 'bencana_id');
+        return $this->belongsTo(Rekap::class, 'rekap_id');
     }
 
     /**

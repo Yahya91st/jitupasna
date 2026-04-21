@@ -35,8 +35,6 @@
                         Ganti Bencana
                     </a>
                 </p>
-            @else
-                <p class="text-subtitle text-muted">Pilih form yang ingin diisi</p>
             @endif
             <div class="mt-2">
                 <span class="badge bg-info">Pengguna JITUPASNA</span>

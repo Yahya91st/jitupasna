@@ -407,30 +407,57 @@
                 </li>
 
                 <!-- Jitupasna -->
-                <li class="sidebar-item has-sub {{ Request::is('bencana*') || Request::is('kerusakan*') || Request::is('kerugian*') || Request::is('kebutuhan*') ? 'active' : '' }}">
+                <li class="has-sub sidebar-item {{ Request::is('bencana*') || Request::is('kerusakan*') || Request::is('kerugian*') || Request::is('kebutuhan*') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
-                        <i data-feather="triangle"></i>
+                        <i data-feather="triangle"></i>           
                         <span>Jitupasna</span>
-                    </a>
-                    <ul class="submenu {{ Request::is('bencana*') || Request::is('kerusakan*') || Request::is('kerugian*') || Request::is('kebutuhan*') ? 'active' : '' }}">
-                        <li class="{{ Request::is('bencana*') && !Request::query('source') ? 'active' : '' }}">
-                            <a href="{{ route('bencana.index') }}">Bencana</a>
+                    </a>                    
+                    <ul class="submenu">
+                        <li>
+                            <a href="{{ route('bencana.index') }}" class="sidebar-link">
+                                <i data-feather="circle"></i>
+                                <span>Bencana</span>
+                            </a>
                         </li>
-                        <li class="{{ Request::is('kerusakan*') ? 'active' : '' }}">
-                            <a href="{{ route('kerusakan.list') }}">Kerusakan</a>
+                    </ul>
+                    <ul class="submenu">
+                        <li class="has-sub {{ Request::is('akibat*') ? 'active' : '' }}">
+                            <a href="#" class="sidebar-link">
+                                <i data-feather="circle"></i>
+                                <span>Akibat</span>
+                            </a>
+                            <ul class="submenu">
+                                <li>
+                                    <a href="{{ route('kerusakan.list', ['source' => 'forms']) }}">
+                                        <i data-feather="circle"></i>
+                                        <span>Kerusakan</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('kerugian.list', ['source' => 'forms']) }}">
+                                        <i data-feather="circle"></i>
+                                        <span>Kerugian</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('forms.form-list', ['source' => 'forms']) }}">
+                                        <i data-feather="circle"></i>
+                                        <span>Formulir</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="{{ Request::is('kerugian*') ? 'active' : '' }}">
-                            <a href="{{ route('kerugian.list') }}">Kerugian</a>
-                        </li>
-                        <li class="{{ Request::is('kebutuhan*') || (Request::is('bencana*') && Request::query('source') == 'kebutuhan') ? 'active' : '' }}">
-                            <a href="{{ route('bencana.index', ['source' => 'kebutuhan']) }}">Kebutuhan</a>
-                        </li>
-                        <li class="{{ Request::is('bencana*') && Request::query('source') == 'forms' ? 'active' : '' }}">
-                            <a href="{{ route('bencana.index', ['source' => 'forms']) }}">Formulir</a>
+                    </ul>
+                    <ul class="submenu">
+                        <li>
+                            <a href="{{ route('bencana.index', ['source' => 'kebutuhan']) }}" class="sidebar-link">
+                                <i data-feather="circle"></i>
+                                <span>Kebutuhan</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
-
+                    
                 <!-- User Management -->
                 @if (auth()->user()->hasRole(['admin', 'super-admin']))
                     <li class="sidebar-item {{ Request::is('users*') ? 'active' : '' }}">
@@ -480,9 +507,24 @@
                 const parentItem = this.parentElement;
                 const isActive = parentItem.classList.contains('active');
 
-                // Close all other submenus with animation
-                document.querySelectorAll('.has-sub').forEach(function(item) {
-                    if (item !== parentItem && item.classList.contains('active')) {
+                // // Close all other submenus with animation
+                // document.querySelectorAll('.has-sub').forEach(function(item) {
+                //     if (item !== parentItem && item.classList.contains('active')) {
+                //         // Reset submenu items animation
+                //         const submenuItems = item.querySelectorAll('.submenu li');
+                //         submenuItems.forEach(function(item) {
+                //             item.style.transitionDelay = '0s';
+                //         });
+                //         item.classList.remove('active');
+                //     }
+                // });
+
+                // Only close siblings, not all .has-sub
+                const siblings = Array.from(parentItem.parentElement.children)
+                    .filter(el => el !== parentItem && el.classList.contains('has-sub'));
+
+                siblings.forEach(function(item) {
+                    if (item.classList.contains('active')) {
                         // Reset submenu items animation
                         const submenuItems = item.querySelectorAll('.submenu li');
                         submenuItems.forEach(function(item) {

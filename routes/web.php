@@ -46,6 +46,30 @@ use App\Http\Controllers\Form12Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahProxyController;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\KajianController;
+use App\Http\Controllers\VerifikasiController;
+
+Route::prefix('/verifikasi')
+    ->middleware(['auth', 'verified'])
+    ->name('verifikasi.')
+    ->group(function () {
+        Route::get('/pemukiman', [VerifikasiController::class, 'index'])->name('pemukiman');
+        Route::get('/jalan', [VerifikasiController::class, 'jalan'])->name('jalan');
+        Route::get('/jembatan', [VerifikasiController::class, 'jembatan'])->name('jembatan');
+    });
+
+Route::prefix('/kajian')
+    ->middleware(['auth', 'verified'])
+    ->name('kajian.')
+    ->group(function () {
+    Route::get('/', [KajianController::class, 'index'])->name('index');
+    Route::get('/show/{id}', [KajianController::class, 'show'])->name('show');
+    Route::get('/create/akses', [KajianController::class, 'createAkses'])->name('createAkses');
+    Route::get('/create/fungsi', [KajianController::class, 'createFungsi'])->name('createFungsi');
+    Route::get('/create/resiko', [KajianController::class, 'createResiko'])->name('createResiko');
+    Route::post('/store', [KajianController::class, 'store'])->name('store');
+    Route::get('/list', [KajianController::class, 'list'])->name('list');
+});
 
 
 // Proxy routes for wilayah.id
