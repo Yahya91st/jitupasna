@@ -122,6 +122,16 @@ class Format5Controller extends Controller
                     $data[$key] = null;
                 }
             }
+            // Cari atau buat rekap berdasarkan bencana_id
+            $rekap = Rekap::firstOrCreate([
+                'bencana_id' => $validated['bencana_id']
+            ]);
+
+            // Simpan data Format3Form4 dengan rekap_id
+            $data = $validated;
+            $data['rekap_id'] = $rekap->id;
+            // unset($data['bencana_id']); // pastikan tidak ada bencana_id di insert
+
             
             $formAgama = Format5Form4::create($data);
 

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Bencana;
 use App\Models\Format3Form4;
-use Illuminate\Support\Facades\DB;
+use App\Models\Rekap;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Format3Controller extends Controller
 {
@@ -171,6 +172,16 @@ class Format3Controller extends Controller
         $data['total_kerusakan'] = $totalKerusakan;
         $data['total_kerugian'] = 0;
 
+        // Cari atau buat rekap berdasarkan bencana_id
+        $rekap = Rekap::firstOrCreate([
+            'bencana_id' => $validated['bencana_id']
+        ]);
+
+        // Simpan data Format3Form4 dengan rekap_id
+        $data = $validated;
+        $data['rekap_id'] = $rekap->id;
+        // unset($data['bencana_id']); // pastikan tidak ada bencana_id di insert
+
         // Create sekali setelah semua field siap
         $format3form4 = Format3Form4::create($data);
 
@@ -180,7 +191,7 @@ class Format3Controller extends Controller
             return response()->json(['success' => true, 'message' => 'Data berhasil disimpan', 'data' => $format3form4]);
         }
 
-        return redirect()->route('forms.form4.list-format3', ['bencana_id' => $format3form4->bencana_id])
+        return redirect()->route('forms.form4.format3.list', ['bencana_id' => $rekap->bencana_id])
             ->with('success', 'Data berhasil disimpan');
 
     } catch (\Exception $e) {
@@ -219,10 +230,11 @@ class Format3Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
         
         // Get form data for this disaster
-        $form = Format3Form4::where('bencana_id', $bencana_id)->get();
+        $form = Format3Form4::where('rekap_id', $bencana_id)->get();
         
-        return view('forms.form4.format3.list-format3', compact('bencana', 'form'));
+        return view('forms.form4.format3.list', compact('bencana', 'form'));
     }
+
         public function edit($id)
     {
         try {
@@ -377,7 +389,7 @@ class Format3Controller extends Controller
 
             DB::commit();
 
-            return redirect()->route('forms.form4.list-format3', ['bencana_id' => $format3form4->bencana_id])
+            return redirect()->route('forms.form4.format3.list', ['bencana_id' => $format3form4->bencana_id])
                              ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -392,7 +404,7 @@ class Format3Controller extends Controller
         $format3form4 = Format3Form4::findOrFail($id);
         $bencana_id = $format3form4->bencana_id;
         $format3form4->delete();
-        return redirect()->route('forms.form4.list-format3', ['bencana_id' => $bencana_id])
+        return redirect()->route('forms.form4.format3.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
     }
 

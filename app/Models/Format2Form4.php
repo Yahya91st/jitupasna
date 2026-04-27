@@ -12,6 +12,7 @@ class Format2Form4 extends Model
     protected $table = 'format2_form4s';
 
     protected $fillable = [
+        'rekap_id',
         'nama_kampung',
         'nama_distrik',
         // TK/RA

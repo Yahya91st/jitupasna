@@ -2,9 +2,28 @@
 
 namespace App\Models;
 
+use App\Models\Bencana;
+use App\Models\Format1Form4;
+use App\Models\Format2Form4;
+use App\Models\Format3Form4;
+use App\Models\Format4Form4;
+use App\Models\Format5Form4;
+use App\Models\Format6Form4;
+use App\Models\Format7Form4;
+use App\Models\Format8Form4;
+use App\Models\Format9Form4;
+use App\Models\Format10Form4;
+use App\Models\Format11Form4;
+use App\Models\Format12Form4;
+use App\Models\Format13Form4;
+use App\Models\Format14Form4;
+use App\Models\Format15Form4;
+use App\Models\Format16Form4;
+use App\Models\Format17Form4;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Rekap extends Model
 {
@@ -36,9 +55,9 @@ class Rekap extends Model
     /**
      * Relationship to Bencana
      */
-    public function bencana(): HasOne
+    public function bencana(): BelongsTo
     {
-        return $this->HasOne(Bencana::class);
+        return $this->belongsTo(Bencana::class, 'bencana_id', 'id');
     }
 
     /**
@@ -46,7 +65,7 @@ class Rekap extends Model
      */
     public function format1Form4(): HasOne
     {
-        return $this->HasOne(Format1Form4::class, 'format1_form4_id');
+        return $this->HasOne(Format1Form4::class, 'id');
     }
 
     /**
@@ -54,7 +73,7 @@ class Rekap extends Model
      */
     public function format2Form4(): HasOne
     {
-        return $this->HasOne(Format2Form4::class, 'format2_form4_id');
+        return $this->HasOne(Format2Form4::class, 'id');
     }
 
     /**
@@ -62,77 +81,77 @@ class Rekap extends Model
      */
     public function format3Form4(): HasOne
     {
-        return $this->HasOne(Format3Form4::class, 'format3_form4_id');
+        return $this->HasOne(Format3Form4::class, 'id');
     }
 
     public function format4Form4(): HasOne
     {
-        return $this->HasOne(Format4Form4::class, 'format4_form4_id');
+        return $this->HasOne(Format4Form4::class, 'id');
     }
 
     public function format5Form4(): HasOne
     {
-        return $this->HasOne(Format5Form4::class, 'format5_form4_id');
+        return $this->HasOne(Format5Form4::class, 'id');
     }
 
     public function format6Form4(): HasOne
     {
-        return $this->HasOne(Format6Form4::class, 'format6_form4_id');
+        return $this->HasOne(Format6Form4::class, 'id');
     }
 
     public function format7Form4(): HasOne
     {
-        return $this->HasOne(Format7Form4::class, 'format7_form4_id');
+        return $this->HasOne(Format7Form4::class, 'id');
     }
 
     public function format8Form4(): HasOne
     {
-        return $this->HasOne(Format8Form4::class, 'format8_form4_id');
+        return $this->HasOne(Format8Form4::class, 'id');
     }
 
     public function format9Form4(): HasOne
     {
-        return $this->HasOne(Format9Form4::class, 'format9_form4_id');
+        return $this->HasOne(Format9Form4::class, 'id');
     }
 
     public function format10Form4(): HasOne
     {
-        return $this->HasOne(Format10Form4::class, 'format10_form4_id');
+        return $this->HasOne(Format10Form4::class, 'id');
     }
 
     public function format11Form4(): HasOne
     {
-        return $this->HasOne(Format11Form4::class, 'format11_form4_id');
+        return $this->HasOne(Format11Form4::class, 'id');
     }
 
     public function format12Form4(): HasOne
     {
-        return $this->HasOne(Format12Form4::class, 'format12_form4_id');
+        return $this->HasOne(Format12Form4::class, 'id');
     }
 
     public function format13Form4(): HasOne
     {
-        return $this->HasOne(Format13Form4::class, 'format13_form4_id');
+        return $this->HasOne(Format13Form4::class, 'id');
     }
 
     public function format14Form4(): HasOne
     {
-        return $this->HasOne(Format14Form4::class, 'format14_form4_id');
+        return $this->HasOne(Format14Form4::class, 'id');
     }
 
     public function format15Form4(): HasOne
     {
-        return $this->HasOne(Format15Form4::class, 'format15_form4_id');
+        return $this->HasOne(Format15Form4::class, 'id');
     }
 
     public function format16Form4(): HasOne
     {
-        return $this->HasOne(Format16Form4::class, 'format16_form4_id');
+        return $this->HasOne(Format16Form4::class, 'id');
     }
 
     public function format17Form4(): HasOne
     {
-        return $this->HasOne(Format17Form4::class, 'format17_form4_id');
+        return $this->HasOne(Format17Form4::class, 'id');
     }
 
     /**

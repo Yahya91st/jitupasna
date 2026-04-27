@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rekap;
 use App\Models\Bencana;
+use App\Models\Rekap;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Log;
 
 class RekapController extends Controller
 {
@@ -341,7 +342,7 @@ class RekapController extends Controller
                 $syncedCount = $result['synced'];
                 $deletedCount = $result['deleted'];
                 
-                \Log::info('Sync completed for specific bencana', [
+                Log::info('Sync completed for specific bencana', [
                     'bencana_id' => $bencanaId,
                     'synced_count' => $syncedCount,
                     'deleted_count' => $deletedCount

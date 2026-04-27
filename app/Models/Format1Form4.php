@@ -14,6 +14,7 @@ class Format1Form4 extends Model
     protected $table = 'format1_form4s';
 
     protected $fillable = [
+        'rekap_id',
         'nama_kampung',
         'nama_distrik',
         'rumah_hancur_total_permanen',

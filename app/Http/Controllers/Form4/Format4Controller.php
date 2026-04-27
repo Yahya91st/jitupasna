@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Bencana;
 use App\Models\Format4Form4;
-use Illuminate\Support\Facades\DB;
+use App\Models\Rekap;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Format4Controller extends Controller
 {
@@ -103,6 +104,7 @@ class Format4Controller extends Controller
                 'biaya_pendampingan_psikososial' => 'nullable|numeric',
                 'biaya_pelatihan_darurat' => 'nullable|numeric',
             ]);
+            
 
             // Calculate totals before saving
             $data = $request->only((new Format4Form4)->getFillable());
@@ -116,8 +118,18 @@ class Format4Controller extends Controller
             // Move all kerugian to kerusakan, make kerugian = 0
             $data['total_kerusakan'] = $kerusakan_bangunan + $total_kerugian_items;
             $data['total_kerugian'] = 0;
+
+            // Cari atau buat rekap berdasarkan bencana_id
+            $rekap = Rekap::firstOrCreate([
+                'bencana_id' => $validated['bencana_id']
+            ]);
+
+            // Simpan data Format3Form4 dengan rekap_id
+            $dataFinal = $data;
+            $dataFinal['rekap_id'] = $rekap->id;
+            // unset($data['bencana_id']); // pastikan tidak ada bencana_id di insert
             
-            $formSosial = Format4Form4::create($data);
+            $formSosial = Format4Form4::create($dataFinal);
 
             DB::commit();
 

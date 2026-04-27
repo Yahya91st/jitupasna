@@ -147,7 +147,7 @@
                 Kembali
             </a>
             <div>
-                <a href="{{ route('forms.form4.format3form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                <a href="{{ route('forms.form4.format3.format3form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
                     Tambah Data Baru
                 </a>
             </div>

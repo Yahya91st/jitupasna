@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Bencana;
 use App\Models\Format1Form4;
+use App\Models\Rekap;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class Format1Controller extends Controller
 {
@@ -34,13 +35,14 @@ class Format1Controller extends Controller
      * Store format1 form data for Housing sector
      */
     public function store(Request $request)
-    {
+    {        
+
         try {
             DB::beginTransaction();
 
-            // Validate the request
+            // Validasi request tanpa rekap_id, gunakan bencana_id
             $validated = $request->validate([
-                'rekap_id' => 'required|exists:rekap,id',
+                'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
                 'rumah_hancur_total_permanen' => 'nullable|integer',
@@ -51,7 +53,6 @@ class Format1Controller extends Controller
                 'rumah_rusak_sedang_non_permanen' => 'nullable|integer',
                 'rumah_rusak_ringan_permanen' => 'nullable|integer',
                 'rumah_rusak_ringan_non_permanen' => 'nullable|integer',
-                // Individual harga satuan for each category
                 'harga_satuan_hancur_total_permanen' => 'nullable|numeric',
                 'harga_satuan_hancur_total_non_permanen' => 'nullable|numeric',
                 'harga_satuan_rusak_berat_permanen' => 'nullable|numeric',
@@ -87,12 +88,13 @@ class Format1Controller extends Controller
                 'harga_rumah_sementara' => 'nullable|numeric',
             ]);
 
-            // Debug log: cek data yang diterima dari form
-            Log::debug('Format1Form4 STORE validated data', $validated);
+            // Cari atau buat rekap berdasarkan bencana_id
+            $rekap = Rekap::firstOrCreate([
+                'bencana_id' => $validated['bencana_id']
+            ]);
 
             // Hitung total kerusakan otomatis (semua item sekarang masuk ke kerusakan)
             $total_kerusakan = 
-                // 1. Kerusakan rumah
                 ($validated['rumah_hancur_total_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_permanen'] ?? 0) +
                 ($validated['rumah_hancur_total_non_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_non_permanen'] ?? 0) +
                 ($validated['rumah_rusak_berat_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_permanen'] ?? 0) +
@@ -101,35 +103,34 @@ class Format1Controller extends Controller
                 ($validated['rumah_rusak_sedang_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_non_permanen'] ?? 0) +
                 ($validated['rumah_rusak_ringan_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_permanen'] ?? 0) +
                 ($validated['rumah_rusak_ringan_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_non_permanen'] ?? 0) +
-                // 2. Kerusakan prasarana lingkungan
                 (($validated['jalan_rusak_berat'] ?? 0) + ($validated['jalan_rusak_sedang'] ?? 0) + ($validated['jalan_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_jalan'] ?? 0) +
                 (($validated['saluran_rusak_berat'] ?? 0) + ($validated['saluran_rusak_sedang'] ?? 0) + ($validated['saluran_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_saluran'] ?? 0) +
                 (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0) +
-                // Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
                 ($validated['tenaga_kerja_hok'] ?? 0) * ($validated['upah_harian'] ?? 0) +
                 ($validated['alat_berat_hari'] ?? 0) * ($validated['biaya_per_hari'] ?? 0) +
-                // Rumah sewa (dipindahkan dari kerugian ke kerusakan)
                 ($validated['jumlah_rumah_disewa'] ?? 0) * ($validated['harga_sewa_per_bulan'] ?? 0) * ($validated['durasi_sewa_bulan'] ?? 0) +
-                // Hunian sementara (dipindahkan dari kerugian ke kerusakan)
                 ($validated['jumlah_tenda'] ?? 0) * ($validated['harga_tenda'] ?? 0) +
                 ($validated['jumlah_barak'] ?? 0) * ($validated['harga_barak'] ?? 0) +
                 ($validated['jumlah_rumah_sementara'] ?? 0) * ($validated['harga_rumah_sementara'] ?? 0);
             $validated['total_kerusakan'] = $total_kerusakan;
 
-            // Debug log: cek hasil perhitungan total_kerusakan
-            Log::debug('Format1Form4 STORE total_kerusakan', ['total_kerusakan' => $total_kerusakan]);
+            $data = $validated;
+            $data['rekap_id'] = $rekap->id;
+            // unset($data['bencana_id']); // pastikan tidak ada bencana_id di insert
 
-            // Create new form data
-            $formPerumahan = Format1Form4::create($validated);
 
-            DB::commit();            // Return success response for AJAX or redirect for regular form
+
+            $format1Form4 = Format1Form4::create($data);
+
+            DB::commit();
+            // Return success response for AJAX or redirect for regular form
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formPerumahan
+                    'data' => $format1Form4
                 ]);
-            }            return redirect()->route('forms.form4.format1.list', ['bencana_id' => $validated['bencana_id']])
+            }            return redirect()->route('forms.form4.format1.list', ['bencana_id' => $rekap->bencana_id])
                            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -153,10 +154,9 @@ class Format1Controller extends Controller
      */
     public function show($id)
     {
-        $formPerumahan = Format1Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPerumahan->bencana;
-        
-        return view('forms.form4.format1.show-format1', compact('formPerumahan', 'bencana'));
+        $format1Form4 = Format1Form4::with('rekap.bencana')->findOrFail($id);
+        $bencana = $format1Form4->rekap ? $format1Form4->rekap->bencana : null;
+        return view('forms.form4.format1.show-format1', compact('format1Form4', 'bencana'));
     }
 
     /**
@@ -172,8 +172,11 @@ class Format1Controller extends Controller
         }
         
         // Get bencana details
-        $bencana = Bencana::findOrFail($bencana_id);        // Get form data for this disaster
-        $reports = Format1Form4::where('bencana_id', $bencana_id)->get();
+        $bencana = Bencana::findOrFail($bencana_id);
+        // Ambil data Format1Form4 yang terkait dengan bencana_id melalui relasi rekap
+        $reports = Format1Form4::whereHas('rekap', function($q) use ($bencana_id) {
+            $q->where('bencana_id', $bencana_id);
+        })->get();
         
         return view('forms.form4.format1.list-format1', compact('bencana', 'reports'));
     }
@@ -186,11 +189,11 @@ class Format1Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formPerumahan = Format1Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPerumahan->bencana;
-        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('formPerumahan', 'bencana'));
+        $format1Form4 = Format1Form4::with('bencana')->findOrFail($id);
+        $bencana = $format1Form4->bencana;
+        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('format1Form4', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('Format1_Perumahan_' . $formPerumahan->nama_kampung . '.pdf');
+        return $pdf->download('Format1_Perumahan_' . $format1Form4->nama_kampung . '.pdf');
     }
 
     /**
@@ -198,13 +201,13 @@ class Format1Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $formPerumahan = Format1Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPerumahan->bencana;
+        $format1Form4 = Format1Form4::with('bencana')->findOrFail($id);
+        $bencana = $format1Form4->bencana;
         
-        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('formPerumahan', 'bencana'));
+        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('format1Form4', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->stream('Format1_Perumahan_' . $formPerumahan->nama_kampung . '.pdf');
+        return $pdf->stream('Format1_Perumahan_' . $format1Form4->nama_kampung . '.pdf');
     }
 
     /**
@@ -213,11 +216,11 @@ class Format1Controller extends Controller
     public function destroy($id)
     {
         try {
-            $formPerumahan = Format1Form4::findOrFail($id);
-            $bencana_id = $formPerumahan->bencana_id;
+            $format1Form4 = Format1Form4::findOrFail($id);
+            $bencana_id = $format1Form4->bencana_id;
             
             // Delete the record
-            $formPerumahan->delete();
+            $format1Form4->delete();
             
             // Return success response
             return redirect()->route('forms.form4.list-format1', ['bencana_id' => $bencana_id])
@@ -235,10 +238,10 @@ class Format1Controller extends Controller
     public function edit($id)
     {
         try {
-            $formPerumahan = Format1Form4::with('bencana')->findOrFail($id);
-            $bencana = $formPerumahan->bencana;
+            $format1Form4 = Format1Form4::with('bencana')->findOrFail($id);
+            $bencana = $format1Form4->bencana;
             
-            return view('forms.form4.format1.edit', compact('formPerumahan', 'bencana'));
+            return view('forms.form4.format1.edit', compact('format1Form4', 'bencana'));
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withErrors(['error' => 'Data tidak ditemukan: ' . $e->getMessage()]);
@@ -258,7 +261,7 @@ class Format1Controller extends Controller
             DB::beginTransaction();
 
             // Find the existing record
-            $formPerumahan = Format1Form4::findOrFail($id);
+            $format1Form4 = Format1Form4::findOrFail($id);
             // Validate the request
             $validated = $request->validate([
                 'nama_kampung' => 'required|string',
@@ -334,11 +337,11 @@ class Format1Controller extends Controller
             $validated['total_kerusakan'] = $total_kerusakan;
 
             // Update the record
-            $formPerumahan->update($validated);
+            $format1Form4->update($validated);
 
             DB::commit();
 
-            return redirect()->route('forms.form4.list-format1', ['bencana_id' => $formPerumahan->bencana_id])
+            return redirect()->route('forms.form4.list-format1', ['bencana_id' => $format1Form4->bencana_id])
                            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {

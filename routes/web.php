@@ -49,14 +49,14 @@ use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\KajianController;
 use App\Http\Controllers\VerifikasiController;
 
-Route::prefix('/verifikasi')
-    ->middleware(['auth', 'verified'])
-    ->name('verifikasi.')
-    ->group(function () {
-        Route::get('/pemukiman', [VerifikasiController::class, 'index'])->name('pemukiman');
-        Route::get('/jalan', [VerifikasiController::class, 'jalan'])->name('jalan');
-        Route::get('/jembatan', [VerifikasiController::class, 'jembatan'])->name('jembatan');
-    });
+// Route::prefix('/verifikasi')
+//     ->middleware(['auth', 'verified'])
+//     ->name('verifikasi.')
+//     ->group(function () {
+//         Route::get('/pemukiman', [VerifikasiController::class, 'index'])->name('pemukiman');
+//         Route::get('/jalan', [VerifikasiController::class, 'jalan'])->name('jalan');
+//         Route::get('/jembatan', [VerifikasiController::class, 'jembatan'])->name('jembatan');
+//     });
 
 Route::prefix('/kajian')
     ->middleware(['auth', 'verified'])
@@ -627,8 +627,8 @@ Route::prefix('rekap')
         Route::post('/sync-all', [RekapController::class, 'syncAll'])->name('sync-all');
         });
 
-        Route::get('/form4/format2', [\App\Http\Controllers\Form4\Format2Controller::class, 'index'])->name('forms.form4.index-format2');
-        Route::get('/form4/format2/pdf/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format2');
+        Route::get('/form4/format2', [Format2Controller::class, 'index'])->name('forms.form4.index-format2');
+        Route::get('/form4/format2/pdf/{id}', [Format2Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format2');
         Route::get('/form4/format4', [\App\Http\Controllers\Form4\Format4Controller::class, 'index'])->name('forms.form4.index-format4');
         Route::get('/form4/format4/pdf/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'generatePdf'])->name('forms.form4.pdf-format4');
 
@@ -636,9 +636,9 @@ Route::prefix('rekap')
         Route::patch('/forms/form4/format1/update/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'update'])->name('forms.form4.format1.update');
         Route::delete('/forms/form4/format1/destroy/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'destroy'])->name('forms.form4.format1.destroy');
 
-        Route::get('/forms/form4/format2/edit/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'edit'])->name('forms.form4.format2.edit');
-        Route::delete('/forms/form4/format2/destroy/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'destroy'])->name('forms.form4.format2.destroy');
-        Route::patch('/forms/form4/format2/update/{id}', [\App\Http\Controllers\Form4\Format2Controller::class, 'update'])->name('forms.form4.format2.update');
+        Route::get('/forms/form4/format2/edit/{id}', [Format2Controller::class, 'edit'])->name('forms.form4.format2.edit');
+        Route::delete('/forms/form4/format2/destroy/{id}', [Format2Controller::class, 'destroy'])->name('forms.form4.format2.destroy');
+        Route::patch('/forms/form4/format2/update/{id}', [Format2Controller::class, 'update'])->name('forms.form4.format2.update');
 
         Route::get('/forms/form4/format3/pdf/{id}', [\App\Http\Controllers\Form4\Format3Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format3');
         Route::get('/forms/form4/format1/pdf/{id]', [\App\Http\Controllers\Form4\Format1Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format1');

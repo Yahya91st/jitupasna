@@ -2,20 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use App\Models\Rekap;
 use App\Models\Bencana;
+use App\Models\DetailKerusakan;
+use App\Models\Format1Form4;
+use App\Models\Format2Form4;
+use App\Models\Format3Form4;
+use App\Models\Format4Form4;
+use App\Models\Format5Form4;
+use App\Models\Format6Form4;
+use App\Models\Format7Form4;
+use App\Models\Format8Form4;
+use App\Models\Format9Form4;
+use App\Models\Format10Form4;
+use App\Models\Format11Form4;
+use App\Models\Format12Form4;
+use App\Models\Format13Form4;
+use App\Models\Format14Form4;
+use App\Models\Format15Form4;
+use App\Models\Format16Form4;
+use App\Models\Format17Form4;
+// use App\Models\FormPerumahan;
 use App\Models\Kerugian;
 use App\Models\Kerusakan;
 use App\Models\Pendataan;
-use App\Models\Format1Form4;
-use App\Models\Format2Form4;
+use App\Models\Rekap;
+use App\Models\TransportationReport;
 use Illuminate\Http\Request;
-use App\Models\FormPerumahan;
-use App\Models\DetailKerusakan;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Log;
 
 class KebutuhanController extends Controller
 {
@@ -56,16 +73,16 @@ class KebutuhanController extends Controller
                     ['name' => 'pendataan', 'description' => 'Deskripsi umum kerusakan/kerugian', 'count' => Pendataan::count(), 'model' => 'Pendataan']
                 ]
             ],
-            'form4' => [
-                'name' => 'Form 4',
-                'description' => 'Kerusakan dan kerugian berbagai sektor',
-                'tables' => [
-                    ['name' => 'form_perumahan', 'description' => 'Kerusakan dan kerugian perumahan', 'count' => FormPerumahan::count(), 'model' => 'FormPerumahan'],
-                    ['name' => 'government_reports', 'description' => 'Kerusakan dan kerugian fasilitas pemerintah', 'count' => GovernmentReport::count(), 'model' => 'GovernmentReport'],
-                    ['name' => 'environmental_reports', 'description' => 'Kerusakan dan kerugian lingkungan hidup', 'count' => EnvironmentalReport::count(), 'model' => 'EnvironmentalReport'],
-                    ['name' => 'transportation_reports', 'description' => 'Kerusakan dan kerugian transportasi', 'count' => TransportationReport::count(), 'model' => 'TransportationReport']
-                ]
-            ],
+            // 'form4' => [
+            //     'name' => 'Form 4',
+            //     'description' => 'Kerusakan dan kerugian berbagai sektor',
+            //     'tables' => [
+            //         ['name' => 'form_perumahan', 'description' => 'Kerusakan dan kerugian perumahan', 'count' => FormPerumahan::count(), 'model' => 'FormPerumahan'],
+            //         ['name' => 'government_reports', 'description' => 'Kerusakan dan kerugian fasilitas pemerintah', 'count' => GovernmentReport::count(), 'model' => 'GovernmentReport'],
+            //         ['name' => 'environmental_reports', 'description' => 'Kerusakan dan kerugian lingkungan hidup', 'count' => EnvironmentalReport::count(), 'model' => 'EnvironmentalReport'],
+            //         ['name' => 'transportation_reports', 'description' => 'Kerusakan dan kerugian transportasi', 'count' => TransportationReport::count(), 'model' => 'TransportationReport']
+            //     ]
+            // ],
 
             'general' => [
                 'name' => 'Tabel Umum',
@@ -249,11 +266,76 @@ class KebutuhanController extends Controller
          $form = Pendataan::where('bencana_id', $id)->first();
         
         // Get data from Form4 tables
-        $perumahan = Format1Form4::where('bencana_id', $id)->get();
+        $format1form4 = Format1Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
 
         
         // Get data from Form4 Format2 (Pendidikan)
-        $format2 = Format2Form4::where('bencana_id', $id)->get();
+        $format2 = Format2Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format3form4 = Format3Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format4form4 = Format4Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format5form4 = Format5Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format6form4 = Format6Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format7form4 = Format7Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format8form4 = Format8Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format9form4 = Format9Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format10form4 = Format10Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format11form4 = Format11Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format12form4 = Format12Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format13form4 = Format13Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format14form4 = Format14Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format15form4 = Format15Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format16form4 = Format16Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
+        $format17form4 = Format17Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->get();
+
         
         // Gabungkan kerusakan dan kerugian pada format2 (Pendidikan)
         $totalKerusakanFormat2 = $format2->sum(function($item) {
@@ -261,7 +343,6 @@ class KebutuhanController extends Controller
         });
         $totalKerugianFormat2 = 0; // Tidak dipakai lagi, hanya kerusakan
         
-        // Get data from Form7
         // Get additional data from detail_kerusakan related to this kerusakan
         $detailKerusakan = [];
         foreach ($kerusakan as $item) {
@@ -297,10 +378,10 @@ class KebutuhanController extends Controller
         }
         
         // For Form Perumahan
-        $perumahanTable = Schema::getColumnListing('form_perumahan');
-        $perumahanNumeric = $this->extractNumericColumns('form_perumahan', $perumahanTable, $perumahan);
-        if (!empty($perumahanNumeric)) {
-            $numericData['form_perumahan'] = $perumahanNumeric;
+        $format1form4Table = Schema::getColumnListing('form_perumahan');
+        $format1form4Numeric = $this->extractNumericColumns('form_perumahan', $format1form4Table, $format1form4);
+        if (!empty($format1form4Numeric)) {
+            $numericData['form_perumahan'] = $format1form4Numeric;
         }
 
         
@@ -309,7 +390,13 @@ class KebutuhanController extends Controller
         $totalKerugian = $kerugian->sum('BiayaKeseluruhan');
         
         // Ambil total kerusakan dari Format1Form4 (tabel format1_form4s)
-        $totalKerusakanFormat1 = \App\Models\Format1Form4::where('bencana_id', $id)->sum('total_kerusakan');
+        $totalKerusakanFormat1 = Format1Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->sum('total_kerusakan');
+
+        $totalKerusakanFormat1 = Format1Form4::whereHas('rekap', function($q) use ($id) {
+            $q->where('bencana_id', $id);
+        })->sum('total_kerusakan');
         
         // Format totals
         $totals = [
@@ -356,11 +443,12 @@ class KebutuhanController extends Controller
         ];        return view('kebutuhan.show', compact(
             'bencana', 
             'kerusakan',
+            'format1form4',
             'format2',
+            'format3form4',
             'totalKerusakanFormat2',
             'totalKerugianFormat2',
             'kerugian',
-            'perumahan',
             'totals',
             'numericData',
             'detailKerusakan',

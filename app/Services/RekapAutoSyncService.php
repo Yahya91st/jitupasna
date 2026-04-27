@@ -70,10 +70,10 @@ class RekapAutoSyncService
     /**
      * Sync all format data for a rekap record
      */
-    private function syncFormatData(Rekap $rekap, $bencana_id, $nama_kampung, $nama_distrik)
+    private function syncFormatData(Rekap $rekap, $rekap_id, $nama_kampung, $nama_distrik)
     {
         // Format 1 - Perumahan dan Pemukiman
-        $format1 = Format1Form4::where('bencana_id', $bencana_id)
+        $format1 = Format1Form4::where('rekap_id', $rekap_id)
             ->where('nama_kampung', $nama_kampung)
             ->where('nama_distrik', $nama_distrik)
             ->first();
@@ -569,7 +569,8 @@ class RekapAutoSyncService
             
             // Check if any format data exists for this location at all
             if (!$hasValidFormat) {
-                $locationHasData = Format1Form4::where('bencana_id', $bencana_id)
+                $locationHasData = 
+                Format1Form4::where('bencana_id', $bencana_id)
                     ->where('nama_kampung', $rekap->nama_kampung)
                     ->where('nama_distrik', $rekap->nama_distrik)
                     ->exists() ||

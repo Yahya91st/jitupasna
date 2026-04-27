@@ -55,9 +55,9 @@ class Bencana extends Model
         return $this->belongsToMany(Desa::class, 'wilayah_bencana', 'bencana_id', 'desa_id');
     }
     
-    public function format1Form4()
+    public function rekap()
     {
-        return $this->hasMany(Format1Form4::class, 'bencana_id', 'id');
+        return $this->hasOne(Rekap::class, 'bencana_id', 'id');
     }
 
     public function kecamatan()
