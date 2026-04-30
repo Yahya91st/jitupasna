@@ -139,7 +139,7 @@ class Format2Controller extends Controller
             // Simpan data Format2Form4 dengan rekap_id
             $data = $validated;
             $data['rekap_id'] = $rekap->id;
-            unset($data['bencana_id']); // pastikan tidak ada bencana_id di insert
+            unset($data['bencana_id']); 
 
             // Create new form data
             $formPendidikan = Format2Form4::create($data);
@@ -188,7 +188,10 @@ class Format2Controller extends Controller
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
         $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        $educationReports = Format2Form4::where('bencana_id', $bencana_id)->get();
+        $educationReports = Format2Form4::whereHas('rekap', function($q) use ($bencana_id) {
+            $q->where('bencana_id', $bencana_id);
+        })->get();
+
         return view('forms.form4.format2.list', compact('bencana', 'educationReports'));
     }
 

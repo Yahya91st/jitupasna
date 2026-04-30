@@ -402,20 +402,72 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($rekaps as $rekap)
+                            @foreach ($rekaps as $rekap)
+                                @for ($i = 1; $i <= 17; $i++)
+                                    @php
+                                        $relasi = "format{$i}Form4";
+                                        $formatData = $rekap->$relasi;
+                                    @endphp
+                                    @if (!empty($formatData))
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <span class="badge bg-secondary">Format {{ $i }}</span>
+                                            </td>
+                                            <td>
+                                                <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
+                                                <small class="text-muted">{{ $rekap->nama_distrik ?? '-' }}</small>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                Rp {{ number_format($formatData->total_kerusakan ?? 0, 0, ',', '.') }}
+                                            </td>
+                                            <td style="text-align: right;">
+                                                Rp {{ number_format($formatData->total_kerugian ?? 0, 0, ',', '.') }}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @php
+                                                    $statusClass = match ($rekap->status) {
+                                                        'completed' => 'bg-success',
+                                                        'verified' => 'bg-info',
+                                                        default => 'bg-warning',
+                                                    };
+                                                @endphp
+                                                <span class="badge {{ $statusClass }}">
+                                                    {{ ucfirst($rekap->status) }}
+                                                </span>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @php
+                                                    $detailUrl = route("forms.form4.format{$i}.show", ['id' => $formatData->id]);
+                                                    $editUrl = route("forms.form4.format{$i}.edit", ['id' => $formatData->id]);
+                                                    $pdfUrl = route("forms.form4.format{$i}.pdf", ['id' => $formatData->id]);
+                                                @endphp
+                                                <a href="{{ $detailUrl }}" class="btn btn-outline-primary">Detail</a>
+                                                <a href="{{ $editUrl }}" class="btn btn-outline-warning">Edit</a>
+                                                <a href="{{ $pdfUrl }}" class="btn btn-outline-danger" target="_blank">PDF</a>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endfor
+                            @endforeach
+                                <!-- @foreach ($rekaps as $rekap)
                                     <tr>
                                         <td style="text-align: center;">
-                                            @php
-                                                $format = '-';
-                                                for ($i = 1; $i <= 17; $i++) {
-                                                    $relasi = "format{$i}Form4";
-                                                    if (!empty($rekap->$relasi)) {
-                                                        $format = "Format $i";
-                                                        break;
-                                                    }
+                                        @php
+                                            $formats = [];
+                                            for ($i = 1; $i <= 17; $i++) {
+                                                $relasi = "format{$i}Form4";
+                                                if (!empty($rekap->$relasi)) {
+                                                    $formats[] = "Format $i";
                                                 }
-                                            @endphp
-                                            <span class="badge bg-secondary">{{ $format }}</span>
+                                            }
+                                        @endphp
+                                        @if (count($formats))
+                                            @foreach ($formats as $f)
+                                                <span class="badge bg-secondary">{{ $f }}</span>
+                                            @endforeach
+                                        @else
+                                            <span class="badge bg-secondary">-</span>
+                                        @endif                                            
                                         </td>
                                         <td>
                                             <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
@@ -456,7 +508,7 @@
                                                 $pdfUrl = null;
 
                                                 for ($i = 1; $i <= 17; $i++) {
-                                                    $col = "format{$i}_form4_id";
+                                                    $col = "format{$i}form4";
                                                     if (!empty($rekap->{$col})) {
                                                         $formatId = $rekap->{$col};
 
@@ -498,7 +550,7 @@
                                             <a href="{{ $pdfUrl }}" class="btn btn-outline-danger" target="_blank">PDF</a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach -->
                             </tbody>
                         </table>
                     </div>

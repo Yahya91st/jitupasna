@@ -272,7 +272,7 @@ class KebutuhanController extends Controller
 
         
         // Get data from Form4 Format2 (Pendidikan)
-        $format2 = Format2Form4::whereHas('rekap', function($q) use ($id) {
+        $format2form4 = Format2Form4::whereHas('rekap', function($q) use ($id) {
             $q->where('bencana_id', $id);
         })->get();
 
@@ -338,7 +338,7 @@ class KebutuhanController extends Controller
 
         
         // Gabungkan kerusakan dan kerugian pada format2 (Pendidikan)
-        $totalKerusakanFormat2 = $format2->sum(function($item) {
+        $totalKerusakanFormat2 = $format2form4->sum(function($item) {
             return ($item->total_kerusakan ?? 0) + ($item->total_kerugian ?? 0);
         });
         $totalKerugianFormat2 = 0; // Tidak dipakai lagi, hanya kerusakan
@@ -440,21 +440,34 @@ class KebutuhanController extends Controller
             'total_formats_filled' => $rekaps->sum(function($rekap) {
                 return $rekap->getFilledFormatsCount();
             }),
-        ];        return view('kebutuhan.show', compact(
-            'bencana', 
-            'kerusakan',
-            'format1form4',
-            'format2',
-            'format3form4',
-            'totalKerusakanFormat2',
-            'totalKerugianFormat2',
-            'kerugian',
-            'totals',
-            'numericData',
-            'detailKerusakan',
-            'rekaps',
-            'rekapSummary'
-        ));
+        ];        
+        return view('kebutuhan.show', [
+            'format1form4' => $format1form4,
+            'format2form4' => $format2form4,
+            'format3form4' => $format3form4,
+            'format4form4' => $format4form4,
+            'format5form4' => $format5form4,
+            'format6form4' => $format6form4,
+            'format7form4' => $format7form4,
+            'format8form4' => $format8form4,
+            'format9form4' => $format9form4,
+            'format10form4' => $format10form4,
+            'format11form4' => $format11form4,
+            'format12form4' => $format12form4,
+            'format13form4' => $format13form4,
+            'format14form4' => $format14form4,
+            'format15form4' => $format15form4,
+            'format16form4' => $format16form4,
+            'format17form4' => $format17form4,
+            'bencana' => $bencana,
+            'kerusakan' => $kerusakan,
+            'kerugian' => $kerugian,
+            'totals' => $totals,
+            'numericData' => $numericData,
+            'detailKerusakan' => $detailKerusakan,
+            'rekaps' => $rekaps,
+            'rekapSummary' => $rekapSummary,
+        ]);
     }
 
     /**
