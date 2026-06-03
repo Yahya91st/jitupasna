@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kategori_bangunan', function (Blueprint $table) {
+        Schema::create('formulirs', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('deskripsi')->nullable();
+            $table->foreignId('laporan_id');
+            $table->foreignId('user_id');
+            $table->foreignId('format_id');
+            $table->enum('status',['draft', 'submitted', 'reviewed']);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kategori_bangunan');
+        Schema::dropIfExists('formulirs');
     }
 };

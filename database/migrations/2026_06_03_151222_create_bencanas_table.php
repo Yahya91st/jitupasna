@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bencana', function (Blueprint $table) {
+        Schema::create('bencanas', function (Blueprint $table) {
             $table->id();
-            $table->string('ref')->unique();
-            $table->integer('kategori_bencana_id');
+            $table->string('kategori_bencana');
             $table->date('tanggal');
             $table->string('province_code');
             $table->string('regency_code');
             $table->string('district_code');
             $table->string('village_code');
-            $table->text('gambar')->nullable();
+            $table->string('gambar')->nullable();
             $table->text('deskripsi')->nullable();
+            $table->boolean('verifikasi')->default(false);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bencana');
+        Schema::dropIfExists('bencanas');
     }
 };

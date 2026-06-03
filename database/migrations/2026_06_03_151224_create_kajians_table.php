@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verifikasis', function (Blueprint $table) {
+        Schema::create('kajians', function (Blueprint $table) {
             $table->id();
+            $table->unique('laporan_id');
+            $table->text('peningkatan_resiko');
+            $table->text('gangguan_akses');
+            $table->text('kehilangan_akses');
+            $table->enum('status_kajian',['draft', 'revisi', 'final']);
+            $table->string('catatan_revisi');
             $table->timestamps();
         });
     }
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verifikasis');
+        Schema::dropIfExists('kajians');
     }
 };
