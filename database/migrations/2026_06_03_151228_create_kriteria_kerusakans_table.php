@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('kriteria_kerusakans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('format_id');
-            $table->enum('tingkat',['ringan','sedang','berat']);
+            $table->enum('tingkat',[
+                'ringan',
+                'sedang',
+                'berat'
+            ]);
             $table->string('deskripsi');
             $table->timestamps();
         });

@@ -19,7 +19,11 @@ return new class extends Migration
             $table->string('sub_kategori');
             $table->string('dimensi_1');
             $table->string('dimensi_2');
-            $table->enum('tingkat_kerusakan',['ringan','sedang','berat']);
+            $table->enum('tingkat_kerusakan',[
+                'ringan',
+                'sedang',
+                'berat'
+            ]);
             $table->integer('jumlah');
             $table->integer('harga_satuan');
             $table->enum('satuan',['unit','m2','m3','m','km','ha','pohon','ekor','kk','jiwa','paket','buah','set','ruang','titik']);        

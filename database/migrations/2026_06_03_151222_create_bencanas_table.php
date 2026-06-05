@@ -13,7 +13,21 @@ return new class extends Migration
     {
         Schema::create('bencanas', function (Blueprint $table) {
             $table->id();
-            $table->string('kategori_bencana');
+            $table->enum('jenis_bencana', [
+                'banjir',
+                'kebakaran',
+                'gempa_bumi',
+                'tanah_longsor',
+                'angin_puting_beliung',
+                'tsunami',
+                'letusan_gunung_berapi',
+                'kekeringan',
+                'abrasi',
+                'gelombang_pasang',
+                'kebakaran_hutan_lahan',
+                'wabah_penyakit',
+                'lainnya',
+            ]);
             $table->date('tanggal');
             $table->string('province_code');
             $table->string('regency_code');

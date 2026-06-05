@@ -5,22 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kajian extends Model
+class Keputusan extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'laporan_id',
-        'peningkatan_resiko',
-        'gangguan_akses',
-        'kehilangan_akses',
-        'status_kajian',
-        'catatan_revisi',
+        'hasil_keputusan',
+        'tindak_lanjut',
+        'status_keputusan',
+        'catatan_pimpinan',
     ];
 
     public function laporanBencana()
     {
         return $this->belongsTo(LaporanBencana::class, 'laporan_id');
     }
-
 }

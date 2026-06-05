@@ -16,7 +16,11 @@ return new class extends Migration
             $table->unique('laporan_id');
             $table->text('hasil_keputusan');
             $table->text('tindak_lanjut');
-            $table->enum('status_keputusan',['pending', 'disetujui', 'ditolak']);
+            $table->enum('status_keputusan',[
+                'pending', 
+                'disetujui', 
+                'ditolak'
+                ])->default('pending');
             $table->string('catatan_pimpinan');
             $table->timestamps();        
         });

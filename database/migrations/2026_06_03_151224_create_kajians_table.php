@@ -17,7 +17,11 @@ return new class extends Migration
             $table->text('peningkatan_resiko');
             $table->text('gangguan_akses');
             $table->text('kehilangan_akses');
-            $table->enum('status_kajian',['draft', 'revisi', 'final']);
+            $table->enum('status_kajian',[
+                'draft', 
+                'revisi', 
+                'final'
+                ])->default('draft');
             $table->string('catatan_revisi');
             $table->timestamps();
         });

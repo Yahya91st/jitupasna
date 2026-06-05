@@ -9,11 +9,26 @@ class Bencana extends Model
 {
     use HasFactory;
 
-    protected $table = 'bencana';
+    public const JENIS_BENCANA_OPTIONS = [
+        'banjir',
+        'kebakaran',
+        'gempa_bumi',
+        'tanah_longsor',
+        'angin_puting_beliung',
+        'tsunami',
+        'letusan_gunung_berapi',
+        'kekeringan',
+        'abrasi',
+        'gelombang_pasang',
+        'kebakaran_hutan_lahan',
+        'wabah_penyakit',
+        'lainnya',
+    ];
+
+    protected $table = 'bencanas';
 
     protected $fillable = [
-        'ref',
-        'kategori_bencana_id',
+        'jenis_bencana',
         'tanggal', 
         'province_code', 
         'regency_code', 
@@ -22,51 +37,19 @@ class Bencana extends Model
         'deskripsi',
         'gambar'
     ];
-    
-    protected $appends = ['nama_bencana'];
-    
-    public function getNamaBencanaAttribute()
+
+    protected $casts = [
+        'tanggal' => 'date',
+        'verifikasi' => 'boolean',
+    ];
+
+    public static function jenisBencanaOptions(): array
     {
-        return $this->Ref;
+        return self::JENIS_BENCANA_OPTIONS;
     }
 
-    public function kategori_bencana()
+    public function laporanBencanas()
     {
-        return $this->belongsTo(KategoriBencana::class, 'kategori_bencana_id', 'id');
-    }
-
-    public function kerusakan()
-    {
-        return $this->hasMany(Kerusakan::class, 'bencana_id', 'id');
-    }
-
-    public function kerugian()
-    {
-        return $this->hasMany(Kerugian::class, 'bencana_id', 'id');
-    }
-
-    public function rumahtangga()
-    {
-        return $this->hasMany(Rumahtangga::class, 'bencana_id', 'id');
-    }
-
-    public function desa()
-    {
-        return $this->belongsToMany(Desa::class, 'wilayah_bencana', 'bencana_id', 'desa_id');
-    }
-    
-    public function rekap()
-    {
-        return $this->hasOne(Rekap::class, 'bencana_id', 'id');
-    }
-
-    public function kecamatan()
-    {
-        return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
-    }
-
-    public function pendataan()
-    {
-        return $this->hasOne(Pendataan::class, 'bencana_id', 'id');
+        return $this->hasMany(LaporanBencana::class, 'bencana_id');
     }
 }
