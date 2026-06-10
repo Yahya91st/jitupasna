@@ -13,13 +13,21 @@ return new class extends Migration
     {
         Schema::create('kriteria_kerusakans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('format_id');
-            $table->enum('tingkat',[
+
+            $table->foreignId('format_id')
+                ->constrained('format_formulirs')
+                ->cascadeOnDelete();
+
+            $table->enum('tingkat', [
                 'ringan',
                 'sedang',
                 'berat'
             ]);
-            $table->string('deskripsi');
+
+            $table->decimal('persentase', 5, 2);
+
+            $table->text('deskripsi')->nullable();
+
             $table->timestamps();
         });
     }

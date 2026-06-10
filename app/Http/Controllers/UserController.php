@@ -16,23 +16,27 @@ class UserController extends Controller
     public function index()
     {
         $currentUser = auth()->user();
-        $roles = Role::all();
+        $roles = [
+            'operator',
+            'pelapor',
+            'pengkaji',
+            'pimpinan'
+        ];
         
-        // Super admin can only see and manage admins, not regular users
-        if ($currentUser->hasRole('super-admin')) {
-            $users = User::role(['admin'])->with('roles')->paginate(15);
-            $availableRoles = $roles->whereIn('name', ['admin']);
-        }
-        // Admin can see and manage regular users but not other admins or super-admins
-        elseif ($currentUser->hasRole('admin')) {
-            $users = User::role(['user'])->with('roles')->paginate(15);
-            $availableRoles = $roles->whereIn('name', ['user']);
-        }
-        // Fallback to showing all users (should not happen due to middleware)
-        else {
-            $users = User::with('roles')->paginate(15);
-            $availableRoles = $roles;
-        }
+        if ($currentUser->role === 'operator') {
+
+        $users = User::whereIn('role', [
+            'pelapor',
+            'pengkaji',
+            'pimpinan'
+        ])->paginate(15);
+
+        $availableRoles = [
+            'pelapor',
+            'pengkaji',
+            'pimpinan'
+        ];
+    }
         
         return view('users.index', compact('users', 'roles', 'availableRoles', 'currentUser'));
     }    /**
@@ -49,6 +53,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'role' => 'required|in:superadmin,admin,pelapor,pengkaji,pimpinan',
         ]);
 
         // Set role selalu 'user' untuk admin
@@ -84,28 +89,6 @@ class UserController extends Controller
         return view('admins.create', compact('role'));
     }
 
-    /**
-     * Store a newly created admin in storage (super-admin).
-     */
-    public function storeAdmin(Request $request)
-    {
-        $currentUser = auth()->user();
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-        if (!$currentUser->hasRole('super-admin')) {
-            abort(403, 'Only super-admin can create admin');
-        }
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        $user->assignRole('admin');
-        return redirect()->route('users.index')->with('success', 'Admin created successfully');
-    }
 
     /**
      * Show the form for editing the specified user.
@@ -128,13 +111,8 @@ class UserController extends Controller
     {
         $currentUser = auth()->user();
         
-        // Prevent editing users that the current user doesn't have permission for
-        if ($currentUser->hasRole('super-admin') && !$user->hasRole('admin')) {
-            abort(403, 'Super Admin can only manage admin accounts');
-        }
-        
-        if ($currentUser->hasRole('admin') && !$user->hasRole('user')) {
-            abort(403, 'Admin can only manage user accounts');
+        if ($currentUser->role === 'operator') {
+            abort(403, 'Operator can only manage user accounts');
         }
         
         // Validate request data
@@ -151,13 +129,8 @@ class UserController extends Controller
         
         $validatedData = $request->validate($rules);
         
-        // Enforce role restrictions
-        if ($currentUser->hasRole('super-admin') && $validatedData['role'] !== 'admin') {
-            return redirect()->back()->with('error', 'Super Admin can only assign admin role');
-        }
-        
-        if ($currentUser->hasRole('admin') && $validatedData['role'] !== 'user') {
-            return redirect()->back()->with('error', 'Admin can only assign user role');
+        if ($currentUser->role === 'operator' && $validatedData['role'] !== 'user') {
+            return redirect()->back()->with('error', 'Operator can only assign user role');
         }
         
         // Prepare user data for update
@@ -190,11 +163,11 @@ class UserController extends Controller
         $currentUser = auth()->user();
         
         // Prevent deleting users that the current user doesn't have permission for
-        if ($currentUser->hasRole('super-admin') && !$user->hasRole('admin')) {
+        if ($currentUser->role === 'super-admin') {
             abort(403, 'Super Admin can only manage admin accounts');
         }
         
-        if ($currentUser->hasRole('admin') && !$user->hasRole('user')) {
+        if ($currentUser->role === 'admin') {
             abort(403, 'Admin can only manage user accounts');
         }
         

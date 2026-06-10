@@ -1,45 +1,176 @@
 @extends('layouts.main')
+
+@section('content')
 <style>
-    .row {
-        margin-bottom: 20px;
+    :root {
+        --orange-primary: #F28705;
+        --orange-gradient: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
     }
 
-    /* Adjust the width of the Quill editor */
-    .ql-container {
-        width: 100% !important;
-        /* or specify a fixed width like 300px */
-        max-width: 100%;
-        height: 300px !important;
-        /* ensures it doesn't exceed its container's width */
+    .main-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.04);
     }
 
-    .background {
-        position: fixed;
-        /* atau 'absolute', tergantung kebutuhan */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Warna gelap dengan transparansi */
-        z-index: 1;
-        /* Pastikan lebih tinggi dari elemen lain kecuali modal */
+    .card-header-gradient {
+        background: var(--orange-gradient);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .overlay {
-        z-index: 2;
-        /* Pastikan lebih tinggi dari elemen lain kecuali modal */
+    .card-header-gradient h4 {
+        color: white;
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.15rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
-    img {
+    .card-content {
+        padding: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
         display: block;
-        max-width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .form-control, .form-select {
+        padding: 0.625rem 0.875rem;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--orange-primary);
+        box-shadow: 0 0 0 0.2rem rgba(242, 135, 5, 0.15);
+        outline: none;
+    }
+
+    .ql-container {
+        min-height: 200px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    .ql-toolbar {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        background: #f8f9fa;
+    }
+
+    .image-upload-card {
+        border: 2px dashed #dee2e6;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+
+    .image-upload-card:hover {
+        border-color: var(--orange-primary);
+        background: #fff3e0;
+    }
+
+    .profile-pic {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin: 0 auto 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: block;
+    }
+
+    .upload-btn {
+        background: var(--orange-gradient);
+        color: white;
+        border: none;
+        padding: 0.625rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .upload-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(242, 135, 5, 0.3);
+    }
+
+    .file-info {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 0.75rem;
+    }
+
+    .file-info a {
+        color: var(--orange-primary);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .btn-orange {
+        background: var(--orange-gradient);
+        color: white;
+        border: none;
+        padding: 0.625rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-orange:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(242, 135, 5, 0.3);
+        color: white;
+    }
+
+    .btn-light-secondary {
+        background: #f8f9fa;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+        padding: 0.625rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-light-secondary:hover {
+        background: #e9ecef;
+        border-color: #adb5bd;
     }
 
     .image-container {
         overflow: hidden;
-        max-width: 510px !important;
-        max-height: 370px !important;
+        max-width: 510px;
+        max-height: 370px;
     }
 
     .preview {
@@ -47,11 +178,8 @@
     }
 
     @media (min-width: 768px) {
-
-        /* Adjust the large (lg) screen breakpoint */
         .modal-lg {
             --bs-modal-width: 700px;
-            /* Set your desired minimum width for large screens (lg) */
         }
 
         .preview {
@@ -59,253 +187,299 @@
             overflow: hidden;
             width: 210px;
             height: 210px;
-            border: 1px solid red;
+            border: 2px solid var(--orange-primary);
+            border-radius: 8px;
         }
     }
 
-    .select2-container .select2-selection--single {
-        height: 38px !important;
-        /* Atur tinggi sesuai kebutuhan */
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background: var(--orange-gradient);
+        color: white;
+        border: none;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-header h5 {
+        color: white;
+        margin: 0;
+        font-weight: 600;
         display: flex;
         align-items: center;
+        gap: 0.5rem;
     }
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 38px !important;
-        /* Sesuaikan dengan tinggi yang diatur */
+    .modal-header .close {
+        color: white;
+        opacity: 0.8;
+        text-shadow: none;
     }
 
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 38px !important;
-        /* Sesuaikan dengan tinggi yang diatur - 2px untuk padding */
+    .modal-header .close:hover {
+        opacity: 1;
     }
 
-    .select2-container .select2-dropdown .select2-results__options {
-        max-height: 220px;
-        /* Atur tinggi maksimum sesuai kebutuhan */
+    .choices__inner {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 0.375rem 0.5rem;
+    }
+
+    .choices[data-type*=select-multiple] .choices__inner {
+        min-height: 44px;
+    }
+
+    @media (max-width: 768px) {
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+        }
+
+        .card-header-gradient {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
     }
 </style>
-@section('content')
-    <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Edit Data Bencana</h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <form class="form" action="{{ route('bencana.update', ['id' => $bencana->id]) }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                @method('PATCH')
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="first-name-column">Kategori Bencana</label>
-                                            <div class="form-group">
-                                                <select class="choices form-select" name="kategori_bencana_id">
-                                                    <option selected disabled value="">{{ __('Pilih...') }}</option>
-                                                    @foreach ($kategoribencana as $item)
-                                                        <option value="{{ $item->id }}"
-                                                            {{ (old('kategori_bencana_id') ?? $bencana->kategori_bencana_id) == $item->id ? 'selected' : '' }}>
-                                                            {{ $item->nama }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="last-name-column">Tanggal Bencana</label>
-                                            <input type="date" id="last-name-column" class="form-control" placeholder=""
-                                                name="tanggal" value="{{ $bencana->tanggal }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    {{-- <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="kecamatan">Kecamatan</label>
-                                            <select class="choices form-select" name="kecamatan_id" id="kecamatan">
-                                                <option disabled value="">{{ __('Pilih...') }}</option>
-                                                @foreach ($kecamatan as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ $item->id == $bencana->kecamatan_id ? 'selected' : '' }}>
-                                                        {{ $item->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="first-name-column">Desa</label>
-                                            <div class="form-group">
-                                                <select id="desa" multiple="multiple-remove" name="desa_ids[]">
-                                                    <!-- Options will be populated by JavaScript -->
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    <div class="row">
-                                        <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <label for="company-column">Deskripsi</label>
-                                                <div id="full"></div>
-                                                <input type="hidden" name="deskripsi" id="deskripsi">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                            <div class="form-group">
-                                                <div class="card-body">
-                                                    <div class="form-group">
-                                                        <div class="card-header pb-4 border-dashed rounded"
-                                                            style="border: 1px dashed rgb(94, 87, 87);">
-                                                            <div
-                                                                class="profile-img-edit position-relative d-flex justify-content-center align-items-center">
-                                                                <img src="{{ asset('/frontend/dist/assets/images/avatar/' . $bencana->gambar) }}"
-                                                                    id="firstImage" alt="profile-pic"
-                                                                    class="theme-color-default-img profile-pic rounded avatar-100">
-                                                            </div>
-                                                        </div>
-                                                        <input type="hidden" id="croppedImageData" name="avatar">
-                                                        <div class="img-extension mt-3">
-                                                            <div class="row">
-                                                                <div>
-                                                                    <div class="d-inline-block align-items-center py-1">
-                                                                        <span>Only</span>
-                                                                        <a href="#">.jpg</a>
-                                                                        <a href="#">.png</a>
-                                                                        <a href="#">.jpeg</a>
-                                                                        <span>allowed</span>
-                                                                    </div>
-                                                                    <div class="d-inline-block align-items-center">
-                                                                        <span>Max. File size</span>
-                                                                        <a href="#">10 MB</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div>
-                                                                    <button type="button" id="chooseImageButton">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="2rem" height="2rem"
-                                                                            viewBox="0 0 24 24">
-                                                                            <path fill="#5A8DEE"
-                                                                                d="M11 16V7.85l-2.6 2.6L7 9l5-5l5 5l-1.4 1.45l-2.6-2.6V16zm-5 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z" />
-                                                                        </svg>
-                                                                        <input type="file" name="image" class="image"
-                                                                            id="imageInput" style="display: none;">
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Submit</button>
-                                        <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+
+<section id="multiple-column-form">
+    <div class="row match-height">
+        <div class="col-12">
+            <div class="card main-card">
+                <div class="card-header card-header-gradient">
+                    <h4>
+                        <i data-feather="edit" style="width: 20px; height: 20px;"></i>
+                        Edit Data Bencana
+                    </h4>
+                    <a href="{{ route('bencana.index') }}" class="btn btn-light-secondary">
+                        <i data-feather="arrow-left" style="width: 16px; height: 16px;"></i>
+                        Kembali
+                    </a>
                 </div>
-            </div>
-            <!-- Modal for image preview and cropping -->
-            <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog"
-                aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabel">Crop Image</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form" action="{{ route('bencana.update', ['id' => $bencana->id]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PATCH')
                             <div class="row">
-                                <div class="col-md-8">
-                                    <div class="docs-demo">
-                                        <div class="image-container">
-                                            <img id="image" class="img-fluid">
-                                        </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="jenis_bencana">Jenis Bencana</label>
+                                        <select class="choices form-select" name="jenis_bencana" id="jenis_bencana" required>
+                                            <option value="">Pilih...</option>
+                                            @foreach ($jenis_bencana as $key => $label)
+                                                <option value="{{ $key }}" {{ $bencana->jenis_bencana == $key ? 'selected' : '' }}>
+                                                    {{ $label }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4 px-0">
-                                    <div class="preview"></div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="tanggal">Tanggal Bencana</label>
+                                        <input type="date" id="tanggal" class="form-control" name="tanggal"
+                                            value="{{ \Carbon\Carbon::parse($bencana->tanggal)->format('Y-m-d') }}" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="crop">Save changes</button>
-                        </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="province">Provinsi</label>
+                                        <select id="province" name="province_code" class="form-control" required>
+                                            <option value="">Memuat provinsi...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="regency">Kabupaten/Kota</label>
+                                        <select id="regency" name="regency_code" class="form-control" required>
+                                            <option value="">Pilih Kabupaten/Kota</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="kecamatan">Kecamatan</label>
+                                        <select id="kecamatan" name="district_code" class="form-control" required>
+                                            <option value="">Pilih Kecamatan</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="desa">Desa (dapat pilih lebih dari satu)</label>
+                                        <select id="desa" name="village_codes[]" class="form-control" multiple required>
+                                            <option value="">Pilih Desa</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="deskripsi">Deskripsi</label>
+                                        <div id="full"></div>
+                                        <input type="hidden" name="deskripsi" id="deskripsi">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Gambar Bencana</label>
+                                        <div class="image-upload-card">
+                                            <img src="{{ asset('/frontend/dist/assets/images/avatar/' . $bencana->gambar) }}"
+                                                id="firstImage"
+                                                alt="Preview"
+                                                class="profile-pic">
+                                            <input type="hidden" id="croppedImageData" name="avatar">
+                                            <button type="button" class="upload-btn" id="chooseImageButton">
+                                                <i data-feather="upload" style="width: 18px; height: 18px;"></i>
+                                                Pilih Gambar
+                                            </button>
+                                            <input type="file" name="image" class="image" id="imageInput" accept=".jpg,.jpeg,.png" style="display: none;">
+                                            <div class="file-info">
+                                                <div>Format: <a href="#">.jpg</a>, <a href="#">.png</a>, <a href="#">.jpeg</a></div>
+                                                <div>Max. ukuran: <a href="#">10 MB</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                                <button type="reset" class="btn btn-light-secondary">
+                                    <i data-feather="x" style="width: 16px; height: 16px;"></i>
+                                    Reset
+                                </button>
+                                <button type="submit" class="btn btn-orange">
+                                    <i data-feather="save" style="width: 16px; height: 16px;"></i>
+                                    Simpan Perubahan
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
+    <!-- Modal for image preview and cropping -->
+    <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">
+                        <i data-feather="crop" style="width: 20px; height: 20px;"></i>
+                        Crop Gambar
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="docs-demo">
+                                <div class="image-container">
+                                    <img id="image" class="img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 px-0">
+                            <div class="preview"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+                        <i data-feather="x" style="width: 16px; height: 16px;"></i>
+                        Batal
+                    </button>
+                    <button type="button" class="btn btn-orange" id="crop">
+                        <i data-feather="check" style="width: 16px; height: 16px;"></i>
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 @endsection
+
 @push('script')
-    <script>
+<script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Initialize Feather Icons
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+
+        // --- Image cropper ---
         var bs_modal = $('#modal');
         var image = document.getElementById('image');
         var cropper, reader, file;
 
-        $("body").on("change", ".image", function(e) {
+        $("body").on("change", ".image", function (e) {
             var files = e.target.files;
             var maxFileSizeInBytes = 10 * 1024 * 1024;
             var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
             if (files && files.length > 0) {
                 file = files[0];
-
                 var fileExtension = file.name.split('.').pop().toLowerCase();
 
                 if (!allowedExtensions.includes(fileExtension)) {
-                    // Display an error message
-                    alert("Only .jpg, .jpeg, and .png files are allowed.");
-
-                    // Optionally, clear the file input
+                    alert("Hanya file .jpg, .jpeg, dan .png yang diperbolehkan.");
                     $(this).val('');
-                    return; // Exit the function early
+                    return;
                 }
 
                 if (file.size > maxFileSizeInBytes) {
-                    // Display an error message
-                    alert("File size exceeds the maximum allowed size.");
-
-                    // Optionally, clear the file input
+                    alert("Ukuran file melebihi batas maksimal 10 MB.");
                     $(this).val('');
-                    return; // Exit the function early
+                    return;
                 }
 
-
-                var done = function(url) {
+                var done = function (url) {
                     image.src = url;
                     bs_modal.modal('show');
                 };
 
-
-                if (URL) {
+                if (window.URL) {
                     done(URL.createObjectURL(file));
                 } else if (FileReader) {
                     reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function () {
                         done(reader.result);
                     };
                     reader.readAsDataURL(file);
                 }
             }
-            // Reset the value of the file input to trigger change event even if the same file is selected again
             $(this).val('');
         });
 
-        bs_modal.on('shown.bs.modal', function() {
+        bs_modal.on('shown.bs.modal', function () {
+            if (cropper) cropper.destroy();
             cropper = new Cropper(image, {
                 aspectRatio: 1,
                 viewMode: 1,
@@ -313,200 +487,246 @@
                 dragMode: 'move',
                 preview: '.preview'
             });
-        }).on('hidden.bs.modal', function() {
-            cropper.destroy();
-            cropper = null;
+        }).on('hidden.bs.modal', function () {
+            if (cropper) { cropper.destroy(); cropper = null; }
         });
 
-        $("#crop").click(function() {
-            canvas = cropper.getCroppedCanvas({
-                width: 300, // Lebar canvas yang diinginkan
-                height: 300 // Tinggi canvas yang diinginkan
-            });
-            var croppedImage = canvas.toDataURL(); // Get the cropped image as base64 data URL
-            $("#firstImage").attr("src",
-                croppedImage); // Set the src attribute of the image element on the main page
-            $("#croppedImageData").val(
-                croppedImage); // Set the cropped image data to a hidden input field in the form
-            bs_modal.modal('hide'); // Close the modal
-            // $("#mainPage").show(); // Show the submit button on the main page
+        $("#crop").click(function () {
+            if (!cropper) return;
+            var canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
+            var croppedImage = canvas.toDataURL();
+            $("#firstImage").attr("src", croppedImage);
+            $("#croppedImageData").val(croppedImage);
+            bs_modal.modal('hide');
         });
 
-        document.getElementById('chooseImageButton').addEventListener('click', function() {
+        document.getElementById('chooseImageButton').addEventListener('click', function () {
             document.getElementById('imageInput').click();
-        })
-    </script>
-    <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function initializeQuill(selector) {
-                return new Quill(selector, {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: [
-                            [{
-                                font: []
-                            }, {
-                                size: []
-                            }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            [{
-                                color: []
-                            }, {
-                                background: []
-                            }],
-                            [{
-                                script: 'super'
-                            }, {
-                                script: 'sub'
-                            }],
-                            [{
-                                list: 'ordered'
-                            }, {
-                                list: 'bullet'
-                            }, {
-                                indent: '-1'
-                            }, {
-                                indent: '+1'
-                            }],
-                            ['direction', {
-                                align: []
-                            }],
-                            ['link', 'image', 'video'],
-                            ['clean']
-                        ]
-                    }
-                });
-            }
+        });
 
-            // Inisialisasi Quill untuk masing-masing editor
-            const descriptionEditor = initializeQuill('#full');
-            const notesEditor = initializeQuill('#full-nama');
-            descriptionEditor.root.innerHTML = `{!! $bencana->deskripsi !!}`;
-            // Mengatur nilai hidden input saat form disubmit
-            document.querySelector('form').onsubmit = function() {
+        // --- Quill editor ---
+        var descriptionEditor = new Quill('#full', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ font: [] }, { size: [] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ color: [] }, { background: [] }],
+                    [{ script: 'super' }, { script: 'sub' }],
+                    [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+                    ['direction', { align: [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Set existing deskripsi content
+        @if($bencana->deskripsi)
+            descriptionEditor.root.innerHTML = {!! json_encode($bencana->deskripsi) !!};
+        @endif
+
+        // --- Form submit handler ---
+        var form = document.querySelector('form');
+        if (form) {
+            form.onsubmit = function () {
                 document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
-                document.querySelector('#nama').value = notesEditor.root.innerHTML;
-
-                console.log('satuan:', descriptionEditor.root.innerHTML);
-                console.log('Catatan:', notesEditor.root.innerHTML);
             };
+        }
+
+        // --- Wilayah selects (sama persis seperti create, tapi pre-fill data existing) ---
+        var $prov = document.getElementById('province');
+        var $reg  = document.getElementById('regency');
+        var $kec  = document.getElementById('kecamatan');
+        var $desa = document.getElementById('desa');
+
+        // Data existing dari server
+        var provinceCode    = "{{ $bencana->province_code }}";
+        var regencyCode     = "{{ $bencana->regency_code }}";
+        var districtCode    = "{{ $bencana->district_code }}";
+        var selectedDesaIds = @json($selectedDesaIds ?? []);
+
+        const apiBase = '/proxy/wilayah';
+
+        const choicesDesa = new Choices('#desa', {
+            removeItemButton: true,
+            placeholderValue: 'Pilih Desa...',
+            searchEnabled: true,
+            searchPlaceholderValue: 'Cari desa...'
         });
-    </script>
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Choices for Kecamatan
-            var choicesKecamatan = new Choices('#kecamatan');
 
-            // Initialize Choices for Desa with multiple selection
-            var choicesDesa = new Choices('#desa', {
-                removeItemButton: true,
-                maxItemCount: -1, // Unlimited items
-                placeholder: true,
-                placeholderValue: 'Select Desa...',
-                searchResultLimit: 5,
-                renderChoiceLimit: 5
+        function cacheGet(key) {
+            try {
+                const data = sessionStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            } catch { return null; }
+        }
+
+        function cacheSet(key, val) {
+            try { sessionStorage.setItem(key, JSON.stringify(val)); }
+            catch (e) { console.error('Cache set error:', e); }
+        }
+
+        function setOptions($el, list, placeholder = 'Pilih...') {
+            const normalized = Array.isArray(list) ? list : (list && list.data ? list.data : []);
+            $el.innerHTML = `<option value="">${placeholder}</option>`;
+            normalized.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.code ?? item.id ?? '';
+                opt.textContent = item.name ?? item.nama ?? opt.value;
+                $el.appendChild(opt);
             });
+        }
 
-            // Event listener for Kecamatan change
-            document.getElementById('kecamatan').addEventListener('change', function() {
-                var kecamatanId = this.value;
-
-                if (kecamatanId) {
-                    fetch(`/bencana/get-desa/${kecamatanId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Clear previous options
-                            choicesDesa.clearStore();
-
-                            // Add new options
-                            choicesDesa.setChoices(
-                                data.desaTerkait.map(desa => ({
-                                    value: desa.id,
-                                    label: desa.nama,
-                                    selected: false,
-                                    disabled: false
-                                })),
-                                'value',
-                                'label',
-                                false
-                            );
-                        })
-                        .catch(error => console.error('Error fetching desa:', error));
-                } else {
-                    // Clear options if no Kecamatan is selected
-                    choicesDesa.clearStore();
-                }
+        function fetchJson(url) {
+            return fetch(url, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            }).then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
             });
+        }
+
+        // Load semua data wilayah secara berurutan lalu pre-fill
+        async function loadEditData() {
+            // 1. Provinces
+            const provKey = 'wilayah:provinces';
+            let provinces = cacheGet(provKey);
+            if (!provinces) {
+                const resp = await fetchJson(`${apiBase}/provinces`);
+                provinces = Array.isArray(resp) ? resp : (resp.data ?? []);
+                cacheSet(provKey, provinces);
+            }
+            setOptions($prov, provinces, 'Pilih Provinsi');
+            $prov.value = provinceCode;
+
+            if (!provinceCode) return;
+
+            // 2. Regencies
+            const regKey = `wilayah:regencies:${provinceCode}`;
+            let regencies = cacheGet(regKey);
+            if (!regencies) {
+                const resp = await fetchJson(`${apiBase}/regencies/${encodeURIComponent(provinceCode)}`);
+                regencies = Array.isArray(resp) ? resp : (resp.data ?? []);
+                cacheSet(regKey, regencies);
+            }
+            setOptions($reg, regencies, 'Pilih Kabupaten/Kota');
+            $reg.value = regencyCode;
+
+            if (!regencyCode) return;
+
+            // 3. Districts
+            const distKey = `wilayah:districts:${regencyCode}`;
+            let districts = cacheGet(distKey);
+            if (!districts) {
+                const resp = await fetchJson(`${apiBase}/districts/${encodeURIComponent(regencyCode)}`);
+                districts = Array.isArray(resp) ? resp : (resp.data ?? []);
+                cacheSet(distKey, districts);
+            }
+            setOptions($kec, districts, 'Pilih Kecamatan');
+            $kec.value = districtCode;
+
+            if (!districtCode) return;
+
+            // 4. Villages
+            const vilKey = `wilayah:villages:${districtCode}`;
+            let villages = cacheGet(vilKey);
+            if (!villages) {
+                const resp = await fetchJson(`${apiBase}/villages/${encodeURIComponent(districtCode)}`);
+                villages = Array.isArray(resp) ? resp : (resp.data ?? []);
+                cacheSet(vilKey, villages);
+            }
+            choicesDesa.clearStore();
+            choicesDesa.setChoices(
+                villages.map(v => ({
+                    value: v.code,
+                    label: v.name,
+                    selected: selectedDesaIds.includes(v.code)
+                })),
+                'value', 'label', true
+            );
+        }
+
+        loadEditData();
+
+        // --- Change handlers (sama seperti create) ---
+        $prov.addEventListener('change', function () {
+            const code = this.value;
+            setOptions($reg, [], 'Memuat kabupaten...');
+            setOptions($kec, [], 'Pilih Kecamatan');
+            choicesDesa.clearStore();
+            choicesDesa.setChoices([], 'value', 'label', true);
+
+            if (!code) { setOptions($reg, [], 'Pilih Kabupaten/Kota'); return; }
+
+            const key = `wilayah:regencies:${code}`;
+            const cached = cacheGet(key);
+            if (cached) { setOptions($reg, cached, 'Pilih Kabupaten/Kota'); return; }
+
+            fetchJson(`${apiBase}/regencies/${encodeURIComponent(code)}`)
+                .then(resp => {
+                    const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                    cacheSet(key, list);
+                    setOptions($reg, list, 'Pilih Kabupaten/Kota');
+                })
+                .catch(() => setOptions($reg, [], 'Error memuat kabupaten'));
         });
-    </script> --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var choicesKecamatan = new Choices('#kecamatan');
-            var choicesDesa = new Choices('#desa', {
-                removeItemButton: true,
-                maxItemCount: -1, // Unlimited items
-                placeholder: true,
-                placeholderValue: 'Select Desa...',
-                searchResultLimit: 5,
-                renderChoiceLimit: 5
-            });
 
-            var selectedDesaIds = @json($selectedDesaIds); // Desa yang sudah terpilih
+        $reg.addEventListener('change', function () {
+            const code = this.value;
+            setOptions($kec, [], 'Memuat kecamatan...');
+            choicesDesa.clearStore();
+            choicesDesa.setChoices([], 'value', 'label', true);
 
-            // Load desa options pada halaman load
-            function loadInitialDesa(kecamatanId, selectedDesaIds) {
-                if (kecamatanId) {
-                    fetch(`/bencana/get-desa/${kecamatanId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Clear previous options
-                            choicesDesa.clearStore();
+            if (!code) { setOptions($kec, [], 'Pilih Kecamatan'); return; }
 
-                            // Add new options and select previously selected ones
-                            choicesDesa.setChoices(
-                                data.desaTerkait.map(desa => ({
-                                    value: desa.id,
-                                    label: desa.nama,
-                                    selected: selectedDesaIds.includes(desa.id.toString()),
-                                    disabled: false
-                                })),
-                                'value',
-                                'label',
-                                false
-                            );
-                        })
-                        .catch(error => console.error('Error fetching desa:', error));
-                }
+            const key = `wilayah:districts:${code}`;
+            const cached = cacheGet(key);
+            if (cached) { setOptions($kec, cached, 'Pilih Kecamatan'); return; }
+
+            fetchJson(`${apiBase}/districts/${encodeURIComponent(code)}`)
+                .then(resp => {
+                    const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                    cacheSet(key, list);
+                    setOptions($kec, list, 'Pilih Kecamatan');
+                })
+                .catch(() => setOptions($kec, [], 'Error memuat kecamatan'));
+        });
+
+        $kec.addEventListener('change', function () {
+            const code = this.value;
+            choicesDesa.clearStore();
+            choicesDesa.setChoices([{ value: '', label: 'Memuat desa...' }], 'value', 'label', true);
+
+            if (!code) { choicesDesa.clearStore(); return; }
+
+            const key = `wilayah:villages:${code}`;
+            const cached = cacheGet(key);
+            if (cached) {
+                choicesDesa.clearStore();
+                choicesDesa.setChoices(
+                    cached.map(v => ({ value: v.code, label: v.name })),
+                    'value', 'label', true
+                );
+                return;
             }
 
-            var kecamatanId = document.getElementById('kecamatan').value;
-            loadInitialDesa(kecamatanId, selectedDesaIds);
-
-            // Event listener for Kecamatan change
-            document.getElementById('kecamatan').addEventListener('change', function() {
-                var kecamatanId = this.value;
-                choicesDesa.clearStore();
-
-                if (kecamatanId) {
-                    fetch(`/bencana/get-desa/${kecamatanId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            choicesDesa.setChoices(
-                                data.desaTerkait.map(desa => ({
-                                    value: desa.id,
-                                    label: desa.nama,
-                                    selected: false,
-                                    disabled: false
-                                })),
-                                'value',
-                                'label',
-                                false
-                            );
-                        })
-                        .catch(error => console.error('Error fetching desa:', error));
-                }
-            });
+            fetchJson(`${apiBase}/villages/${encodeURIComponent(code)}`)
+                .then(resp => {
+                    const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                    cacheSet(key, list);
+                    choicesDesa.clearStore();
+                    choicesDesa.setChoices(
+                        list.map(v => ({ value: v.code, label: v.name })),
+                        'value', 'label', true
+                    );
+                })
+                .catch(() => {
+                    choicesDesa.clearStore();
+                    choicesDesa.setChoices([{ value: '', label: 'Error memuat desa' }], 'value', 'label', true);
+                });
         });
-    </script>
+    });
+</script>
 @endpush

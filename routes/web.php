@@ -2,18 +2,14 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BencanaController;
-use App\Http\Controllers\HargaSatuanDasarController;
-use App\Http\Controllers\KategoriBangunanController;
-use App\Http\Controllers\KategoriBencanaController;
-use App\Http\Controllers\KerugianController;
-use App\Http\Controllers\KerusakanController;
-use App\Http\Controllers\KebutuhanController;
-use App\Http\Controllers\SatuanController;
-use App\Models\HSD;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\FormsController;
-use App\Http\Controllers\Form4Controller;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WilayahProxyController;
+use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\KajianController;
+use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\FormulirController;
+use App\Http\Controllers\FormatFormulirController;
 use App\Http\Controllers\Form4\Format1Controller;
 use App\Http\Controllers\Form4\Format2Controller;
 use App\Http\Controllers\Form4\Format3Controller;
@@ -31,23 +27,9 @@ use App\Http\Controllers\Form4\Format14Controller;
 use App\Http\Controllers\Form4\Format15Controller;
 use App\Http\Controllers\Form4\Format16Controller;
 use App\Http\Controllers\Form4\Format17Controller;
-// NOTE: Format1Controller sampai Format17Controller sudah dibuat
-use App\Http\Controllers\RekapController;
-use App\Http\Controllers\Form1Controller;
-use App\Http\Controllers\Form2Controller;
-use App\Http\Controllers\Form3Controller;
-use App\Http\Controllers\Form6Controller;
-use App\Http\Controllers\Form7Controller;
-use App\Http\Controllers\Form8Controller;
-use App\Http\Controllers\Form9Controller;
-use App\Http\Controllers\Form10Controller;
-use App\Http\Controllers\Form11Controller;
-use App\Http\Controllers\Form12Controller;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WilayahProxyController;
-use App\Http\Controllers\WilayahController;
-use App\Http\Controllers\KajianController;
-use App\Http\Controllers\VerifikasiController;
+
+
+
 
 // Route::prefix('/verifikasi')
 //     ->middleware(['auth', 'verified'])
@@ -70,7 +52,6 @@ Route::prefix('/kajian')
     Route::post('/store', [KajianController::class, 'store'])->name('store');
     Route::get('/list', [KajianController::class, 'list'])->name('list');
 });
-
 
 // Proxy routes for wilayah.id
 Route::get('/proxy/wilayah/provinces', [WilayahProxyController::class, 'provinces']);
@@ -225,8 +206,8 @@ Route::prefix('/forms')
     ->middleware(['auth', 'verified'])
     ->name('forms.')
     ->group(function () {
-        Route::get('/', [FormsController::class, 'index'])->name('index');
-        Route::get('form-list', [FormsController::class, 'index'])->name('form-list');
+        Route::get('/', [FormulirController::class, 'index'])->name('index');
+        Route::get('form-list', [FormulirController::class, 'index'])->name('form-list');
 
         // Form 1 (Surat Permohonan Keterlibatan PDNA)
         Route::prefix('form1')->name('form1.')->group(function () {
@@ -269,7 +250,7 @@ Route::prefix('/forms')
 
         // Form 4 (All Sectors)
         Route::prefix('form4')->name('form4.')->group(function () {
-            Route::get('/', [Form4Controller::class, 'index'])->name('index');
+            Route::get('/', [FormatFormulirController::class, 'index'])->name('index');
 
             // Format 1 - Housing sector
             Route::prefix('format1')->name('format1.')->group(function () {

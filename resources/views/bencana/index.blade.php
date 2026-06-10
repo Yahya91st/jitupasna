@@ -401,7 +401,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Ref</th>
+                                <th>Id</th>
                                 <th>Bencana</th>
                                 <th>Tanggal</th>
                                 <th>Lokasi (Kelurahan/Desa)</th>
@@ -411,21 +411,19 @@
                         <tbody>
                             @foreach ($bencana as $item)
                                 <tr>
-                                    <td>{{ $item->Ref }}</td>
+                                    <td>{{ $item->id }}</td>
                                     <td>
                                         <div class="bencana-info">
-                                            <img class="bencana-img"
-                                                src="{{ asset('/frontend/dist/assets/images/avatar/' . $item['gambar']) }}"
-                                                alt="{{ $item->kategori_bencana->nama }}">
-                                            <h6 class="bencana-name">{{ $item->kategori_bencana->nama }}</h6>
+                                            <h6 class="bencana-name">{{ config('bencana')[$item->jenis_bencana] }}</h6>
                                         </div>
                                     </td>
                                     <td>{{ $item->tanggal }}</td>
                                     <td>
                                         <ul class="location-list">
-                                            @foreach ($item->desa as $desa)
-                                                <li>{{ $desa->nama }}</li>
-                                            @endforeach
+                                        @foreach ($item->villages as $village)
+                                            {{ $village['name'] ?? $village['code'] }}
+                                            @if (!$loop->last), @endif
+                                        @endforeach
                                         </ul>
                                     </td>
                                     <td>
@@ -505,13 +503,12 @@
                         <form action="{{ route('bencana.index') }}" method="GET" id="filterForm">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="kategori_bencana_id">Kategori Bencana</label>
-                                    <select class="form-select" name="kategori_bencana_id" id="kategori_bencana_id">
+                                    <label for="$jenis_bencana">Kategori Bencana</label>
+                                    <select class="form-select" name="$jenis_bencana" id="$jenis_bencana">
                                         <option selected disabled value="">Pilih Kategori...</option>
-                                        @foreach ($kategoribencana as $item)
-                                            <option value="{{ $item->id }}"
-                                                {{ request()->input('kategori_bencana_id') == $item->id ? 'selected' : '' }}>
-                                                {{ $item->nama }}
+                                        @foreach ($jenis_bencana as $item)
+                                            <option value="{{ $item }}">
+                                                {{ $item }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -537,7 +534,7 @@
 
 <script>
     function resetFilters() {
-        document.getElementById('kategori_bencana_id').value = '';
+        document.getElementById('$jenis_bencana').value = '';
         document.getElementById('filterForm').submit();
     }
 

@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('province_code');
             $table->string('regency_code');
             $table->string('district_code');
-            $table->string('village_code');
+            $table->json('village_codes');
             $table->string('gambar')->nullable();
             $table->text('deskripsi')->nullable();
             $table->boolean('verifikasi')->default(false);

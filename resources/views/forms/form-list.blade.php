@@ -29,12 +29,15 @@
         <div class="page-title mb-4">
             <h3>Daftar Form Lanjutan</h3>
             @if ($bencana)
-                <p class="text-subtitle text-muted">
-                    Bencana: {{ $bencana->kategori_bencana->nama }} - Ref: {{ $bencana->Ref }} - Tanggal: {{ $bencana->tanggal }}
-                    <a href="{{ route('bencana.index', ['source' => 'forms']) }}" class="btn btn-sm" style="background-color: #6c757d; color: white; border: none;">
-                        Ganti Bencana
-                    </a>
-                </p>
+                <div class="alert alert-light border mb-3">
+                    <h5 class="mb-1">
+                        {{ config('bencana')[$bencana->jenis_bencana] ?? $bencana->jenis_bencana }}
+                    </h5>
+
+                    <small class="text-muted">
+                        Tanggal: {{ $bencana->tanggal }}
+                    </small>
+                </div>
             @endif
             <div class="mt-2">
                 <span class="badge bg-info">Pengguna JITUPASNA</span>

@@ -2,64 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FormatFormulir;
+
+
+use App\Models\Bencana;
 use Illuminate\Http\Request;
+use App\Http\Requests\BencanaRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Intervention\Image\ImageManagerStatic as Image;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\PDF as DomPdf;
 
 class FormatFormulirController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $bencana_id = $request->input('bencana_id');
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        if (!$bencana_id) {
+            return redirect()->route('bencana.index', [
+                'source' => 'forms'
+            ]);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $bencana = Bencana::findOrFail($bencana_id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(FormatFormulir $formatFormulir)
-    {
-        //
-    }
+        $codes = is_array($bencana->village_codes)
+            ? $bencana->village_codes
+            : json_decode($bencana->village_codes, true);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(FormatFormulir $formatFormulir)
-    {
-        //
-    }
+        $bencana->villages = collect($codes)->map(function ($code) {
+            $code = trim($code);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, FormatFormulir $formatFormulir)
-    {
-        //
-    }
+            return Cache::remember("village_name_{$code}", 86400, function () use ($code) {
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(FormatFormulir $formatFormulir)
-    {
-        //
+                $parts = explode('.', $code);
+                $districtCode = implode('.', array_slice($parts, 0, 3));
+
+                $response = Http::get(
+                    "https://wilayah.id/api/villages/{$districtCode}.json"
+                );
+
+                if (!$response->ok()) {
+                    return [
+                        'code' => $code,
+                        'name' => null,
+                    ];
+                }
+
+                $village = collect($response->json('data'))
+                    ->firstWhere('code', $code);
+
+                return [
+                    'code' => $code,
+                    'name' => $village['name'] ?? null,
+                ];
+            });
+        })->toArray();
+
+        return view('forms.form4', compact('bencana'));
     }
 }

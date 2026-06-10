@@ -459,12 +459,12 @@
                 </li>
                     
                 <!-- User Management -->
-                @if (auth()->user()->hasRole(['admin', 'super-admin']))
+                @if (auth()->user()->role === ['admin', 'super-admin'])
                     <li class="sidebar-item {{ Request::is('users*') ? 'active' : '' }}">
                         <a href="{{ route('users.index') }}" class="sidebar-link">
                             <i data-feather="users"></i>
                             <span>
-                                @if (auth()->user()->hasRole('super-admin'))
+                                @if (auth()->user()->role ==='super-admin')
                                     Manajemen Admin
                                 @else
                                     Manajemen Pengguna

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bencana;
-use App\Models\Format1Form4;
+use App\Models\FormulirItem;
 use App\Models\Rekap;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -40,58 +40,60 @@ class Format1Controller extends Controller
         try {
             DB::beginTransaction();
 
-            // Validasi request tanpa rekap_id, gunakan bencana_id
-            $validated = $request->validate([
-                'bencana_id' => 'required|exists:bencana,id',
-                'nama_kampung' => 'required|string',
-                'nama_distrik' => 'required|string',
-                'rumah_hancur_total_permanen' => 'nullable|integer',
-                'rumah_hancur_total_non_permanen' => 'nullable|integer',
-                'rumah_rusak_berat_permanen' => 'nullable|integer',
-                'rumah_rusak_berat_non_permanen' => 'nullable|integer',
-                'rumah_rusak_sedang_permanen' => 'nullable|integer',
-                'rumah_rusak_sedang_non_permanen' => 'nullable|integer',
-                'rumah_rusak_ringan_permanen' => 'nullable|integer',
-                'rumah_rusak_ringan_non_permanen' => 'nullable|integer',
-                'harga_satuan_hancur_total_permanen' => 'nullable|numeric',
-                'harga_satuan_hancur_total_non_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_berat_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_berat_non_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_sedang_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_sedang_non_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_ringan_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_ringan_non_permanen' => 'nullable|numeric',
-                'jalan_rusak_berat' => 'nullable|numeric',
-                'jalan_rusak_sedang' => 'nullable|numeric',
-                'jalan_rusak_ringan' => 'nullable|numeric',
-                'harga_satuan_jalan' => 'nullable|numeric',
-                'saluran_rusak_berat' => 'nullable|numeric',
-                'saluran_rusak_sedang' => 'nullable|numeric',
-                'saluran_rusak_ringan' => 'nullable|numeric',
-                'harga_satuan_saluran' => 'nullable|numeric',
-                'balai_rusak_berat' => 'nullable|integer',
-                'balai_rusak_sedang' => 'nullable|integer',
-                'balai_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_balai' => 'nullable|numeric',
-                'tenaga_kerja_hok' => 'nullable|integer',
-                'upah_harian' => 'nullable|numeric',
-                'alat_berat_hari' => 'nullable|integer',
-                'biaya_per_hari' => 'nullable|numeric',
-                'jumlah_rumah_disewa' => 'nullable|integer',
-                'harga_sewa_per_bulan' => 'nullable|numeric',
-                'durasi_sewa_bulan' => 'nullable|integer',
-                'jumlah_tenda' => 'nullable|integer',
-                'harga_tenda' => 'nullable|numeric',
-                'jumlah_barak' => 'nullable|integer',
-                'harga_barak' => 'nullable|numeric',
-                'jumlah_rumah_sementara' => 'nullable|integer',
-                'harga_rumah_sementara' => 'nullable|numeric',
+            $laporan = LaporanBencana::create([
+                'bencana_id' => $request->bencana_id,
+                'format_id' => 1,
+                'user_id' => auth()->id(),
+                'status' => 'draft'
             ]);
 
-            // Cari atau buat rekap berdasarkan bencana_id
-            $rekap = Rekap::firstOrCreate([
-                'bencana_id' => $validated['bencana_id']
+            // Validasi request tanpa rekap_id, gunakan bencana_id
+            $validated = $request->validate([
+            'bencana_id' => 'required|exists:bencana,id',
+
+            'details' => 'required|array|min:1',
+
+            'details.*.kriteria_id' => 'required|exists:kriterias,id',
+            'details.*.kategori' => 'required|string|max:255',
+            'details.*.sub_kategori' => 'nullable|string|max:255',
+
+            'details.*.dimensi_1' => 'nullable|string|max:255',
+            'details.*.dimensi_2' => 'nullable|string|max:255',
+
+            'details.*.tingkat_kerusakan' => 'required|string',
+
+            'details.*.jumlah' => 'required|numeric|min:0',
+
+            'details.*.harga_satuan' => 'required|numeric|min:0',
+
+            'details.*.satuan' => 'nullable|string|max:50',
             ]);
+
+            foreach ($request->details as $detail) {
+
+                FormulirItem::create([
+                    'laporan_id' => $laporan->id,
+
+                    'kriteria_id' => $detail['kriteria_id'],
+
+                    'kategori' => $detail['kategori'],
+
+                    'sub_kategori' => $detail['sub_kategori'] ?? null,
+
+                    'dimensi_1' => $detail['dimensi_1'] ?? null,
+
+                    'dimensi_2' => $detail['dimensi_2'] ?? null,
+
+                    'tingkat_kerusakan' => $detail['tingkat_kerusakan'],
+
+                    'jumlah' => $detail['jumlah'],
+
+                    'harga_satuan' => $detail['harga_satuan'],
+
+                    'satuan' => $detail['satuan'] ?? null,
+                ]);
+            }
+
 
             // Hitung total kerusakan otomatis (semua item sekarang masuk ke kerusakan)
             $total_kerusakan = 

@@ -67,23 +67,18 @@
         <div class="card main-card">
             <div class="card-header card-header-gradient">
                 <h4 class="card-title">
-                    @if(auth()->user()->hasRole('super-admin'))
+                    @if(auth()->user()->role === 'operator')
                         Admin Accounts
-                    @elseif(auth()->user()->hasRole('admin'))
-                        Regular User Accounts
                     @else
                         Users
                     @endif
                 </h4>
 
                 <div class="header-actions">
-                    @if(auth()->user()->hasRole('super-admin'))
+                    @if(auth()->user()->role === 'operator')
                         <a href="{{ url('/admins/create') }}" class="btn btn-light-secondary">
-                            <i data-feather="plus"></i> Create Admin
+                            <i data-feather="plus"></i> Create user
                         </a>
-                    @elseif(auth()->user()->hasRole('admin'))
-                        <a href="{{ url('/users/create') }}" class="btn btn-light-secondary">
-                            <i data-feather="plus"></i> Create User
                         </a>
                     @endif
                 </div>

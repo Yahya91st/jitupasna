@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('keputusans', function (Blueprint $table) {
             $table->id();
-            $table->unique('laporan_id');
+            $table->foreignId('laporan_id')
+            ->unique()
+            ->constrained('laporan_bencanas')
+            ->cascadeOnDelete();
             $table->text('hasil_keputusan');
             $table->text('tindak_lanjut');
             $table->enum('status_keputusan',[

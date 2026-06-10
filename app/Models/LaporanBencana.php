@@ -24,14 +24,14 @@ class LaporanBencana extends Model
         'tanggal_lapor' => 'date',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
     public function bencana()
     {
-        return $this->belongsTo(Bencana::class, 'bencana_id');
+        return $this->belongsTo(Bencana::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function kajian()

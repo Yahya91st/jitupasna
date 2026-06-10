@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('kajians', function (Blueprint $table) {
             $table->id();
-            $table->unique('laporan_id');
+            $table->foreignId('laporan_id')
+            ->unique()
+            ->constrained('laporan_bencanas')
+            ->cascadeOnDelete();
             $table->text('peningkatan_resiko');
             $table->text('gangguan_akses');
             $table->text('kehilangan_akses');

@@ -273,11 +273,11 @@
                             <div class="row">
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="kategori_bencana_id">Kategori Bencana</label>
-                                        <select class="choices form-select" name="kategori_bencana_id" id="kategori_bencana_id" required>
+                                        <label for="jenis_bencana">Jenis Bencana</label>
+                                        <select class="choices form-select" name="jenis_bencana" id="jenis_bencana" required>
                                             <option value="">Pilih...</option>
-                                            @foreach ($kategoribencana as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                            @foreach ($jenis_bencana as $key => $label)
+                                                <option value="{{ $key }}">{{ $label }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -321,8 +321,8 @@
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="desa">Desa (dapat pilih lebih dari satu)</label>
-                                        <select id="desa" name="village_code[]" class="form-control" multiple required>
-                                            <option value="">Pilih Desa...</option>
+                                        <select id="desa" name="village_codes[]" class="form-control" multiple required>
+                                            <option value="">Pilih Desa</option>                                            
                                         </select>
                                     </div>
                                 </div>
@@ -423,315 +423,315 @@
 @push('script')
 <script src="{{ asset('frontend/dist/assets/vendors/quill/quill.min.js') }}"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Feather Icons
-    if (typeof feather !== 'undefined') {
-        feather.replace();
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Feather Icons
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
 
-    // --- Image cropper ---
-    var bs_modal = $('#modal');
-    var image = document.getElementById('image');
-    var cropper, reader, file;
+        // --- Image cropper ---
+        var bs_modal = $('#modal');
+        var image = document.getElementById('image');
+        var cropper, reader, file;
 
-    $("body").on("change", ".image", function(e) {
-        var files = e.target.files;
-        var maxFileSizeInBytes = 10 * 1024 * 1024;
-        var allowedExtensions = ['jpg', 'jpeg', 'png'];
+        $("body").on("change", ".image", function(e) {
+            var files = e.target.files;
+            var maxFileSizeInBytes = 10 * 1024 * 1024;
+            var allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-        if (files && files.length > 0) {
-            file = files[0];
-            var fileExtension = file.name.split('.').pop().toLowerCase();
+            if (files && files.length > 0) {
+                file = files[0];
+                var fileExtension = file.name.split('.').pop().toLowerCase();
 
-            if (!allowedExtensions.includes(fileExtension)) {
-                alert("Hanya file .jpg, .jpeg, dan .png yang diperbolehkan.");
-                $(this).val('');
-                return;
-            }
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert("Hanya file .jpg, .jpeg, dan .png yang diperbolehkan.");
+                    $(this).val('');
+                    return;
+                }
 
-            if (file.size > maxFileSizeInBytes) {
-                alert("Ukuran file melebihi batas maksimal 10 MB.");
-                $(this).val('');
-                return;
-            }
+                if (file.size > maxFileSizeInBytes) {
+                    alert("Ukuran file melebihi batas maksimal 10 MB.");
+                    $(this).val('');
+                    return;
+                }
 
-            var done = function(url) {
-                image.src = url;
-                bs_modal.modal('show');
-            };
-
-            if (window.URL) {
-                done(URL.createObjectURL(file));
-            } else if (FileReader) {
-                reader = new FileReader();
-                reader.onload = function() {
-                    done(reader.result);
+                var done = function(url) {
+                    image.src = url;
+                    bs_modal.modal('show');
                 };
-                reader.readAsDataURL(file);
+
+                if (window.URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function() {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
             }
-        }
-        $(this).val('');
-    });
-
-    bs_modal.on('shown.bs.modal', function() {
-        if (cropper) {
-            cropper.destroy();
-        }
-        cropper = new Cropper(image, {
-            aspectRatio: 1,
-            viewMode: 1,
-            autoCropArea: 1,
-            dragMode: 'move',
-            preview: '.preview'
-        });
-    }).on('hidden.bs.modal', function() {
-        if (cropper) {
-            cropper.destroy();
-            cropper = null;
-        }
-    });
-
-    $("#crop").click(function() {
-        if (!cropper) return;
-        var canvas = cropper.getCroppedCanvas({
-            width: 300,
-            height: 300
-        });
-        var croppedImage = canvas.toDataURL();
-        $("#firstImage").attr("src", croppedImage);
-        $("#croppedImageData").val(croppedImage);
-        bs_modal.modal('hide');
-    });
-
-    document.getElementById('chooseImageButton').addEventListener('click', function() {
-        document.getElementById('imageInput').click();
-    });
-
-    // --- Quill editor ---
-    var descriptionEditor = new Quill('#full', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ font: [] }, { size: [] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ color: [] }, { background: [] }],
-                [{ script: 'super' }, { script: 'sub' }],
-                [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-                ['direction', { align: [] }],
-                ['link', 'image', 'video'],
-                ['clean']
-            ]
-        }
-    });
-
-    // --- Form submit handler ---
-    var form = document.querySelector('form');
-    if (form) {
-        form.onsubmit = function() {
-            document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
-        };
-    }
-
-    // --- Wilayah selects ---
-    var $prov = document.getElementById('province');
-    var $reg = document.getElementById('regency');
-    var $kec = document.getElementById('kecamatan');
-    var $desa = document.getElementById('desa');
-
-
-    if ($prov && $reg && $kec && $desa) {
-        const apiBase = '/proxy/wilayah';
-
-        // Initialize Choices.js for desa (multi-select)
-        const choicesDesa = new Choices('#desa', {
-            removeItemButton: true,
-            placeholderValue: 'Pilih Desa...',
-            searchEnabled: true,
-            searchPlaceholderValue: 'Cari desa...'
+            $(this).val('');
         });
 
-        function cacheGet(key) {
-            try {
-                const data = sessionStorage.getItem(key);
-                return data ? JSON.parse(data) : null;
-            } catch {
-                return null;
+        bs_modal.on('shown.bs.modal', function() {
+            if (cropper) {
+                cropper.destroy();
             }
-        }
-
-        function cacheSet(key, val) {
-            try {
-                sessionStorage.setItem(key, JSON.stringify(val));
-            } catch (e) {
-                console.error('Cache set error:', e);
-            }
-        }
-
-        function setOptions($el, list, placeholder = 'Pilih...') {
-            const normalized = Array.isArray(list) ? list : (list && list.data ? list.data : []);
-            $el.innerHTML = `<option value="">${placeholder}</option>`;
-            normalized.forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item.code ?? item.id ?? '';
-                opt.textContent = item.name ?? item.nama ?? opt.value;
-                $el.appendChild(opt);
+            cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                autoCropArea: 1,
+                dragMode: 'move',
+                preview: '.preview'
             });
-            $el.selectedIndex = 0;
-            console.log(`[wilayah] setOptions for #${$el.id}, count=${normalized.length}`);
-        }
-
-        function fetchJson(url) {
-            return fetch(url, { 
-                method: 'GET',
-                headers: { 'Accept': 'application/json' }
-            }).then(r => {
-                if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                return r.json();
-            });
-        }
-
-        // Load provinces on page load
-        (function loadProvinces() {
-            const key = 'wilayah:provinces';
-            const cached = cacheGet(key);
-            
-            if (cached) {
-                console.log('[wilayah] Loading provinces from cache');
-                setOptions($prov, cached, 'Pilih Provinsi');
-                return;
+        }).on('hidden.bs.modal', function() {
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
             }
-
-            fetchJson(`${apiBase}/provinces`)
-                .then(resp => {
-                    const list = Array.isArray(resp) ? resp : (resp.data ?? []);
-                    if (list.length > 0) {
-                        cacheSet(key, list);
-                        setOptions($prov, list, 'Pilih Provinsi');
-                    } else {
-                        throw new Error('Empty province list');
-                    }
-                })
-                .catch(err => {
-                    console.error('[wilayah] Local API failed:', err);
-                    setOptions($prov, [], 'Error memuat provinsi - Refresh halaman');
-                });
-        })();
-
-        // Province change handler
-        $prov.addEventListener('change', function() {
-            const code = this.value;
-            console.log('[wilayah] Province changed:', code);
-            
-            setOptions($reg, [], 'Memuat kabupaten...');
-            setOptions($kec, [], 'Pilih Kecamatan');
-            choicesDesa.clearStore();
-            choicesDesa.setChoices([], 'value', 'label', true);
-
-            if (!code) {
-                setOptions($reg, [], 'Pilih Kabupaten/Kota');
-                return;
-            }
-
-            const key = `wilayah:regencies:${code}`;
-            const cached = cacheGet(key);
-            
-            if (cached) {
-                setOptions($reg, cached, 'Pilih Kabupaten/Kota');
-                return;
-            }
-
-            fetchJson(`${apiBase}/regencies/${encodeURIComponent(code)}`)
-                .then(resp => {
-                    const list = Array.isArray(resp) ? resp : (resp.data ?? []);
-                    cacheSet(key, list);
-                    setOptions($reg, list, 'Pilih Kabupaten/Kota');
-                })
-                .catch(err => {
-                    console.error('[wilayah] Regency fetch failed:', err);
-                    setOptions($reg, [], 'Error memuat kabupaten');
-                });
         });
 
-        // Regency change handler
-        $reg.addEventListener('change', function() {
-            const code = this.value;
-            console.log('[wilayah] Regency changed:', code);
-            
-            setOptions($kec, [], 'Memuat kecamatan...');
-            choicesDesa.clearStore();
-            choicesDesa.setChoices([], 'value', 'label', true);
+        $("#crop").click(function() {
+            if (!cropper) return;
+            var canvas = cropper.getCroppedCanvas({
+                width: 300,
+                height: 300
+            });
+            var croppedImage = canvas.toDataURL();
+            $("#firstImage").attr("src", croppedImage);
+            $("#croppedImageData").val(croppedImage);
+            bs_modal.modal('hide');
+        });
 
-            if (!code) {
+        document.getElementById('chooseImageButton').addEventListener('click', function() {
+            document.getElementById('imageInput').click();
+        });
+
+        // --- Quill editor ---
+        var descriptionEditor = new Quill('#full', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ font: [] }, { size: [] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ color: [] }, { background: [] }],
+                    [{ script: 'super' }, { script: 'sub' }],
+                    [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+                    ['direction', { align: [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // --- Form submit handler ---
+        var form = document.querySelector('form');
+        if (form) {
+            form.onsubmit = function() {
+                document.querySelector('#deskripsi').value = descriptionEditor.root.innerHTML;
+            };
+        }
+
+        // --- Wilayah selects ---
+        var $prov = document.getElementById('province');
+        var $reg = document.getElementById('regency');
+        var $kec = document.getElementById('kecamatan');
+        var $desa = document.getElementById('desa');
+
+
+        if ($prov && $reg && $kec && $desa) {
+            const apiBase = '/proxy/wilayah';
+
+            // Initialize Choices.js for desa (multi-select)
+            const choicesDesa = new Choices('#desa', {
+                removeItemButton: true,
+                placeholderValue: 'Pilih Desa...',
+                searchEnabled: true,
+                searchPlaceholderValue: 'Cari desa...'
+            });
+
+            function cacheGet(key) {
+                try {
+                    const data = sessionStorage.getItem(key);
+                    return data ? JSON.parse(data) : null;
+                } catch {
+                    return null;
+                }
+            }
+
+            function cacheSet(key, val) {
+                try {
+                    sessionStorage.setItem(key, JSON.stringify(val));
+                } catch (e) {
+                    console.error('Cache set error:', e);
+                }
+            }
+
+            function setOptions($el, list, placeholder = 'Pilih...') {
+                const normalized = Array.isArray(list) ? list : (list && list.data ? list.data : []);
+                $el.innerHTML = `<option value="">${placeholder}</option>`;
+                normalized.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item.code ?? item.id ?? '';
+                    opt.textContent = item.name ?? item.nama ?? opt.value;
+                    $el.appendChild(opt);
+                });
+                $el.selectedIndex = 0;
+                console.log(`[wilayah] setOptions for #${$el.id}, count=${normalized.length}`);
+            }
+
+            function fetchJson(url) {
+                return fetch(url, { 
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                }).then(r => {
+                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                    return r.json();
+                });
+            }
+
+            // Load provinces on page load
+            (function loadProvinces() {
+                const key = 'wilayah:provinces';
+                const cached = cacheGet(key);
+                
+                if (cached) {
+                    console.log('[wilayah] Loading provinces from cache');
+                    setOptions($prov, cached, 'Pilih Provinsi');
+                    return;
+                }
+
+                fetchJson(`${apiBase}/provinces`)
+                    .then(resp => {
+                        const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                        if (list.length > 0) {
+                            cacheSet(key, list);
+                            setOptions($prov, list, 'Pilih Provinsi');
+                        } else {
+                            throw new Error('Empty province list');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('[wilayah] Local API failed:', err);
+                        setOptions($prov, [], 'Error memuat provinsi - Refresh halaman');
+                    });
+            })();
+
+            // Province change handler
+            $prov.addEventListener('change', function() {
+                const code = this.value;
+                console.log('[wilayah] Province changed:', code);
+                
+                setOptions($reg, [], 'Memuat kabupaten...');
                 setOptions($kec, [], 'Pilih Kecamatan');
-                return;
-            }
-
-            const key = `wilayah:districts:${code}`;
-            const cached = cacheGet(key);
-            
-            if (cached) {
-                setOptions($kec, cached, 'Pilih Kecamatan');
-                return;
-            }
-
-            fetchJson(`${apiBase}/districts/${encodeURIComponent(code)}`)
-                .then(resp => {
-                    const list = Array.isArray(resp) ? resp : (resp.data ?? []);
-                    cacheSet(key, list);
-                    setOptions($kec, list, 'Pilih Kecamatan');
-                })
-                .catch(err => {
-                    console.error('[wilayah] District fetch failed:', err);
-                    setOptions($kec, [], 'Error memuat kecamatan');
-                });
-        });
-
-        // District change handler
-        $kec.addEventListener('change', function() {
-            const code = this.value;
-            console.log('[wilayah] District changed:', code);
-            
-            choicesDesa.clearStore();
-            choicesDesa.setChoices([{ value: '', label: 'Memuat desa...' }], 'value', 'label', true);
-
-            if (!code) {
                 choicesDesa.clearStore();
-                return;
-            }
+                choicesDesa.setChoices([], 'value', 'label', true);
 
-            const key = `wilayah:villages:${code}`;
-            const cached = cacheGet(key);
-            
-            if (cached) {
+                if (!code) {
+                    setOptions($reg, [], 'Pilih Kabupaten/Kota');
+                    return;
+                }
+
+                const key = `wilayah:regencies:${code}`;
+                const cached = cacheGet(key);
+                
+                if (cached) {
+                    setOptions($reg, cached, 'Pilih Kabupaten/Kota');
+                    return;
+                }
+
+                fetchJson(`${apiBase}/regencies/${encodeURIComponent(code)}`)
+                    .then(resp => {
+                        const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                        cacheSet(key, list);
+                        setOptions($reg, list, 'Pilih Kabupaten/Kota');
+                    })
+                    .catch(err => {
+                        console.error('[wilayah] Regency fetch failed:', err);
+                        setOptions($reg, [], 'Error memuat kabupaten');
+                    });
+            });
+
+            // Regency change handler
+            $reg.addEventListener('change', function() {
+                const code = this.value;
+                console.log('[wilayah] Regency changed:', code);
+                
+                setOptions($kec, [], 'Memuat kecamatan...');
                 choicesDesa.clearStore();
-                choicesDesa.setChoices(
-                    cached.map(v => ({ value: v.code, label: v.name })),
-                    'value',
-                    'label',
-                    true
-                );
-                return;
-            }
+                choicesDesa.setChoices([], 'value', 'label', true);
 
-            fetchJson(`${apiBase}/villages/${encodeURIComponent(code)}`)
-                .then(resp => {
-                    const list = Array.isArray(resp) ? resp : (resp.data ?? []);
-                    cacheSet(key, list);
+                if (!code) {
+                    setOptions($kec, [], 'Pilih Kecamatan');
+                    return;
+                }
+
+                const key = `wilayah:districts:${code}`;
+                const cached = cacheGet(key);
+                
+                if (cached) {
+                    setOptions($kec, cached, 'Pilih Kecamatan');
+                    return;
+                }
+
+                fetchJson(`${apiBase}/districts/${encodeURIComponent(code)}`)
+                    .then(resp => {
+                        const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                        cacheSet(key, list);
+                        setOptions($kec, list, 'Pilih Kecamatan');
+                    })
+                    .catch(err => {
+                        console.error('[wilayah] District fetch failed:', err);
+                        setOptions($kec, [], 'Error memuat kecamatan');
+                    });
+            });
+
+            // District change handler
+            $kec.addEventListener('change', function() {
+                const code = this.value;
+                console.log('[wilayah] District changed:', code);
+                
+                choicesDesa.clearStore();
+                choicesDesa.setChoices([{ value: '', label: 'Memuat desa...' }], 'value', 'label', true);
+
+                if (!code) {
+                    choicesDesa.clearStore();
+                    return;
+                }
+
+                const key = `wilayah:villages:${code}`;
+                const cached = cacheGet(key);
+                
+                if (cached) {
                     choicesDesa.clearStore();
                     choicesDesa.setChoices(
-                        list.map(v => ({ value: v.code, label: v.name })),
+                        cached.map(v => ({ value: v.code, label: v.name })),
                         'value',
                         'label',
                         true
                     );
-                })
-                .catch(err => {
-                    console.error('[wilayah] Village fetch failed:', err);
-                    choicesDesa.clearStore();
-                    choicesDesa.setChoices([{ value: '', label: 'Error memuat desa' }], 'value', 'label', true);
-                });
-        });
-    }
-});
+                    return;
+                }
+
+                fetchJson(`${apiBase}/villages/${encodeURIComponent(code)}`)
+                    .then(resp => {
+                        const list = Array.isArray(resp) ? resp : (resp.data ?? []);
+                        cacheSet(key, list);
+                        choicesDesa.clearStore();
+                        choicesDesa.setChoices(
+                            list.map(v => ({ value: v.code, label: v.name })),
+                            'value',
+                            'label',
+                            true
+                        );
+                    })
+                    .catch(err => {
+                        console.error('[wilayah] Village fetch failed:', err);
+                        choicesDesa.clearStore();
+                        choicesDesa.setChoices([{ value: '', label: 'Error memuat desa' }], 'value', 'label', true);
+                    });
+            });
+        }
+    });
 </script>
 @endpush

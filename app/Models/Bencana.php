@@ -33,7 +33,7 @@ class Bencana extends Model
         'province_code', 
         'regency_code', 
         'district_code',
-        'village_code',
+        'village_codes',
         'deskripsi',
         'gambar'
     ];
@@ -41,6 +41,8 @@ class Bencana extends Model
     protected $casts = [
         'tanggal' => 'date',
         'verifikasi' => 'boolean',
+        'village_codes' => 'array',
+
     ];
 
     public static function jenisBencanaOptions(): array
@@ -52,4 +54,24 @@ class Bencana extends Model
     {
         return $this->hasMany(LaporanBencana::class, 'bencana_id');
     }
+
+    protected function villageNames(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $codes = $this->village_codes; // sudah array karena cast
+
+                return collect($codes)->map(function ($code) {
+                    return Cache::remember("village:{$code}", now()->addDay(), function () use ($code) {
+                        $response = Http::get("https://your-api.com/villages/{$code}");
+                        return [
+                            'code' => $code,
+                            'name' => $response->ok() ? $response->json('name') : null,
+                        ];
+                    });
+                })->toArray();
+            }
+        );
+    }
+
 }

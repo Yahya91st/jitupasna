@@ -28,7 +28,7 @@ class BencanaRequest extends FormRequest
             'province_code' => ['required', 'string'],
             'regency_code' => ['required', 'string'],
             'district_code' => ['required', 'string'],
-            'village_code' => ['required', 'string'],
+            'village_codes' => ['required', 'array'],
             'deskripsi' => ['nullable', 'string'],
         ];
     }
