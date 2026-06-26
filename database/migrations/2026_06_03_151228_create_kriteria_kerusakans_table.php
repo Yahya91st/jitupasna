@@ -14,14 +14,11 @@ return new class extends Migration
         Schema::create('kriteria_kerusakans', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('format_id')
-                ->constrained('format_formulirs')
-                ->cascadeOnDelete();
-
             $table->enum('tingkat', [
-                'ringan',
+                'hancur_total',
+                'berat',
                 'sedang',
-                'berat'
+                'ringan'
             ]);
 
             $table->decimal('persentase', 5, 2);

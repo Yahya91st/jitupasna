@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
         // Call the RoleSeeder
         $this->call(UserSeeder::class);
         $this->call(BencanaSeeder::class);
+        $this->call(FormatFormulirSeeder::class);
+        $this->call(KriteriaKerusakanSeeder::class);
+        
 
     }
 }

@@ -28,137 +28,127 @@
                 <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}"></td>
             </tr>
         </table>
-    
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center align-middle" style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%;">Keterangan</th>
-                                <th style="width: 14%;">Jenis Kerusakan</th>
-                                <th style="width: 8%;">RB</th>
-                                <th style="width: 8%;">RS</th>
-                                <th style="width: 9%;">RR</th>
-                                <th style="width: 10%;">RB Harga</th>
-                                <th style="width: 15%;">RS Harga</th>
-                                <th style="width: 14%;">RR Harga</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="card-header"> 
-                                <td class="align-middle fw-bold text-white bg-secondary" colspan="8">PERKIRAAN KERUSAKAN</td>
-                            </tr>
-                            @for ($i = 1; $i <= 3; $i++)
-                            <tr>
-                                @if ($i == 1)
-                                    <td class="text-start align-middle" rowspan="3">a) Ekosistem Darat</td>
-                                @endif
-                                <td><input type="text" name="ekosistem_darat_{{ $i }}_jenis" class="form-control" value="{{ old('ekosistem_darat_'.$i.'_jenis', $data->{'ekosistem_darat_'.$i.'_jenis'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_darat_{{ $i }}_rb" class="form-control" value="{{ old('ekosistem_darat_'.$i.'_rb', $data->{'ekosistem_darat_'.$i.'_rb'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_darat_{{ $i }}_rs" class="form-control" value="{{ old('ekosistem_darat_'.$i.'_rs', $data->{'ekosistem_darat_'.$i.'_rs'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_darat_{{ $i }}_rr" class="form-control" value="{{ old('ekosistem_darat_'.$i.'_rr', $data->{'ekosistem_darat_'.$i.'_rr'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_darat_{{ $i }}_rb_harga" class="form-control" value="{{ old('ekosistem_darat_'.$i.'_rb_harga', $data->{'ekosistem_darat_'.$i.'_rb_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_darat_{{ $i }}_rs_harga" class="form-control" value="{{ old('ekosistem_darat_'.$i.'_rs_harga', $data->{'ekosistem_darat_'.$i.'_rs_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_darat_{{ $i }}_rr_harga" class="form-control" value="{{ old('ekosistem_darat_'.$i.'_rr_harga', $data->{'ekosistem_darat_'.$i.'_rr_harga'} ?? '') }}"></td>
-                            </tr>
-                            @endfor
-                            @for ($i = 1; $i <= 3; $i++)
-                            <tr>
-                                @if ($i == 1)
-                                    <td class="text-start align-middle" rowspan="3">b) Ekosistem Laut</td>
-                                @endif
-                                <td><input type="text" name="ekosistem_laut_{{ $i }}_jenis" class="form-control" value="{{ old('ekosistem_laut_'.$i.'_jenis', $data->{'ekosistem_laut_'.$i.'_jenis'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_laut_{{ $i }}_rb" class="form-control" value="{{ old('ekosistem_laut_'.$i.'_rb', $data->{'ekosistem_laut_'.$i.'_rb'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_laut_{{ $i }}_rs" class="form-control" value="{{ old('ekosistem_laut_'.$i.'_rs', $data->{'ekosistem_laut_'.$i.'_rs'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_laut_{{ $i }}_rr" class="form-control" value="{{ old('ekosistem_laut_'.$i.'_rr', $data->{'ekosistem_laut_'.$i.'_rr'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_laut_{{ $i }}_rb_harga" class="form-control" value="{{ old('ekosistem_laut_'.$i.'_rb_harga', $data->{'ekosistem_laut_'.$i.'_rb_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_laut_{{ $i }}_rs_harga" class="form-control" value="{{ old('ekosistem_laut_'.$i.'_rs_harga', $data->{'ekosistem_laut_'.$i.'_rs_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_laut_{{ $i }}_rr_harga" class="form-control" value="{{ old('ekosistem_laut_'.$i.'_rr_harga', $data->{'ekosistem_laut_'.$i.'_rr_harga'} ?? '') }}"></td>
-                            </tr>
-                            @endfor
-                            @for ($i = 1; $i <= 3; $i++)
-                            <tr>
-                                @if ($i == 1)
-                                    <td class="text-start align-middle" rowspan="3">c) Ekosistem Udara</td>
-                                @endif
-                                <td><input type="text" name="ekosistem_udara_{{ $i }}_jenis" class="form-control" value="{{ old('ekosistem_udara_'.$i.'_jenis', $data->{'ekosistem_udara_'.$i.'_jenis'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_udara_{{ $i }}_rb" class="form-control" value="{{ old('ekosistem_udara_'.$i.'_rb', $data->{'ekosistem_udara_'.$i.'_rb'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_udara_{{ $i }}_rs" class="form-control" value="{{ old('ekosistem_udara_'.$i.'_rs', $data->{'ekosistem_udara_'.$i.'_rs'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_udara_{{ $i }}_rr" class="form-control" value="{{ old('ekosistem_udara_'.$i.'_rr', $data->{'ekosistem_udara_'.$i.'_rr'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_udara_{{ $i }}_rb_harga" class="form-control" value="{{ old('ekosistem_udara_'.$i.'_rb_harga', $data->{'ekosistem_udara_'.$i.'_rb_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_udara_{{ $i }}_rs_harga" class="form-control" value="{{ old('ekosistem_udara_'.$i.'_rs_harga', $data->{'ekosistem_udara_'.$i.'_rs_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="ekosistem_udara_{{ $i }}_rr_harga" class="form-control" value="{{ old('ekosistem_udara_'.$i.'_rr_harga', $data->{'ekosistem_udara_'.$i.'_rr_harga'} ?? '') }}"></td>
-                            </tr>
-                            @endfor
-                            <tr class="card-header"> 
-                                <td class="align-middle fw-bold text-white bg-secondary" colspan="8">PERKIRAAN KERUGIAN</td>
-                            </tr>
-                            @for ($i = 1; $i <= 3; $i++)
-                            
-                            <tr>
-                                @if ($i == 1)
-                                    <td class="text-start align-middle">a) Kehilangan Jasa Lingkungan</td>
-                                    <td class="text-start align-middle">Dasar Perhitungan</td>
-                                @endif
-                                @if ($i > 1)
-                                    <td></td>
-                                    <td></td>                                
-                                @endif
-                                <td><input type="number" name="kehilangan_jasa_lingkungan_{{ $i }}_rb" class="form-control" value="{{ old('kehilangan_jasa_lingkungan_'.$i.'_rb', $data->{'kehilangan_jasa_lingkungan_'.$i.'_rb'} ?? '') }}"></td>
-                                <td><input type="number" name="kehilangan_jasa_lingkungan_{{ $i }}_rs" class="form-control" value="{{ old('kehilangan_jasa_lingkungan_'.$i.'_rs', $data->{'kehilangan_jasa_lingkungan_'.$i.'_rs'} ?? '') }}"></td>
-                                <td><input type="number" name="kehilangan_jasa_lingkungan_{{ $i }}_rr" class="form-control" value="{{ old('kehilangan_jasa_lingkungan_'.$i.'_rr', $data->{'kehilangan_jasa_lingkungan_'.$i.'_rr'} ?? '') }}"></td>
-                                <td><input type="number" name="kehilangan_jasa_lingkungan_{{ $i }}_rb_harga" class="form-control" value="{{ old('kehilangan_jasa_lingkungan_'.$i.'_rb_harga', $data->{'kehilangan_jasa_lingkungan_'.$i.'_rb_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="kehilangan_jasa_lingkungan_{{ $i }}_rs_harga" class="form-control" value="{{ old('kehilangan_jasa_lingkungan_'.$i.'_rs_harga', $data->{'kehilangan_jasa_lingkungan_'.$i.'_rs_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="kehilangan_jasa_lingkungan_{{ $i }}_rr_harga" class="form-control" value="{{ old('kehilangan_jasa_lingkungan_'.$i.'_rr_harga', $data->{'kehilangan_jasa_lingkungan_'.$i.'_rr_harga'} ?? '') }}"></td>
-                            </tr>
-                            @endfor
-                            @for ($i = 1; $i <= 3; $i++)
-                            
-                            <tr>
-                                @if ($i == 1)
-                                <td class="text-start align-middle">b) Biaya Akibat Pencemaran Air</td>
-                                <td class="text-start align-middle">Dasar Perhitungan</td>
-                                @endif
-                                @if ($i > 1)
-                                    <td></td>
-                                    <td></td>                                
-                                @endif
-                                <td><input type="number" name="biaya_akibat_pencemaran_air_{{ $i }}_rb" class="form-control" value="{{ old('biaya_akibat_pencemaran_air_'.$i.'_rb', $data->{'biaya_akibat_pencemaran_air_'.$i.'_rb'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_akibat_pencemaran_air_{{ $i }}_rs" class="form-control" value="{{ old('biaya_akibat_pencemaran_air_'.$i.'_rs', $data->{'biaya_akibat_pencemaran_air_'.$i.'_rs'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_akibat_pencemaran_air_{{ $i }}_rr" class="form-control" value="{{ old('biaya_akibat_pencemaran_air_'.$i.'_rr', $data->{'biaya_akibat_pencemaran_air_'.$i.'_rr'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_akibat_pencemaran_air_{{ $i }}_rb_harga" class="form-control" value="{{ old('biaya_akibat_pencemaran_air_'.$i.'_rb_harga', $data->{'biaya_akibat_pencemaran_air_'.$i.'_rb_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_akibat_pencemaran_air_{{ $i }}_rs_harga" class="form-control" value="{{ old('biaya_akibat_pencemaran_air_'.$i.'_rs_harga', $data->{'biaya_akibat_pencemaran_air_'.$i.'_rs_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_akibat_pencemaran_air_{{ $i }}_rr_harga" class="form-control" value="{{ old('biaya_akibat_pencemaran_air_'.$i.'_rr_harga', $data->{'biaya_akibat_pencemaran_air_'.$i.'_rr_harga'} ?? '') }}"></td>
-                            </tr>
-                            @endfor
-                            @for ($i = 1; $i <= 3; $i++)
-                            <tr>
-                                @if ($i == 1)
-                                <td class="text-start align-middle">c) Biaya Pencemaran Udara</td>
-                                <td class="text-start align-middle">Dasar Perhitungan</td>
-                                @endif
-                                @if ($i > 1)
-                                    <td></td>
-                                    <td></td>                                
-                                @endif
-                                <td><input type="number" name="biaya_pencemaran_udara_{{ $i }}_rb" class="form-control" value="{{ old('biaya_pencemaran_udara_'.$i.'_rb', $data->{'biaya_pencemaran_udara_'.$i.'_rb'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_pencemaran_udara_{{ $i }}_rs" class="form-control" value="{{ old('biaya_pencemaran_udara_'.$i.'_rs', $data->{'biaya_pencemaran_udara_'.$i.'_rs'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_pencemaran_udara_{{ $i }}_rr" class="form-control" value="{{ old('biaya_pencemaran_udara_'.$i.'_rr', $data->{'biaya_pencemaran_udara_'.$i.'_rr'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_pencemaran_udara_{{ $i }}_rb_harga" class="form-control" value="{{ old('biaya_pencemaran_udara_'.$i.'_rb_harga', $data->{'biaya_pencemaran_udara_'.$i.'_rb_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_pencemaran_udara_{{ $i }}_rs_harga" class="form-control" value="{{ old('biaya_pencemaran_udara_'.$i.'_rs_harga', $data->{'biaya_pencemaran_udara_'.$i.'_rs_harga'} ?? '') }}"></td>
-                                <td><input type="number" name="biaya_pencemaran_udara_{{ $i }}_rr_harga" class="form-control" value="{{ old('biaya_pencemaran_udara_'.$i.'_rr_harga', $data->{'biaya_pencemaran_udara_'.$i.'_rr_harga'} ?? '') }}"></td>
-                            </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
-                <input type="hidden" name="total_kerusakan" value="0">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle small">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Keterangan</th>
+                        <th style="width: 14%;">Jenis Kerusakan</th>
+                        <th style="width: 8%;">RB</th>
+                        <th style="width: 10%;">RB Harga</th>
+                        <th style="width: 8%;">RS</th>
+                        <th style="width: 15%;">RS Harga</th>
+                        <th style="width: 9%;">RR</th>
+                        <th style="width: 14%;">RR Harga</th>
+                    </tr>
+                </thead>
 
-                <div class="row mb-4">
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
-                    </div>
-                </div>
-            </form>
+                @php
+                $kerusakanItems = [
+                    'ekosistem_darat' => 'a) Ekosistem Darat',
+                    'ekosistem_laut' => 'b) Ekosistem Laut',
+                    'ekosistem_udara' => 'c) Ekosistem Udara',
+                ];
+
+                $index = 0;
+                @endphp
+
+                @foreach($kerusakanItems as $kategori => $label)
+
+                    @for($row = 1; $row <= 3; $row++)
+
+                    <tr>
+
+                        @if($row == 1)
+                        <td rowspan="3" class="align-middle text-start">
+                            {{ $label }}
+                        </td>
+                        @endif
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="details[{{ $index }}][sub_kategori]">
+
+                        </td>
+
+                        @foreach(['berat','sedang','ringan'] as $tingkat)
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][jumlah]">
+
+                        </td>
+
+                        <td>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    Rp
+                                </span>
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="details[{{ $index }}][harga_satuan]">
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input
+                                type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="{{ $tingkat }}">
+
+                            <input
+                                type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="kerusakan">
+
+                            <input
+                                type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+
+                            @php $index++; @endphp
+
+                        </td>
+
+                        @endforeach
+
+                    </tr>
+
+                    @endfor
+
+                @endforeach
+        </table>
+    
+                
+
+            <input type="hidden" name="total_kerusakan" value="0">
+
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+            </div>
+            
+            <div class="col-12 text-center">
+                <button type="button"
+                        class="btn btn-warning"
+                        id="fillDummy">
+                    Isi Data Dummy
+                </button>
+            </div>
+        </form>
 
             <hr class="my-4">
 
@@ -222,18 +212,19 @@
             @endif
     </div>
                         
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Form submission with loading state
-        const submitBtn = document.querySelector('button[type="submit"]');
-        const form = document.querySelector('form');
-        
-        if (form && submitBtn) {
-            form.addEventListener('submit', function() {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
-            });
-        }
-    });
-    </script>
+<script>
+
+document.getElementById('fillDummy').addEventListener('click', function () {
+
+    document.querySelectorAll('input[type="number"]:not([readonly]), input[type="text"]:not([readonly])')
+        .forEach(function(input) {
+
+            if (input.value === '') {
+                input.value = 1;
+            }
+
+        });
+
+});
+</script>
 @endsection

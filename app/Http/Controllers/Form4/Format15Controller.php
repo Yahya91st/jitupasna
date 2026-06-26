@@ -3,16 +3,56 @@
 namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreFormat15Request;
 use App\Models\Bencana;
-use App\Models\Format15Form4;
+use App\Models\LaporanBencana;
+use App\Models\Formulir;
+use App\Models\FormulirItem;
+use App\Models\KriteriaKerusakan;
+use App\Models\Rekap;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class Format15Controller extends Controller
 {
+    private function saveItem(
+        $formulirId,
+        $kategori,
+        $subKategori = null,
+        $jumlah = null,
+        $jumlah2 = null,
+        $hargaSatuan = null,
+        $dimensi = null,
+        $satuan = null,
+        $kriteriaId = null,
+        $tingkatKerusakan = null,
+        $durasi = null,
+        $durasiSatuan = null
+    ) {
+        FormulirItem::create([
+            'formulir_id' => $formulirId,
+            'kriteria_id' => $kriteriaId,
+
+            'kategori' => $kategori,
+            'sub_kategori' => $subKategori,
+
+            'dimensi' => $dimensi,
+            'tingkat_kerusakan' => $tingkatKerusakan ?? null,
+
+            'jumlah' => $jumlah,
+            'jumlah2' => $jumlah2,
+
+            'harga_satuan' => $hargaSatuan,
+
+            'satuan' => $satuan,
+
+            'durasi' => $durasi,                
+            'durasi_satuan' => $durasiSatuan,  
+        ]);
+    }
+
     /**
-     * Display Format 15 form for data collection
+     * Display Format 2 form for Education sector data collection
      */
     public function index(Request $request)
     {
@@ -22,150 +62,82 @@ class Format15Controller extends Controller
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
-        // Get bencana details
+          // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
         return view('forms.form4.format15.format15form4', compact('bencana'));
     }
 
-    /**
-     * Store format15 form data
-     */
-    public function store(Request $request)
+    private function hitungOperasional($op, $durasi)
     {
+        return ($op['jumlah2'] - $op['jumlah']) * $durasi;
+    }
+    private function hitungPendapatan($pp, $durasi)
+    {
+        return ($pp['jumlah'] - $pp['jumlah2']) * $pp['harga_satuan'] * $durasi;
+    }
+
+    /**
+     * Store format15 form data for Education sector
+     */
+    public function store(StoreFormat15Request $request)
+    {        
+
         try {
             DB::beginTransaction();
 
-            // Validate the request based on actual form fields
-            $validated = $request->validate([
-                'bencana_id' => 'required|exists:bencana,id',
-                'kabupaten' => 'nullable|string',
-                'nama_kampung' => 'required|string',
-                'nama_distrik' => 'required|string',
-                // Tempat Wisata (1-3)
-                'tempat_wisata_1_jenis' => 'nullable|string',
-                'tempat_wisata_1_rb' => 'nullable|integer',
-                'tempat_wisata_1_rs' => 'nullable|integer',
-                'tempat_wisata_1_rr' => 'nullable|integer',
-                'tempat_wisata_1_rb_harga' => 'nullable|numeric',
-                'tempat_wisata_1_rs_harga' => 'nullable|numeric',
-                'tempat_wisata_1_rr_harga' => 'nullable|numeric',
-                'tempat_wisata_2_jenis' => 'nullable|string',
-                'tempat_wisata_2_rb' => 'nullable|integer',
-                'tempat_wisata_2_rs' => 'nullable|integer',
-                'tempat_wisata_2_rr' => 'nullable|integer',
-                'tempat_wisata_2_rb_harga' => 'nullable|numeric',
-                'tempat_wisata_2_rs_harga' => 'nullable|numeric',
-                'tempat_wisata_2_rr_harga' => 'nullable|numeric',
-                'tempat_wisata_3_jenis' => 'nullable|string',
-                'tempat_wisata_3_rb' => 'nullable|integer',
-                'tempat_wisata_3_rs' => 'nullable|integer',
-                'tempat_wisata_3_rr' => 'nullable|integer',
-                'tempat_wisata_3_rb_harga' => 'nullable|numeric',
-                'tempat_wisata_3_rs_harga' => 'nullable|numeric',
-                'tempat_wisata_3_rr_harga' => 'nullable|numeric',
-                // Hotel Restaurant (1-3)
-                'hotel_restaurant_1_jenis' => 'nullable|string',
-                'hotel_restaurant_1_rb' => 'nullable|integer',
-                'hotel_restaurant_1_rs' => 'nullable|integer',
-                'hotel_restaurant_1_rr' => 'nullable|integer',
-                'hotel_restaurant_1_rb_harga' => 'nullable|numeric',
-                'hotel_restaurant_1_rs_harga' => 'nullable|numeric',
-                'hotel_restaurant_1_rr_harga' => 'nullable|numeric',
-                'hotel_restaurant_2_jenis' => 'nullable|string',
-                'hotel_restaurant_2_rb' => 'nullable|integer',
-                'hotel_restaurant_2_rs' => 'nullable|integer',
-                'hotel_restaurant_2_rr' => 'nullable|integer',
-                'hotel_restaurant_2_rb_harga' => 'nullable|numeric',
-                'hotel_restaurant_2_rs_harga' => 'nullable|numeric',
-                'hotel_restaurant_2_rr_harga' => 'nullable|numeric',
-                'hotel_restaurant_3_jenis' => 'nullable|string',
-                'hotel_restaurant_3_rb' => 'nullable|integer',
-                'hotel_restaurant_3_rs' => 'nullable|integer',
-                'hotel_restaurant_3_rr' => 'nullable|integer',
-                'hotel_restaurant_3_rb_harga' => 'nullable|numeric',
-                'hotel_restaurant_3_rs_harga' => 'nullable|numeric',
-                'hotel_restaurant_3_rr_harga' => 'nullable|numeric',
-                // Kerugian fields
-                'kehilangan_total_pendapatan_jenis_fasilitas' => 'nullable|string',
-                'kehilangan_total_pendapatan_pendapatan_rata_rata' => 'nullable|string',
-                'kehilangan_total_pendapatan_waktu' => 'nullable|string',
-                'penurunan_pendapatan_jenis_fasilitas' => 'nullable|string',
-                'penurunan_pendapatan_pendapatan_rata_rata' => 'nullable|string',
-                'penurunan_pendapatan_waktu' => 'nullable|string',
-                'kenaikan_biaya_produksi_jenis_fasilitas' => 'nullable|string',
-                'kenaikan_biaya_produksi_pendapatan_rata_rata' => 'nullable|string',
-            ]);
+            $laporan = LaporanBencana::firstOrCreate(
+                [
+                    'bencana_id' => $request->bencana_id,
+                    'user_id' => auth()->id(),
+                ],
+                [
+                    'tanggal_lapor' => now()->toDateString(),
+                    'status' => 'draft',
+                ]
+            );
 
-            // Add default kabupaten if not provided
-            if (empty($validated['kabupaten'])) {
-                $validated['kabupaten'] = 'Papua Selatan'; // Default value
+            $formulir = Formulir::firstOrCreate(
+                [
+                    'laporan_id' => $laporan->id,
+                    'format_id' => 15,
+                ],
+                [
+                    'status' => 'draft',
+                ]
+            );
+
+            $validated = $request->validated();
+            
+            foreach ($request->details as $item) {               
+
+                $this->saveItem(
+                    $formulir->id,
+                    $item['kategori'] ?? null,
+                    $item['sub_kategori'] ?? null,
+                    $item['jumlah'] ?? null,
+                    $item['jumlah2'] ?? null,
+                    $item['harga_satuan'] ?? null,
+                    null,
+                    $item['satuan'] ?? null,
+                    null,
+                    $item['tingkat_kerusakan'] ?? null,
+                    $item['durasi'] ?? null,
+                    $item['durasi_satuan'] ?? null,
+                );        
             }
-            
-            // Map form fields to model fields
-            $mappedData = [
-                'bencana_id' => $validated['bencana_id'],
-                'kabupaten' => $validated['kabupaten'],
-                'nama_kampung' => $validated['nama_kampung'],
-                'nama_distrik' => $validated['nama_distrik'],
-                
-                // Map tempat_wisata to fasilitas_1
-                'fasilitas_1_jenis' => $validated['tempat_wisata_1_jenis'] ?? null,
-                'fasilitas_1_rb_tingkat' => $validated['tempat_wisata_1_rb'] ?? null,
-                'fasilitas_1_rs_tingkat' => $validated['tempat_wisata_1_rs'] ?? null,
-                'fasilitas_1_rr_tingkat' => $validated['tempat_wisata_1_rr'] ?? null,
-                'fasilitas_1_rb_harga' => $validated['tempat_wisata_1_rb_harga'] ?? null,
-                'fasilitas_1_rs_harga' => $validated['tempat_wisata_1_rs_harga'] ?? null,
-                'fasilitas_1_rr_harga' => $validated['tempat_wisata_1_rr_harga'] ?? null,
-                
-                // Map hotel_restaurant to fasilitas_2
-                'fasilitas_2_jenis' => $validated['hotel_restaurant_1_jenis'] ?? null,
-                'fasilitas_2_rb_tingkat' => $validated['hotel_restaurant_1_rb'] ?? null,
-                'fasilitas_2_rs_tingkat' => $validated['hotel_restaurant_1_rs'] ?? null,
-                'fasilitas_2_rr_tingkat' => $validated['hotel_restaurant_1_rr'] ?? null,
-                'fasilitas_2_rb_harga' => $validated['hotel_restaurant_1_rb_harga'] ?? null,
-                'fasilitas_2_rs_harga' => $validated['hotel_restaurant_1_rs_harga'] ?? null,
-                'fasilitas_2_rr_harga' => $validated['hotel_restaurant_1_rr_harga'] ?? null,
-                
-                // Map additional tempat_wisata to fasilitas_3
-                'fasilitas_3_jenis' => $validated['tempat_wisata_2_jenis'] ?? null,
-                'fasilitas_3_rb_tingkat' => $validated['tempat_wisata_2_rb'] ?? null,
-                'fasilitas_3_rs_tingkat' => $validated['tempat_wisata_2_rs'] ?? null,
-                'fasilitas_3_rr_tingkat' => $validated['tempat_wisata_2_rr'] ?? null,
-                'fasilitas_3_rb_harga' => $validated['tempat_wisata_2_rb_harga'] ?? null,
-                'fasilitas_3_rs_harga' => $validated['tempat_wisata_2_rs_harga'] ?? null,
-                'fasilitas_3_rr_harga' => $validated['tempat_wisata_2_rr_harga'] ?? null,
-                
-                // Map kerugian fields
-                'kerugian_1_jenis' => $validated['kehilangan_total_pendapatan_jenis_fasilitas'] ?? null,
-                'kerugian_1_rb_nilai' => is_numeric($validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] : null,
-                'kerugian_1_rs_nilai' => is_numeric($validated['kehilangan_total_pendapatan_waktu'] ?? null) ? $validated['kehilangan_total_pendapatan_waktu'] : null,
-                
-                'kerugian_2_jenis' => $validated['penurunan_pendapatan_jenis_fasilitas'] ?? null,
-                'kerugian_2_rb_nilai' => is_numeric($validated['penurunan_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['penurunan_pendapatan_pendapatan_rata_rata'] : null,
-                'kerugian_2_rs_nilai' => is_numeric($validated['penurunan_pendapatan_waktu'] ?? null) ? $validated['penurunan_pendapatan_waktu'] : null,
-                
-                'kerugian_3_jenis' => $validated['kenaikan_biaya_produksi_jenis_fasilitas'] ?? null,
-                'kerugian_3_rb_nilai' => is_numeric($validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] ?? null) ? $validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] : null,
-            ];
-            
-            // Create new form data with mapped fields
-             $form = Format15Form4::create($mappedData);
 
             DB::commit();
-
             // Return success response for AJAX or redirect for regular form
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' =>  $form
+                    'data' => $format1Form4
                 ]);
-            }
-
-            return redirect()->route('forms.form4.list-format15', ['bencana_id' =>  $form->bencana_id])
-                ->with('success', 'Data berhasil disimpan');
+            }            
+            return redirect()->route('forms.form4.format1.list')
+            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -188,50 +160,13 @@ class Format15Controller extends Controller
      */
     public function show($id)
     {
-         $form = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana =  $form->bencana;
-        
-        // Prepare data array that matches the Blade template expectations
-        $data = [
-            'nama_kampung' =>  $form->nama_kampung,
-            'nama_distrik' =>  $form->nama_distrik,
-            
-            // Map facility data to expected tourism facility names
-            'penginapan_jumlah' =>  $form->fasilitas_1_rb_tingkat +  $form->fasilitas_1_rs_tingkat +  $form->fasilitas_1_rr_tingkat,
-            'penginapan_harga' => ( $form->fasilitas_1_rb_harga +  $form->fasilitas_1_rs_harga +  $form->fasilitas_1_rr_harga) / 3,
-            'penginapan_total' => ( $form->fasilitas_1_rb_tingkat *  $form->fasilitas_1_rb_harga) + 
-                                 ( $form->fasilitas_1_rs_tingkat *  $form->fasilitas_1_rs_harga) + 
-                                 ( $form->fasilitas_1_rr_tingkat *  $form->fasilitas_1_rr_harga),
-            
-            'restoran_jumlah' =>  $form->fasilitas_2_rb_tingkat +  $form->fasilitas_2_rs_tingkat +  $form->fasilitas_2_rr_tingkat,
-            'restoran_harga' => ( $form->fasilitas_2_rb_harga +  $form->fasilitas_2_rs_harga +  $form->fasilitas_2_rr_harga) / 3,
-            'restoran_total' => ( $form->fasilitas_2_rb_tingkat *  $form->fasilitas_2_rb_harga) + 
-                               ( $form->fasilitas_2_rs_tingkat *  $form->fasilitas_2_rs_harga) + 
-                               ( $form->fasilitas_2_rr_tingkat *  $form->fasilitas_2_rr_harga),
-            
-            'objek_wisata_jumlah' =>  $form->fasilitas_3_rb_tingkat +  $form->fasilitas_3_rs_tingkat +  $form->fasilitas_3_rr_tingkat,
-            'objek_wisata_harga' => ( $form->fasilitas_3_rb_harga +  $form->fasilitas_3_rs_harga +  $form->fasilitas_3_rr_harga) / 3,
-            'objek_wisata_total' => ( $form->fasilitas_3_rb_tingkat *  $form->fasilitas_3_rb_harga) + 
-                                   ( $form->fasilitas_3_rs_tingkat *  $form->fasilitas_3_rs_harga) + 
-                                   ( $form->fasilitas_3_rr_tingkat *  $form->fasilitas_3_rr_harga),
-            
-            // For pusat_info, we can use a default or leave empty
-            'pusat_info_jumlah' => 0,
-            'pusat_info_harga' => 0,
-            'pusat_info_total' => 0,
-            
-            // Map loss data to tourism loss fields
-            'jumlah_usaha_terdampak' =>  $form->kerugian_1_rb_nilai ?? 0,
-            'pendapatan_harian' =>  $form->kerugian_2_rb_nilai ?? 0,
-            'hari_tutup' =>  $form->kerugian_3_rb_nilai ?? 0,
-            'kehilangan_wisatawan' =>  $form->kerugian_4_rb_nilai ?? 0,
-        ];
-        
-        return view('forms.form4.format15.show-format15', compact(' form', 'bencana', 'data'));
+        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPendidikan->bencana;
+        return view('forms.form4.format2.show-format2', compact('formPendidikan', 'bencana'));
     }
 
     /**
-     * List all entries for this format
+     * List all entries for this format (list-format2)
      */
     public function list(Request $request)
     {
@@ -239,182 +174,178 @@ class Format15Controller extends Controller
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        $bencana = Bencana::findOrFail($bencana_id);
-        $reports = Format15Form4::where('bencana_id', $bencana_id)->get(); // No soft delete filter
-        return view('forms.form4.format15.list-format15', compact('bencana', 'reports'));
+        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
+        $educationReports = Format2Form4::whereHas('rekap', function($q) use ($bencana_id) {
+            $q->where('bencana_id', $bencana_id);
+        })->get();
+
+        return view('forms.form4.format2.list', compact('bencana', 'educationReports'));
     }
 
     /**
-     * Generate PDF for a specific form data
+     * Generate PDF for a specific form data (future)
      */
     public function generatePdf($id)
     {
-         $form = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana =  $form->bencana;
-        
-        $pdf = Pdf::loadView('forms.form4.format15.pdf', compact(' form', 'bencana'));
+        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPendidikan->bencana;
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('forms.form4.format2.pdf', compact('formPendidikan', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
-        
-        return $pdf->download('Format15_' .  $form->nama_kampung . '.pdf');
+        return $pdf->download('Format2_Pendidikan_' . $formPendidikan->nama_kampung . '.pdf');
     }
 
     /**
-     * Preview PDF for a specific form data
+     * Preview PDF (Not implemented yet)
      */
     public function previewPdf($id)
     {
-         $form = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana =  $form->bencana;
-        
-        $pdf = Pdf::loadView('forms.form4.format15.pdf', compact(' form', 'bencana'));
-        $pdf->setPaper('A4', 'landscape');
-        
-        return $pdf->stream('Format15_' .  $form->nama_kampung . '.pdf');
+        return redirect()->back()->with('error', 'Format 2 (Education Sector) belum diimplementasikan.');
     }
 
     /**
-     * Show the form for editing the specified resource (Format 15)
+     * Show the form for editing the specified resource (Format 2)
      */
     public function edit($id)
     {
-        $formPariwisata = Format15Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPariwisata->bencana;
-        return view('forms.form4.format15.edit', compact('formPariwisata', 'bencana'));
+        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPendidikan->bencana;
+        return view('forms.form4.format2.edit', compact('formPendidikan', 'bencana'));
     }
 
     /**
-     * Update the specified resource in storage (Format 15)
+     * Update the specified resource in storage (Format 2)
      */
     public function update(Request $request, $id)
     {
         try {
             DB::beginTransaction();
-             $form = Format15Form4::findOrFail($id);
+            $formPendidikan = Format2Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
-                'kabupaten' => 'nullable|string',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Tempat Wisata (1-3)
-                'tempat_wisata_1_jenis' => 'nullable|string',
-                'tempat_wisata_1_rb' => 'nullable|integer',
-                'tempat_wisata_1_rs' => 'nullable|integer',
-                'tempat_wisata_1_rr' => 'nullable|integer',
-                'tempat_wisata_1_rb_harga' => 'nullable|numeric',
-                'tempat_wisata_1_rs_harga' => 'nullable|numeric',
-                'tempat_wisata_1_rr_harga' => 'nullable|numeric',
-                'tempat_wisata_2_jenis' => 'nullable|string',
-                'tempat_wisata_2_rb' => 'nullable|integer',
-                'tempat_wisata_2_rs' => 'nullable|integer',
-                'tempat_wisata_2_rr' => 'nullable|integer',
-                'tempat_wisata_2_rb_harga' => 'nullable|numeric',
-                'tempat_wisata_2_rs_harga' => 'nullable|numeric',
-                'tempat_wisata_2_rr_harga' => 'nullable|numeric',
-                'tempat_wisata_3_jenis' => 'nullable|string',
-                'tempat_wisata_3_rb' => 'nullable|integer',
-                'tempat_wisata_3_rs' => 'nullable|integer',
-                'tempat_wisata_3_rr' => 'nullable|integer',
-                'tempat_wisata_3_rb_harga' => 'nullable|numeric',
-                'tempat_wisata_3_rs_harga' => 'nullable|numeric',
-                'tempat_wisata_3_rr_harga' => 'nullable|numeric',
-                // Hotel Restaurant (1-3)
-                'hotel_restaurant_1_jenis' => 'nullable|string',
-                'hotel_restaurant_1_rb' => 'nullable|integer',
-                'hotel_restaurant_1_rs' => 'nullable|integer',
-                'hotel_restaurant_1_rr' => 'nullable|integer',
-                'hotel_restaurant_1_rb_harga' => 'nullable|numeric',
-                'hotel_restaurant_1_rs_harga' => 'nullable|numeric',
-                'hotel_restaurant_1_rr_harga' => 'nullable|numeric',
-                'hotel_restaurant_2_jenis' => 'nullable|string',
-                'hotel_restaurant_2_rb' => 'nullable|integer',
-                'hotel_restaurant_2_rs' => 'nullable|integer',
-                'hotel_restaurant_2_rr' => 'nullable|integer',
-                'hotel_restaurant_2_rb_harga' => 'nullable|numeric',
-                'hotel_restaurant_2_rs_harga' => 'nullable|numeric',
-                'hotel_restaurant_2_rr_harga' => 'nullable|numeric',
-                'hotel_restaurant_3_jenis' => 'nullable|string',
-                'hotel_restaurant_3_rb' => 'nullable|integer',
-                'hotel_restaurant_3_rs' => 'nullable|integer',
-                'hotel_restaurant_3_rr' => 'nullable|integer',
-                'hotel_restaurant_3_rb_harga' => 'nullable|numeric',
-                'hotel_restaurant_3_rs_harga' => 'nullable|numeric',
-                'hotel_restaurant_3_rr_harga' => 'nullable|numeric',
-                // Kerugian fields
-                'kehilangan_total_pendapatan_jenis_fasilitas' => 'nullable|string',
-                'kehilangan_total_pendapatan_pendapatan_rata_rata' => 'nullable|string',
-                'kehilangan_total_pendapatan_waktu' => 'nullable|string',
-                'penurunan_pendapatan_jenis_fasilitas' => 'nullable|string',
-                'penurunan_pendapatan_pendapatan_rata_rata' => 'nullable|string',
-                'penurunan_pendapatan_waktu' => 'nullable|string',
-                'kenaikan_biaya_produksi_jenis_fasilitas' => 'nullable|string',
-                'kenaikan_biaya_produksi_pendapatan_rata_rata' => 'nullable|string',
+                // TK/RA
+                'tk_berat_negeri' => 'nullable|integer', 'tk_berat_swasta' => 'nullable|integer',
+                'tk_sedang_negeri' => 'nullable|integer', 'tk_sedang_swasta' => 'nullable|integer',
+                'tk_ringan_negeri' => 'nullable|integer', 'tk_ringan_swasta' => 'nullable|integer',
+                'tk_ukuran' => 'nullable|integer',
+                'tk_harga_bangunan' => 'nullable|numeric', 'tk_harga_peralatan' => 'nullable|string', 'tk_harga_meubelair' => 'nullable|string',
+                // SD/MI
+                'sd_berat_negeri' => 'nullable|integer', 'sd_berat_swasta' => 'nullable|integer',
+                'sd_sedang_negeri' => 'nullable|integer', 'sd_sedang_swasta' => 'nullable|integer',
+                'sd_ringan_negeri' => 'nullable|integer', 'sd_ringan_swasta' => 'nullable|integer',
+                'sd_ukuran' => 'nullable|integer',
+                'sd_harga_bangunan' => 'nullable|numeric', 'sd_harga_peralatan' => 'nullable|string', 'sd_harga_meubelair' => 'nullable|string',
+                // SMP/MTS
+                'smp_berat_negeri' => 'nullable|integer', 'smp_berat_swasta' => 'nullable|integer',
+                'smp_sedang_negeri' => 'nullable|integer', 'smp_sedang_swasta' => 'nullable|integer',
+                'smp_ringan_negeri' => 'nullable|integer', 'smp_ringan_swasta' => 'nullable|integer',
+                'smp_ukuran' => 'nullable|integer',
+                'smp_harga_bangunan' => 'nullable|numeric', 'smp_harga_peralatan' => 'nullable|string', 'smp_harga_meubelair' => 'nullable|string',
+                // SMA/MA
+                'sma_berat_negeri' => 'nullable|integer', 'sma_berat_swasta' => 'nullable|integer',
+                'sma_sedang_negeri' => 'nullable|integer', 'sma_sedang_swasta' => 'nullable|integer',
+                'sma_ringan_negeri' => 'nullable|integer', 'sma_ringan_swasta' => 'nullable|integer',
+                'sma_ukuran' => 'nullable|integer',
+                'sma_harga_bangunan' => 'nullable|numeric', 'sma_harga_peralatan' => 'nullable|string', 'sma_harga_meubelair' => 'nullable|string',
+                // SMK
+                'smk_berat_negeri' => 'nullable|integer', 'smk_berat_swasta' => 'nullable|integer',
+                'smk_sedang_negeri' => 'nullable|integer', 'smk_sedang_swasta' => 'nullable|integer',
+                'smk_ringan_negeri' => 'nullable|integer', 'smk_ringan_swasta' => 'nullable|integer',
+                'smk_ukuran' => 'nullable|integer',
+                'smk_harga_bangunan' => 'nullable|numeric', 'smk_harga_peralatan' => 'nullable|string', 'smk_harga_meubelair' => 'nullable|string',
+                // Perguruan Tinggi
+                'pt_berat_negeri' => 'nullable|integer', 'pt_berat_swasta' => 'nullable|integer',
+                'pt_sedang_negeri' => 'nullable|integer', 'pt_sedang_swasta' => 'nullable|integer',
+                'pt_ringan_negeri' => 'nullable|integer', 'pt_ringan_swasta' => 'nullable|integer',
+                'pt_ukuran' => 'nullable|integer',
+                'pt_harga_bangunan' => 'nullable|numeric', 'pt_harga_peralatan' => 'nullable|string', 'pt_harga_meubelair' => 'nullable|string',
+                // Perpustakaan
+                'perpus_berat_negeri' => 'nullable|integer', 'perpus_berat_swasta' => 'nullable|integer',
+                'perpus_sedang_negeri' => 'nullable|integer', 'perpus_sedang_swasta' => 'nullable|integer',
+                'perpus_ringan_negeri' => 'nullable|integer', 'perpus_ringan_swasta' => 'nullable|integer',
+                'perpus_ukuran' => 'nullable|integer',
+                'perpus_harga_bangunan' => 'nullable|numeric', 'perpus_harga_peralatan' => 'nullable|string', 'perpus_harga_meubelair' => 'nullable|string',
+                // Laboratorium
+                'lab_berat_negeri' => 'nullable|integer', 'lab_berat_swasta' => 'nullable|integer',
+                'lab_sedang_negeri' => 'nullable|integer', 'lab_sedang_swasta' => 'nullable|integer',
+                'lab_ringan_negeri' => 'nullable|integer', 'lab_ringan_swasta' => 'nullable|integer',
+                'lab_ukuran' => 'nullable|integer',
+                'lab_harga_bangunan' => 'nullable|numeric', 'lab_harga_peralatan' => 'nullable|string', 'lab_harga_meubelair' => 'nullable|string',
+                // Lainnya
+                'lainnya_berat_negeri' => 'nullable|integer', 'lainnya_berat_swasta' => 'nullable|integer',
+                'lainnya_sedang_negeri' => 'nullable|integer', 'lainnya_sedang_swasta' => 'nullable|integer',
+                'lainnya_ringan_negeri' => 'nullable|integer', 'lainnya_ringan_swasta' => 'nullable|integer',
+                'lainnya_ukuran' => 'nullable|integer',
+                'lainnya_harga_bangunan' => 'nullable|numeric', 'lainnya_harga_peralatan' => 'nullable|string', 'lainnya_harga_meubelair' => 'nullable|string',
+                // Kerugian & info sekolah
+                'biaya_tenaga_kerja_hok' => 'nullable|integer',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
+                'biaya_alat_berat_hari' => 'nullable|integer',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                'sekolah_pengungsian' => 'nullable|integer',
+                'guru_korban' => 'nullable|integer',
+                'iuran_sekolah' => 'nullable|numeric',
+                'jumlah_sekolah_sementara' => 'nullable|integer',
+                'harga_sekolah_sementara' => 'nullable|numeric',
             ]);
-            // Map form fields to model fields
-            $mappedData = [
-                'bencana_id' => $validated['bencana_id'],
-                'kabupaten' => $validated['kabupaten'] ?? 'Papua Selatan',
-                'nama_kampung' => $validated['nama_kampung'],
-                'nama_distrik' => $validated['nama_distrik'],
-                
-                // Map tempat_wisata to fasilitas_1
-                'fasilitas_1_jenis' => $validated['tempat_wisata_1_jenis'] ?? null,
-                'fasilitas_1_rb_tingkat' => $validated['tempat_wisata_1_rb'] ?? null,
-                'fasilitas_1_rs_tingkat' => $validated['tempat_wisata_1_rs'] ?? null,
-                'fasilitas_1_rr_tingkat' => $validated['tempat_wisata_1_rr'] ?? null,
-                'fasilitas_1_rb_harga' => $validated['tempat_wisata_1_rb_harga'] ?? null,
-                'fasilitas_1_rs_harga' => $validated['tempat_wisata_1_rs_harga'] ?? null,
-                'fasilitas_1_rr_harga' => $validated['tempat_wisata_1_rr_harga'] ?? null,
-                
-                // Map hotel_restaurant to fasilitas_2
-                'fasilitas_2_jenis' => $validated['hotel_restaurant_1_jenis'] ?? null,
-                'fasilitas_2_rb_tingkat' => $validated['hotel_restaurant_1_rb'] ?? null,
-                'fasilitas_2_rs_tingkat' => $validated['hotel_restaurant_1_rs'] ?? null,
-                'fasilitas_2_rr_tingkat' => $validated['hotel_restaurant_1_rr'] ?? null,
-                'fasilitas_2_rb_harga' => $validated['hotel_restaurant_1_rb_harga'] ?? null,
-                'fasilitas_2_rs_harga' => $validated['hotel_restaurant_1_rs_harga'] ?? null,
-                'fasilitas_2_rr_harga' => $validated['hotel_restaurant_1_rr_harga'] ?? null,
-                
-                // Map additional tempat_wisata to fasilitas_3
-                'fasilitas_3_jenis' => $validated['tempat_wisata_2_jenis'] ?? null,
-                'fasilitas_3_rb_tingkat' => $validated['tempat_wisata_2_rb'] ?? null,
-                'fasilitas_3_rs_tingkat' => $validated['tempat_wisata_2_rs'] ?? null,
-                'fasilitas_3_rr_tingkat' => $validated['tempat_wisata_2_rr'] ?? null,
-                'fasilitas_3_rb_harga' => $validated['tempat_wisata_2_rb_harga'] ?? null,
-                'fasilitas_3_rs_harga' => $validated['tempat_wisata_2_rs_harga'] ?? null,
-                'fasilitas_3_rr_harga' => $validated['tempat_wisata_2_rr_harga'] ?? null,
-                
-                // Map kerugian fields
-                'kerugian_1_jenis' => $validated['kehilangan_total_pendapatan_jenis_fasilitas'] ?? null,
-                'kerugian_1_rb_nilai' => is_numeric($validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['kehilangan_total_pendapatan_pendapatan_rata_rata'] : null,
-                'kerugian_1_rs_nilai' => is_numeric($validated['kehilangan_total_pendapatan_waktu'] ?? null) ? $validated['kehilangan_total_pendapatan_waktu'] : null,
-                
-                'kerugian_2_jenis' => $validated['penurunan_pendapatan_jenis_fasilitas'] ?? null,
-                'kerugian_2_rb_nilai' => is_numeric($validated['penurunan_pendapatan_pendapatan_rata_rata'] ?? null) ? $validated['penurunan_pendapatan_pendapatan_rata_rata'] : null,
-                'kerugian_2_rs_nilai' => is_numeric($validated['penurunan_pendapatan_waktu'] ?? null) ? $validated['penurunan_pendapatan_waktu'] : null,
-                
-                'kerugian_3_jenis' => $validated['kenaikan_biaya_produksi_jenis_fasilitas'] ?? null,
-                'kerugian_3_rb_nilai' => is_numeric($validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] ?? null) ? $validated['kenaikan_biaya_produksi_pendapatan_rata_rata'] : null,
-            ];
+
+            // Hitung total kerusakan (termasuk semua item yang dipindahkan dari kerugian)
+            $bangunan = ['tk','sd','smp','sma','smk','pt','perpus','lab','lainnya'];
+            $totalKerusakan = 0;
             
-             $form->update($mappedData);
+            // 1. Kerusakan bangunan pendidikan
+            foreach ($bangunan as $b) {
+                $totalKerusakan += (($validated[$b.'_berat_negeri'] ?? 0) + ($validated[$b.'_berat_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
+                $totalKerusakan += (($validated[$b.'_sedang_negeri'] ?? 0) + ($validated[$b.'_sedang_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
+                $totalKerusakan += (($validated[$b.'_ringan_negeri'] ?? 0) + ($validated[$b.'_ringan_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
+            }
+            
+            // 2. Biaya tenaga kerja dan alat berat (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['biaya_tenaga_kerja_hok'] ?? 0) * ($validated['biaya_tenaga_kerja_upah'] ?? 0);
+            $totalKerusakan += ($validated['biaya_alat_berat_hari'] ?? 0) * ($validated['biaya_alat_berat_harga'] ?? 0);
+            
+            // 3. Biaya sekolah sementara (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['jumlah_sekolah_sementara'] ?? 0) * ($validated['harga_sekolah_sementara'] ?? 0);
+            
+            $validated['total_kerusakan'] = $totalKerusakan;
+
+            // Hitung total kerugian (sekarang 0 karena semua dipindahkan ke kerusakan)
+            $totalKerugian = 0;
+            $validated['total_kerugian'] = $totalKerugian;
+
+            $formPendidikan->update($validated);
             DB::commit();
-            return redirect()->route('forms.form4.list-format15', ['bencana_id' => $validated['bencana_id']])
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data berhasil diupdate',
+                    'data' => $formPendidikan
+                ]);
+            }
+            return redirect()->route('format2.list', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
             DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
         }
     }
 
     /**
-     * Remove the specified resource from storage (Format 15)
+     * Remove the specified resource from storage (Format 2)
      */
     public function destroy($id)
     {
-        $form = Format15Form4::findOrFail($id);
-        $bencana_id = $form->bencana_id;
-        $form->delete(); // Hard delete
-        return redirect()->route('forms.form4.list-format15', ['bencana_id' => $bencana_id])
+        $formPendidikan = Format2Form4::findOrFail($id);
+        $bencana_id = $formPendidikan->bencana_id;
+        $formPendidikan->delete();
+        return redirect()->route('format2.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
     }
 }

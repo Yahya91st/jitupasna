@@ -28,24 +28,25 @@ class LaporanBencana extends Model
     {
         return $this->belongsTo(Bencana::class);
     }
-
+    
+    public function kajian()
+    {
+    return $this->hasOne(Kajian::class, 'laporan_id');
+    }        
+    
+    public function keputusan()
+    {
+    return $this->hasOne(Keputusan::class, 'laporan_id');
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function kajian()
-    {
-        return $this->hasOne(Kajian::class, 'laporan_id');
-    }
-
-    public function keputusan()
-    {
-        return $this->hasOne(Keputusan::class, 'laporan_id');
     }
 
     public function formulirs()
     {
         return $this->hasMany(Formulir::class, 'laporan_id');
     }
+    
 }

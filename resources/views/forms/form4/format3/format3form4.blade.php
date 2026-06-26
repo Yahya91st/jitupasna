@@ -58,25 +58,236 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="fw-bold bg-secondary text-white" colspan="12" style="padding-left: 15%;">PERKIRAAN KERUSAKAN</td>
-                        </tr>
-                        @foreach ([['Rumah Sakit', 'rs'], ['Puskesmas', 'puskesmas'], ['Poliklinik/Tempat Praktek Bersama', 'poliklinik'], ['Puskesmas Pembantu', 'pustu'], ['Polindes', 'polindes'], ['Posyandu', 'posyandu']] as [$label, $prefix])
-                            <tr>
-                                <td class="align-middle fw-bold">{{ $label }}</td>
-                                <td><input type="number" name="{{ $prefix }}_rb_negeri" class="form-control" min="0" value="{{ old($prefix . '_rb_negeri', $data->{$prefix . '_rb_negeri'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_rb_swasta" class="form-control" min="0" value="{{ old($prefix . '_rb_swasta', $data->{$prefix . '_rb_swasta'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_rs_negeri" class="form-control" min="0" value="{{ old($prefix . '_rs_negeri', $data->{$prefix . '_rs_negeri'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_rs_swasta" class="form-control" min="0" value="{{ old($prefix . '_rs_swasta', $data->{$prefix . '_rs_swasta'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_rr_negeri" class="form-control" min="0" value="{{ old($prefix . '_rr_negeri', $data->{$prefix . '_rr_negeri'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_rr_swasta" class="form-control" min="0" value="{{ old($prefix . '_rr_swasta', $data->{$prefix . '_rr_swasta'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_luas" class="form-control" min="0" step="1000" value="{{ old($prefix . '_luas', $data->{$prefix . '_luas'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_harga_bangunan" class="form-control" min="0" step="1000" value="{{ old($prefix . '_harga_bangunan', $data->{$prefix . '_harga_bangunan'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_harga_obat" class="form-control" min="0" step="1000" value="{{ old($prefix . '_harga_obat', $data->{$prefix . '_harga_obat'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_harga_meubelair" class="form-control" min="0" step="1000" value="{{ old($prefix . '_harga_meubelair', $data->{$prefix . '_harga_meubelair'} ?? '0') }}"></td>
-                                <td><input type="number" name="{{ $prefix }}_harga_peralatan" class="form-control" min="0" step="1000" value="{{ old($prefix . '_harga_peralatan', $data->{$prefix . '_harga_peralatan'} ?? '0') }}"></td>
-                            </tr>
-                        @endforeach
+                        @php
+                        $faskes = [
+                            'rs' => 'Rumah Sakit',
+                            'puskesmas' => 'Puskesmas',
+                            'poliklinik' => 'Poliklinik/Tempat Praktek Bersama',
+                            'pustu' => 'Puskesmas Pembantu',
+                            'polindes' => 'Polindes',
+                            'posyandu' => 'Posyandu',
+                        ];
+
+                        $index = 0;
+                        @endphp
+                        @foreach ($faskes as $kategori => $label)
+
+                    <tr>
+                        <td class="fw-bold">{{ $label }}</td>
+
+                        {{-- RB NEGERI --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="negeri">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="berat">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="3">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+
+                        @php $index++; @endphp
+
+                        {{-- RB SWASTA --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="swasta">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="berat">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="3">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+
+                        @php $index++; @endphp
+
+                        {{-- RS NEGERI --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="negeri">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="sedang">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="3">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+
+                        @php $index++; @endphp
+
+                        {{-- RS SWASTA --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="swasta">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="sedang">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="3">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+
+                        @php $index++; @endphp
+
+                        {{-- RR NEGERI --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="negeri">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="ringan">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="3">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+
+                        @php $index++; @endphp
+
+                        {{-- RR SWASTA --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="swasta">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="ringan">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="3">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+
+                        @php $index++; @endphp
+
+                        {{-- LUAS --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="dimensi[{{ $kategori }}]"
+                                placeholder="m²">
+                        </td>
+
+                        {{-- HARGA BANGUNAN --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="harga_bangunan[{{ $kategori }}]">
+                        </td>
+
+                        {{-- HARGA OBAT --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="harga_obat[{{ $kategori }}]">
+                        </td>
+
+                        {{-- MEUBELAIR --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="harga_meubelair[{{ $kategori }}]">
+                        </td>
+
+                        {{-- PERALATAN --}}
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="harga_peralatan[{{ $kategori }}]">
+                        </td>
+
+                    </tr>
+
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -84,216 +295,196 @@
             <hr class="my-4">
 
             <h6 class="fw-bold">II. PERKIRAAN KERUGIAN</h6>
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr class="bg-secondary text-white">
-                        <th colspan="4">1. BIAYA PEMBERSIHAN PUING</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="width: 15%">A. Biaya Tenaga Kerja</td>
-                        <td style="width: 35%">
-                            <div class="input-group">
-                                <input type="number" name="biaya_tenaga_kerja_hok" class="form-control" placeholder="0" value="{{ old('biaya_tenaga_kerja_hok', $data->biaya_tenaga_kerja_hok ?? '') }}">
-                                <span class="input-group-text">HOK</span>
-                            </div>
-                        </td>
-                        <td style="width: 15%">Upah Harian</td>
-                        <td style="width: 35%">
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="upah_harian" class="form-control" placeholder="0" value="{{ old('upah_harian', $data->upah_harian ?? '') }}">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>B. Biaya Alat Berat</td>
-                        <td>
-                            <div class="input-group">
-                                <input type="number" name="biaya_alat_berat_hari" class="form-control" placeholder="0" value="{{ old('biaya_alat_berat_hari', $data->biaya_alat_berat_hari ?? '') }}">
-                                <span class="input-group-text">Hari</span>
-                            </div>
-                        </td>
-                        <td>Tarif per Hari</td>
-                        <td>
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_alat_berat_tarif" class="form-control" placeholder="0" value="{{ old('biaya_alat_berat_tarif', $data->biaya_alat_berat_tarif ?? '') }}">
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            
+            @php
+                $kerugian = [
+                    [
+                        'judul' => '1. BIAYA PEMBERSIHAN PUING',
+                        'fields' => [
+                            [
+                                'label' => 'A. Biaya Tenaga Kerja',
+                                'name1' => 'biaya_tenaga_kerja_hok',
+                                'addon1' => 'HOK',
+                                'name2' => 'upah_harian',
+                                'addon2' => 'Rp',
+                            ],
+                            [
+                                'label' => 'B. Biaya Alat Berat',
+                                'name1' => 'biaya_alat_berat_hari',
+                                'addon1' => 'Hari',
+                                'name2' => 'biaya_alat_berat_tarif',
+                                'addon2' => 'Rp',
+                            ],
+                        ]
+                    ],
+                    [
+                        'judul' => '2. BIAYA PEMULASARAAN JENAZAH',
+                        'fields' => [
+                            [
+                                'label' => 'Jumlah Jenazah',
+                                'name1' => 'jumlah_jenazah',
+                                'addon1' => 'Jenazah',
+                                'name2' => 'biaya_per_jenazah',
+                                'addon2' => 'Rp',
+                            ],
+                        ]
+                    ],
+                    [
+                        'judul' => '3. BIAYA PERAWATAN KORBAN BENCANA',
+                        'fields' => [
+                            [
+                                'label' => 'Jumlah Korban Dirawat',
+                                'name1' => 'jumlah_pasien',
+                                'addon1' => 'Orang',
+                                'name2' => 'biaya_per_pasien',
+                                'addon2' => 'Rp',
+                            ],
+                        ]
+                    ],
+                    [
+                        'judul' => '4. FASILITAS KESEHATAN SEMENTARA',
+                        'fields' => [
+                            [
+                                'label' => 'Jenis Faskes',
+                                'type' => 'text',
+                                'name1' => 'jenis_operasional',
+                            ],
+                            [
+                                'label' => 'Jumlah Unit',
+                                'name1' => 'jumlah_faskes',
+                                'addon1' => 'Unit',
+                                'name2' => 'biaya_pengadaan_faskes',
+                                'addon2' => 'Rp',
+                            ],
+                        ]
+                    ],
+                    [
+                        'judul' => '5. BIAYA PENANGANAN PSIKOLOGIS KORBAN BENCANA',
+                        'fields' => [
+                            [
+                                'label' => 'Jumlah Korban',
+                                'name1' => 'jumlah_korban_psikologis',
+                                'addon1' => 'Orang',
+                                'name2' => 'biaya_penanganan_psikologis',
+                                'addon2' => 'Rp',
+                            ],
+                        ]
+                    ],
+                    [
+                        'judul' => '6-7. PENCEGAHAN & TENAGA KESEHATAN',
+                        'fields' => [
+                            [
+                                'label' => 'Biaya Pencegahan Penyakit Menular',
+                                'name1' => 'biaya_pencegahan_penyakit',
+                                'addon1' => 'Rp',
+                                'single' => true,
+                            ],
+                            [
+                                'label' => 'Jumlah Tenaga Kesehatan',
+                                'name1' => 'jumlah_tenaga_kesehatan',
+                                'addon1' => 'Orang',
+                                'name2' => 'honorarium_tenaga_kesehatan',
+                                'addon2' => 'Rp',
+                            ],
+                        ]
+                    ],
+                    [
+                        'judul' => '8-9. HONOR & PENDAPATAN FASKES',
+                        'fields' => [
+                            [
+                                'label' => 'Honorarium Tenaga Kesehatan',
+                                'name1' => 'honorarium_tenaga_kesehatan',
+                                'addon1' => 'Rp',
+                                'single' => true,
+                            ],
+                            [
+                                'label' => 'Pendapatan Faskes Swasta/Bulan',
+                                'name1' => 'pendapatan_faskes_swasta',
+                                'addon1' => 'Rp',
+                                'single' => true,
+                            ],
+                        ]
+                    ],
+                ];
 
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr class="bg-secondary text-white">
-                        <th colspan="4">2. BIAYA PEMULASARAAN JENAZAH</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="width: 15%">Jumlah Jenazah</td>
-                        <td style="width: 35%">
-                            <div class="input-group">
-                                <input type="number" name="jumlah_jenazah" class="form-control" placeholder="0" value="{{ old('jumlah_jenazah', $data->jumlah_jenazah ?? '') }}">
-                                <span class="input-group-text">Jenazah</span>
-                            </div>
-                        </td>
-                        <td style="width: 15%">Biaya per Jenazah</td>
-                        <td style="width: 35%">
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_per_jenazah" class="form-control" placeholder="0" value="{{ old('biaya_per_jenazah', $data->biaya_per_jenazah ?? '') }}">
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                $index = 0;
+            @endphp
 
+            @foreach ($kerugian as $section)
             <table class="table table-bordered mt-3">
                 <thead>
                     <tr class="bg-secondary text-white">
-                        <th colspan="4">3. BIAYA PERAWATAN KORBAN BENCANA</th>
+                        <th colspan="4">{{ $section['judul'] }}</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td style="width: 15%">Jumlah Korban Dirawat</td>
-                        <td style="width: 35%">
-                            <div class="input-group">
-                                <input type="number" name="jumlah_pasien" class="form-control" placeholder="0" value="{{ old('jumlah_pasien', $data->jumlah_pasien ?? '') }}">
-                                <span class="input-group-text">Orang</span>
-                            </div>
-                        </td>
-                        <td style="width: 15%">Biaya per Korban</td>
-                        <td style="width: 35%">
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_per_pasien" class="form-control" placeholder="0" value="{{ old('biaya_per_pasien', $data->biaya_per_pasien ?? '') }}">
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
 
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr class="bg-secondary text-white">
-                        <th colspan="4">4. FASILITAS KESEHATAN SEMENTARA</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    <tr>
-                        <td style="width: 15%">Jenis Faskes</td>
-                        <td style="width: 35%">
-                            <input type="text" name="jenis_operasional" class="form-control" placeholder="Jenis Faskes" value="{{ old('jenis_operasional', $data->jenis_operasional ?? '') }}">
-                        </td>
-                        <td style="width: 15%">Jumlah Unit</td>
-                        <td style="width: 35%">
-                            <div class="input-group">
-                                <input type="number" name="jumlah_faskes" class="form-control" placeholder="0" value="{{ old('jumlah_faskes', $data->jumlah_faskes ?? '') }}">
-                                <span class="input-group-text">Unit</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Biaya Pengadaan Faskes Sementara</td>
-                        <td colspan="2">
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_pengadaan_faskes" class="form-control" placeholder="0" value="{{ old('biaya_pengadaan_faskes', $data->biaya_pengadaan_faskes ?? '') }}">
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    @foreach ($section['fields'] as $field)
 
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr class="bg-secondary text-white">
-                        <th colspan="4">5. BIAYA PENANGANAN PSIKOLOGIS KORBAN BENCANA</th>
-                    </tr>
-                </thead>
-                <tbody>
                     <tr>
-                        <td style="width: 15%">Jumlah Korban</td>
+                        <td style="width: 15%">
+                            {{ $field['label'] }}
+                        </td>
+
+                        {{-- FIELD 1 --}}
                         <td style="width: 35%">
                             <div class="input-group">
-                                <input type="number" name="jumlah_korban_psikologis" class="form-control" placeholder="0" value="{{ old('jumlah_korban_psikologis', $data->jumlah_korban_psikologis ?? '') }}">
-                                <span class="input-group-text">Orang</span>
+
+                                @if(isset($field['type']) && $field['type'] === 'text')
+                                    <input type="text"
+                                        class="form-control"
+                                        name="{{ $field['name1'] }}"
+                                        value="{{ old($field['name1'], $data->{$field['name1']} ?? '') }}">
+                                @else
+                                    <input type="number"
+                                        class="form-control"
+                                        name="{{ $field['name1'] }}"
+                                        value="{{ old($field['name1'], $data->{$field['name1']} ?? '') }}">
+                                @endif
+
+                                @if(isset($field['addon1']))
+                                    <span class="input-group-text">{{ $field['addon1'] }}</span>
+                                @endif
+
                             </div>
                         </td>
-                        <td style="width: 15%">Biaya per Korban</td>
+
+                        {{-- FIELD 2 (optional) --}}
+                        @if(isset($field['name2']))
+                        <td style="width: 15%">
+                            {{ $field['label2'] ?? 'Nilai' }}
+                        </td>
+
                         <td style="width: 35%">
                             <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_penanganan_psikologis" class="form-control" placeholder="0" value="{{ old('biaya_penanganan_psikologis', $data->biaya_penanganan_psikologis ?? '') }}">
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <span class="input-group-text">{{ $field['addon2'] ?? '' }}</span>
 
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr class="bg-secondary text-white">
-                        <th colspan="2">6. BIAYA PENCEGAHAN PENYAKIT MENULAR</th>
-                        <th colspan="2">7. JUMLAH BANTUAN TENAGA KESEHATAN YANG DIPERLUKAN</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="width: 25%">Biaya Pencegahan Penyakit Menular</td>
-                        <td style="width: 25%">
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_pencegahan_penyakit" class="form-control" placeholder="0" value="{{ old('biaya_pencegahan_penyakit', $data->biaya_pencegahan_penyakit ?? '') }}">
+                                <input type="number"
+                                    class="form-control"
+                                    name="{{ $field['name2'] }}"
+                                    value="{{ old($field['name2'], $data->{$field['name2']} ?? '') }}">
                             </div>
                         </td>
-                        <td style="width: 25%">Jumlah Tenaga Kesehatan</td>
-                        <td style="width: 25%">
-                            <div class="input-group">
-                                <input type="number" name="jumlah_tenaga_kesehatan" class="form-control" placeholder="0" value="{{ old('jumlah_tenaga_kesehatan', $data->jumlah_tenaga_kesehatan ?? '') }}">
-                                <span class="input-group-text">Orang</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        @else
+                        <td colspan="2"></td>
+                        @endif
 
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr class="bg-secondary text-white">
-                        <th colspan="2">8. BIAYA HONORARIUM TENAGA KESEHATAN BANTUAN</th>
-                        <th colspan="2">9. RATA-RATA PENDAPATAN FASKES SWASTA/BULAN</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="width: 25%">Honorarium Tenaga Kesehatan</td>
-                        <td style="width: 25%">
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="honorarium_tenaga_kesehatan" class="form-control" placeholder="0" value="{{ old('honorarium_tenaga_kesehatan', $data->honorarium_tenaga_kesehatan ?? '') }}">
-                            </div>
-                        </td>
-                        <td style="width: 25%">Pendapatan Faskes Swasta/Bulan</td>
-                        <td style="width: 25%">
-                            <div class="input-group">
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="pendapatan_faskes_swasta" class="form-control" placeholder="0" value="{{ old('pendapatan_faskes_swasta', $data->pendapatan_faskes_swasta ?? '') }}">
-                            </div>
-                        </td>
-                    </tr>
+
+                    @endforeach
                 </tbody>
             </table>
+            @endforeach
 
             <div class="row mb-4">
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
                 </div>
+                <button type="button"
+                        class="btn btn-warning"
+                        id="fillDummy">
+                    Isi Data Dummy
+                </button>
             </div>
         </form>
 
@@ -351,15 +542,17 @@
         @endif
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitBtn = document.querySelector('button[type="submit"]');
-            const form = document.querySelector('form');
-            if (form && submitBtn) {
-                form.addEventListener('submit', function() {
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
-                });
-            }
+        document.getElementById('fillDummy').addEventListener('click', function () {
+
+            // Semua input number yang kosong
+            document.querySelectorAll('input[type="number"]').forEach(function(input) {
+
+                if (input.value === '') {
+                    input.value = 1;
+                }
+
+            });
+
         });
     </script>
 @endsection

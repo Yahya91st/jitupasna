@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BencanaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahProxyController;
 use App\Http\Controllers\WilayahController;

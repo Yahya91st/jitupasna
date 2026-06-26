@@ -16,17 +16,17 @@ class Formulir extends Model
         'status',
     ];
 
-    public function laporanBencana()
+    public function laporan()
     {
-        return $this->belongsTo(LaporanBencana::class, 'laporan_id');
+        return $this->belongsTo(LaporanBencana::class);
     }
 
-    public function user()
+    public function items()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasMany(FormulirItem::class);
     }
 
-    public function formatFormulir()
+    public function format()
     {
         return $this->belongsTo(FormatFormulir::class, 'format_id');
     }

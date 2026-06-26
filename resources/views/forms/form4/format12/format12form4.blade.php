@@ -27,123 +27,276 @@
         </table>            
         <div class="table-responsive">
             <table class="table table-bordered text-center align-middle" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th rowspan="2" class="align-middle" style="width: 120px;">Perkiraan Kerusakan</th>
-                        <th rowspan="2" class="text-center">Jenis Tempat Pemeliharaan</th>
-                        <th rowspan="2" class="text-center">Unit Kerusakan</th>
-                        <th colspan="2" rowspan="2" class="text-center">Harga Satuan</th>
+                <thead>                    
+                    <tr class="bg-secondary text-white">
+                        <th colspan="5">
+                            PERKIRAAN KERUSAKAN
+                        </th>
                     </tr>
                 </thead>
-                
+                    
                 <tbody>
+                <tr>
+                    <td>Perkiraan Kerusakan</td>
+                    <td>Jenis Tempat Pemeliharaan</td>
+                    <td>Unit Kerusakan</td>
+                    <td>Harga Satuan</td>
+                </tr>
+                    @php
+                    $detailIndex = 0;
+
+                    $kerusakan = [
+                        'tempat_pemeliharaan' => [
+                            'label' => 'Kerusakan Tempat Pemeliharaan Ikan',
+                            'placeholder' => 'Jenis Tempat Pemeliharaan',
+                            'rows' => 3,
+                            'satuan' => 'unit',
+                        ],
+
+                        'kapal_perahu' => [
+                            'label' => 'Kerusakan Kapal Motor/Perahu Nelayan',
+                            'placeholder' => 'Jenis Kapal/Perahu',
+                            'rows' => 3,
+                            'satuan' => 'unit',
+                        ],
+
+                        'tempat_pelelangan' => [
+                            'label' => 'Kerusakan Tempat Pelelangan Ikan',
+                            'placeholder' => 'Jenis Tempat Pelelangan',
+                            'rows' => 3,
+                            'satuan' => 'unit',
+                        ],
+                    ];
+                    @endphp
+
+                    @foreach($kerusakan as $kategori => $item)
+
+                    @for($row = 0; $row < $item['rows']; $row++)
+
                     <tr>
-                        <td colspan="5" class="fw-bold bg-secondary text-white">PERKIRAAN KERUSAKAN</td>
+
+                        @if($row == 0)
+                            <td rowspan="{{ $item['rows'] }}">
+                                {{ $item['label'] }}
+                            </td>
+                        @endif
+
+                        <td>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="{{ $item['placeholder'] }}"
+                                name="details[{{ $detailIndex }}][sub_kategori]">
+                        </td>
+
+                        <td>
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="details[{{ $detailIndex }}][jumlah]">
+                        </td>
+
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="details[{{ $detailIndex }}][harga_satuan]">
+                            </div>
+                        </td>
+
+                        <input
+                            type="hidden"
+                            name="details[{{ $detailIndex }}][kategori]"
+                            value="{{ $kategori }}">
+
+                        <input
+                            type="hidden"
+                            name="details[{{ $detailIndex }}][satuan]"
+                            value="{{ $item['satuan'] }}">
 
                     </tr>
-                    
-                    <!-- KERUSAKAN TEMPAT PEMELIHARAAN -->
-                    <tr>
-                        <td rowspan="3" class="align-middle fw-bold">a) Kerusakan Tempat Pemeliharaan Ikan (Kolam, Tambak, dsb) dan Peralatannya</td>
-                        <td class="text-start"><input type="text" name="tempat_pemeliharaan_jenis_0" class="form-control form-control-sm" placeholder="Jenis Tempat Pemeliharaan" value=""></td>
-                        <td><input type="number" name="tempat_pemeliharaan_unit_0" class="form-control" min="0" value="0"></td>
-                        <td colspan="2"><input type="number" name="tempat_pemeliharaan_harga_satuan_0" class="form-control" min="0" step="1" value="0"></td>
-                    </tr>
-                    @for ($i = 1; $i <= 2; $i++)
-                    <tr>
-                        <td class="text-start"><input type="text" name="tempat_pemeliharaan_jenis_{{ $i }}" class="form-control form-control-sm" placeholder="Jenis Tempat Pemeliharaan" value=""></td>
-                        <td><input type="number" name="tempat_pemeliharaan_unit_{{ $i }}" class="form-control" min="0" value="0"></td>
-                        <td colspan="2"><input type="number" name="tempat_pemeliharaan_harga_satuan_{{ $i }}" class="form-control" min="0" step="1" value="0"></td>
-                    </tr>
+
+                    @php $detailIndex++; @endphp
+
                     @endfor
 
-                    <!-- KERUSAKAN KAPAL MOTOR -->
-                    <tr>
-                        <td class="text-white fw-bold bg-secondary" colspan="5">JENIS KAPAL MOTOR/PERAHU NELAYAN</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="3" class="align-middle fw-bold">b) Kerusakan Kapal Motor/Perahu Nelayan</td>
-                        <td class="text-start"><input type="text" name="kerusakan_kapal_perahu_jenis_0" class="form-control form-control-sm" placeholder="Jenis Kapal Motor/Perahu Nelayan" value=""></td>
-                        <td><input type="number" name="kerusakan_kapal_perahu_unit_0" class="form-control" min="0" value="0"></td>
-                        <td colspan="2"><input type="number" name="kerusakan_kapal_perahu_harga_satuan_0" class="form-control" min="0" step="1" value="0"></td>
-                    </tr>
-                    @for ($i = 1; $i <= 2; $i++)
-                    <tr>
-                        <td class="text-start"><input type="text" name="kerusakan_kapal_perahu_jenis_{{ $i }}" class="form-control form-control-sm" placeholder="Jenis Kapal Motor/Perahu Nelayan" value=""></td>
-                        <td><input type="number" name="kerusakan_kapal_perahu_unit_{{ $i }}" class="form-control" min="0" value="0"></td>
-                        <td colspan="2"><input type="number" name="kerusakan_kapal_perahu_harga_satuan_{{ $i }}" class="form-control" min="0" step="1" value="0"></td>
-                    </tr>
-                    @endfor
-                    <!-- KERUSAKAN TEMPAT PELELANGAN IKAN -->
-                    <tr>
-                        <td rowspan="3" class="align-middle fw-bold">c) Kerusakan Tempat Pelelangan Ikan</td>
-                        <td class="text-start"><input type="text" name="kerusakan_tempat_pelelangan_ikan_jenis_0" class="form-control form-control-sm" placeholder="Jenis Tempat Pelelangan" value=""></td>
-                        <td><input type="number" name="kerusakan_tempat_pelelangan_ikan_unit_0" class="form-control" min="0" value="0"></td>
-                        <td colspan="2"><input type="number" name="kerusakan_tempat_pelelangan_ikan_harga_satuan_0" class="form-control" min="0" step="1" value="0"></td>
-                    </tr>
-                    @for ($i = 1; $i <= 2; $i++)
-                    <tr>
-                        <td class="text-start"><input type="text" name="kerusakan_tempat_pelelangan_ikan_jenis_{{ $i }}" class="form-control form-control-sm" placeholder="Jenis Tempat Pelelangan" value=""></td>
-                        <td><input type="number" name="kerusakan_tempat_pelelangan_ikan_unit_{{ $i }}" class="form-control" min="0" value="0"></td>
-                        <td colspan="2"><input type="number" name="kerusakan_tempat_pelelangan_ikan_harga_satuan_{{ $i }}" class="form-control" min="0" step="1" value="0"></td>
-                    </tr>
-                    @endfor
-                    
-                    <tr>
-                        <td colspan="5" class="fw-bold bg-secondary text-white">PERKIRAAN KERUGIAN</td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle">A. Produksi Yang Hilang Total</td>
-                        <td class="text-center">Jenis Ikan</td>
-                        <td class="text-center">Jumlah Produksi Yang Hilang</td>
-                        <td colspan="2" class="text-center">Harga Satuan</td>
-                    </tr>
-                    @for ($i = 0; $i < 3; $i++)
-                    <tr>
-                        <td><input type="text" name="produksi_yang_hilang_total_nama_{{ $i }}" class="form-control form-control-sm" value=""></td>
-                        <td class="text-start"><input type="text" name="produksi_yang_hilang_total_jenis_{{ $i }}" class="form-control form-control-sm" placeholder="Jenis Ikan" value=""></td>
-                        <td><input type="number" name="produksi_yang_hilang_total_jumlah_{{ $i }}" class="form-control" min="0" value="0"></td>
-                        <td colspan="2"><input type="number" name="produksi_yang_hilang_total_harga_satuan_{{ $i }}" class="form-control" min="0" step="1" value="0"></td>
-                    </tr>
-                    @endfor                            
-                    <tr>
-                        <td class="align-middle">B. Penurunan Produktifitas</td>
-                        <td class="text-center">Jenis Ikan</td>
-                        <td class="text-center">Penurunan Produktifitas</td>
-                        <td class="text-center">Harga Satuan</td>
-                        <td class="text-center">Jangka Waktu Pemulihan</td>
-                    </tr>
-                    @for ($i = 0; $i < 3; $i++)
-                    <tr>
-                        <td><input type="text" name="penurunan_produktivitas_nama_{{ $i }}" class="form-control form-control-sm" value=""></td>
-                        <td class="text-start"><input type="text" name="penurunan_produktivitas_jenis_{{ $i }}" class="form-control form-control-sm" placeholder="Jenis Ikan" value=""></td>
-                        <td><input type="number" name="penurunan_produktivitas_penurunan_produktifitas_{{ $i }}" class="form-control" min="0" value="0"></td>
-                        <td><input type="number" name="penurunan_produktivitas_harga_satuan_{{ $i }}" class="form-control" min="0" step="1" value="0"></td>
-                        <td><input type="text" name="penurunan_produktivitas_jangka_waktu_{{ $i }}" class="form-control" value=""></td>
-                    </tr>
-                    @endfor
-                    <tr>
-                        <td class="align-middle">C. Kenaikan Ongkos Produksi</td>
-                        <td class="text-center">Jenis Ikan</td>
-                        <td class="text-center">Kenaikan Biaya</td>
-                        <td class="text-center">Harga Satuan</td>
-                        <td class="text-center">Jangka Waktu Pemulihan</td>
-                    </tr>
-                    @for ($i = 0; $i < 3; $i++)
-                    <tr>
-                        <td><input type="text" name="kenaikan_ongkos_produksi_nama_{{ $i }}" class="form-control form-control-sm" value=""></td>
-                        <td class="text-start"><input type="text" name="kenaikan_ongkos_produksi_jenis_{{ $i }}" class="form-control form-control-sm" placeholder="Jenis Ikan" value=""></td>
-                        <td><input type="number" name="kenaikan_ongkos_produksi_kenaikan_biaya_{{ $i }}" class="form-control" min="0" value="0"></td>
-                        <td><input type="number" name="kenaikan_ongkos_produksi_harga_satuan_{{ $i }}" class="form-control" min="0" step="1" value="0"></td>
-                        <td><input type="text" name="kenaikan_ongkos_produksi_jangka_waktu_{{ $i }}" class="form-control" value=""></td>
-                    </tr>
-                    @endfor
+                @endforeach
                 </tbody>
             </table>
+
+            @php
+            $detailIndex = 100;
+
+            $kerugian = [
+                [
+                    'kategori' => 'produksi_hilang_total',
+                    'label' => 'A. Produksi Yang Hilang Total',
+                    'kolom_jumlah' => 'Jumlah Produksi Yang Hilang',
+                    'durasi' => false,
+                ],
+                [
+                    'kategori' => 'penurunan_produktivitas',
+                    'label' => 'B. Penurunan Produktivitas',
+                    'kolom_jumlah' => 'Penurunan Produktivitas',
+                    'durasi' => true,
+                ],
+                [
+                    'kategori' => 'kenaikan_ongkos_produksi',
+                    'label' => 'C. Kenaikan Ongkos Produksi',
+                    'kolom_jumlah' => 'Kenaikan Biaya',
+                    'durasi' => true,
+                ],
+            ];
+            @endphp
+
+            <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+
+                    <thead>
+                        <tr class="bg-secondary text-white">
+                            <th colspan="5">
+                                PERKIRAAN KERUGIAN
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    @foreach($kerugian as $section)
+
+                        <tr class="table-light fw-bold">
+                            <td style="width:25%">
+                                {{ $section['label'] }}
+                            </td>
+
+                            <td>
+                                Jenis Ikan
+                            </td>
+
+                            <td>
+                                {{ $section['kolom_jumlah'] }}
+                            </td>
+
+                            <td>
+                                Harga Satuan
+                            </td>
+
+                            @if($section['durasi'])
+                                <td>
+                                    Jangka Waktu Pemulihan
+                                </td>
+                            @endif
+                        </tr>
+
+                        @for($i = 0; $i < 3; $i++)
+
+                        <tr>
+                            <td></td>
+
+                            <td>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="details[{{ $detailIndex }}][sub_kategori]"
+                                    placeholder="Jenis Ikan">
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="details[{{ $detailIndex }}][jumlah]">
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        Rp
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="details[{{ $detailIndex }}][harga_satuan]">
+                                </div>
+                            </td>
+
+                            @if($section['durasi'])
+
+                            <td>
+                                <div class="input-group">
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="details[{{ $detailIndex }}][durasi]">
+
+                                    <span class="input-group-text">
+                                        Bulan
+                                    </span>
+
+                                </div>
+
+                                <input
+                                    type="hidden"
+                                    name="details[{{ $detailIndex }}][durasi_satuan]"
+                                    value="bulan">
+                            </td>
+
+                            @endif
+
+                            <input
+                                type="hidden"
+                                name="details[{{ $detailIndex }}][kategori]"
+                                value="{{ $section['kategori'] }}">
+
+                            <input
+                                type="hidden"
+                                name="details[{{ $detailIndex }}][satuan]"
+                                value="kg">
+
+                        </tr>
+
+                        @php $detailIndex++; @endphp
+
+                        @endfor
+
+                    @endforeach
+
+                    </tbody>
+
+                </table>
+            </div>
         </div>
-        <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-primary">Simpan Data</button>
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+        </div>
+        
+        <div class="col-12 text-center">
+            <button type="button"
+                    class="btn btn-warning"
+                    id="fillDummy">
+                Isi Data Dummy
+            </button>
         </div>
     </form>
 </div>
+
+<script>
+document.getElementById('fillDummy').addEventListener('click', function () {
+
+    document.querySelectorAll('input[type="number"]:not([readonly]), input[type="text"]:not([readonly])')
+        .forEach(function(input) {
+
+            if (input.value === '') {
+                input.value = 1;
+            }
+
+        });
+
+});
+</script>
 @endsection

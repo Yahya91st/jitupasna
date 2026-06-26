@@ -3,16 +3,56 @@
 namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreFormat16Request;
 use App\Models\Bencana;
-use App\Models\Format16Form4;
+use App\Models\LaporanBencana;
+use App\Models\Formulir;
+use App\Models\FormulirItem;
+use App\Models\KriteriaKerusakan;
+use App\Models\Rekap;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class Format16Controller extends Controller
 {
+    private function saveItem(
+        $formulirId,
+        $kategori,
+        $subKategori = null,
+        $jumlah = null,
+        $jumlah2 = null,
+        $hargaSatuan = null,
+        $dimensi = null,
+        $satuan = null,
+        $kriteriaId = null,
+        $tingkatKerusakan = null,
+        $durasi = null,
+        $durasiSatuan = null
+    ) {
+        FormulirItem::create([
+            'formulir_id' => $formulirId,
+            'kriteria_id' => $kriteriaId,
+
+            'kategori' => $kategori,
+            'sub_kategori' => $subKategori,
+
+            'dimensi' => $dimensi,
+            'tingkat_kerusakan' => $tingkatKerusakan ?? null,
+
+            'jumlah' => $jumlah,
+            'jumlah2' => $jumlah2,
+
+            'harga_satuan' => $hargaSatuan,
+
+            'satuan' => $satuan,
+
+            'durasi' => $durasi,                
+            'durasi_satuan' => $durasiSatuan,  
+        ]);
+    }
+
     /**
-     * Display Format 16 form for data collection
+     * Display Format 2 form for Education sector data collection
      */
     public function index(Request $request)
     {
@@ -22,106 +62,123 @@ class Format16Controller extends Controller
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
-        // Get bencana details
+          // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
         return view('forms.form4.format16.format16form4', compact('bencana'));
     }
 
-    /**
-     * Store format16 form data
-     */
-    public function store(Request $request)
+    private function hitungOperasional($op, $durasi)
     {
+        return ($op['jumlah2'] - $op['jumlah']) * $durasi;
+    }
+    private function hitungPendapatan($pp, $durasi)
+    {
+        return ($pp['jumlah'] - $pp['jumlah2']) * $pp['harga_satuan'] * $durasi;
+    }
+
+    /**
+     * Store format16 form data for Education sector
+     */
+    public function store(StoreFormat16Request $request)
+    {        
+
         try {
             DB::beginTransaction();
 
-            // Validate the request
-            $validated = $request->validate([
-                'bencana_id' => 'required|exists:bencana,id',
-                'kabupaten' => 'nullable|string',
-                'nama_kampung' => 'required|string',
-                'nama_distrik' => 'required|string',
-                // Kantor Pemkab
-                'kantor_pemkab_berat' => 'nullable|integer',
-                'kantor_pemkab_sedang' => 'nullable|integer',
-                'kantor_pemkab_ringan' => 'nullable|integer',
-                'kantor_pemkab_rb_harga' => 'nullable|numeric',
-                'kantor_pemkab_rs_harga' => 'nullable|numeric',
-                'kantor_pemkab_rr_harga' => 'nullable|numeric',
-                // Kantor Kecamatan
-                'kantor_kecamatan_berat' => 'nullable|integer',
-                'kantor_kecamatan_sedang' => 'nullable|integer',
-                'kantor_kecamatan_ringan' => 'nullable|integer',
-                'kantor_kecamatan_rb_harga' => 'nullable|numeric',
-                'kantor_kecamatan_rs_harga' => 'nullable|numeric',
-                'kantor_kecamatan_rr_harga' => 'nullable|numeric',
-                // Kantor Dinas
-                'kantor_dinas_berat' => 'nullable|integer',
-                'kantor_dinas_sedang' => 'nullable|integer',
-                'kantor_dinas_ringan' => 'nullable|integer',
-                'kantor_dinas_rb_harga' => 'nullable|numeric',
-                'kantor_dinas_rs_harga' => 'nullable|numeric',
-                'kantor_dinas_rr_harga' => 'nullable|numeric',
-                // Kantor Vertikal
-                'kantor_vertikal_berat' => 'nullable|integer',
-                'kantor_vertikal_sedang' => 'nullable|integer',
-                'kantor_vertikal_ringan' => 'nullable|integer',
-                'kantor_vertikal_rb_harga' => 'nullable|numeric',
-                'kantor_vertikal_rs_harga' => 'nullable|numeric',
-                'kantor_vertikal_rr_harga' => 'nullable|numeric',
-                // Mebelair
-                'mebelair_berat' => 'nullable|integer',
-                'mebelair_sedang' => 'nullable|integer',
-                'mebelair_ringan' => 'nullable|integer',
-                'mebelair_rb_harga' => 'nullable|numeric',
-                'mebelair_rs_harga' => 'nullable|numeric',
-                'mebelair_rr_harga' => 'nullable|numeric',
-                // Biaya Pembersihan Puing
-                'biaya_tenaga_kerja_hok' => 'nullable|integer',
-                'upah_harian' => 'nullable|numeric',
-                'biaya_alat_berat_hari' => 'nullable|integer',
-                'biaya_alat_berat_tarif' => 'nullable|numeric',
-                // Biaya Sewa Kantor Sementara
-                'sewa_kantor_jumlah_unit' => 'nullable|integer',
-                'sewa_kantor_biaya_per_unit' => 'nullable|numeric',
-                // Biaya Restorasi Arsip
-                'restorasi_arsip_jumlah' => 'nullable|integer',
-                'restorasi_arsip_harga_satuan' => 'nullable|numeric',
-                // Kehilangan Pendapatan Retribusi
-                'dasar_perhitungan_retribusi' => 'nullable|string',
-            ]);
+            $laporan = LaporanBencana::firstOrCreate(
+                [
+                    'bencana_id' => $request->bencana_id,
+                    'user_id' => auth()->id(),
+                ],
+                [
+                    'tanggal_lapor' => now()->toDateString(),
+                    'status' => 'draft',
+                ]
+            );
 
-            // Add default kabupaten if not provided
-            if (empty($validated['kabupaten'])) {
-                $validated['kabupaten'] = 'Papua Selatan'; // Default value
-            }
+            $formulir = Formulir::firstOrCreate(
+                [
+                    'laporan_id' => $laporan->id,
+                    'format_id' => 16,
+                ],
+                [
+                    'status' => 'draft',
+                ]
+            );
+
+            $validated = $request->validated();
             
-            // Create new form data with validated input
-             $form = Format16Form4::create($validated);
+            foreach ($request->details as $item) {               
+
+                $this->saveItem(
+                    $formulir->id,
+                    $item['kategori'] ?? null,
+                    $item['sub_kategori'] ?? null,
+                    $item['jumlah'] ?? null,
+                    $item['jumlah2'] ?? null,
+                    $item['harga_satuan'] ?? null,
+                    null,
+                    $item['satuan'] ?? null,
+                    null,
+                    $item['tingkat_kerusakan'] ?? null,
+                    $item['durasi'] ?? null,
+                    $item['durasi_satuan'] ?? null,
+                );        
+            }
+
+            $this->saveItem(
+                $formulir->id,
+                'biaya_tenaga_kerja',
+                null,
+                $request->biaya_tenaga_kerja_hok,
+                null,
+                $request->upah_harian,
+                null,
+                'hok',
+                null,
+                null,
+                null,
+                null,
+            );
+
+            $this->saveItem(
+                $formulir->id,
+                'biaya_tenaga_kerja',
+                null,
+                $request->biaya_alat_berat_hari,
+                null,
+                $request->biaya_alat_berat_tarif,
+                null,
+                'hari',
+                null,
+                null,
+                null,
+                null,
+            );
 
             DB::commit();
-
+            // Return success response for AJAX or redirect for regular form
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' =>  $form
+                    'data' => $format1Form4
                 ]);
-            }
-
-            return redirect()->route('forms.form4.list-format16', ['bencana_id' =>  $form->bencana_id])
-                ->with('success', 'Data berhasil disimpan');
+            }            
+            return redirect()->route('forms.form4.format1.list')
+            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
+            
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Terjadi kesalahan: ' . $e->getMessage()
                 ], 500);
             }
+
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
@@ -133,110 +190,13 @@ class Format16Controller extends Controller
      */
     public function show($id)
     {
-         $form = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana =  $form->bencana;
-        
-        // Prepare facility reports (kerusakan fasilitas)
-        $facilityReports = collect();
-        
-        // Add facility damage data if exists
-        if (!empty( $form->kantor_pemkab_berat) || !empty( $form->kantor_pemkab_sedang) || !empty( $form->kantor_pemkab_ringan)) {
-            $facilityReports->push((object)[
-                'jenis_fasilitas' => 'Kantor Pemkab',
-                'jumlah_rb' =>  $form->kantor_pemkab_berat ?? 0,
-                'jumlah_rs' =>  $form->kantor_pemkab_sedang ?? 0,
-                'jumlah_rr' =>  $form->kantor_pemkab_ringan ?? 0,
-                'harga_rb' =>  $form->kantor_pemkab_rb_harga ?? 0,
-                'harga_rs' =>  $form->kantor_pemkab_rs_harga ?? 0,
-                'harga_rr' =>  $form->kantor_pemkab_rr_harga ?? 0,
-            ]);
-        }
-        
-        if (!empty( $form->kantor_kecamatan_berat) || !empty( $form->kantor_kecamatan_sedang) || !empty( $form->kantor_kecamatan_ringan)) {
-            $facilityReports->push((object)[
-                'jenis_fasilitas' => 'Kantor Kecamatan',
-                'jumlah_rb' =>  $form->kantor_kecamatan_berat ?? 0,
-                'jumlah_rs' =>  $form->kantor_kecamatan_sedang ?? 0,
-                'jumlah_rr' =>  $form->kantor_kecamatan_ringan ?? 0,
-                'harga_rb' =>  $form->kantor_kecamatan_rb_harga ?? 0,
-                'harga_rs' =>  $form->kantor_kecamatan_rs_harga ?? 0,
-                'harga_rr' =>  $form->kantor_kecamatan_rr_harga ?? 0,
-            ]);
-        }
-        
-        if (!empty( $form->kantor_dinas_berat) || !empty( $form->kantor_dinas_sedang) || !empty( $form->kantor_dinas_ringan)) {
-            $facilityReports->push((object)[
-                'jenis_fasilitas' => 'Kantor Dinas',
-                'jumlah_rb' =>  $form->kantor_dinas_berat ?? 0,
-                'jumlah_rs' =>  $form->kantor_dinas_sedang ?? 0,
-                'jumlah_rr' =>  $form->kantor_dinas_ringan ?? 0,
-                'harga_rb' =>  $form->kantor_dinas_rb_harga ?? 0,
-                'harga_rs' =>  $form->kantor_dinas_rs_harga ?? 0,
-                'harga_rr' =>  $form->kantor_dinas_rr_harga ?? 0,
-            ]);
-        }
-        
-        if (!empty( $form->kantor_vertikal_berat) || !empty( $form->kantor_vertikal_sedang) || !empty( $form->kantor_vertikal_ringan)) {
-            $facilityReports->push((object)[
-                'jenis_fasilitas' => 'Kantor Instansi Vertikal',
-                'jumlah_rb' =>  $form->kantor_vertikal_berat ?? 0,
-                'jumlah_rs' =>  $form->kantor_vertikal_sedang ?? 0,
-                'jumlah_rr' =>  $form->kantor_vertikal_ringan ?? 0,
-                'harga_rb' =>  $form->kantor_vertikal_rb_harga ?? 0,
-                'harga_rs' =>  $form->kantor_vertikal_rs_harga ?? 0,
-                'harga_rr' =>  $form->kantor_vertikal_rr_harga ?? 0,
-            ]);
-        }
-        
-        if (!empty( $form->mebelair_berat) || !empty( $form->mebelair_sedang) || !empty( $form->mebelair_ringan)) {
-            $facilityReports->push((object)[
-                'jenis_fasilitas' => 'Mebelair dan Peralatan Kantor',
-                'jumlah_rb' =>  $form->mebelair_berat ?? 0,
-                'jumlah_rs' =>  $form->mebelair_sedang ?? 0,
-                'jumlah_rr' =>  $form->mebelair_ringan ?? 0,
-                'harga_rb' =>  $form->mebelair_rb_harga ?? 0,
-                'harga_rs' =>  $form->mebelair_rs_harga ?? 0,
-                'harga_rr' =>  $form->mebelair_rr_harga ?? 0,
-            ]);
-        }
-        
-        // Prepare loss reports (kerugian)
-        $lossReports = collect();
-        
-        // Check if there's loss data (pembersihan puing, kantor sementara, arsip)
-        if (!empty( $form->biaya_tenaga_kerja_hok) || !empty( $form->upah_harian) || 
-            !empty( $form->biaya_alat_berat_hari) || !empty( $form->biaya_alat_berat_tarif) ||
-            !empty( $form->sewa_kantor_jumlah_unit) || !empty( $form->sewa_kantor_biaya_per_unit) ||
-            !empty( $form->restorasi_arsip_jumlah) || !empty( $form->restorasi_arsip_harga_satuan)) {
-            
-            $lossReports->push((object)[
-                'id' =>  $form->id,
-                'tenaga_kerja_hok' =>  $form->biaya_tenaga_kerja_hok,
-                'upah_harian' =>  $form->upah_harian,
-                'alat_berat_hari' =>  $form->biaya_alat_berat_hari,
-                'biaya_per_hari_alat_berat' =>  $form->biaya_alat_berat_tarif,
-                'jumlah_unit' =>  $form->sewa_kantor_jumlah_unit,
-                'biaya_sewa_per_unit' =>  $form->sewa_kantor_biaya_per_unit,
-                'jumlah_arsip' =>  $form->restorasi_arsip_jumlah,
-                'harga_satuan' =>  $form->restorasi_arsip_harga_satuan,
-                'dasar_perhitungan' =>  $form->dasar_perhitungan_retribusi ?? 'Berdasarkan data terdampak',
-            ]);
-        }
-        
-        // Create governmentReports collection for backward compatibility
-        $governmentReports = $facilityReports->merge($lossReports);
-        
-        return view('forms.form4.format16.show-format16', compact(
-            ' form', 
-            'bencana', 
-            'facilityReports', 
-            'lossReports', 
-            'governmentReports'
-        ));
+        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPendidikan->bencana;
+        return view('forms.form4.format2.show-format2', compact('formPendidikan', 'bencana'));
     }
 
     /**
-     * List all entries for this format
+     * List all entries for this format (list-format2)
      */
     public function list(Request $request)
     {
@@ -244,130 +204,178 @@ class Format16Controller extends Controller
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        $bencana = Bencana::findOrFail($bencana_id);
-        $reports = Format16Form4::where('bencana_id', $bencana_id)->get(); // No soft delete filter
-        return view('forms.form4.format16.list-format16', compact('bencana', 'reports'));
+        $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
+        $educationReports = Format2Form4::whereHas('rekap', function($q) use ($bencana_id) {
+            $q->where('bencana_id', $bencana_id);
+        })->get();
+
+        return view('forms.form4.format2.list', compact('bencana', 'educationReports'));
     }
 
     /**
-     * Generate PDF for a specific form data
+     * Generate PDF for a specific form data (future)
      */
     public function generatePdf($id)
     {
-         $form = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana =  $form->bencana;
-        
-        $pdf = Pdf::loadView('forms.form4.format16.pdf', compact(' form', 'bencana'));
+        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPendidikan->bencana;
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('forms.form4.format2.pdf', compact('formPendidikan', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
-        
-        return $pdf->download('Format16_' .  $form->nama_kampung . '.pdf');
+        return $pdf->download('Format2_Pendidikan_' . $formPendidikan->nama_kampung . '.pdf');
     }
 
     /**
-     * Preview PDF for a specific form data
+     * Preview PDF (Not implemented yet)
      */
     public function previewPdf($id)
     {
-         $form = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana =  $form->bencana;
-        
-        $pdf = Pdf::loadView('forms.form4.format16.pdf', compact(' form', 'bencana'));
-        $pdf->setPaper('A4', 'landscape');
-        
-        return $pdf->stream('Format16_' .  $form->nama_kampung . '.pdf');
+        return redirect()->back()->with('error', 'Format 2 (Education Sector) belum diimplementasikan.');
     }
 
     /**
-     * Show the form for editing the specified resource (Format 16)
+     * Show the form for editing the specified resource (Format 2)
      */
     public function edit($id)
     {
-        $formPemerintahan = Format16Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPemerintahan->bencana;
-        return view('forms.form4.format16.edit', compact('formPemerintahan', 'bencana'));
+        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
+        $bencana = $formPendidikan->bencana;
+        return view('forms.form4.format2.edit', compact('formPendidikan', 'bencana'));
     }
 
     /**
-     * Update the specified resource in storage (Format 16)
+     * Update the specified resource in storage (Format 2)
      */
     public function update(Request $request, $id)
     {
         try {
             DB::beginTransaction();
-             $form = Format16Form4::findOrFail($id);
+            $formPendidikan = Format2Form4::findOrFail($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
-                'kabupaten' => 'nullable|string',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Kantor Pemkab
-                'kantor_pemkab_berat' => 'nullable|integer',
-                'kantor_pemkab_sedang' => 'nullable|integer',
-                'kantor_pemkab_ringan' => 'nullable|integer',
-                'kantor_pemkab_rb_harga' => 'nullable|numeric',
-                'kantor_pemkab_rs_harga' => 'nullable|numeric',
-                'kantor_pemkab_rr_harga' => 'nullable|numeric',
-                // Kantor Kecamatan
-                'kantor_kecamatan_berat' => 'nullable|integer',
-                'kantor_kecamatan_sedang' => 'nullable|integer',
-                'kantor_kecamatan_ringan' => 'nullable|integer',
-                'kantor_kecamatan_rb_harga' => 'nullable|numeric',
-                'kantor_kecamatan_rs_harga' => 'nullable|numeric',
-                'kantor_kecamatan_rr_harga' => 'nullable|numeric',
-                // Kantor Dinas
-                'kantor_dinas_berat' => 'nullable|integer',
-                'kantor_dinas_sedang' => 'nullable|integer',
-                'kantor_dinas_ringan' => 'nullable|integer',
-                'kantor_dinas_rb_harga' => 'nullable|numeric',
-                'kantor_dinas_rs_harga' => 'nullable|numeric',
-                'kantor_dinas_rr_harga' => 'nullable|numeric',
-                // Kantor Vertikal
-                'kantor_vertikal_berat' => 'nullable|integer',
-                'kantor_vertikal_sedang' => 'nullable|integer',
-                'kantor_vertikal_ringan' => 'nullable|integer',
-                'kantor_vertikal_rb_harga' => 'nullable|numeric',
-                'kantor_vertikal_rs_harga' => 'nullable|numeric',
-                'kantor_vertikal_rr_harga' => 'nullable|numeric',
-                // Mebelair
-                'mebelair_berat' => 'nullable|integer',
-                'mebelair_sedang' => 'nullable|integer',
-                'mebelair_ringan' => 'nullable|integer',
-                'mebelair_rb_harga' => 'nullable|numeric',
-                'mebelair_rs_harga' => 'nullable|numeric',
-                'mebelair_rr_harga' => 'nullable|numeric',
-                // Biaya Pembersihan Puing
+                // TK/RA
+                'tk_berat_negeri' => 'nullable|integer', 'tk_berat_swasta' => 'nullable|integer',
+                'tk_sedang_negeri' => 'nullable|integer', 'tk_sedang_swasta' => 'nullable|integer',
+                'tk_ringan_negeri' => 'nullable|integer', 'tk_ringan_swasta' => 'nullable|integer',
+                'tk_ukuran' => 'nullable|integer',
+                'tk_harga_bangunan' => 'nullable|numeric', 'tk_harga_peralatan' => 'nullable|string', 'tk_harga_meubelair' => 'nullable|string',
+                // SD/MI
+                'sd_berat_negeri' => 'nullable|integer', 'sd_berat_swasta' => 'nullable|integer',
+                'sd_sedang_negeri' => 'nullable|integer', 'sd_sedang_swasta' => 'nullable|integer',
+                'sd_ringan_negeri' => 'nullable|integer', 'sd_ringan_swasta' => 'nullable|integer',
+                'sd_ukuran' => 'nullable|integer',
+                'sd_harga_bangunan' => 'nullable|numeric', 'sd_harga_peralatan' => 'nullable|string', 'sd_harga_meubelair' => 'nullable|string',
+                // SMP/MTS
+                'smp_berat_negeri' => 'nullable|integer', 'smp_berat_swasta' => 'nullable|integer',
+                'smp_sedang_negeri' => 'nullable|integer', 'smp_sedang_swasta' => 'nullable|integer',
+                'smp_ringan_negeri' => 'nullable|integer', 'smp_ringan_swasta' => 'nullable|integer',
+                'smp_ukuran' => 'nullable|integer',
+                'smp_harga_bangunan' => 'nullable|numeric', 'smp_harga_peralatan' => 'nullable|string', 'smp_harga_meubelair' => 'nullable|string',
+                // SMA/MA
+                'sma_berat_negeri' => 'nullable|integer', 'sma_berat_swasta' => 'nullable|integer',
+                'sma_sedang_negeri' => 'nullable|integer', 'sma_sedang_swasta' => 'nullable|integer',
+                'sma_ringan_negeri' => 'nullable|integer', 'sma_ringan_swasta' => 'nullable|integer',
+                'sma_ukuran' => 'nullable|integer',
+                'sma_harga_bangunan' => 'nullable|numeric', 'sma_harga_peralatan' => 'nullable|string', 'sma_harga_meubelair' => 'nullable|string',
+                // SMK
+                'smk_berat_negeri' => 'nullable|integer', 'smk_berat_swasta' => 'nullable|integer',
+                'smk_sedang_negeri' => 'nullable|integer', 'smk_sedang_swasta' => 'nullable|integer',
+                'smk_ringan_negeri' => 'nullable|integer', 'smk_ringan_swasta' => 'nullable|integer',
+                'smk_ukuran' => 'nullable|integer',
+                'smk_harga_bangunan' => 'nullable|numeric', 'smk_harga_peralatan' => 'nullable|string', 'smk_harga_meubelair' => 'nullable|string',
+                // Perguruan Tinggi
+                'pt_berat_negeri' => 'nullable|integer', 'pt_berat_swasta' => 'nullable|integer',
+                'pt_sedang_negeri' => 'nullable|integer', 'pt_sedang_swasta' => 'nullable|integer',
+                'pt_ringan_negeri' => 'nullable|integer', 'pt_ringan_swasta' => 'nullable|integer',
+                'pt_ukuran' => 'nullable|integer',
+                'pt_harga_bangunan' => 'nullable|numeric', 'pt_harga_peralatan' => 'nullable|string', 'pt_harga_meubelair' => 'nullable|string',
+                // Perpustakaan
+                'perpus_berat_negeri' => 'nullable|integer', 'perpus_berat_swasta' => 'nullable|integer',
+                'perpus_sedang_negeri' => 'nullable|integer', 'perpus_sedang_swasta' => 'nullable|integer',
+                'perpus_ringan_negeri' => 'nullable|integer', 'perpus_ringan_swasta' => 'nullable|integer',
+                'perpus_ukuran' => 'nullable|integer',
+                'perpus_harga_bangunan' => 'nullable|numeric', 'perpus_harga_peralatan' => 'nullable|string', 'perpus_harga_meubelair' => 'nullable|string',
+                // Laboratorium
+                'lab_berat_negeri' => 'nullable|integer', 'lab_berat_swasta' => 'nullable|integer',
+                'lab_sedang_negeri' => 'nullable|integer', 'lab_sedang_swasta' => 'nullable|integer',
+                'lab_ringan_negeri' => 'nullable|integer', 'lab_ringan_swasta' => 'nullable|integer',
+                'lab_ukuran' => 'nullable|integer',
+                'lab_harga_bangunan' => 'nullable|numeric', 'lab_harga_peralatan' => 'nullable|string', 'lab_harga_meubelair' => 'nullable|string',
+                // Lainnya
+                'lainnya_berat_negeri' => 'nullable|integer', 'lainnya_berat_swasta' => 'nullable|integer',
+                'lainnya_sedang_negeri' => 'nullable|integer', 'lainnya_sedang_swasta' => 'nullable|integer',
+                'lainnya_ringan_negeri' => 'nullable|integer', 'lainnya_ringan_swasta' => 'nullable|integer',
+                'lainnya_ukuran' => 'nullable|integer',
+                'lainnya_harga_bangunan' => 'nullable|numeric', 'lainnya_harga_peralatan' => 'nullable|string', 'lainnya_harga_meubelair' => 'nullable|string',
+                // Kerugian & info sekolah
                 'biaya_tenaga_kerja_hok' => 'nullable|integer',
-                'upah_harian' => 'nullable|numeric',
+                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
                 'biaya_alat_berat_hari' => 'nullable|integer',
-                'biaya_alat_berat_tarif' => 'nullable|numeric',
-                // Biaya Sewa Kantor Sementara
-                'sewa_kantor_jumlah_unit' => 'nullable|integer',
-                'sewa_kantor_biaya_per_unit' => 'nullable|numeric',
-                // Biaya Restorasi Arsip
-                'restorasi_arsip_jumlah' => 'nullable|integer',
-                'restorasi_arsip_harga_satuan' => 'nullable|numeric',
-                // Kehilangan Pendapatan Retribusi
-                'dasar_perhitungan_retribusi' => 'nullable|string',
+                'biaya_alat_berat_harga' => 'nullable|numeric',
+                'sekolah_pengungsian' => 'nullable|integer',
+                'guru_korban' => 'nullable|integer',
+                'iuran_sekolah' => 'nullable|numeric',
+                'jumlah_sekolah_sementara' => 'nullable|integer',
+                'harga_sekolah_sementara' => 'nullable|numeric',
             ]);
-             $form->update($validated);
+
+            // Hitung total kerusakan (termasuk semua item yang dipindahkan dari kerugian)
+            $bangunan = ['tk','sd','smp','sma','smk','pt','perpus','lab','lainnya'];
+            $totalKerusakan = 0;
+            
+            // 1. Kerusakan bangunan pendidikan
+            foreach ($bangunan as $b) {
+                $totalKerusakan += (($validated[$b.'_berat_negeri'] ?? 0) + ($validated[$b.'_berat_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
+                $totalKerusakan += (($validated[$b.'_sedang_negeri'] ?? 0) + ($validated[$b.'_sedang_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
+                $totalKerusakan += (($validated[$b.'_ringan_negeri'] ?? 0) + ($validated[$b.'_ringan_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
+            }
+            
+            // 2. Biaya tenaga kerja dan alat berat (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['biaya_tenaga_kerja_hok'] ?? 0) * ($validated['biaya_tenaga_kerja_upah'] ?? 0);
+            $totalKerusakan += ($validated['biaya_alat_berat_hari'] ?? 0) * ($validated['biaya_alat_berat_harga'] ?? 0);
+            
+            // 3. Biaya sekolah sementara (dipindahkan dari kerugian ke kerusakan)
+            $totalKerusakan += ($validated['jumlah_sekolah_sementara'] ?? 0) * ($validated['harga_sekolah_sementara'] ?? 0);
+            
+            $validated['total_kerusakan'] = $totalKerusakan;
+
+            // Hitung total kerugian (sekarang 0 karena semua dipindahkan ke kerusakan)
+            $totalKerugian = 0;
+            $validated['total_kerugian'] = $totalKerugian;
+
+            $formPendidikan->update($validated);
             DB::commit();
-            return redirect()->route('forms.form4.list-format16', ['bencana_id' => $validated['bencana_id']])
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data berhasil diupdate',
+                    'data' => $formPendidikan
+                ]);
+            }
+            return redirect()->route('format2.list', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
             DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
         }
     }
 
     /**
-     * Remove the specified resource from storage (Format 16)
+     * Remove the specified resource from storage (Format 2)
      */
     public function destroy($id)
     {
-        $form = Format16Form4::findOrFail($id);
-        $bencana_id = $form->bencana_id;
-        $form->delete(); // Hard delete
-        return redirect()->route('forms.form4.list-format16', ['bencana_id' => $bencana_id])
+        $formPendidikan = Format2Form4::findOrFail($id);
+        $bencana_id = $formPendidikan->bencana_id;
+        $formPendidikan->delete();
+        return redirect()->route('format2.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
     }
 }

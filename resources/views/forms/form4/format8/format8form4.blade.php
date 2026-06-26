@@ -15,7 +15,7 @@
     <h5 class="text-center fw-bold" style="color: #F28705;" >Formulir 04<br>Pengumpulan Data Sektor</h5>
     <p class="fw-bold">Format 8: Sektor Listrik</p> 
 
-    <form method="POST" action="{{ route('forms.form4.store-format8') }}">
+    <form action="{{ isset($edit) && $edit ? route('forms.form4.format8.update', $data['id'] ?? '') : route('forms.form4.format8.store') }}" method="POST">
         @csrf
         <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
         
@@ -25,179 +25,463 @@
                     <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}"></td>
                 </tr>
             </table>        
+            @php
+                $transmisi = [
+                    'kabel' => [
+                        'label' => 'KABEL',
+                        'satuan' => 'm',
+                    ],
+                    'tiang' => [
+                        'label' => 'TIANG',
+                        'satuan' => 'unit',
+                    ],
+                    'trafo' => [
+                        'label' => 'GARDU / TRAFO',
+                        'satuan' => 'unit',
+                    ],
+                ];
+
+                $pembangkit = [
+                    'plta' => 'PLTA',
+                    'pltu' => 'PLTU',
+                    'pltd' => 'PLTD',
+                    'pembangkit_lain' => 'PEMBANGKIT LAIN-LAIN',
+                ];
+            @endphp
+
             <div class="table-responsive">
-                <table class="table table-bordered text-center align-middle" style="width: 100%;">
+                <table class="table table-bordered text-center align-middle small">
                     <thead>
-                        <tr>
-                            <th rowspan="2">Uraian</th>
-                            <th rowspan="2">Komponen</th>
-                            <th colspan="2">Jumlah Kerusakan</th>
-                            <th rowspan="2">Harga Satuan (Rp)</th>
+                        <tr class="bg-secondary text-white">
+                            <th colspan="5">PERKIRAAN KERUSAKAN</th>
                         </tr>
                         <tr>
+                            <th style="width:25%">Uraian</th>
+                            <th style="width:25%">Komponen</th>
                             <th>Satuan</th>
                             <th>Unit</th>
+                            <th>Harga Satuan (Rp)</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        <tr class="fw-bold bg-secondary text-white"><td colspan="5">PERKIRAAN KERUSAKAN</td></tr>
+
+                        <tr class="table-light fw-bold">
+                            <td colspan="5">SISTEM TRANSMISI DAN DISTRIBUSI</td>
+                        </tr>
+
+                        @php $detailIndex = 1; @endphp
+
+                        @foreach($transmisi as $kategori => $item)
                         <tr>
+
+                            <td></td>
+
+                            <td>{{ $item['label'] }}</td>
+
+                            <td>{{ ucfirst($item['satuan']) }}</td>
+
+                            {{-- Unit --}}
                             <td>
-                                SISTEM TRANSMISI DAN DISTRIBUSI
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="details[{{ $detailIndex }}][jumlah]">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][kategori]"
+                                    value="{{ $kategori }}">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][sub_kategori]"
+                                    value="unit">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][kriteria_id]"
+                                    value="1">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][satuan]"
+                                    value="{{ $item['satuan'] }}">
                             </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>KABEL (meter)</td>
-                            <td><input type="number" name="kabel_unit" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="kabel_harga_satuan" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="kabel_jumlah" class="form-control" value="0" min="0" step="any" ></td>
-                            
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>TIANG</td>
-                            <td><input type="number" name="tiang_unit" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="tiang_harga_satuan" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="tiang_jumlah" class="form-control" value="0" min="0" step="any" ></td>
-                            
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>GARDU/TRAFO</td>
-                            <td><input type="number" name="trafo_unit" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="trafo_harga_satuan" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="trafo_jumlah" class="form-control" value="0" min="0" step="any" ></td>
-                            
-                        </tr>
-                        <tr><td>SISTEM PEMBANGKITAN</td></tr>
-                        <tr>
-                            <td></td>
-                            <td>PLTA</td>
-                            <td><input type="number" name="plta_unit" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="plta_harga_satuan" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="plta_jumlah" class="form-control" value="0" min="0" step="any" ></td>
-                            
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>PLTU</td>
-                            <td><input type="number" name="pltu_unit" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="pltu_harga_satuan" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="pltu_jumlah" class="form-control" value="0" min="0" step="any" ></td>
-                            
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>PLTD</td>
-                            <td><input type="number" name="pltd_unit" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="pltd_harga_satuan" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="pltd_jumlah" class="form-control" value="0" min="0" step="any" ></td>
-                            
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>PEMBANGKIT LAIN-LAIN</td>
-                            <td><input type="number" name="pembangkit_lain_unit" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="pembangkit_lain_harga_satuan" class="form-control" value="0" min="0" step="any"></td>
-                            <td><input type="number" name="pembangkit_lain_jumlah" class="form-control" value="0" min="0" step="any" ></td>
-                        </tr>
-                        <tr><td>PEMULIHAN & DARURAT</td></tr>
-                        <tr>
-                            <td></td>
-                            <td>Perkiraan Jangka Waktu Pemulihan (bulan)</td>
-                            <td><input type="number" name="jangka_waktu_pemulihan_bulan" class="form-control" value="0" min="0" step="any"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>GENSET (unit)</td>
-                            <td><input type="number" name="genset_unit" class="form-control" value="0" min="0" step="any"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>Biaya Pengadaan</td>
-                            <td><input type="number" name="genset_biaya_pengadaan" class="form-control" value="0" min="0" step="any"></td>
+
+                            {{-- Harga Satuan --}}
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="details[{{ $detailIndex }}][harga_satuan]">
+                                </div>
+
+                            </td>
+
+                            @php $detailIndex++; @endphp
 
                         </tr>
-                        <tr><td>PERKIRAAN KEHILANGAN/PENURUNAN PENDAPATAN</td></tr>
-                        <tr>
-                            <td></td>
-                            <td>B. Permintaan Listrik Sebelum Bencana</td>
-                            <td><input type="number" name="permintaan_listrik_sebelum_kwh" class="form-control" value="0" min="0" step="any"></td>
-                            <td>kWh</td>
+                        @endforeach
+
+                        <tr class="table-light fw-bold">
+                            <td colspan="5">SISTEM PEMBANGKITAN</td>
                         </tr>
+
+                        @foreach($pembangkit as $kategori => $label)
                         <tr>
+
                             <td></td>
-                            <td>C. Permintaan Listrik Pasca Bencana</td>
-                            <td><input type="number" name="permintaan_listrik_pasca_kwh" class="form-control" value="0" min="0" step="any"></td>
-                            <td>kWh</td>
+
+                            <td>{{ $label }}</td>
+
+                            <td>Unit</td>
+
+                            {{-- Unit --}}
+                            <td>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="details[{{ $detailIndex }}][jumlah]">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][kategori]"
+                                    value="{{ $kategori }}">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][sub_kategori]"
+                                    value="unit">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][kriteria_id]"
+                                    value="1">
+
+                                <input type="hidden"
+                                    name="details[{{ $detailIndex }}][satuan]"
+                                    value="unit">
+                            </td>
+
+                            {{-- Harga Satuan --}}
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="details[{{ $detailIndex }}][harga_satuan]">
+                                </div>
+
+                            </td>
+
+                            @php $detailIndex++; @endphp
+
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td>D. Tarif Listrik per kWh</td>
-                            <td><input type="number" name="tarif_listrik_per_kwh" class="form-control" value="0" min="0" step="any"></td>
-                            <td>Rp</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>E. Penurunan Pendapatan</td>
-                            <td><input type="number" name="penurunan_pendapatan" class="form-control" value="0" min="0" step="any"></td>
-                            <td>Rp</td>
-                        </tr>
-                        <tr><td>PERKIRAAN KENAIKAN BIAYA OPERASIONAL</td></tr>
-                        <tr>
-                            <td></td>
-                            <td>B. Biaya Operasional Sebelum</td>
-                            <td><input type="number" name="biaya_operasional_sebelum" class="form-control" value="0" min="0" step="any"></td>
-                            <td>Rp</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>C. Biaya Operasional Pasca</td>
-                            <td><input type="number" name="biaya_operasional_pasca" class="form-control" value="0" min="0" step="any"></td>
-                            <td>Rp</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>D. Kenaikan Biaya Operasional</td>
-                            <td><input type="number" name="kenaikan_biaya_operasional" class="form-control" value="0" min="0" step="any"></td>
-                            <td>Rp</td>
-                        </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
             
+            <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                    <thead>
+                        <tr class="bg-secondary text-white">
+                            <th colspan="2">
+                                PERKIRAAN KERUGIAN
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Perkiraan Jangka Waktu Pemulihan</td>
+                            
+                            <td>
+                                <div class="input-group">
+                                    <input type="number"
+                                        class="form-control"
+                                        name="global[durasi]">
+                                    <input type="hidden"
+                                        class="form-control"
+                                        name="global[durasi_satuan]"
+                                        value="bulan">
+    
+                                    <span class="input-group-text">bulan</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="bg-secondary text-white">
+                            <th colspan="2">
+                                PEMULIHAN & DARURAT
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td>GENSET</td>
+
+                            <td>
+                                <div class="input-group">
+                                
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="pemulihan[jumlah]">
+                                    <span class="input-group-text">
+                                        unit
+                                    </span>
+                                </div>
+
+                                <input
+                                    type="hidden"
+                                    name="pemulihan[satuan]"
+                                    value="unit">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Biaya Pengadaan</td>
+
+                            <td>
+                                <div class="input-group">
+                                
+                                    <input
+                                    type="number"
+                                    class="form-control"
+                                    name="pemulihan[harga_satuan]">
+                                    <span class="input-group-text">
+                                        Rp
+                                    </span>
+                                </div>
+                            </td>
+
+                            <input
+                                type="hidden"
+                                name="pemulihan[kategori]"
+                                value="jangka_waktu_pemulihan">
+
+                            <input
+                                type="hidden"
+                                name="pemulihan[sub_kategori]"
+                                value="genset">
+
+                        </tr>
+                        
+                        <tr class="bg-secondary text-white">
+                            <th colspan="2">
+                                PERKIRAAN KEHILANGAN / PENURUNAN PENDAPATAN
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="fw-bold">
+                                    B. PERMINTAAN LISTRIK PER BULAN SEBELUM BENCANA
+                                </label>
+                            </td>
+                            <td>
+
+                                <div class="input-group">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="listrik[jumlah]">
+
+                                    <span class="input-group-text">
+                                        KWH
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="fw-bold">
+                                    C. PERMINTAAN LISTRIK PER BULAN PASCA BENCANA
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="listrik[jumlah2]">
+
+                                    <span class="input-group-text">
+                                        KWH
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="fw-bold">
+                                    D. TARIF LISTRIK / KWH
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="listrik[harga_satuan]">
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="fw-bold">
+                                    E. PENURUNAN PENDAPATAN = (B - C) × D × A
+                                </label>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        readonly>
+                                </div>
+                            </td>
+                            <input type="hidden"
+                                name="listrik[kategori]"
+                                value="pemintaan_listrik">
+
+                            <input type="hidden"
+                                name="listrik[sub_kategori]"
+                                value="listrik">
+
+                            <input type="hidden"
+                                name="listrik[satuan]"
+                                value="rp">
+                        </tr>
+
+                        @php
+                            $operasional = [
+                                [
+                                    'label' => 'B. Biaya Operasional Sebelum',
+                                    'kategori' => 'biaya_operasional_sebelum',
+                                    'field' => 'jumlah',
+                                ],
+                                [
+                                    'label' => 'C. Biaya Operasional Pasca',
+                                    'kategori' => 'biaya_operasional_pasca',
+                                    'field' => 'jumlah2',
+                                ],
+                            ];
+                        @endphp
+
+                        <tr class="bg-secondary text-white text-center">
+                            <th colspan="2">
+                                PERKIRAAN KENAIKAN BIAYA OPERASIONAL
+                            </th>
+                        </tr>
+
+                        {{-- B & C --}}
+                        @foreach($operasional as $item)
+                        <tr>
+                            <td style="width:40%">
+                                {{ $item['label'] }}
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="operasional[{{ $item['field'] }}]">
+                                </div>
+
+                                <input type="hidden"
+                                    name="operasional[kategori]"
+                                    value="{{ $item['kategori'] }}">
+
+                                <input type="hidden"
+                                    name="operasional[sub_kategori]"
+                                    value="{{ $item['field'] }}">
+
+                                <input type="hidden"
+                                    name="operasional[kriteria_id]"
+                                    value="1">
+
+                                <input type="hidden"
+                                    name="operasional[satuan]"
+                                    value="rp">
+                            </td>
+                        </tr>
+
+                        @php $detailIndex++; @endphp
+                        @endforeach
+
+
+                        {{-- E (hasil perhitungan) --}}
+                        <tr>
+                            <td>
+                                E. Kenaikan Biaya Operasional = (C - B) × A
+                            </td>
+
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        readonly>
+                                </div>
+
+                                {{-- kalau mau disimpan nanti --}}
+                                <input type="hidden"
+                                    name="operasional[kategori]"
+                                    value="kenaikan_biaya_operasional">
+
+                                <input type="hidden"
+                                    name="operasional[sub_kategori]"
+                                    value="total">
+
+                                <input type="hidden"
+                                    name="operasional[kriteria_id]"
+                                    value="1">
+
+                                <input type="hidden"
+                                    name="operasional[satuan]"
+                                    value="rp">
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
         
-        <div class="mt-3 text-center mb-5">
-            <button type="submit" class="btn btn-primary px-4 py-2">Simpan Data</button>
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+        </div>
+        <div class="col-12 text-center">
+            <button type="button"
+                    class="btn btn-warning"
+                    id="fillDummy">
+                Isi Data Dummy
+            </button>
         </div>
     </form>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const components = [
-            { unit: 'kabel_unit', harga: 'kabel_harga_satuan', jumlah: 'kabel_jumlah' },
-            { unit: 'tiang_unit', harga: 'tiang_harga_satuan', jumlah: 'tiang_jumlah' },
-            { unit: 'trafo_unit', harga: 'trafo_harga_satuan', jumlah: 'trafo_jumlah' },
-            { unit: 'plta_unit', harga: 'plta_harga_satuan', jumlah: 'plta_jumlah' },
-            { unit: 'pltu_unit', harga: 'pltu_harga_satuan', jumlah: 'pltu_jumlah' },
-            { unit: 'pltd_unit', harga: 'pltd_harga_satuan', jumlah: 'pltd_jumlah' },
-            { unit: 'pembangkit_lain_unit', harga: 'pembangkit_lain_harga_satuan', jumlah: 'pembangkit_lain_jumlah' },
-        ];
-        function setupAutoCalculation(component) {
-            const unitInput = document.querySelector(`[name="${component.unit}"]`);
-            const hargaInput = document.querySelector(`[name="${component.harga}"]`);
-            const jumlahInput = document.querySelector(`[name="${component.jumlah}"]`);
-            function calculate() {
-                const unit = parseFloat(unitInput.value) || 0;
-                const harga = parseFloat(hargaInput.value) || 0;
-                jumlahInput.value = unit * harga;
-            }
-            unitInput.addEventListener('input', calculate);
-            hargaInput.addEventListener('input', calculate);
-        }
-        components.forEach(setupAutoCalculation);
-    });
+        document.getElementById('fillDummy').addEventListener('click', function () {
+
+            // Semua input number yang kosong
+            document.querySelectorAll(['input[type="number"]','input[type="text"]']).forEach(function(input) {
+
+                if (input.value === '') {
+                    input.value = 1;
+                }
+
+            });
+
+        });
 </script>
 @endsection

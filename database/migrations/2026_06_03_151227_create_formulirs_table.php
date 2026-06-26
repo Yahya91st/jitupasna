@@ -13,13 +13,21 @@ return new class extends Migration
     {
         Schema::create('formulirs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('laporan_id');
-            $table->foreignId('user_id');
-            $table->foreignId('format_id');
-            $table->enum('status',[
-                'draft', 
-                'submitted', 
-                'reviewed'])->default('draft');
+
+            $table->foreignId('laporan_id')
+                ->constrained('laporan_bencanas')
+                ->cascadeOnDelete();
+
+            $table->foreignId('format_id')
+                ->constrained('format_formulirs')
+                ->cascadeOnDelete();
+
+            $table->enum('status', [
+                'draft',
+                'submitted',
+                'reviewed'
+            ])->default('draft');
+
             $table->timestamps();
         });
     }

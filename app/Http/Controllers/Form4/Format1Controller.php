@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreFormat1Request;
 use App\Models\Bencana;
+use App\Models\LaporanBencana;
+use App\Models\Format2Form4;
+use App\Models\Formulir;
 use App\Models\FormulirItem;
+use App\Models\KriteriaKerusakan;
 use App\Models\Rekap;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class Format1Controller extends Controller
 {
@@ -34,95 +37,79 @@ class Format1Controller extends Controller
     /**
      * Store format1 form data for Housing sector
      */
-    public function store(Request $request)
+    public function store(StoreFormat1Request $request)
     {        
 
         try {
             DB::beginTransaction();
 
-            $laporan = LaporanBencana::create([
-                'bencana_id' => $request->bencana_id,
-                'format_id' => 1,
-                'user_id' => auth()->id(),
-                'status' => 'draft'
+            $laporan = LaporanBencana::firstOrCreate(
+                [
+                    'bencana_id' => $request->bencana_id,
+                    'user_id' => auth()->id(),
+                ],
+                [
+                    'tanggal_lapor' => now()->toDateString(),
+                    'status' => 'draft',
+                ]
+            );
+
+            $formulir = Formulir::firstOrCreate(
+                [
+                    'laporan_id' => $laporan->id,
+                    'format_id' => 1,
+                ],
+                [
+                    'status' => 'draft',
+                ]
+            );            
+
+            $details = $request->details;
+
+            $hargaSatuan = $request->harga_satuan;
+
+            foreach ($details as &$detail) {
+
+                if ($detail['kategori'] === 'jalan') {
+                    $detail['harga_satuan'] = $hargaSatuan['jalan'] ?? 0;
+                }
+
+                if ($detail['kategori'] === 'saluran') {
+                    $detail['harga_satuan'] = $hargaSatuan['saluran'] ?? 0;
+                }
+
+                if ($detail['kategori'] === 'balai') {
+                    $detail['harga_satuan'] = $hargaSatuan['balai'] ?? 0;
+                }
+            }
+
+            $request->merge([
+                'details' => $details
             ]);
 
             // Validasi request tanpa rekap_id, gunakan bencana_id
-            $validated = $request->validate([
-            'bencana_id' => 'required|exists:bencana,id',
-
-            'details' => 'required|array|min:1',
-
-            'details.*.kriteria_id' => 'required|exists:kriterias,id',
-            'details.*.kategori' => 'required|string|max:255',
-            'details.*.sub_kategori' => 'nullable|string|max:255',
-
-            'details.*.dimensi_1' => 'nullable|string|max:255',
-            'details.*.dimensi_2' => 'nullable|string|max:255',
-
-            'details.*.tingkat_kerusakan' => 'required|string',
-
-            'details.*.jumlah' => 'required|numeric|min:0',
-
-            'details.*.harga_satuan' => 'required|numeric|min:0',
-
-            'details.*.satuan' => 'nullable|string|max:50',
-            ]);
-
-            foreach ($request->details as $detail) {
+            $validated = $request->validated();
+            
+            foreach ($details as $detail) {
 
                 FormulirItem::create([
-                    'laporan_id' => $laporan->id,
+                    'formulir_id' => $formulir->id,
 
                     'kriteria_id' => $detail['kriteria_id'],
 
                     'kategori' => $detail['kategori'],
-
                     'sub_kategori' => $detail['sub_kategori'] ?? null,
 
-                    'dimensi_1' => $detail['dimensi_1'] ?? null,
-
-                    'dimensi_2' => $detail['dimensi_2'] ?? null,
+                    'dimensi' => $detail['dimensi'] ?? null,
 
                     'tingkat_kerusakan' => $detail['tingkat_kerusakan'],
 
                     'jumlah' => $detail['jumlah'],
-
                     'harga_satuan' => $detail['harga_satuan'],
 
                     'satuan' => $detail['satuan'] ?? null,
                 ]);
             }
-
-
-            // Hitung total kerusakan otomatis (semua item sekarang masuk ke kerusakan)
-            $total_kerusakan = 
-                ($validated['rumah_hancur_total_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_permanen'] ?? 0) +
-                ($validated['rumah_hancur_total_non_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_non_permanen'] ?? 0) +
-                ($validated['rumah_rusak_berat_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_permanen'] ?? 0) +
-                ($validated['rumah_rusak_berat_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_non_permanen'] ?? 0) +
-                ($validated['rumah_rusak_sedang_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_permanen'] ?? 0) +
-                ($validated['rumah_rusak_sedang_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_non_permanen'] ?? 0) +
-                ($validated['rumah_rusak_ringan_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_permanen'] ?? 0) +
-                ($validated['rumah_rusak_ringan_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_non_permanen'] ?? 0) +
-                (($validated['jalan_rusak_berat'] ?? 0) + ($validated['jalan_rusak_sedang'] ?? 0) + ($validated['jalan_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_jalan'] ?? 0) +
-                (($validated['saluran_rusak_berat'] ?? 0) + ($validated['saluran_rusak_sedang'] ?? 0) + ($validated['saluran_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_saluran'] ?? 0) +
-                (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0) +
-                ($validated['tenaga_kerja_hok'] ?? 0) * ($validated['upah_harian'] ?? 0) +
-                ($validated['alat_berat_hari'] ?? 0) * ($validated['biaya_per_hari'] ?? 0) +
-                ($validated['jumlah_rumah_disewa'] ?? 0) * ($validated['harga_sewa_per_bulan'] ?? 0) * ($validated['durasi_sewa_bulan'] ?? 0) +
-                ($validated['jumlah_tenda'] ?? 0) * ($validated['harga_tenda'] ?? 0) +
-                ($validated['jumlah_barak'] ?? 0) * ($validated['harga_barak'] ?? 0) +
-                ($validated['jumlah_rumah_sementara'] ?? 0) * ($validated['harga_rumah_sementara'] ?? 0);
-            $validated['total_kerusakan'] = $total_kerusakan;
-
-            $data = $validated;
-            $data['rekap_id'] = $rekap->id;
-            // unset($data['bencana_id']); // pastikan tidak ada bencana_id di insert
-
-
-
-            $format1Form4 = Format1Form4::create($data);
 
             DB::commit();
             // Return success response for AJAX or redirect for regular form
@@ -132,8 +119,9 @@ class Format1Controller extends Controller
                     'message' => 'Data berhasil disimpan',
                     'data' => $format1Form4
                 ]);
-            }            return redirect()->route('forms.form4.format1.list', ['bencana_id' => $rekap->bencana_id])
-                           ->with('success', 'Data berhasil disimpan');
+            }            
+            return redirect()->route('forms.form4.format1.list')
+            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -156,7 +144,7 @@ class Format1Controller extends Controller
      */
     public function show($id)
     {
-        $format1Form4 = Format1Form4::with('rekap.bencana')->findOrFail($id);
+        $format1Form4 = FormulirItem::with('rekap.bencana')->findOrFail($id);
         $bencana = $format1Form4->rekap ? $format1Form4->rekap->bencana : null;
         return view('forms.form4.format1.show-format1', compact('format1Form4', 'bencana'));
     }
@@ -176,9 +164,11 @@ class Format1Controller extends Controller
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         // Ambil data Format1Form4 yang terkait dengan bencana_id melalui relasi rekap
-        $reports = Format1Form4::whereHas('rekap', function($q) use ($bencana_id) {
+        $reports = Formulir::whereHas('laporan', function ($q) use ($bencana_id) {
             $q->where('bencana_id', $bencana_id);
-        })->get();
+        })
+        ->where('format_id', 1)
+        ->get();
         
         return view('forms.form4.format1.list-format1', compact('bencana', 'reports'));
     }
@@ -191,7 +181,7 @@ class Format1Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $format1Form4 = Format1Form4::with('bencana')->findOrFail($id);
+        $format1Form4 = FormulirItem::with('bencana')->findOrFail($id);
         $bencana = $format1Form4->bencana;
         $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('format1Form4', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
@@ -203,7 +193,7 @@ class Format1Controller extends Controller
      */
     public function previewPdf($id)
     {
-        $format1Form4 = Format1Form4::with('bencana')->findOrFail($id);
+        $format1Form4 = FormulirItem::with('bencana')->findOrFail($id);
         $bencana = $format1Form4->bencana;
         
         $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('format1Form4', 'bencana'));
@@ -218,7 +208,7 @@ class Format1Controller extends Controller
     public function destroy($id)
     {
         try {
-            $format1Form4 = Format1Form4::findOrFail($id);
+            $format1Form4 = FormulirItem::findOrFail($id);
             $bencana_id = $format1Form4->bencana_id;
             
             // Delete the record
@@ -240,7 +230,7 @@ class Format1Controller extends Controller
     public function edit($id)
     {
         try {
-            $format1Form4 = Format1Form4::with('bencana')->findOrFail($id);
+            $format1Form4 = FormulirItem::with('bencana')->findOrFail($id);
             $bencana = $format1Form4->bencana;
             
             return view('forms.form4.format1.edit', compact('format1Form4', 'bencana'));
@@ -263,7 +253,7 @@ class Format1Controller extends Controller
             DB::beginTransaction();
 
             // Find the existing record
-            $format1Form4 = Format1Form4::findOrFail($id);
+            $format1Form4 = FormulirItem::findOrFail($id);
             // Validate the request
             $validated = $request->validate([
                 'nama_kampung' => 'required|string',

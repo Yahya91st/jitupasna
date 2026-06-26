@@ -10,21 +10,33 @@ class FormulirItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'format_id',
+        'formulir_id',
         'kriteria_id',
+
         'kategori',
         'sub_kategori',
-        'dimensi_1',
-        'dimensi_2',
-        'tingkat_kerusakan',
-        'jumlah',
-        'harga_satuan',
-        'satuan',
-    ];
 
-    public function formatFormulir()
+        'nama',
+        'jenis',
+        'tipe',
+
+        'dimensi',
+
+        'tingkat_kerusakan',
+
+        'jumlah',
+        'jumlah2',
+
+        'harga_satuan',
+
+        'satuan',
+
+        'durasi',
+        'durasi_satuan',
+    ];
+    public function formulir()
     {
-        return $this->belongsTo(FormatFormulir::class, 'format_id');
+        return $this->belongsTo(Formulir::class);
     }
 
     public function kriteriaKerusakan()

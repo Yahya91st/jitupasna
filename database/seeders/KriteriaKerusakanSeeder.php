@@ -3,40 +3,37 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\FormatFormulir;
 use App\Models\KriteriaKerusakan;
 
 class KriteriaKerusakanSeeder extends Seeder
 {
     public function run(): void
     {
-        $formats = FormatFormulir::all();
+            $data = [];
 
-        foreach ($formats as $format) {
+            $data = [
+        [
+            'tingkat' => 'hancur_total',
+            'persentase' => 100,
+            'deskripsi' => 'Bangunan hancur total',
+        ],
+        [
+            'tingkat' => 'berat',
+            'persentase' => 70,
+            'deskripsi' => 'Kerusakan berat (>70%)',
+        ],
+        [
+            'tingkat' => 'sedang',
+            'persentase' => 50,
+            'deskripsi' => 'Kerusakan sedang (30%-70%)',
+        ],
+        [
+            'tingkat' => 'ringan',
+            'persentase' => 30,
+            'deskripsi' => 'Kerusakan ringan (<30%)',
+        ],
+    ];
 
-            KriteriaKerusakan::create([
-                'format_id' => $format->id,
-                'tingkat' => 'RR',
-                'persentase_min' => 0,
-                'persentase_max' => 29.99,
-                'deskripsi' => 'Rusak Ringan (<30%)'
-            ]);
-
-            KriteriaKerusakan::create([
-                'format_id' => $format->id,
-                'tingkat' => 'RS',
-                'persentase_min' => 30,
-                'persentase_max' => 70,
-                'deskripsi' => 'Rusak Sedang (30%-70%)'
-            ]);
-
-            KriteriaKerusakan::create([
-                'format_id' => $format->id,
-                'tingkat' => 'RB',
-                'persentase_min' => 70.01,
-                'persentase_max' => 100,
-                'deskripsi' => 'Rusak Berat (>70%)'
-            ]);
-        }
+    KriteriaKerusakan::insert($data);
     }
 }

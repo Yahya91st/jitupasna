@@ -38,16 +38,16 @@
                     </div>
                 </a> --}}
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-large">
-                    <h6 class='py-2 px-4'>Notifications</h6>
+                    <h6 class='py-2 px-4'></h6>
                     <ul class="list-group rounded-none">
                         <li class="list-group-item border-0 align-items-start">
                             <div class="avatar bg-success mr-3">
                                 <span class="avatar-content"><i data-feather="shopping-cart"></i></span>
                             </div>
                             <div>
-                                <h6 class='text-bold'>New Order</h6>
+                                <h6 class='text-bold'></h6>
                                 <p class='text-xs'>
-                                    An order made by Ahmad Saugi for product Samsung Galaxy S69
+                                    
                                 </p>
                             </div>
                         </li>

@@ -29,214 +29,278 @@
                 <td>NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}"></td>
             </tr>
         </table>
-        <div class="table-responsive mt-3">
-            <table class="table table-bordered">
+
+        @php
+        $kerusakanItems = [
+            'tempat_usaha' => 'Tempat Usaha (Pasar, Warung, Toko)',
+            'peralatan' => 'Peralatan',
+            'barang_dagangan' => 'Barang Dagangan',
+        ];
+
+        $index = 0;
+        @endphp
+
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle small">
+
                 <thead>
-                    <tr>
-                        <th rowspan="2" style="border-bottom: 0cap;" class="text-center align-middle">JENIS TEMPAT USAHA</th>
-                        <th colspan="3" style="border-bottom: 0cap;" class="text-center">JUMLAH KERUSAKAN</th>
-                        <th colspan="3" style="border-bottom: 0cap;" class="text-center">HARGA SATUAN</th>
+
+                    <tr class="bg-white">
+                        <th rowspan="2">
+                            Jenis Tempat Usaha
+                        </th>
+
+                        <th colspan="2">
+                            Rusak Berat
+                        </th>
+
+                        <th colspan="2">
+                            Rusak Sedang
+                        </th>
+
+                        <th colspan="2">
+                            Rusak Ringan
+                        </th>
                     </tr>
+
                     <tr>
-                        <th style="border-bottom: 0cap;" class="text-center">RB</th>
-                        <th style="border-bottom: 0cap;" class="text-center">RS</th>
-                        <th style="border-bottom: 0cap;" class="text-center">RR</th>
-                        <th style="border-bottom: 0cap;" class="text-center">RB</th>
-                        <th style="border-bottom: 0cap;" class="text-center">RS</th>
-                        <th style="border-bottom: 0cap;" class="text-center">RR</th>
+                        <th>Jumlah</th>
+                        <th>Harga</th>
+
+                        <th>Jumlah</th>
+                        <th>Harga</th>
+
+                        <th>Jumlah</th>
+                        <th>Harga</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr class="bg-secondary text-white">
+                        <td colspan="7">
+                            PERKIRAAN KERUSAKAN
+                        </td>
+                    </tr>
+
+                    @foreach($kerusakanItems as $kategori => $label)
+
+                        @for($i = 1; $i <= 3; $i++)
+
+                            <tr>
+
+                                @if($i == 1)
+                                <td rowspan="3" class="align-middle">
+                                    {{ $label }}
+                                </td>
+                                @endif
+
+                                @foreach(['berat','sedang','ringan'] as $tingkat)
+
+                                <td>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="details[{{ $index }}][jumlah]">
+
+                                    <input
+                                        type="hidden"
+                                        name="details[{{ $index }}][kategori]"
+                                        value="{{ $kategori }}">
+
+                                    <input
+                                        type="hidden"
+                                        name="details[{{ $index }}][tingkat_kerusakan]"
+                                        value="{{ $tingkat }}">
+
+                                    <input
+                                        type="hidden"
+                                        name="details[{{ $index }}][sub_kategori]"
+                                        value="kerusakan">
+
+                                    <input
+                                        type="hidden"
+                                        name="details[{{ $index }}][satuan]"
+                                        value="unit">
+
+                                </td>
+
+                                <td>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            Rp
+                                        </span>
+
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            name="details[{{ $index }}][harga_satuan]">
+
+                                    </div>
+
+                                </td>
+
+                                @php $index++; @endphp
+
+                                
+                                @endforeach
+                                
+                            </tr>
+                            
+                        @endfor
+                    @endforeach
+
+                </tbody>
+
+            </table>
+        </div>
+
+        @php
+
+        $kerugianItems = [
+            [
+                'title' => 'A. Kehilangan Penjualan Total',
+                'kategori' => 'kehilangan_penjualan',
+                'kolom_a' => 'Nama Tempat Usaha',
+                'kolom_b' => 'Penjualan Normal',
+                'kolom_c' => 'Jangka Waktu Pemulihan',
+                'satuan_a' => 'unit',
+                'satuan_b' => 'rp',
+                'satuan_c' => 'bulan',
+            ],
+            [
+                'title' => 'B. Penurunan Produktivitas',
+                'kategori' => 'penurunan_produktivitas',
+                'kolom_a' => 'Nama Tempat Usaha',
+                'kolom_b' => 'Produksi Normal',
+                'kolom_c' => 'Jangka Waktu Pemulihan',
+                'satuan_a' => 'unit',
+                'satuan_b' => 'unit',
+                'satuan_c' => 'bulan',
+            ],
+            [
+                'title' => 'C. Kenaikan Biaya Produksi',
+                'kategori' => 'kenaikan_biaya_produksi',
+                'kolom_a' => 'Nama Tempat Usaha',
+                'kolom_b' => 'Biaya Operasional',
+                'kolom_c' => 'Jangka Waktu Pemulihan',
+                'satuan_a' => 'unit',
+                'satuan_b' => 'rp',
+                'satuan_c' => 'bulan',
+            ],
+        ];
+
+        @endphp
+
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered text-center align-middle">
+
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th colspan="4">
+                            PERKIRAAN KERUGIAN
+                        </th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <!-- Section: Perkiraan Kerusakan -->
-                    <tr>
-                        <td class="bg-secondary align-middle fw-bold text-white text-center" colspan="7">PERKIRAAN KERUSAKAN</td>
-                    </tr>
-                    
-                    <!-- Tempat Usaha -->
-                    <tr>
-                        <td colspan="8" class="text-bold">a) Tempat usaha (Pasar, Warung, Toko)</td>
-                    </tr>
-                    @for ($i = 1; $i <= 3; $i++)
-                    <tr>
-                        <td>
-                            <input type="text" name="tempatusaha_jenis_{{ $i }}" class="form-control" placeholder="Jenis Tempat Usaha" 
-                                value="{{ old('tempatusaha_jenis_' . $i, $data->{'tempatusaha_' . $i . '_jenis'} ?? '') }}">
-                        </td>
-                        <td>
-                            <input type="number" name="tempatusaha_rb_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('tempatusaha_rb_jumlah_' . $i, $data->{'tempatusaha_' . $i . '_rb_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="tempatusaha_rs_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('tempatusaha_rs_jumlah_' . $i, $data->{'tempatusaha_' . $i . '_rs_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="tempatusaha_rr_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('tempatusaha_rr_jumlah_' . $i, $data->{'tempatusaha_' . $i . '_rr_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="tempatusaha_rb_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('tempatusaha_rb_harga_' . $i, $data->{'tempatusaha_' . $i . '_rb_harga'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="tempatusaha_rs_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('tempatusaha_rs_harga_' . $i, $data->{'tempatusaha_' . $i . '_rs_harga'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="tempatusaha_rr_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('tempatusaha_rr_harga_' . $i, $data->{'tempatusaha_' . $i . '_rr_harga'} ?? 0) }}">
+
+                    @foreach($kerugianItems as $item)
+
+                    <tr class="table-light">
+                        <td colspan="4" class="fw-bold text-start">
+                            {{ $item['title'] }}
                         </td>
                     </tr>
+
+                    <tr>
+                        <th>{{ $item['kolom_a'] }}</th>
+                        <th>{{ $item['kolom_b'] }}</th>
+                        <th>{{ $item['kolom_c'] }}</th>
+                        <!-- <th>Harga Satuan</th> -->
+                    </tr>
+
+                    @for($row = 1; $row <= 3; $row++)
+
+                    <tr>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="details[{{ $index }}][nama]">
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][jumlah]">
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][durasi]">
+
+                        </td>
+
+                        <!-- <td>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    Rp
+                                </span>
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="details[{{ $index }}][harga_satuan]">
+
+                            </div>
+
+                        </td> -->
+
+                        <input
+                            type="hidden"
+                            name="details[{{ $index }}][kategori]"
+                            value="{{ $item['kategori'] }}">
+
+                        <input
+                            type="hidden"
+                            name="details[{{ $index }}][sub_kategori]"
+                            value="usaha">
+
+                        <input
+                            type="hidden"
+                            name="details[{{ $index }}][satuan]"
+                            value="{{ $item['satuan_b'] }}">
+                        <input
+                            type="hidden"
+                            name="details[{{ $index }}][durasi_satuan]"
+                            value="bulan">
+
+                    </tr>
+
+                    @php $index++; @endphp
+
                     @endfor
-                    
-                    <!-- Peralatan -->
-                    <tr class="fw-bold">
-                        <td colspan="8">b) Peralatan</td>
-                    </tr>
-                    @for ($i = 1; $i <= 3; $i++)
-                    <tr>
-                        <td>
-                            <input type="text" name="peralatan_jenis_{{ $i }}" class="form-control" placeholder="Jenis Peralatan" 
-                                value="{{ old('peralatan_jenis_' . $i, $data->{'peralatan_' . $i . '_jenis'} ?? '') }}">
-                        </td>
-                        <td>
-                            <input type="number" name="peralatan_rb_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('peralatan_rb_jumlah_' . $i, $data->{'peralatan_' . $i . '_rb_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="peralatan_rs_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('peralatan_rs_jumlah_' . $i, $data->{'peralatan_' . $i . '_rs_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="peralatan_rr_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('peralatan_rr_jumlah_' . $i, $data->{'peralatan_' . $i . '_rr_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="peralatan_rb_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('peralatan_rb_harga_' . $i, $data->{'peralatan_' . $i . '_rb_harga'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="peralatan_rs_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('peralatan_rs_harga_' . $i, $data->{'peralatan_' . $i . '_rs_harga'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="peralatan_rr_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('peralatan_rr_harga_' . $i, $data->{'peralatan_' . $i . '_rr_harga'} ?? 0) }}">
-                        </td>
-                    </tr>
-                    @endfor
-                    
-                    <!-- Barang Dagangan -->
-                    <tr class="fw-bold">
-                        <td colspan="8">c) Barang Dagangan</td>
-                    </tr>
-                    @for ($i = 1; $i <= 3; $i++)
-                    <tr>
-                        <td>
-                            <input type="text" name="barangdagangan_jenis_{{ $i }}" class="form-control" placeholder="Jenis Barang Dagangan" 
-                                value="{{ old('barangdagangan_jenis_' . $i, $data->{'barangdagangan_' . $i . '_jenis'} ?? '') }}">
-                        </td>
-                        <td>
-                            <input type="number" name="barangdagangan_rb_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('barangdagangan_rb_jumlah_' . $i, $data->{'barangdagangan_' . $i . '_rb_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="barangdagangan_rs_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('barangdagangan_rs_jumlah_' . $i, $data->{'barangdagangan_' . $i . '_rs_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="barangdagangan_rr_jumlah_{{ $i }}" class="form-control" min="0" 
-                                value="{{ old('barangdagangan_rr_jumlah_' . $i, $data->{'barangdagangan_' . $i . '_rr_jumlah'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="barangdagangan_rb_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('barangdagangan_rb_harga_' . $i, $data->{'barangdagangan_' . $i . '_rb_harga'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="barangdagangan_rs_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('barangdagangan_rs_harga_' . $i, $data->{'barangdagangan_' . $i . '_rs_harga'} ?? 0) }}">
-                        </td>
-                        <td>
-                            <input type="number" name="barangdagangan_rr_harga_{{ $i }}" class="form-control" min="0" step="any" 
-                                value="{{ old('barangdagangan_rr_harga_' . $i, $data->{'barangdagangan_' . $i . '_rr_harga'} ?? 0) }}">
-                        </td>
-                    </tr>
-                    @endfor
-                    
-                    <!-- Section: Perkiraan Kerugian -->
-                    <tr>
-                        <td class="bg-secondary align-middle fw-bold text-white text-center" colspan="7">PERKIRAAN KERUGIAN</td>
-                    </tr>
-                    
-                    <!-- Kehilangan Penjualan Total -->
-                    <tr class="fw-bold">
-                        <td>A. Kehilangan Penjualan Total</td>
-                        <td colspan="2">NAMA TEMPAT USAHA</td>
-                        <td colspan="2">A. PENJUALAN NORMAL</td>
-                        <td colspan="2">B. PERKIRAAN JANGKA WAKTU PEMULIHAN</td>
-                    </tr>
-                    @for ($i = 1; $i <= 3; $i++)
-                    <tr>
-                        <td></td>
-                        <td colspan="2"> 
-                            <input type="text" name="kehilangan_penjualan_nama_{{ $i }}" class="form-control" placeholder="Nama Tempat Usaha" 
-                                value="{{ old('kehilangan_penjualan_nama_' . $i, $data->{'kehilangan_penjualan_' . $i . '_nama'} ?? '') }}">
-                        </td>
-                        <td colspan="2">
-                            <input type="text" name="kehilangan_penjualan_normal_{{ $i }}" class="form-control" min="0" step="any" placeholder="Penjualan Normal" 
-                                value="{{ old('kehilangan_penjualan_normal_' . $i, $data->{'kehilangan_penjualan_' . $i . '_normal'} ?? 0) }}">
-                        </td>
-                        <td colspan="2">
-                            <input type="number" name="kehilangan_penjualan_pemulihan_{{ $i }}" class="form-control" min="0" placeholder="Waktu Pemulihan" 
-                                value="{{ old('kehilangan_penjualan_pemulihan_' . $i, $data->{'kehilangan_penjualan_' . $i . '_pemulihan'} ?? 0) }}">
-                        </td>
-                    </tr>
-                    @endfor
-                    
-                    <!-- Penurunan Produktifitas -->
-                    <tr class="fw-bold">
-                        <td colspan="8">B. Penurunan Produktifitas</td>
-                    </tr>
-                    @for ($i = 1; $i <= 3; $i++)
-                    <tr>
-                        <td></td>
-                        <td colspan="2">
-                            <input type="text" name="penurunan_produktifitas_nama_{{ $i }}" class="form-control" placeholder="Nama Tempat Usaha" 
-                                value="{{ old('penurunan_produktifitas_' . $i . '_nama', $data->{'penurunan_produktifitas_' . $i . '_nama'} ?? '') }}">
-                        </td>
-                        <td colspan="2">
-                            <input type="number" name="penurunan_produktifitas_normal_{{ $i }}" class="form-control" min="0" step="any" placeholder="Penjualan Normal" 
-                                value="{{ old('penurunan_produktifitas_' . $i . '_normal', $data->{'penurunan_produktifitas_' . $i . '_normal'} ?? 0) }}">
-                        </td>
-                        <td colspan="2">
-                            <input type="number" name="penurunan_produktifitas_pemulihan_{{ $i }}" class="form-control" min="0" placeholder="Waktu Pemulihan" 
-                                value="{{ old('penurunan_produktifitas_' . $i . '_pemulihan', $data->{'penurunan_produktifitas_' . $i . '_pemulihan'} ?? 0) }}">
-                        </td>
-                    </tr>
-                    @endfor
-                    
-                    <!-- Kenaikan Biaya Produksi -->
-                    <tr class="fw-bold">
-                        <td colspan="8">C. Kenaikan Biaya Produksi</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="3">Biaya Operasional yang lebih tinggi</td>
-                    @for ($i = 1; $i <= 3; $i++)
-                        <td colspan="2">
-                            <input type="text" name="kenaikan_biaya_nama" class="form-control" placeholder="Nama Tempat Usaha" 
-                                value="{{ old('kenaikan_biaya_' . $i . '_nama', $data->{'kenaikan_biaya_' . $i . '_nama'} ?? '') }}">
-                        </td>
-                        <td colspan="2">
-                            <input type="number" name="kenaikan_biaya_operasional" class="form-control" min="0" step="any" placeholder="Kenaikan Biaya Operasional" 
-                                value="{{ old('kenaikan_biaya_' . $i . '_operasional', $data->{'kenaikan_biaya_' . $i . '_operasional'} ?? 0) }}">
-                        </td>
-                        <td colspan="2">
-                            <input type="number" name="kenaikan_biaya_pemulihan" class="form-control" min="0" placeholder="Waktu Pemulihan" 
-                                value="{{ old('kenaikan_biaya_' . $i . '_pemulihan', $data->{'kenaikan_biaya_' . $i . '_pemulihan'} ?? 0) }}">
-                        </td>
-                    </tr>
-                    @endfor
+
+                    @endforeach
+
                 </tbody>
+
             </table>
         </div>
         
@@ -254,7 +318,7 @@
             <div class="alert alert-success mt-4">{{ session('success') }}</div>
         @endif
 
-        <div class="card mt-4">
+        <!-- <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title">Total Perhitungan</h5>
                 <div class="row">
@@ -320,28 +384,35 @@
                     ?></strong>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-primary">
-                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                Simpan Data
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+        </div>
+        
+        <div class="col-12 text-center">
+            <button type="button"
+                    class="btn btn-warning"
+                    id="fillDummy">
+                Isi Data Dummy
             </button>
         </div>
     </form>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const spinner = submitBtn.querySelector('.spinner-border');
 
-    form.addEventListener('submit', function() {
-        submitBtn.disabled = true;
-        spinner.classList.remove('d-none');
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
-    });
+document.getElementById('fillDummy').addEventListener('click', function () {
+
+    document.querySelectorAll('input[type="number"]:not([readonly]), input[type="text"]:not([readonly])')
+        .forEach(function(input) {
+
+            if (input.value === '') {
+                input.value = 1;
+            }
+
+        });
+
 });
 </script>
 @endsection

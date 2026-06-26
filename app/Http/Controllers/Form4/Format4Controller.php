@@ -3,17 +3,53 @@
 namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreFormat4Request;
 use App\Models\Bencana;
-use App\Models\Format4Form4;
+use App\Models\LaporanBencana;
+use App\Models\Formulir;
+use App\Models\FormulirItem;
+use App\Models\KriteriaKerusakan;
 use App\Models\Rekap;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class Format4Controller extends Controller
 {
+    private function saveItem(
+        $formulirId,
+        $kategori,
+        $subKategori = null,
+        $jumlah = null,
+        $hargaSatuan = null,
+        $dimensi = null,
+        $satuan = null,
+        $kriteriaId = null,
+        $tingkatKerusakan = null
+    ) {
+        // dd([
+        //     'jumlah' => $jumlah,
+        //     'harga_satuan' => $hargaSatuan,
+        //     'dimensi' => $dimensi,
+        // ]);
+        FormulirItem::create([
+            'formulir_id' => $formulirId,
+            'kriteria_id' => $kriteriaId,
+
+            'kategori' => $kategori,
+            'sub_kategori' => $subKategori,
+
+            'dimensi' => $dimensi,
+
+            'tingkat_kerusakan' => $tingkatKerusakan ?? null,
+
+            'jumlah' => $jumlah,
+            'harga_satuan' => $hargaSatuan,
+
+            'satuan' => $satuan,
+        ]);
+    }
     /**
-     * Display Format 4 form for Social Protection sector data collection
+     * Display Format form for Health sector data collection
      */
     public function index(Request $request)
     {
@@ -31,143 +67,252 @@ class Format4Controller extends Controller
     }
 
     /**
-     * Store format4 form data for Social Protection sector
+     * Store format3 form data for Health sector
      */
-    public function store(Request $request)
-    {
+    public function store(StoreFormat4Request $request)
+    {        
+
         try {
             DB::beginTransaction();
 
-            // Validate the request
-            $validated = $request->validate([
-                'bencana_id' => 'required|exists:bencana,id',
-                'nama_kampung' => 'required|string',
-                'nama_distrik' => 'required|string',
-                // Panti Asuhan
-                'panti_asuhan_rb_negeri' => 'nullable|integer',
-                'panti_asuhan_rb_swasta' => 'nullable|integer',
-                'panti_asuhan_rs_negeri' => 'nullable|integer',
-                'panti_asuhan_rs_swasta' => 'nullable|integer',
-                'panti_asuhan_rr_negeri' => 'nullable|integer',
-                'panti_asuhan_rr_swasta' => 'nullable|integer',
-                'panti_asuhan_luas' => 'nullable|string',
-                'panti_asuhan_harga_bangunan' => 'nullable|numeric',
-                'panti_asuhan_harga_peralatan' => 'nullable|string',
-                'panti_asuhan_harga_meubelair' => 'nullable|string',
-                'panti_asuhan_harga_peralatan_lab' => 'nullable|string',
-                // Panti Wredha
-                'panti_wredha_rb_negeri' => 'nullable|integer',
-                'panti_wredha_rb_swasta' => 'nullable|integer',
-                'panti_wredha_rs_negeri' => 'nullable|integer',
-                'panti_wredha_rs_swasta' => 'nullable|integer',
-                'panti_wredha_rr_negeri' => 'nullable|integer',
-                'panti_wredha_rr_swasta' => 'nullable|integer',
-                'panti_wredha_luas' => 'nullable|string',
-                'panti_wredha_harga_bangunan' => 'nullable|numeric',
-                'panti_wredha_harga_peralatan' => 'nullable|string',
-                'panti_wredha_harga_meubelair' => 'nullable|string',
-                'panti_wredha_harga_peralatan_lab' => 'nullable|string',
-                // Panti Tuna
-                'panti_tuna_grahita_rb_negeri' => 'nullable|integer',
-                'panti_tuna_grahita_rb_swasta' => 'nullable|integer',
-                'panti_tuna_grahita_rs_negeri' => 'nullable|integer',
-                'panti_tuna_grahita_rs_swasta' => 'nullable|integer',
-                'panti_tuna_grahita_rr_negeri' => 'nullable|integer',
-                'panti_tuna_grahita_rr_swasta' => 'nullable|integer',
-                'panti_tuna_grahita_luas' => 'nullable|string',
-                'panti_tuna_grahita_harga_bangunan' => 'nullable|numeric',
-                'panti_tuna_grahita_harga_peralatan' => 'nullable|string',
-                'panti_tuna_grahita_harga_meubelair' => 'nullable|string',
-                'panti_tuna_grahita_harga_peralatan_lab' => 'nullable|string',
-                // Lainnya
-                'lainnya_jenis' => 'nullable|string',
-                'lainnya_rb_negeri' => 'nullable|integer',
-                'lainnya_rb_swasta' => 'nullable|integer',
-                'lainnya_rs_negeri' => 'nullable|integer',
-                'lainnya_rs_swasta' => 'nullable|integer',
-                'lainnya_rr_negeri' => 'nullable|integer',
-                'lainnya_rr_swasta' => 'nullable|integer',
-                'lainnya_luas' => 'nullable|string',
-                'lainnya_harga_bangunan' => 'nullable|numeric',
-                'lainnya_harga_peralatan' => 'nullable|string',
-                'lainnya_harga_meubelair' => 'nullable|string',
-                'lainnya_harga_peralatan_lab' => 'nullable|string',
-                // Kerugian
-                'biaya_tenaga_kerja_hok' => 'nullable|integer',
-                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
-                'biaya_alat_berat_hari' => 'nullable|integer',
-                'biaya_alat_berat_harga' => 'nullable|numeric',
-                'jumlah_penerima' => 'nullable|integer',
-                'bantuan_per_orang' => 'nullable|numeric',
-                'biaya_pelayanan_kesehatan' => 'nullable|numeric',
-                'biaya_pelayanan_pendidikan' => 'nullable|numeric',
-                'biaya_pendampingan_psikososial' => 'nullable|numeric',
-                'biaya_pelatihan_darurat' => 'nullable|numeric',
-            ]);
+            $laporan = LaporanBencana::firstOrCreate(
+                [
+                    'bencana_id' => $request->bencana_id,
+                    'user_id' => auth()->id(),
+                ],
+                [
+                    'tanggal_lapor' => now()->toDateString(),
+                    'status' => 'draft',
+                ]
+            );
+
+            $formulir = Formulir::firstOrCreate(
+                [
+                    'laporan_id' => $laporan->id,
+                    'format_id' => 4,
+                ],
+                [
+                    'status' => 'draft',
+                ]
+            );
+
+            $details = $request->details;
+
+            $dimensi = $request->dimensi;
+            
+            $harga_bangunan = $request->harga_bangunan;
+            $harga_obat = $request->harga_obat;
+            $harga_meubelair = $request->harga_meubelair;
+            $harga_peralatan = $request->harga_peralatan;
+
+            $hargaMaster = [];
+            $dimensiMaster = [];
+
+            foreach ($details as $detail) {
+                $kategori = $detail['kategori'];
+
+                $dimensiMaster[$kategori] =
+                    $dimensi[$kategori] ?? null;
+                    
+                $hargaMaster[$kategori] =
+                    ($harga_bangunan[$kategori] ?? 0)
+                    + ($harga_obat[$kategori] ?? 0)
+                    + ($harga_meubelair[$kategori] ?? 0)
+                    + ($harga_peralatan[$kategori] ?? 0);
+            }
+            // dd($hargaMaster);
+            $biayaKategori = [
+                'biaya_tenaga_kerja_hok',
+                'biaya_alat_berat_hari',
+            ];
+
+            foreach ($details as $i => $detail) {
+
+                $kategori = $detail['kategori'];
+
+                $details[$i]['dimensi'] =
+                    $dimensiMaster[$kategori] ?? null;
+
+                if (!in_array($kategori, $biayaKategori)) {
+                    $details[$i]['harga_satuan'] =
+                        $hargaMaster[$kategori] ?? 0;
+                }
+            }
+            // dd([
+            //     'details_before_merge' => $details[100],
+            // ]);
+
+            // dd([
+            //     'details_before_merge' => $details[100],
+            // ]);
+
+            // dd($details);
+
+            // dd([
+            //     'details_before_merge' => $details[100],
+            // ]);
             
 
-            // Calculate totals before saving
-            $data = $request->only((new Format4Form4)->getFillable());
+            $request->merge([
+                'details' => $details
+            ]);       
             
-            // Calculate kerusakan (damage) - only for building damage
-            $kerusakan_bangunan = $this->calculateKerusakanBangunan($data);
-            
-            // Calculate all kerugian items
-            $total_kerugian_items = $this->calculateKerugianItems($data);
-            
-            // Move all kerugian to kerusakan, make kerugian = 0
-            $data['total_kerusakan'] = $kerusakan_bangunan + $total_kerugian_items;
-            $data['total_kerugian'] = 0;
+            // dd([
+            //     'upah' => $request->details[100]['harga_satuan'],
+            //     'alat_berat' => $request->details[101]['harga_satuan'],
+            // ]);
 
-            // Cari atau buat rekap berdasarkan bencana_id
-            $rekap = Rekap::firstOrCreate([
-                'bencana_id' => $validated['bencana_id']
-            ]);
+            $validated = $request->validated();
+            // dd($details);            
 
-            // Simpan data Format3Form4 dengan rekap_id
-            $dataFinal = $data;
-            $dataFinal['rekap_id'] = $rekap->id;
-            // unset($data['bencana_id']); // pastikan tidak ada bencana_id di insert
+            $kriteriaId = KriteriaKerusakan::where(
+                'tingkat',
+                'berat'
+            )->value('id');
             
-            $formSosial = Format4Form4::create($dataFinal);
+            foreach ($details as $detail) {
+                // dd($detail);
+                
+
+                $this->saveItem(
+                    $formulir->id,
+                    $detail['kategori'],
+                    $detail['sub_kategori'] ?? null,
+                    $detail['jumlah'],
+                    $detail['harga_satuan'], // hargaSatuan
+                    $detail['dimensi'] ?? null,
+                    $detail['satuan'] ?? null, // satuan
+                    $kriteriaId, // kriteriaId
+                    $detail['tingkat_kerusakan'] ?? null
+                );
+
+            }
+
+            $this->saveItem(
+                $formulir->id,
+                'tenaga_kerja',
+                null,
+                $request->biaya_tenaga_kerja_hok,
+                $request->biaya_tenaga_kerja_upah,
+                null,
+                'hok',
+                null,
+                null
+            );
+
+            $this->saveItem(
+                $formulir->id,
+                'alat_berat',
+                null,
+                $request->biaya_alat_berat_hari,
+                $request->biaya_alat_berat_harga,
+                null,
+                'hari',
+                null,
+                null
+            );
+
+            $this->saveItem(
+                $formulir->id,
+                'pengungsi',
+                null,
+                $request->jumlah_penerima,
+                $request->bantuan_per_orang,
+                null,
+                'orang',
+                null,
+                null
+            );
+
+            $this->saveItem(
+                $formulir->id,
+                'pelayanan_kesehatan',
+                null,
+                $request->biaya_pelayanan_kesehatan,
+                null,
+                null,
+                'rp',
+                null,
+                null
+            );
+            $this->saveItem(
+                $formulir->id,
+                'pelayanan_kesehatan',
+                null,
+                $request->biaya_pelayanan_pendidikan,
+                null,
+                null,
+                'rp',
+                null,
+                null
+            );
+
+            $this->saveItem(
+                $formulir->id,
+                'pendampingan_emosional',
+                null,
+                $request->biaya_pendampingan_psikososial,
+                null,
+                null,
+                'rp',
+                null,
+                null
+            );
+            $this->saveItem(
+                $formulir->id,
+                'pendampingan_emosional',
+                null,
+                $request->biaya_pelatihan_darurat,
+                null,
+                null,
+                'rp',
+                null,
+                null
+            );
+            
+            // dd($request->validated());
+            // dd([
+            //     'upah' => $request->details[100]['harga_satuan'],
+            //     'alat_berat' => $request->details[101]['harga_satuan'],
+            // ]);
 
             DB::commit();
-
+            // Return success response for AJAX or redirect for regular form
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $formSosial
+                    'data' => $format1Form4
                 ]);
-            }
-
-            return redirect()->route('forms.form4.list-format4', ['bencana_id' => $formSosial->bencana_id])
-                ->with('success', 'Data berhasil disimpan');
+            }            
+            return redirect()->route('forms.form4.format1.list')
+            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
+            
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Terjadi kesalahan: ' . $e->getMessage()
                 ], 500);
             }
+
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
         }
     }
-    
 
     /**
      * Show a specific form data
      */
     public function show($id)
     {
-        $formSosial = Format4Form4::with('bencana')->findOrFail($id);
-        $bencana = $formSosial->bencana;
+        $format3form4 = Format3Form4::with('bencana')->findOrFail($id);
+        $bencana = $format3form4->bencana;
         
-        return view('forms.form4.format4.show-format4', compact('formSosial', 'bencana'));
+        return view('forms.form4.format3.show', compact('format3form4', 'bencana'));
     }
 
     /**
@@ -176,205 +321,193 @@ class Format4Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
+        
+        // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
+        
+        // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        $reports = Format4Form4::where('bencana_id', $bencana_id)->get();
-        return view('forms.form4.format4.list-format4', compact('bencana', 'reports'));
+        
+        // Get form data for this disaster
+        $form = Format3Form4::where('rekap_id', $bencana_id)->get();
+        
+        return view('forms.form4.format3.list', compact('bencana', 'form'));
     }
 
-    /**
-     * Generate PDF for a specific form data
-     */
-    public function generatePdf($id)
+        public function edit($id)
     {
-        $formSosial = Format4Form4::with('bencana')->findOrFail($id);
-        $bencana = $formSosial->bencana;
-        
-        $pdf = Pdf::loadView('forms.form4.format4.pdf', compact('formSosial', 'bencana'));
-        $pdf->setPaper('A4', 'landscape');
-        
-        return $pdf->download('Format4_Sosial_' . $formSosial->nama_kampung . '.pdf');
+        try {
+            $format3form4 = Format3Form4::with('bencana')->findOrFail($id);
+            $bencana = $format3form4->bencana;
+            
+            return view('forms.form4.format3.edit', compact('format3form4', 'bencana'));
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => 'Data tidak ditemukan: ' . $e->getMessage()]);
+        }
     }
 
     /**
-     * Preview PDF for a specific form data
-     */
-    public function previewPdf($id)
-    {
-        $formSosial = Format4Form4::with('bencana')->findOrFail($id);
-        $bencana = $formSosial->bencana;
-        
-        $pdf = Pdf::loadView('forms.form4.format4.pdf', compact('formSosial', 'bencana'));
-        $pdf->setPaper('A4', 'landscape');
-        
-        return $pdf->stream('Format4_Sosial_' . $formSosial->nama_kampung . '.pdf');
-    }
-
-    /**
-     * Show the form for editing the specified resource (Format 4)
-     */
-    public function edit($id)
-    {
-        $formSosial = Format4Form4::with('bencana')->findOrFail($id);
-        $bencana = $formSosial->bencana;
-        return view('forms.form4.format4.edit', compact('formSosial', 'bencana'));
-    }
-
-    /**
-     * Update the specified resource in storage (Format 4)
+     * Update the specified format3 data
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
         try {
             DB::beginTransaction();
-            $formSosial = Format4Form4::findOrFail($id);
+
+            // Find the existing record
+            $format3form4 = Format3Form4::findOrFail($id);
+            // Validate the request
             $validated = $request->validate([
+
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
-                // Panti Sosial
-                'panti_sosial_rb_negeri' => 'nullable|integer',
-                'panti_sosial_rb_swasta' => 'nullable|integer',
-                'panti_sosial_rs_negeri' => 'nullable|integer',
-                'panti_sosial_rs_swasta' => 'nullable|integer',
-                'panti_sosial_rr_negeri' => 'nullable|integer',
-                'panti_sosial_rr_swasta' => 'nullable|integer',
-                'panti_sosial_luas' => 'nullable|string',
-                'panti_sosial_harga_bangunan' => 'nullable|numeric',
-                'panti_sosial_harga_peralatan' => 'nullable|string',
-                'panti_sosial_harga_meubelair' => 'nullable|string',
-                'panti_sosial_harga_peralatan_lab' => 'nullable|string',
-                // Panti Asuhan
-                'panti_asuhan_rb_negeri' => 'nullable|integer',
-                'panti_asuhan_rb_swasta' => 'nullable|integer',
-                'panti_asuhan_rs_negeri' => 'nullable|integer',
-                'panti_asuhan_rs_swasta' => 'nullable|integer',
-                'panti_asuhan_rr_negeri' => 'nullable|integer',
-                'panti_asuhan_rr_swasta' => 'nullable|integer',
-                'panti_asuhan_luas' => 'nullable|string',
-                'panti_asuhan_harga_bangunan' => 'nullable|numeric',
-                'panti_asuhan_harga_peralatan' => 'nullable|string',
-                'panti_asuhan_harga_meubelair' => 'nullable|string',
-                'panti_asuhan_harga_peralatan_lab' => 'nullable|string',
-                // Balai Pelayanan
-                'balai_pelayanan_rb_negeri' => 'nullable|integer',
-                'balai_pelayanan_rb_swasta' => 'nullable|integer',
-                'balai_pelayanan_rs_negeri' => 'nullable|integer',
-                'balai_pelayanan_rs_swasta' => 'nullable|integer',
-                'balai_pelayanan_rr_negeri' => 'nullable|integer',
-                'balai_pelayanan_rr_swasta' => 'nullable|integer',
-                'balai_pelayanan_luas' => 'nullable|string',
-                'balai_pelayanan_harga_bangunan' => 'nullable|numeric',
-                'balai_pelayanan_harga_peralatan' => 'nullable|string',
-                'balai_pelayanan_harga_meubelair' => 'nullable|string',
-                'balai_pelayanan_harga_peralatan_lab' => 'nullable|string',
-                // Lainnya
-                'lainnya_jenis' => 'nullable|string',
-                'lainnya_rb_negeri' => 'nullable|integer',
-                'lainnya_rb_swasta' => 'nullable|integer',
-                'lainnya_rs_negeri' => 'nullable|integer',
-                'lainnya_rs_swasta' => 'nullable|integer',
-                'lainnya_rr_negeri' => 'nullable|integer',
-                'lainnya_rr_swasta' => 'nullable|integer',
-                'lainnya_luas' => 'nullable|string',
-                'lainnya_harga_bangunan' => 'nullable|numeric',
-                'lainnya_harga_peralatan' => 'nullable|string',
-                'lainnya_harga_meubelair' => 'nullable|string',
-                'lainnya_harga_peralatan_lab' => 'nullable|string',
-                // Kerugian
-                'biaya_tenaga_kerja_hok' => 'nullable|integer',
-                'biaya_tenaga_kerja_upah' => 'nullable|numeric',
-                'biaya_alat_berat_hari' => 'nullable|integer',
-                'biaya_alat_berat_harga' => 'nullable|numeric',
-                'jumlah_penerima' => 'nullable|integer',
-                'bantuan_per_orang' => 'nullable|numeric',
-                'biaya_pelayanan_kesehatan' => 'nullable|numeric',
-                'biaya_pelayanan_pendidikan' => 'nullable|numeric',
-                'biaya_pendampingan_psikososial' => 'nullable|numeric',
-                'biaya_pelatihan_darurat' => 'nullable|numeric',
+                // Validasi untuk field harga yang diubah ke string
+
+                'rs_rb_negeri'=>'nullable|integer', 
+                'rs_rb_swasta'=>'nullable|integer',
+                'rs_rs_negeri'=>'nullable|integer',
+                'rs_rs_swasta'=>'nullable|integer',
+                'rs_rr_negeri'=>'nullable|integer',
+                'rs_rr_swasta'=>'nullable|integer',
+
+                'rs_luas'=>'nullable|integer',
+                'rs_harga_bangunan'=>'nullable|integer',
+                'rs_harga_obat'=>'nullable|integer',
+                'rs_harga_meubelair'=>'nullable|integer',
+                'rs_harga_peralatan'=>'nullable|integer',
+
+                
+                'puskesmas_rb_negeri'=>'nullable|integer',
+                'puskesmas_rb_swasta'=>'nullable|integer',
+                'puskesmas_rs_negeri'=>'nullable|integer',
+                'puskesmas_rs_swasta'=>'nullable|integer',
+                'puskesmas_rr_negeri'=>'nullable|integer',
+                'puskesmas_rr_swasta'=>'nullable|integer',
+                'puskesmas_luas'=>'nullable|integer',
+                'puskesmas_harga_bangunan'=>'nullable|integer',
+                'puskesmas_harga_obat'=>'nullable|integer',
+                'puskesmas_harga_meubelair'=>'nullable|integer',
+                'puskesmas_harga_peralatan'=>'nullable|integer',
+
+                'poliklinik_rb_negeri'=>'nullable|integer',
+                'poliklinik_rb_swasta'=>'nullable|integer',
+                'poliklinik_rs_negeri'=>'nullable|integer',
+                'poliklinik_rs_swasta'=>'nullable|integer',
+                'poliklinik_rr_negeri'=>'nullable|integer',
+                'poliklinik_rr_swasta'=>'nullable|integer',
+                'poliklinik_luas'=>'nullable|integer',
+                'poliklinik_harga_bangunan'=>'nullable|integer',
+                'poliklinik_harga_obat'=>'nullable|integer',
+                'poliklinik_harga_meubelair'=>'nullable|integer',
+                'poliklinik_harga_peralatan'=>'nullable|integer',
+
+                'pustu_rb_negeri'=>'nullable|integer',
+                'pustu_rb_swasta'=>'nullable|integer',
+                'pustu_rs_negeri'=>'nullable|integer',
+                'pustu_rs_swasta'=>'nullable|integer',
+                'pustu_rr_negeri'=>'nullable|integer',
+                'pustu_rr_swasta'=>'nullable|integer',
+                'pustu_luas'=>'nullable|integer',
+                'pustu_harga_bangunan'=>'nullable|integer',
+                'pustu_harga_obat'=>'nullable|integer',
+                'pustu_harga_meubelair'=>'nullable|integer',
+                'pustu_harga_peralatan'=>'nullable|integer',
+
+                'polindes_rb_negeri'=>'nullable|integer', 
+                'polindes_rb_swasta'=>'nullable|integer',
+                'polindes_rs_negeri'=>'nullable|integer',
+                'polindes_rs_swasta'=>'nullable|integer',
+                'polindes_rr_negeri'=>'nullable|integer',
+                'polindes_rr_swasta'=>'nullable|integer',
+                'polindes_luas'=>'nullable|integer',
+                'polindes_harga_bangunan'=>'nullable|integer',
+                'polindes_harga_obat'=>'nullable|integer',
+                'polindes_harga_meubelair'=>'nullable|integer',
+                'polindes_harga_peralatan'=>'nullable|integer',
+
+                'posyandu_rb_negeri'=>'nullable|integer',
+                'posyandu_rb_swasta'=>'nullable|integer',
+                'posyandu_rs_negeri'=>'nullable|integer',
+                'posyandu_rs_swasta'=>'nullable|integer',
+                'posyandu_rr_negeri'=>'nullable|integer',
+                'posyandu_rr_swasta'=>'nullable|integer',
+                'posyandu_luas'=>'nullable|integer',
+                'posyandu_harga_bangunan'=>'nullable|integer',
+                'posyandu_harga_obat'=>'nullable|integer',
+                'posyandu_harga_meubelair'=>'nullable|integer',
+                'posyandu_harga_peralatan'=>'nullable|integer',
             ]);
             
-            // Calculate totals before updating
-            $validated['total_kerusakan'] = $this->calculateKerusakanBangunan($validated) + $this->calculateKerugianItems($validated);
+            // baru: hitung kerusakan untuk setiap fasilitas secara dinamis menggunakan field yang tersedia
+            $faskes = ['rs', 'puskesmas', 'poliklinik', 'pustu', 'polindes', 'posyandu'];
+            $weights = [
+                'rb' => 1.0,   // rusak berat = 100%
+                'rs' => 0.75,  // rusak sedang = 75%
+                'rr' => 0.5,   // rusak ringan = 50%
+            ];
+
+            $total_kerusakan = 0;
+
+            foreach ($faskes as $f) {
+                $priceField = "{$f}_harga_bangunan";
+                $price = floatval($validated[$priceField] ?? 0);
+
+                foreach ($weights as $suffix => $weight) {
+                    $negeriField = "{$f}_{$suffix}_negeri";
+                    $swastaField = "{$f}_{$suffix}_swasta";
+                    $count = intval($validated[$negeriField] ?? 0) + intval($validated[$swastaField] ?? 0);
+                    $total_kerusakan += $count * $price * $weight;
+                }
+            }
+
+            // Tambahan item yang dipindahkan dari kerugian ke kerusakan
+            $total_kerusakan += (floatval($validated['biaya_tenaga_kerja_hok'] ?? 0) * floatval($validated['biaya_tenaga_kerja_upah'] ?? 0));
+            $total_kerusakan += (floatval($validated['biaya_alat_berat_hari'] ?? 0) * floatval($validated['biaya_alat_berat_harga'] ?? 0));
+            $total_kerusakan += (intval($validated['jumlah_jenazah'] ?? 0) * floatval($validated['biaya_per_jenazah'] ?? 0));
+            $total_kerusakan += (intval($validated['jumlah_pasien'] ?? 0) * floatval($validated['biaya_per_pasien'] ?? 0));
+            $total_kerusakan += (intval($validated['jumlah_faskes'] ?? 0) * floatval($validated['biaya_pengadaan_faskes'] ?? 0));
+            $total_kerusakan += (intval($validated['jumlah_korban_psikologis'] ?? 0) * floatval($validated['biaya_penanganan_psikologis'] ?? 0));
+            $total_kerusakan += floatval($validated['biaya_pencegahan_penyakit'] ?? 0);
+            $total_kerusakan += (intval($validated['jumlah_tenaga_kesehatan'] ?? 0) * floatval($validated['honorarium_tenaga_kesehatan'] ?? 0));
+            $total_kerusakan += floatval($validated['pendapatan_faskes_swasta'] ?? 0);
+
+            // simpan total ke array validasi
+            $validated['total_kerusakan'] = $total_kerusakan;
+            // semua kerugian dipindah => total kerugian 0
             $validated['total_kerugian'] = 0;
-            
-            $formSosial->update($validated);
+
+            // Update the record (pastikan variabel model sama seperti yang ditemukan sebelumnya)
+            $format3form4 = Format3Form4::findOrFail($id);
+            $format3form4->update($validated);
+
             DB::commit();
-            return redirect()->route('forms.form4.list-format4', ['bencana_id' => $validated['bencana_id']])
-                ->with('success', 'Data berhasil diupdate');
+
+            return redirect()->route('forms.form4.format3.list', ['bencana_id' => $format3form4->bencana_id])
+                             ->with('success', 'Data berhasil disimpan');
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat update data. ' . $e->getMessage()]);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage()]);
         }
     }
-
-    /**
-     * Remove the specified resource from storage (Format 4)
-     */
-    public function destroy($id)
+        public function destroy($id)
     {
-        $formSosial = Format4Form4::findOrFail($id);
-        $bencana_id = $formSosial->bencana_id;
-        $formSosial->delete();
-        return redirect()->route('forms.form4.list-format4', ['bencana_id' => $bencana_id])
+        $format3form4 = Format3Form4::findOrFail($id);
+        $bencana_id = $format3form4->bencana_id;
+        $format3form4->delete();
+        return redirect()->route('forms.form4.format3.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
     }
 
-    /**
-     * Calculate total kerusakan bangunan (physical building damage)
-     */
-    private function calculateKerusakanBangunan($data)
-    {
-        $total = 0;
-        
-        // Calculate for each building type
-        $buildingTypes = ['panti_sosial', 'panti_asuhan', 'balai_pelayanan', 'lainnya'];
-        
-        foreach ($buildingTypes as $type) {
-            // Get unit counts
-            $rb_negeri = floatval($data[$type . '_rb_negeri'] ?? 0);
-            $rb_swasta = floatval($data[$type . '_rb_swasta'] ?? 0);
-            $rs_negeri = floatval($data[$type . '_rs_negeri'] ?? 0);
-            $rs_swasta = floatval($data[$type . '_rs_swasta'] ?? 0);
-            $rr_negeri = floatval($data[$type . '_rr_negeri'] ?? 0);
-            $rr_swasta = floatval($data[$type . '_rr_swasta'] ?? 0);
-            
-            $total_units = $rb_negeri + $rb_swasta + $rs_negeri + $rs_swasta + $rr_negeri + $rr_swasta;
-            
-            // Get price per unit
-            $harga_bangunan = floatval($data[$type . '_harga_bangunan'] ?? 0);
-            
-            // Calculate building damage (units × price, not using luas)
-            $total += $total_units * $harga_bangunan;
-        }
-        
-        return $total;
-    }
 
-    /**
-     * Calculate total kerugian items (all loss items that will be moved to kerusakan)
-     */
-    private function calculateKerugianItems($data)
-    {
-        $total = 0;
-        
-        // 1. Biaya Pembersihan Puing
-        $biaya_tenaga_kerja = floatval($data['biaya_tenaga_kerja_hok'] ?? 0) * floatval($data['biaya_tenaga_kerja_upah'] ?? 0);
-        $biaya_alat_berat = floatval($data['biaya_alat_berat_hari'] ?? 0) * floatval($data['biaya_alat_berat_harga'] ?? 0);
-        $total += $biaya_tenaga_kerja + $biaya_alat_berat;
-        
-        // 2. Biaya Penyediaan Jatah Hidup
-        $biaya_jatah_hidup = floatval($data['jumlah_penerima'] ?? 0) * floatval($data['bantuan_per_orang'] ?? 0);
-        $total += $biaya_jatah_hidup;
-        
-        // 3. Tambahan Biaya Sosial
-        $total += floatval($data['biaya_pelayanan_kesehatan'] ?? 0);
-        $total += floatval($data['biaya_pelayanan_pendidikan'] ?? 0);
-        $total += floatval($data['biaya_pendampingan_psikososial'] ?? 0);
-        $total += floatval($data['biaya_pelatihan_darurat'] ?? 0);
-        
-        return $total;
-    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bencana;
+use App\Models\LaporanBencana;
 use Illuminate\Http\Request;
 use App\Http\Requests\BencanaRequest;
 use Illuminate\Support\Facades\DB;
@@ -129,7 +130,7 @@ class BencanaController extends Controller
                 'village_codes' => $villageCodes,
                 'deskripsi' => $bencaRules['deskripsi'],
                 'gambar' => $filename,
-            ]);
+            ]);            
             
             // dd($request->all());
             DB::commit();
@@ -143,6 +144,17 @@ class BencanaController extends Controller
 
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
+
+        $laporan = LaporanBencana::firstOrCreate(
+            [
+                'bencana_id' => $request->bencana_id,
+                'user_id' => auth()->id(),
+            ],
+            [
+                'tanggal_lapor' => now()->toDateString(),
+                'status' => 'draft',
+            ]
+        );
 
     }
 

@@ -51,245 +51,548 @@
         </table>
         <input type="hidden" name="bencana_id" value="{{ request()->bencana_id }}">
 
-        <div class="table-responsive">
-            <table class="table table-bordered text-center align-middle" style="width: 100%;">
+        <div class="table-responsive">            
+            <table class="table table-bordered">
                 <thead>
                     <tr class="bg-secondary text-white">
-                        <th colspan="9">I. PERKIRAAN KERUSAKAN INFRASTRUKTUR TRANSPORTASI</th>
-                    </tr>
-                    <tr>
-                        <th rowspan="2" class="align-middle" style="width: 15%">Keterangan</th>
-                        <th rowspan="2" style="width: 15%">Ruas Jalan/Nama Jembatan</th>
-                        <th rowspan="2" style="width: 15%">Jenis Jalan/Jembatan<br>(Jalan Nasional/Kab/Kota/Desa)</th>
-                        <th rowspan="2" style="width: 15%">Jenis Jalan/Jembatan<br>(Aspal, Batu, Tanah)</th>
-                        <th colspan="3" class="text-center" style="width: 20%">JUMLAH KERUSAKAN (Dalam Km)</th>
-                        <th rowspan="2" style="width: 10%">HARGA SATUAN/M2</th>
-                        <th rowspan="2" style="width: 10%">Perkiraan Biaya<br>Perbaikan</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">BERAT</th>
-                        <th class="text-center">SEDANG</th>
-                        <th class="text-center">RINGAN</th>
+                        <th>Uraian</th>
+                        <th>Nama/Ruas</th>
+                        <th>Jenis</th>
+                        <th>Tipe</th>
+                        <th>Berat</th>
+                        <th>Sedang</th>
+                        <th>Ringan</th>
+                        <th>Harga Satuan</th>
+                        <th>Biaya Perbaikan</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <tr>
-                        <td class="align-middle fw-bold">JALAN</td>
-                        <td><input type="text" name="jalan_ruas" class="form-control" value="{{ old('jalan_ruas', $data->jalan_ruas ?? '') }}"></td>
-                        <td><input type="text" name="jalan_jenis" class="form-control" value="{{ old('jalan_jenis', $data->jalan_jenis ?? '') }}"></td>
-                        <td><input type="text" name="jalan_tipe" class="form-control" value="{{ old('jalan_tipe', $data->jalan_tipe ?? '') }}"></td>
-                        <td><input type="number" name="jalan_rusak_berat" class="form-control" min="0" value="{{ old('jalan_rusak_berat', $data->jalan_rusak_berat ?? '0') }}"></td>
-                        <td><input type="number" name="jalan_rusak_sedang" class="form-control" min="0" value="{{ old('jalan_rusak_sedang', $data->jalan_rusak_sedang ?? '0') }}"></td>
-                        <td><input type="number" name="jalan_rusak_ringan" class="form-control" min="0" value="{{ old('jalan_rusak_ringan', $data->jalan_rusak_ringan ?? '0') }}"></td>
-                        <td><input type="number" name="jalan_harga_satuan" class="form-control" min="0" step="1000" value="{{ old('jalan_harga_satuan', $data->jalan_harga_satuan ?? '0') }}"></td>
-                        <td><input type="number" name="jalan_biaya_perbaikan" class="form-control" min="0" step="1000" value="{{ old('jalan_biaya_perbaikan', $data->jalan_biaya_perbaikan ?? '0') }}"></td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle fw-bold">JEMBATAN</td>
-                        <td><input type="text" name="jembatan_nama" class="form-control" value="{{ old('jembatan_nama', $data->jembatan_nama ?? '') }}"></td>
-                        <td><input type="text" name="jembatan_jenis" class="form-control" value="{{ old('jembatan_jenis', $data->jembatan_jenis ?? '') }}"></td>
-                        <td><input type="text" name="jembatan_tipe" class="form-control" value="{{ old('jembatan_tipe', $data->jembatan_tipe ?? '') }}"></td>
-                        <td><input type="number" name="jembatan_rusak_berat" class="form-control" min="0" value="{{ old('jembatan_rusak_berat', $data->jembatan_rusak_berat ?? '0') }}"></td>
-                        <td><input type="number" name="jembatan_rusak_sedang" class="form-control" min="0" value="{{ old('jembatan_rusak_sedang', $data->jembatan_rusak_sedang ?? '0') }}"></td>
-                        <td><input type="number" name="jembatan_rusak_ringan" class="form-control" min="0" value="{{ old('jembatan_rusak_ringan', $data->jembatan_rusak_ringan ?? '0') }}"></td>
-                        <td><input type="number" name="jembatan_harga_satuan" class="form-control" min="0" step="1000" value="{{ old('jembatan_harga_satuan', $data->jembatan_harga_satuan ?? '0') }}"></td>
-                        <td><input type="number" name="jembatan_biaya_perbaikan" class="form-control" min="0" step="1000" value="{{ old('jembatan_biaya_perbaikan', $data->jembatan_biaya_perbaikan ?? '0') }}"></td>
-                    </tr>
-                    <tr>
-                        <th colspan="9" class="bg-secondary text-white">II. KERUSAKAN KENDARAAN</th>
-                    </tr>
                     @php
-                        $kendaraan = [
-                            ['Sedan dan Minibus', 'sedan_minibus'],
-                            ['Bus dan Truk', 'bus_truk'],
-                            ['Kendaraan Berat', 'kendaraan_berat'],
-                            ['Kapal Laut', 'kapal_laut'],
-                            ['Bus Air', 'bus_air'],
-                            ['Speed Boat', 'speed_boat'],
-                            ['Perahu Klotok', 'perahu_klotok'],
-                        ];
+                    $infrastruktur = [
+                        ['Jalan', 'jalan'],
+                        ['Jembatan', 'jembatan'],
+                    ];
+
+                    $index = 0;
                     @endphp
-                    @foreach($kendaraan as [$label, $name])
+
+                    @foreach($infrastruktur as $row => [$label, $kategori])
+
                     <tr>
-                        @if($loop->first)
-                        <td class="text-start align-middle" rowspan="{{ count($kendaraan) }}">
-                            <strong>c) Kerusakan kendaraan</strong><br>
-                            <i>Diisi dengan jumlah unit kendaraan Darat dan laut yang rusak</i>
-                        </td>
-                        @endif
+                        
                         <td>{{ $label }}</td>
                         
-                        <td colspan="2"><input type="number" name="{{ $name }}_jumlah" class="form-control form-control-sm"></td>
-                        <td colspan="5">
-                        <div class="input-group">
-                            <input type="number" name="{{ $name }}_unit" class="form-control form-control-sm">
-                            <span class="input-group-text" style="min-width:50px;">Unit</span>
-                        </div>
+                        <td>
+                            <input type="text" class="form-control"
+                            name="infrastruktur[{{ $row }}][nama]">
+                            <input type="hidden"
+                            name="infrastruktur[{{ $row }}][kategori]"
+                            value="{{ $kategori }}">
+                            <input type="hidden"
+                            name="infrastruktur[{{ $row }}][satuan]"
+                            value="unit">
                         </td>
-                        
+
+                        <td>
+                            <input type="text" class="form-control"
+                                name="infrastruktur[{{ $row }}][jenis]">
+                        </td>
+
+                        <td>
+                            <input type="text" class="form-control"
+                                name="infrastruktur[{{ $row }}][tipe]">
+                        </td>
+
+                        <td>
+                            <input type="number" class="form-control"
+                                name="infrastruktur[{{ $row }}][berat]">
+                        </td>
+
+                        <td>
+                            <input type="number" class="form-control"
+                                name="infrastruktur[{{ $row }}][sedang]">
+                        </td>
+
+                        <td>
+                            <input type="number" class="form-control"
+                                name="infrastruktur[{{ $row }}][ringan]">
+                        </td>
+
+                        <td>
+                            <input type="number" class="form-control"
+                                name="infrastruktur[{{ $row }}][harga_satuan]">
+                        </td>
+
+                        <td>
+                            <input type="number" class="form-control"
+                                name="infrastruktur[{{ $row }}][biaya_perbaikan]">
+                        </td>
+
                     </tr>
                     @endforeach
-                    <tr>
-                        <th colspan="9" class="bg-secondary text-white">III. KERUSAKAN PRASARANA TRANSPORTASI</th>
-                    </tr>
-                    @php
-                        $prasarana = [
-                            ['TERMINAL', 'terminal'],
-                            ['DERMAGA', 'dermaga'],
-                            ['BANDARA', 'bandara'],
-                        ];
-                    @endphp
-                    @foreach($prasarana as [$label, $name])
-                    <tr>
-                        <td>{{ $label }}</td>
-                        
-                        <td>Unit</td>
-                        <td colspan="1"><input type="number" name="{{ $name }}_jumlah" class="form-control form-control-sm"></td>
-                        <td colspan="1"><input type="number" name="{{ $name }}_rusak_berat" class="form-control form-control-sm"></td>
-                        <td colspan="1"><input type="number" name="{{ $name }}_rusak_sedang" class="form-control form-control-sm"></td>
-                        <td colspan="2"><input type="number" name="{{ $name }}_rusak_ringan" class="form-control form-control-sm"></td>
-                        <td colspan="2"><input type="number" name="{{ $name }}_biaya_perbaikan" class="form-control form-control-sm"></td>
-                    </tr>
-                    @endforeach
-                    <tr>
-                        <th colspan="9" class="bg-secondary text-white">IV. KEHILANGAN PENDAPATAN</th>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start">KEHILANGAN PENDAPATAN ANGKUTAN DARAT</td>
-                        <td colspan="3" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. PENDAPATAN PER HARI</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="pendapatan_darat_per_hari" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                        <td colspan="5" class="text-start">
-                            <div class="input-group">
-                                <span class="input-group-text">B. JUMLAH ANGKUTAN TERDAMPAK</span>
-                                <input type="number" name="jumlah_angkutan_darat_terdampak" class="form-control form-control-sm">
-                                <span class="input-group-text">Unit</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start">KEHILANGAN PENDAPATAN ANGKUTAN LAUT/SUNGAI</td>
-                        <td colspan="3" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. PENDAPATAN PER HARI</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="pendapatan_laut_per_hari" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                        <td colspan="5" class="text-start">
-                            <div class="input-group">
-                                <span class="input-group-text">B. JUMLAH ANGKUTAN TERDAMPAK</span>
-                                <input type="number" name="jumlah_angkutan_laut_terdampak" class="form-control form-control-sm">
-                                <span class="input-group-text">Unit</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start">KEHILANGAN PENDAPATAN ANGKUTAN UDARA</td>
-                        <td colspan="3 class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. PENDAPATAN PER HARI</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="pendapatan_udara_per_hari" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                        <td colspan="5" class="text-start">
-                            <div class="input-group">
-                                <span class="input-group-text">B. JUMLAH ANGKUTAN TERDAMPAK</span>
-                                <input type="number" name="jumlah_angkutan_udara_terdampak" class="form-control form-control-sm">
-                                <span class="input-group-text">Unit</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start">KEHILANGAN PENDAPATAN TERMINAL</td>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. PENDAPATAN PER HARI</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="pendapatan_terminal_per_hari" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start">KEHILANGAN PENDAPATAN DERMAGA</td>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. PENDAPATAN PER HARI</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="pendapatan_dermaga_per_hari" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start">KEHILANGAN PENDAPATAN BANDARA</td>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. PENDAPATAN PER HARI</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="pendapatan_bandara_per_hari" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start" rowspan="3" style="vertical-align: middle;">KENAIKAN BIAYA OPERASIONAL KENDARAAN AKIBAT PENGGUNAAN JALAN YANG RUSAK</td>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. BIAYA OPERASIONAL KENDARAAN SEBELUM BENCANA</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_operasional_sebelum" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">B. BIAYA OPERASIONAL KENDARAAN SETELAH BENCANA</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number" name="biaya_operasional_setelah" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">C. JUMLAH KENDARAAN TERDAMPAK</span>
-                                <input type="number" name="jumlah_kendaraan_biaya_operasional" class="form-control form-control-sm">
-                                <span class="input-group-text">Unit</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-start" rowspan="2" style="vertical-align: middle;">BIAYA PEMASANGAN INFRASTRUKTUR DARURAT (Misalnya: Jembatan Bailey)</td>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">A. JUMLAH UNIT TERDAMPAK</span>
-                                <input type="number" name="infrastruktur_darurat_jumlah" class="form-control form-control-sm">
-                                <span class="input-group-text">Unit</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="8" class="text-start">
-                            <div class="input-group input-group-currency">
-                                <span class="input-group-text">B. BIAYA PER UNIT</span>
-                                <span class="input-group-text">Rp</span>
-                                <input type="number"  name="infrastruktur_darurat_biaya" class="form-control form-control-sm">
-                            </div>
-                        </td>
-                    </tr>
+
                 </tbody>
             </table>
+
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th colspan="4">
+                            II. KERUSAKAN KENDARAAN
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @php
+                    $kendaraan = [
+                        ['Sedan dan Minibus', 'sedan_minibus'],
+                        ['Bus dan Truk', 'bus_truk'],
+                        ['Kendaraan Berat', 'kendaraan_berat'],
+                        ['Kapal Laut', 'kapal_laut'],
+                        ['Bus Air', 'bus_air'],
+                        ['Speed Boat', 'speed_boat'],
+                        ['Perahu Klotok', 'perahu_klotok'],
+                    ];
+                    @endphp
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            Jumlah
+                        </td>
+                        <td>
+                            Harga Satuan
+                        </td>
+                    </tr>
+
+                    @foreach($kendaraan as [$label, $kategori])
+
+                    <tr>
+
+                        <td>
+                            {{ $label }}
+                        </td>
+
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="jumlah_kendaraan">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="1">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+                        <td>
+                            <input type="number"
+                                class="form-control auto-row"
+                                name="details[{{ $index }}][harga_satuan]">
+                        </td>
+
+                    </tr>
+
+                    @php $index++; @endphp
+
+                    @endforeach
+                </tbody>
+            </table>
+
+
+            @php
+            $prasarana = [
+                ['Terminal', 'terminal'],
+                ['Dermaga', 'dermaga'],
+                ['Bandara', 'bandara'],
+            ];
+            @endphp
+
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th>Prasarana</th>
+                        <th>Jumlah Unit</th>
+                        <th>Rusak Berat</th>
+                        <th>Rusak Sedang</th>
+                        <th>Rusak Ringan</th>
+                        <th>Biaya Perbaikan</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach($prasarana as [$label, $kategori])
+
+                    <tr>
+
+                        <td>{{ $label }}</td>
+
+                        {{-- Jumlah Unit --}}
+                        <td>
+                            <input type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="jumlah_unit">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+                        @php $index++; @endphp
+
+                        {{-- Rusak Berat --}}
+                        <td>
+                            <input type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="berat">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="1">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+                        @php $index++; @endphp
+
+                        {{-- Rusak Sedang --}}
+                        <td>
+                            <input type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="sedang">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="2">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+                        @php $index++; @endphp
+
+                        {{-- Rusak Ringan --}}
+                        <td>
+                            <input type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                value="ringan">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kriteria_id]"
+                                value="3">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="unit">
+                        </td>
+                        @php $index++; @endphp
+
+                        {{-- Biaya Perbaikan --}}
+                        <td>
+                            <input type="number"
+                                class="form-control"
+                                name="details[{{ $index }}][jumlah]">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][kategori]"
+                                value="{{ $kategori }}">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][sub_kategori]"
+                                value="biaya_perbaikan">
+
+                            <input type="hidden"
+                                name="details[{{ $index }}][satuan]"
+                                value="rp">
+                        </td>
+                        @php $index++; @endphp
+
+                    </tr>
+
+                    @endforeach
+
+                </tbody>
+            </table>
+
+            @php
+            $kerugian = [
+
+                [
+                    'judul' => 'KEHILANGAN PENDAPATAN ANGKUTAN DARAT',
+                    'kategori' => 'angkutan_darat',
+                    'fields' => [
+                        [
+                            'label' => 'Pendapatan per Hari',
+                            'sub_kategori' => 'pendapatan_per_hari',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                        [
+                            'label' => 'Jumlah Angkutan Terdampak',
+                            'sub_kategori' => 'jumlah_angkutan_terdampak',
+                            'satuan' => 'unit',
+                            'addon' => 'Unit',
+                        ],
+                    ]
+                ],
+
+                [
+                    'judul' => 'KEHILANGAN PENDAPATAN ANGKUTAN LAUT',
+                    'kategori' => 'angkutan_laut',
+                    'fields' => [
+                        [
+                            'label' => 'Pendapatan per Hari',
+                            'sub_kategori' => 'pendapatan_per_hari',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                        [
+                            'label' => 'Jumlah Angkutan Terdampak',
+                            'sub_kategori' => 'jumlah_angkutan_terdampak',
+                            'satuan' => 'unit',
+                            'addon' => 'Unit',
+                        ],
+                    ]
+                ],
+
+                [
+                    'judul' => 'KEHILANGAN PENDAPATAN ANGKUTAN UDARA',
+                    'kategori' => 'angkutan_udara',
+                    'fields' => [
+                        [
+                            'label' => 'Pendapatan per Hari',
+                            'sub_kategori' => 'pendapatan_per_hari',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                        [
+                            'label' => 'Jumlah Angkutan Terdampak',
+                            'sub_kategori' => 'jumlah_angkutan_terdampak',
+                            'satuan' => 'unit',
+                            'addon' => 'Unit',
+                        ],
+                    ]
+                ],
+
+                [
+                    'judul' => 'KEHILANGAN PENDAPATAN TERMINAL',
+                    'kategori' => 'terminal',
+                    'fields' => [
+                        [
+                            'label' => 'Pendapatan per Hari',
+                            'sub_kategori' => 'pendapatan_per_hari',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                    ]
+                ],
+
+                [
+                    'judul' => 'KEHILANGAN PENDAPATAN DERMAGA',
+                    'kategori' => 'dermaga',
+                    'fields' => [
+                        [
+                            'label' => 'Pendapatan per Hari',
+                            'sub_kategori' => 'pendapatan_per_hari',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                    ]
+                ],
+
+                [
+                    'judul' => 'KEHILANGAN PENDAPATAN BANDARA',
+                    'kategori' => 'bandara',
+                    'fields' => [
+                        [
+                            'label' => 'Pendapatan per Hari',
+                            'sub_kategori' => 'pendapatan_per_hari',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                    ]
+                ],
+
+                [
+                    'judul' => 'KENAIKAN BIAYA OPERASIONAL KENDARAAN AKIBAT PENGGUNAAN JALAN YANG RUSAK',
+                    'kategori' => 'biaya_operasional_kendaraan',
+                    'fields' => [
+                        [
+                            'label' => 'Biaya Operasional Kendaraan Sebelum Bencana',
+                            'sub_kategori' => 'sebelum_bencana',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                        [
+                            'label' => 'Biaya Operasional Kendaraan Sesudah Bencana',
+                            'sub_kategori' => 'sesudah_bencana',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                    ]
+                ],
+
+                [
+                    'judul' => 'BIAYA PEMASANGAN INFRASTRUKTUR DARURAT',
+                    'kategori' => 'infrastruktur_darurat',
+                    'fields' => [
+                        [
+                            'label' => 'Jumlah Kendaraan Terdampak',
+                            'sub_kategori' => 'jumlah_kendaraan_terdampak',
+                            'satuan' => 'unit',
+                            'addon' => 'Unit',
+                        ],
+                        [
+                            'label' => 'Jumlah Unit Terdampak',
+                            'sub_kategori' => 'jumlah_unit_terdampak',
+                            'satuan' => 'unit',
+                            'addon' => 'Unit',
+                        ],
+                        [
+                            'label' => 'Biaya Per Unit',
+                            'sub_kategori' => 'biaya_per_unit',
+                            'satuan' => 'rp',
+                            'addon' => 'Rp',
+                        ],
+                    ]
+                ],
+            ];
+            @endphp
+
+            @foreach($kerugian as $section)
+
+            <table class="table table-bordered mt-3">
+
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th colspan="2">
+                            {{ $section['judul'] }}
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach($section['fields'] as $field)
+
+                    <tr>
+
+                        <td width="35%">
+                            {{ $field['label'] }}
+                        </td>
+
+                        <td>
+
+                            <div class="input-group">
+
+                                @if(isset($field['addon']))
+                                <span class="input-group-text">
+                                    {{ $field['addon'] }}
+                                </span>
+                                @endif
+
+                                <input type="number"
+                                    class="form-control"
+                                    name="details[{{ $index }}][jumlah]">
+
+                                <input type="hidden"
+                                    name="details[{{ $index }}][kategori]"
+                                    value="{{ $section['kategori'] }}">
+
+                                <input type="hidden"
+                                    name="details[{{ $index }}][sub_kategori]"
+                                    value="{{ $field['sub_kategori'] }}">
+
+                                <input type="hidden"
+                                    name="details[{{ $index }}][satuan]"
+                                    value="{{ $field['satuan'] }}">
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    @php $index++; @endphp
+
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+            @endforeach
         </div>
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary">Simpan Data</button>
-            </div>
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+        </div>
+        <div class="col-12 text-center">
+            <button type="button"
+                    class="btn btn-warning"
+                    id="fillDummy">
+                Isi Data Dummy
+            </button>
         </div>
     </form>
 </div>
+
+<script>
+        document.getElementById('fillDummy').addEventListener('click', function () {
+
+            // Semua input number yang kosong
+            document.querySelectorAll(['input[type="number"]','input[type="text"]']).forEach(function(input) {
+
+                if (input.value === '') {
+                    input.value = 1;
+                }
+
+            });
+
+        });
+</script>
 @endsection

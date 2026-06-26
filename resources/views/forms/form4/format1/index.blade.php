@@ -101,9 +101,6 @@
                                 name="details[{{ $index }}][satuan]"
                                 value="unit">
 
-                            <input type="hidden"
-                                name="details[{{ $index }}][harga_satuan]"
-                                value="0">
                         </td>
 
                         @php $permanenIndex = $index; $index++; @endphp
@@ -135,9 +132,6 @@
                                 name="details[{{ $index }}][satuan]"
                                 value="unit">
 
-                            <input type="hidden"
-                                name="details[{{ $index }}][harga_satuan]"
-                                value="0">
                         </td>
 
                         @php $nonPermanenIndex = $index; $index++; @endphp
@@ -249,132 +243,84 @@
                                     value="{{ $item['satuan'] }}">
 
                             </div>
-                        </td>
-
-                        @if($loop->first)
-
-                        <td style="width:15%">
-                            Harga Satuan
-                        </td>
-
-                        <td style="width:25%">
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    Rp
-                                </span>
-
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="details[{{ $index }}][harga_satuan]"
-                                    placeholder="0">
-
-                            </div>
-                        </td>
-
-                        <td></td>
-
-                        @else
-
-                        <td colspan="3"></td>
-
-                        <input type="hidden"
-                            name="details[{{ $index }}][harga_satuan]"
-                            value="0">
-
-                        @endif
+                        </td>                      
 
                     </tr>
 
                     @php $index++; @endphp
 
                     @endforeach
+                    <tr>
+                        <td colspan="5">
+
+                            <label>Harga Satuan {{ $item['judul'] }}</label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="harga_satuan[{{ $item['kategori'] }}]"
+                                placeholder="0">
+
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>
 
             @endforeach
-        </form>
+        
 
-        <hr class="my-4">
+            <hr class="my-4">
 
-        <div class="card mt-4">
-            <div class="card-header bg-danger text-white">
-                <h5 class="mb-0">Total Kerusakan (Otomatis)</h5>
+            <!-- <div class="card mt-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Total Kerusakan (Otomatis)</h5>
+                </div>
+                <div class="card-body text-center">
+                    @php
+                        $totalKerusakan = 0;
+                        // 1. Perhitungan kerusakan rumah (gunakan logika yang benar: setiap jenis × harga masing-masing)
+                        $totalKerusakan += ($data->rumah_hancur_total_permanen ?? 0) * ($data->harga_satuan_hancur_total_permanen ?? 0);
+                        $totalKerusakan += ($data->rumah_hancur_total_non_permanen ?? 0) * ($data->harga_satuan_hancur_total_non_permanen ?? 0);
+                        $totalKerusakan += ($data->rumah_rusak_berat_permanen ?? 0) * ($data->harga_satuan_rusak_berat_permanen ?? 0);
+                        $totalKerusakan += ($data->rumah_rusak_berat_non_permanen ?? 0) * ($data->harga_satuan_rusak_berat_non_permanen ?? 0);
+                        $totalKerusakan += ($data->rumah_rusak_sedang_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_permanen ?? 0);
+                        $totalKerusakan += ($data->rumah_rusak_sedang_non_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_non_permanen ?? 0);
+                        $totalKerusakan += ($data->rumah_rusak_ringan_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_permanen ?? 0);
+                        $totalKerusakan += ($data->rumah_rusak_ringan_non_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_non_permanen ?? 0);
+
+                        // 2. Perhitungan kerusakan prasarana lingkungan
+                        $totalKerusakan += (($data->jalan_rusak_berat ?? 0) + ($data->jalan_rusak_sedang ?? 0) + ($data->jalan_rusak_ringan ?? 0)) * ($data->harga_satuan_jalan ?? 0);
+                        $totalKerusakan += (($data->saluran_rusak_berat ?? 0) + ($data->saluran_rusak_sedang ?? 0) + ($data->saluran_rusak_ringan ?? 0)) * ($data->harga_satuan_saluran ?? 0);
+                        $totalKerusakan += (($data->balai_rusak_berat ?? 0) + ($data->balai_rusak_sedang ?? 0) + ($data->balai_rusak_ringan ?? 0)) * ($data->harga_satuan_balai ?? 0);
+
+                        // 3. Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
+                        $totalKerusakan += ($data->tenaga_kerja_hok ?? 0) * ($data->upah_harian ?? 0);
+                        $totalKerusakan += ($data->alat_berat_hari ?? 0) * ($data->biaya_per_hari ?? 0);
+
+                        // 4. Biaya rumah sewa (dipindahkan dari kerugian ke kerusakan)
+                        $totalKerusakan += ($data->jumlah_rumah_disewa ?? 0) * ($data->harga_sewa_per_bulan ?? 0) * ($data->durasi_sewa_bulan ?? 0);
+
+                        // 5. Biaya hunian sementara (dipindahkan dari kerugian ke kerusakan)
+                        $totalKerusakan += ($data->jumlah_tenda ?? 0) * ($data->harga_tenda ?? 0);
+                        $totalKerusakan += ($data->jumlah_barak ?? 0) * ($data->harga_barak ?? 0);
+                        $totalKerusakan += ($data->jumlah_rumah_sementara ?? 0) * ($data->harga_rumah_sementara ?? 0);
+                    @endphp
+                    <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
+                    <small>Total Kerusakan Format 1</small>
+                </div>
+            </div> -->
+            <div class="mt-3 text-end">
+                <button type="submit" id="submitBtn" class="btn btn-primary">
+                    Simpan Data
+                </button>
             </div>
-            <div class="card-body text-center">
-                @php
-                    $totalKerusakan = 0;
-                    // 1. Perhitungan kerusakan rumah (gunakan logika yang benar: setiap jenis × harga masing-masing)
-                    $totalKerusakan += ($data->rumah_hancur_total_permanen ?? 0) * ($data->harga_satuan_hancur_total_permanen ?? 0);
-                    $totalKerusakan += ($data->rumah_hancur_total_non_permanen ?? 0) * ($data->harga_satuan_hancur_total_non_permanen ?? 0);
-                    $totalKerusakan += ($data->rumah_rusak_berat_permanen ?? 0) * ($data->harga_satuan_rusak_berat_permanen ?? 0);
-                    $totalKerusakan += ($data->rumah_rusak_berat_non_permanen ?? 0) * ($data->harga_satuan_rusak_berat_non_permanen ?? 0);
-                    $totalKerusakan += ($data->rumah_rusak_sedang_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_permanen ?? 0);
-                    $totalKerusakan += ($data->rumah_rusak_sedang_non_permanen ?? 0) * ($data->harga_satuan_rusak_sedang_non_permanen ?? 0);
-                    $totalKerusakan += ($data->rumah_rusak_ringan_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_permanen ?? 0);
-                    $totalKerusakan += ($data->rumah_rusak_ringan_non_permanen ?? 0) * ($data->harga_satuan_rusak_ringan_non_permanen ?? 0);
-
-                    // 2. Perhitungan kerusakan prasarana lingkungan
-                    $totalKerusakan += (($data->jalan_rusak_berat ?? 0) + ($data->jalan_rusak_sedang ?? 0) + ($data->jalan_rusak_ringan ?? 0)) * ($data->harga_satuan_jalan ?? 0);
-                    $totalKerusakan += (($data->saluran_rusak_berat ?? 0) + ($data->saluran_rusak_sedang ?? 0) + ($data->saluran_rusak_ringan ?? 0)) * ($data->harga_satuan_saluran ?? 0);
-                    $totalKerusakan += (($data->balai_rusak_berat ?? 0) + ($data->balai_rusak_sedang ?? 0) + ($data->balai_rusak_ringan ?? 0)) * ($data->harga_satuan_balai ?? 0);
-
-                    // 3. Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
-                    $totalKerusakan += ($data->tenaga_kerja_hok ?? 0) * ($data->upah_harian ?? 0);
-                    $totalKerusakan += ($data->alat_berat_hari ?? 0) * ($data->biaya_per_hari ?? 0);
-
-                    // 4. Biaya rumah sewa (dipindahkan dari kerugian ke kerusakan)
-                    $totalKerusakan += ($data->jumlah_rumah_disewa ?? 0) * ($data->harga_sewa_per_bulan ?? 0) * ($data->durasi_sewa_bulan ?? 0);
-
-                    // 5. Biaya hunian sementara (dipindahkan dari kerugian ke kerusakan)
-                    $totalKerusakan += ($data->jumlah_tenda ?? 0) * ($data->harga_tenda ?? 0);
-                    $totalKerusakan += ($data->jumlah_barak ?? 0) * ($data->harga_barak ?? 0);
-                    $totalKerusakan += ($data->jumlah_rumah_sementara ?? 0) * ($data->harga_rumah_sementara ?? 0);
-                @endphp
-                <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
-                <small>Total Kerusakan Format 1</small>
-            </div>
-        </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Auto-calculate totals for housing damage
-                function calculateHouseTotal(type) {
-                    const permanen = parseInt(document.querySelector(`input[name="rumah_${type}_permanen"]`).value) || 0;
-                    const nonPermanen = parseInt(document.querySelector(`input[name="rumah_${type}_non_permanen"]`).value) || 0;
-                    const totalField = document.querySelector(`input[name="${type}_jumlah"]`);
-                    if (totalField) {
-                        totalField.value = permanen + nonPermanen;
-                    }
-                }
-
-                // Add event listeners for house damage calculations
-                ['hancur_total', 'rusak_sedang', 'rusak_ringan', 'rusak_berat'].forEach(type => {
-                    const permanenField = document.querySelector(`input[name="rumah_${type}_permanen"]`);
-                    const nonPermanenField = document.querySelector(`input[name="rumah_${type}_non_permanen"]`);
-
-                    if (permanenField) {
-                        permanenField.addEventListener('input', () => calculateHouseTotal(type));
-                    }
-                    if (nonPermanenField) {
-                        nonPermanenField.addEventListener('input', () => calculateHouseTotal(type));
-                    }
-                });
-
-                // Form submission with loading state
-                const submitBtn = document.querySelector('button[type="submit"]');
-                const form = document.querySelector('form');
-
-                if (form && submitBtn) {
-                    form.addEventListener('submit', function() {
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
-                    });
-                }
-            });
-        </script>
+            <button type="button"
+                    class="btn btn-warning"
+                    id="fillDummy">
+                Isi Data Dummy
+            </button>
+        </form>       
 
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
@@ -399,7 +345,57 @@
                 </ul>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        @endif       
 
     </div>
+
+<script>
+    document.getElementById('fillDummy').addEventListener('click', function () {
+
+        // Semua input number yang kosong
+        document.querySelectorAll('input[type="number"]').forEach(function(input) {
+
+            if (input.value === '') {
+                input.value = 1;
+            }
+
+        });
+
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-calculate totals for housing damage
+        function calculateHouseTotal(type) {
+            const permanen = parseInt(document.querySelector(`input[name="rumah_${type}_permanen"]`).value) || 0;
+            const nonPermanen = parseInt(document.querySelector(`input[name="rumah_${type}_non_permanen"]`).value) || 0;
+            const totalField = document.querySelector(`input[name="${type}_jumlah"]`);
+            if (totalField) {
+                totalField.value = permanen + nonPermanen;
+            }
+        }
+
+        // Add event listeners for house damage calculations
+        ['hancur_total', 'rusak_sedang', 'rusak_ringan', 'rusak_berat'].forEach(type => {
+            const permanenField = document.querySelector(`input[name="rumah_${type}_permanen"]`);
+            const nonPermanenField = document.querySelector(`input[name="rumah_${type}_non_permanen"]`);
+
+            if (permanenField) {
+                permanenField.addEventListener('input', () => calculateHouseTotal(type));
+            }
+            if (nonPermanenField) {
+                nonPermanenField.addEventListener('input', () => calculateHouseTotal(type));
+            }
+        });
+
+        // Form submission with loading state
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const form = document.querySelector('form');
+
+        if (form && submitBtn) {
+            form.addEventListener('submit', function() {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+            });
+        }
+    });
+</script>
 @endsection
