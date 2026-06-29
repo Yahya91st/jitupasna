@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('formulir_items', function (Blueprint $table) {
-        $table->id();
+        $table->id();       
 
         $table->foreignId('formulir_id');
 
         $table->foreignId('kriteria_id')->nullable();
+
+        $table->string('nama_kampung')->nullable();
+        $table->string('nama_distrik')->nullable();
 
         $table->string('kategori');
 

@@ -253,318 +253,265 @@
     </style>
 
     <div class="page-container">
-        <!-- Page Header -->
+
+    {{-- Header --}}
         <div class="page-header">
             <div class="row">
-                <div class="col-12 col-md-8">
+                <div class="col-md-8">
                     <h3>Detail Kebutuhan Pascabencana</h3>
-                    <p>Detail kebutuhan pascabencana</p>
+                    <p>Hasil perhitungan kebutuhan berdasarkan formulir.</p>
                 </div>
-                <div class="col-12 col-md-4">
-                    <nav aria-label="breadcrumb" class="float-start float-md-end">
+
+                <div class="col-md-4">
+                    <nav class="float-md-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('kebutuhan.index') }}">Kebutuhan</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('kebutuhan.index') }}">
+                                    Kebutuhan
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Detail
+                            </li>
                         </ol>
                     </nav>
                 </div>
             </div>
         </div>
 
-        <!-- Detail Bencana -->
-        <div class="main-card">
+
+        {{-- Informasi Bencana --}}
+        <div class="card mb-4">
             <div class="card-header">
-                <h4>Detail Bencana</h4>
+                <h5 class="mb-0">
+                    Informasi Bencana
+                </h5>
             </div>
+
             <div class="card-body">
+
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tanggal">Tanggal Kejadian</label>
-                            <p>{{ is_string($bencana->tanggal) ? $bencana->tanggal : $bencana->tanggal->format('d-m-Y') }}</p>
-                        </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">
+                            Tanggal Kejadian
+                        </label>
+
+                        <p>
+                            {{ optional($formulir->laporan->bencana->tanggal)->format('d-m-Y') }}
+                        </p>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="kategori_bencana">Kategori Bencana</label>
-                            <p>
-                                @if ($bencana->kategori_bencana && isset($bencana->kategori_bencana->nama))
-                                    {{ $bencana->kategori_bencana->nama }}
-                                @else
-                                    -
-                                @endif
-                            </p>
-                        </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">
+                            Jenis Bencana
+                        </label>
+
+                        <p>
+                            {{ $formulir->laporan->bencana->kategori_bencana->nama ?? '-' }}
+                        </p>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="kecamatan">Kecamatan</label>
-                            <p>
-                                @if ($bencana->kecamatan && isset($bencana->kecamatan->nama))
-                                    {{ $bencana->kecamatan->nama }}
-                                @else
-                                    -
-                                @endif
-                            </p>
-                        </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">
+                            Kecamatan
+                        </label>
+
+                        <p>
+                            {{ $formulir->laporan->bencana->kecamatan->nama ?? '-' }}
+                        </p>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="desa">Desa</label>
-                            @if ($bencana->desa && count($bencana->desa) > 0)
-                                <ul class="mb-0 ps-3">
-                                    @foreach ($bencana->desa as $desa)
-                                        <li>
-                                            <span class="badge bg-info text-dark">{{ $desa->nama }}</span>
-                                            <small class="text-muted">Kode Pos: {{ $desa->kode_pos }}</small>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>-</p>
-                            @endif
-                        </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">
+                            Desa
+                        </label>
+
+                        @if(!empty($formulir->laporan->bencana->villages))
+                            <ul class="mb-0">
+                                @foreach($formulir->laporan->bencana->villages as $village)
+                                    <li>{{ $village['name'] }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            -
+                        @endif
+
                     </div>
+
                 </div>
+
             </div>
         </div>
 
-        <!-- Rekap Section -->
-        <div class="main-card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4>Data Rekap Bencana</h4>
-                <div>
-                    <button id="sync-rekap-btn" class="btn btn-warning" title="Sinkronisasi Data Rekap">
-                        Sync Data
-                    </button>
+
+        {{-- Ringkasan --}}
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+                <div class="card border-danger">
+                    <div class="card-body text-center">
+                        <h6>Total Kerusakan</h6>
+
+                        <h4>
+                            Rp {{ number_format($totals['total_kerusakan'],0,',','.') }}
+                        </h4>
+                    </div>
                 </div>
             </div>
+
+            <div class="col-md-4">
+                <div class="card border-warning">
+                    <div class="card-body text-center">
+                        <h6>Total Kerugian</h6>
+
+                        <h4>
+                            Rp {{ number_format($totals['total_kerugian'],0,',','.') }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-success">
+                    <div class="card-body text-center">
+                        <h6>Total Keseluruhan</h6>
+
+                        <h4>
+                            Rp {{ number_format($totals['total_keseluruhan'],0,',','.') }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        {{-- Detail Item --}}
+        <div class="card">
+
+            <div class="card-header">
+                <h5 class="mb-0">
+                    Detail Perhitungan
+                </h5>
+            </div>
+
             <div class="card-body">
-                @if ($rekaps->count() > 0)
-                    <!-- Summary Cards -->
-                    <div class="row mb-3">
-                        <div class="col-md-3 col-6 mb-2">
-                            <div class="summary-card bg-primary text-white">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">{{ $rekapSummary['total_rekaps'] }}</h4>
-                                    <small>Total Rekap</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6 mb-2">
-                            <div class="summary-card bg-danger text-white">
-                                <div class="card-body text-center py-3">
-                                    @php
-                                        $totalKerusakan = 0;
-                                        foreach ($rekaps as $rekap) {
-                                            for ($i = 1; $i <= 17; $i++) {
-                                                $relasi = "format{$i}Form4";
-                                                if (!empty($rekap->$relasi) && isset($rekap->$relasi->total_kerusakan)) {
-                                                    $totalKerusakan += $rekap->$relasi->total_kerusakan;
-                                                }
-                                            }
-                                        }
-                                    @endphp
-                                    <h4 class="mb-1">Rp {{ number_format($totalKerusakan, 0, ',', '.') }}</h4>
-                                    <small>Total Kerusakan</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6 mb-2">
-                            <div class="summary-card bg-warning text-white">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">Rp {{ number_format($rekapSummary['total_kerugian'], 0, ',', '.') }}</h4>
-                                    <small>Total Kerugian</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6 mb-2">
-                            <div class="summary-card bg-success text-white">
-                                <div class="card-body text-center py-3">
-                                    <h4 class="mb-1">{{ $rekapSummary['verified_rekaps'] }}</h4>
-                                    <small>Verified</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Data Table -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Format</th>
-                                    <th>Lokasi</th>
-                                    <th>Total Kerusakan</th>
-                                    <th>Total Kerugian</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($rekaps as $rekap)
-                                @for ($i = 1; $i <= 17; $i++)
-                                    @php
-                                        $relasi = "format{$i}Form4";
-                                        $formatData = $rekap->$relasi;
-                                    @endphp
-                                    @if (!empty($formatData))
-                                        <tr>
-                                            <td style="text-align: center;">
-                                                <span class="badge bg-secondary">Format {{ $i }}</span>
-                                            </td>
-                                            <td>
-                                                <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
-                                                <small class="text-muted">{{ $rekap->nama_distrik ?? '-' }}</small>
-                                            </td>
-                                            <td style="text-align: right;">
-                                                Rp {{ number_format($formatData->total_kerusakan ?? 0, 0, ',', '.') }}
-                                            </td>
-                                            <td style="text-align: right;">
-                                                Rp {{ number_format($formatData->total_kerugian ?? 0, 0, ',', '.') }}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                @php
-                                                    $statusClass = match ($rekap->status) {
-                                                        'completed' => 'bg-success',
-                                                        'verified' => 'bg-info',
-                                                        default => 'bg-warning',
-                                                    };
-                                                @endphp
-                                                <span class="badge {{ $statusClass }}">
-                                                    {{ ucfirst($rekap->status) }}
-                                                </span>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                @php
-                                                    $detailUrl = route("forms.form4.format{$i}.show", ['id' => $formatData->id]);
-                                                    $editUrl = route("forms.form4.format{$i}.edit", ['id' => $formatData->id]);
-                                                    $pdfUrl = route("forms.form4.format{$i}.pdf", ['id' => $formatData->id]);
-                                                @endphp
-                                                <a href="{{ $detailUrl }}" class="btn btn-outline-primary">Detail</a>
-                                                <a href="{{ $editUrl }}" class="btn btn-outline-warning">Edit</a>
-                                                <a href="{{ $pdfUrl }}" class="btn btn-outline-danger" target="_blank">PDF</a>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endfor
-                            @endforeach
-                                <!-- @foreach ($rekaps as $rekap)
-                                    <tr>
-                                        <td style="text-align: center;">
-                                        @php
-                                            $formats = [];
-                                            for ($i = 1; $i <= 17; $i++) {
-                                                $relasi = "format{$i}Form4";
-                                                if (!empty($rekap->$relasi)) {
-                                                    $formats[] = "Format $i";
-                                                }
-                                            }
-                                        @endphp
-                                        @if (count($formats))
-                                            @foreach ($formats as $f)
-                                                <span class="badge bg-secondary">{{ $f }}</span>
-                                            @endforeach
-                                        @else
-                                            <span class="badge bg-secondary">-</span>
-                                        @endif                                            
-                                        </td>
-                                        <td>
-                                            <strong>{{ $rekap->nama_kampung ?? '-' }}</strong><br>
-                                            <small class="text-muted">{{ $rekap->nama_distrik ?? '-' }}</small>
-                                        </td>
-                                        <td style="text-align: right;">
-                                            @php
-                                                $totalKerusakan = 0;
-                                                for ($i = 1; $i <= 17; $i++) {
-                                                    $relasi = "format{$i}Form4";
-                                                    if (!empty($rekap->$relasi) && isset($rekap->$relasi->total_kerusakan)) {
-                                                        $totalKerusakan += $rekap->$relasi->total_kerusakan;
-                                                    }
-                                                }
-                                            @endphp
-                                            Rp {{ number_format($totalKerusakan, 0, ',', '.') }}
-                                        </td>
-                                        <td style="text-align: right;">
-                                            Rp {{ number_format($rekap->total_kerugian, 0, ',', '.') }}
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @php
-                                                $statusClass = match ($rekap->status) {
-                                                    'completed' => 'bg-success',
-                                                    'verified' => 'bg-info',
-                                                    default => 'bg-warning',
-                                                };
-                                            @endphp
-                                            <span class="badge {{ $statusClass }}">
-                                                {{ ucfirst($rekap->status) }}
-                                            </span>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @php
-                                                // cari format pertama yang ada pada rekap (format1_form4_id .. format17_form4_id)
-                                                $detailUrl = null;
-                                                $editUrl = null;
-                                                $pdfUrl = null;
+                <div class="table-responsive">
 
-                                                for ($i = 1; $i <= 17; $i++) {
-                                                    $col = "format{$i}form4";
-                                                    if (!empty($rekap->{$col})) {
-                                                        $formatId = $rekap->{$col};
+                    <table class="table table-bordered align-middle">
 
-                                                        // coba nama route khusus per format: forms.form4.show-format{n}, edit-format{n}, pdf-format{n}
-                                                        $showRoute = "forms.form4.format{$i}.show";
-                                                        $editRoute = "forms.form4.format{$i}.edit";
-                                                        $pdfRoute = "forms.form4.format{$i}.pdf";
+                        <thead class="table-light">
 
-                                                        if (Route::has($showRoute)) {
-                                                            $detailUrl = route($showRoute, ['id' => $formatId]);
-                                                        } elseif (Route::has('forms.form4.format{$i}.show')) {
-                                                            $detailUrl = route('forms.form4.format{$i}.show', ['format' => $i, 'id' => $formatId]);
-                                                        }
+                        <tr>
 
-                                                        if (Route::has($editRoute)) {
-                                                            $editUrl = route($editRoute, ['id' => $formatId]);
-                                                        } elseif (Route::has('forms.form4.format{$i}.edit')) {
-                                                            $editUrl = route('forms.form4.format{$i}.edit', ['format' => $i, 'id' => $formatId]);
-                                                        }
+                            <th>Kategori</th>
 
-                                                        if (Route::has($pdfRoute)) {
-                                                            $pdfUrl = route($pdfRoute, ['id' => $formatId]);
-                                                        } elseif (Route::has('forms.form4.format{$i}.pdf')) {
-                                                            $pdfUrl = route('forms.form4.format{$i}.pdf', ['format' => $i, 'id' => $formatId]);
-                                                        }
+                            <th>Sub Kategori</th>
 
-                                                        break;
-                                                    }
-                                                }
+                            <th>Tingkat Kerusakan</th>
 
-                                                // fallback ke rekap routes jika tidak ditemukan route spesifik
-                                                $detailUrl = $detailUrl ?? route('rekap.show', $rekap->id);
-                                                $editUrl = $editUrl ?? route('rekap.edit', $rekap->id);
-                                                $pdfUrl = $pdfUrl ?? route('rekap.pdf', $rekap->id);
-                                            @endphp
+                            <th>Jumlah</th>
 
-                                            <a href="{{ $detailUrl }}" class="btn btn-outline-primary">Detail</a>
-                                            <a href="{{ $editUrl }}" class="btn btn-outline-warning">Edit</a>
-                                            <a href="{{ $pdfUrl }}" class="btn btn-outline-danger" target="_blank">PDF</a>
-                                        </td>
-                                    </tr>
-                                @endforeach -->
-                            </tbody>
-                        </table>
-                    </div>
-                @else
-                    <div class="text-center py-5">
-                        <h5 class="text-muted">Belum ada data rekap</h5>
-                        <p class="text-muted">Belum ada data rekap untuk bencana ini.</p>
-                        <a href="{{ route('rekap.create', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
-                            Tambah Rekap Pertama
-                        </a>
-                    </div>
-                @endif
+                            <th>Satuan</th>
+
+                            <th>Harga Satuan</th>
+
+                            <th>Subtotal</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        @forelse($rows as $row)
+
+                            <tr>
+
+                                <td>{{ $row['kategori'] }}</td>
+
+                                <td>{{ $row['sub_kategori'] ?? '-' }}</td>
+
+                                <td>{{ $row['tingkat_kerusakan'] }}</td>
+
+                                <td>{{ number_format($row['jumlah']) }}</td>
+
+                                <td>{{ $row['satuan'] ?? '-' }}</td>
+
+                                <td>
+                                    Rp {{ number_format($row['harga_satuan'],0,',','.') }}
+                                </td>
+
+                                <td>
+                                    Rp {{ number_format($row['subtotal'],0,',','.') }}
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="7" class="text-center text-muted">
+                                    Belum ada data.
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                        </tbody>
+
+                        <tfoot>
+
+                        <tr>
+
+                            <th colspan="6" class="text-end">
+                                Total Kerusakan
+                            </th>
+
+                            <th>
+                                Rp {{ number_format($totals['total_kerusakan'],0,',','.') }}
+                            </th>
+
+                        </tr>
+
+                        <tr>
+
+                            <th colspan="6" class="text-end">
+                                Total Kerugian
+                            </th>
+
+                            <th>
+                                Rp {{ number_format($totals['total_kerugian'],0,',','.') }}
+                            </th>
+
+                        </tr>
+
+                        <tr class="table-success">
+
+                            <th colspan="6" class="text-end">
+                                Total Keseluruhan
+                            </th>
+
+                            <th>
+                                Rp {{ number_format($totals['total_keseluruhan'],0,',','.') }}
+                            </th>
+
+                        </tr>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
 @endsection
 

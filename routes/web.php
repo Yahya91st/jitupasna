@@ -3,6 +3,24 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BencanaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KerusakanController;
+use App\Http\Controllers\KerugianController;
+use App\Http\Controllers\KebutuhanController;
+use App\Http\Controllers\KategoriBangunanController;
+use App\Http\Controllers\KategoriBencanaController;
+use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\HargaSatuanDasarController;
+use App\Http\Controllers\Form1Controller;
+use App\Http\Controllers\Form2Controller;
+use App\Http\Controllers\Form3Controller;
+use App\Http\Controllers\Form4Controller;
+use App\Http\Controllers\Form6Controller;
+use App\Http\Controllers\Form7Controller;
+use App\Http\Controllers\Form8Controller;
+use App\Http\Controllers\Form9Controller;
+use App\Http\Controllers\Form10Controller;
+use App\Http\Controllers\Form11Controller;
+use App\Http\Controllers\Form12Controller;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahProxyController;
@@ -75,18 +93,23 @@ Route::get('/', [DashboardController::class, 'index'])
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // User Management - Admin or Super Admin
-    Route::middleware(['role:admin,super-admin'])->group(function () {
+    Route::middleware('role:operator')->group(function () {
+
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+
     });
+
 });
 
 Route::prefix('/bencana')
@@ -144,9 +167,8 @@ Route::prefix('/kebutuhan')
     ->middleware(['auth', 'verified'])
     ->name('kebutuhan.')
     ->group(function () {
-        Route::get('list', [KebutuhanController::class, 'listTables'])->name('list');
         Route::get('', [KebutuhanController::class, 'index'])->name('index'); // Shows list of disasters
-        Route::get('create/{id}', [KebutuhanController::class, 'create'])->name('create');
+        Route::get('list', [KebutuhanController::class, 'listFormat'])->name('list');
         Route::post('store/{id}', [KebutuhanController::class, 'store'])->name('store');
         Route::get('show/{id}', [KebutuhanController::class, 'show'])->name('show'); // Shows damage & loss data for specific disaster
         Route::get('edit/{id}', [KebutuhanController::class, 'edit'])->name('edit');
@@ -257,13 +279,28 @@ Route::prefix('/forms')
             Route::prefix('format1')->name('format1.')->group(function () {
                 Route::get('/', [Format1Controller::class, 'index'])->name('index');
                 Route::post('/store', [Format1Controller::class, 'store'])->name('store');
-                Route::get('/show/{id}', [Format1Controller::class, 'show'])->name('show');
                 Route::get('/list', [Format1Controller::class, 'list'])->name('list');
-                Route::get('/pdf/{id}', [Format1Controller::class, 'generatePdf'])->name('pdf');
-                Route::get('/preview-pdf/{id}', [Format1Controller::class, 'previewPdf'])->name('preview-pdf');
-                Route::get('/edit/{id}', [Format1Controller::class, 'edit'])->name('edit');
-                Route::patch('/update/{id}', [Format1Controller::class, 'update'])->name('update');
-            });
+
+                Route::get(
+                    '/form4/format1/{formulir}/preview',
+                    [Format1Controller::class, 'previewPdf']
+                )->name('preview');
+
+                Route::get('/show/{formulir}', [Format1Controller::class, 'show'])
+                    ->name('show');
+
+                Route::get('/edit/{formulir}', [Format1Controller::class, 'edit'])
+                    ->name('edit');
+
+                Route::patch('/update/{formulir}', [Format1Controller::class, 'update'])
+                    ->name('update');
+
+                Route::delete('/destroy/{formulir}', [Format1Controller::class, 'destroy'])
+                    ->name('destroy');
+
+                Route::get('/pdf/{formulir}', [Format1Controller::class, 'generatePdf'])
+                    ->name('pdf');
+                });
 
             // Format 2 - Education sector
             Route::prefix('format2')->name('format2.')->group(function () {
@@ -586,59 +623,31 @@ Route::prefix('/forms')
     });
 
 // Rekap System - Data Consolidation from all formats (MOVED OUTSIDE FORMS GROUP)
-Route::prefix('rekap')
-    ->name('rekap.')
-    ->middleware(['auth', 'verified'])
-    ->group(function () {
-        Route::get('/', [RekapController::class, 'index'])->name('index');
-        Route::get('/dashboard', [RekapController::class, 'dashboard'])->name('dashboard');
-        Route::get('/show/{id}', [RekapController::class, 'show'])->name('show');
-        Route::get('/create/{bencana_id}', [RekapController::class, 'create'])->name('create');
-        Route::post('/store', [RekapController::class, 'store'])->name('store');
-        Route::get('/edit/{id}', [RekapController::class, 'edit'])->name('edit');
-        Route::patch('/update/{id}', [RekapController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [RekapController::class, 'destroy'])->name('delete');
-        Route::get('/statistics', [RekapController::class, 'statistics'])->name('statistics');
-        Route::get('/pdf/{id}', [RekapController::class, 'generatePdf'])->name('pdf');
-        Route::get('/preview-pdf/{id}', [RekapController::class, 'previewPdf'])->name('preview-pdf');
-        Route::post('/bulk-delete', [RekapController::class, 'bulkDelete'])->name('bulk-delete');
-        Route::post('/bulk-update-status', [RekapController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
-        Route::get('/export-excel', [RekapController::class, 'exportExcel'])->name('export-excel');
+// Route::prefix('rekap')
+//     ->name('rekap.')
+//     ->middleware(['auth', 'verified'])
+//     ->group(function () {
+//         Route::get('/', [RekapController::class, 'index'])->name('index');
+//         Route::get('/dashboard', [RekapController::class, 'dashboard'])->name('dashboard');
+//         Route::get('/show/{id}', [RekapController::class, 'show'])->name('show');
+//         Route::get('/create/{bencana_id}', [RekapController::class, 'create'])->name('create');
+//         Route::post('/store', [RekapController::class, 'store'])->name('store');
+//         Route::get('/edit/{id}', [RekapController::class, 'edit'])->name('edit');
+//         Route::patch('/update/{id}', [RekapController::class, 'update'])->name('update');
+//         Route::delete('/delete/{id}', [RekapController::class, 'destroy'])->name('delete');
+//         Route::get('/statistics', [RekapController::class, 'statistics'])->name('statistics');
+//         Route::get('/pdf/{id}', [RekapController::class, 'generatePdf'])->name('pdf');
+//         Route::get('/preview-pdf/{id}', [RekapController::class, 'previewPdf'])->name('preview-pdf');
+//         Route::post('/bulk-delete', [RekapController::class, 'bulkDelete'])->name('bulk-delete');
+//         Route::post('/bulk-update-status', [RekapController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
+//         Route::get('/export-excel', [RekapController::class, 'exportExcel'])->name('export-excel');
 
-        // Auto-sync routes
-        Route::post('/sync-all', [RekapController::class, 'syncAll'])->name('sync-all');
-        });
-
-        Route::get('/form4/format2', [Format2Controller::class, 'index'])->name('forms.form4.index-format2');
-        Route::get('/form4/format2/pdf/{id}', [Format2Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format2');
-        Route::get('/form4/format4', [\App\Http\Controllers\Form4\Format4Controller::class, 'index'])->name('forms.form4.index-format4');
-        Route::get('/form4/format4/pdf/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'generatePdf'])->name('forms.form4.pdf-format4');
-
-        Route::get('/forms/form4/format1/edit/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'edit'])->name('forms.form4.format1.edit');
-        Route::patch('/forms/form4/format1/update/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'update'])->name('forms.form4.format1.update');
-        Route::delete('/forms/form4/format1/destroy/{id}', [\App\Http\Controllers\Form4\Format1Controller::class, 'destroy'])->name('forms.form4.format1.destroy');
-
-        Route::get('/forms/form4/format2/edit/{id}', [Format2Controller::class, 'edit'])->name('forms.form4.format2.edit');
-        Route::delete('/forms/form4/format2/destroy/{id}', [Format2Controller::class, 'destroy'])->name('forms.form4.format2.destroy');
-        Route::patch('/forms/form4/format2/update/{id}', [Format2Controller::class, 'update'])->name('forms.form4.format2.update');
-
-        Route::get('/forms/form4/format3/pdf/{id}', [\App\Http\Controllers\Form4\Format3Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format3');
-        Route::get('/forms/form4/format1/pdf/{id]', [\App\Http\Controllers\Form4\Format1Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format1');
-
-        Route::delete('/forms/form4/destroy-format6/{id}', [\App\Http\Controllers\Form4\Format6Controller::class, 'destroy'])->name('forms.form4.destroy-format6');
-        Route::delete('/forms/form4/destroy/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'destroy'])->name('forms.form4.destroy-format4');
-        Route::get('/forms/form4/format4/pdf/{id}', [\App\Http\Controllers\Form4\Format4Controller::class, 'generatePdf'])->name('forms.form4.generatePdf-format4');
-
-        require __DIR__ . '/auth.php';
+//         // Auto-sync routes
+//         Route::post('/sync-all', [RekapController::class, 'syncAll'])->name('sync-all');
+//         });
 
 
-        Route::middleware(['auth', 'role:admin,super-admin'])->group(function () {
-            Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-            Route::post('/users', [UserController::class, 'store'])->name('users.store');
-        });
+require __DIR__ . '/auth.php';
 
-        // Untuk super-admin create admin
-        Route::middleware(['auth', 'role:super-admin'])->group(function () {
-            Route::get('/admins/create', [UserController::class, 'createAdmin'])->name('admins.create');
-            Route::post('/admins', [UserController::class, 'storeAdmin'])->name('admins.store');
-        });
+
+        

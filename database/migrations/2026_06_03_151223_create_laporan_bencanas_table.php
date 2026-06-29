@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('bencana_id');
+            $table->unique('bencana_id');
             $table->date('tanggal_lapor');
             $table->enum('status_laporan',['draft', 'diproses', 'selesai', 'ditolak']);
             $table->integer('total_kerusakan');

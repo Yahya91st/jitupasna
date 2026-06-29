@@ -21,9 +21,7 @@
                                 <tbody>
                                     @foreach ($reportData as $data)
                                         <tr>
-                                            <td>{{ $data['kategori'] }}</td>
                                             <td>{{ $data['kejadian_dalam_setahun'] }}</td>
-                                            <td>Rp {{ number_format($data['estimasi_kebutuhan_total'], 2) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

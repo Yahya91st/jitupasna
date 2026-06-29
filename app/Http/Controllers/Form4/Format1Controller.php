@@ -6,16 +6,103 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFormat1Request;
 use App\Models\Bencana;
 use App\Models\LaporanBencana;
-use App\Models\Format2Form4;
 use App\Models\Formulir;
 use App\Models\FormulirItem;
-use App\Models\KriteriaKerusakan;
-use App\Models\Rekap;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class Format1Controller extends Controller
 {
+    public function summary($bencanaId)
+    {
+        $laporan = LaporanBencana::where('bencana_id', $bencanaId)
+            ->first();
+
+        if (!$laporan) {
+            return collect();
+        }
+
+        $formulir = Formulir::where([
+            'laporan_id' => $laporan->id,
+            'format_id' => 1,
+        ])->first();
+
+        if (!$formulir) {
+            return collect();
+        }
+
+        return FormulirItem::where('formulir_id', $formulir->id)
+            ->get();
+    }
+    private function loadFormulir(int $id): Formulir
+    {
+        return Formulir::with(['laporan.bencana', 'items'])->findOrFail($id);
+    }
+
+    private function computeTotals(Formulir $formulir, int $nomorInput): array
+    {
+        $totalKerusakan = 0;
+        $totalKerugian = 0;
+
+        foreach ($formulir->items->where('nomor_input', $nomorInput) as $item) {
+
+            $subtotal =
+                (float) ($item->jumlah ?? 0) *
+                (float) ($item->harga_satuan ?? 0);
+
+            if (in_array($item->kategori, [
+                'rumah',
+                'jalan',
+                'saluran',
+                'balai'
+            ], true)) {
+
+                $totalKerusakan += $subtotal;
+
+            } else {
+
+                $totalKerugian += $subtotal;
+            }
+        }
+
+        return [
+            'total_kerusakan' => $totalKerusakan,
+            'total_kerugian' => $totalKerugian,
+            'total_keseluruhan' => $totalKerusakan + $totalKerugian,
+        ];
+    }
+
+    private function buildItemRows(Formulir $formulir, int $nomorInput): array
+    {
+        return $formulir->items
+            ->where('nomor_input', $nomorInput)
+            ->map(function (FormulirItem $item) {
+
+                return [
+                    'id' => $item->id,
+
+                    'kategori' => $item->kategori,
+
+                    'sub_kategori' => $item->sub_kategori,
+
+                    'tingkat_kerusakan' => $item->tingkat_kerusakan,
+
+                    'jumlah' => $item->jumlah,
+
+                    'harga_satuan' => $item->harga_satuan,
+
+                    'satuan' => $item->satuan,
+
+                    'subtotal' =>
+                        (float) ($item->jumlah ?? 0) *
+                        (float) ($item->harga_satuan ?? 0),
+                ];
+            })
+            ->values()
+            ->all();
+    }
+
     /**
      * Display Format 1 form for Housing sector data collection
      */
@@ -31,7 +118,7 @@ class Format1Controller extends Controller
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.format1.index', compact('bencana'));
+        return view('forms.form4.format1.create', compact('bencana'));
     }
 
     /**
@@ -46,15 +133,17 @@ class Format1Controller extends Controller
             $laporan = LaporanBencana::firstOrCreate(
                 [
                     'bencana_id' => $request->bencana_id,
-                    'user_id' => auth()->id(),
                 ],
                 [
+                    'user_id' => auth()->id(),
                     'tanggal_lapor' => now()->toDateString(),
                     'status' => 'draft',
+                    'total_kerusakan' => 0,
+                    'total_kerugian' => 0,
                 ]
             );
 
-            $formulir = Formulir::firstOrCreate(
+            $formulir = Formulir::create(
                 [
                     'laporan_id' => $laporan->id,
                     'format_id' => 1,
@@ -66,34 +155,18 @@ class Format1Controller extends Controller
 
             $details = $request->details;
 
-            $hargaSatuan = $request->harga_satuan;
+            $nama_kampung = $request->nama_kampung;
 
-            foreach ($details as &$detail) {
+            $nama_distrik = $request->nama_distrik;
 
-                if ($detail['kategori'] === 'jalan') {
-                    $detail['harga_satuan'] = $hargaSatuan['jalan'] ?? 0;
-                }
-
-                if ($detail['kategori'] === 'saluran') {
-                    $detail['harga_satuan'] = $hargaSatuan['saluran'] ?? 0;
-                }
-
-                if ($detail['kategori'] === 'balai') {
-                    $detail['harga_satuan'] = $hargaSatuan['balai'] ?? 0;
-                }
-            }
-
-            $request->merge([
-                'details' => $details
-            ]);
-
-            // Validasi request tanpa rekap_id, gunakan bencana_id
             $validated = $request->validated();
-            
+
             foreach ($details as $detail) {
 
                 FormulirItem::create([
                     'formulir_id' => $formulir->id,
+                    'nama_kampung' => $nama_kampung,
+                    'nama_distrik' => $nama_distrik,
 
                     'kriteria_id' => $detail['kriteria_id'],
 
@@ -120,8 +193,9 @@ class Format1Controller extends Controller
                     'data' => $format1Form4
                 ]);
             }            
-            return redirect()->route('forms.form4.format1.list')
-            ->with('success', 'Data berhasil disimpan');
+            return redirect()->route('forms.form4.format1.list', [
+                'bencana_id' => $request->bencana_id
+            ])->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -142,11 +216,32 @@ class Format1Controller extends Controller
     /**
      * Show a specific form data
      */
-    public function show($id)
+    public function show($formulirId, $nomorInput)
     {
-        $format1Form4 = FormulirItem::with('rekap.bencana')->findOrFail($id);
-        $bencana = $format1Form4->rekap ? $format1Form4->rekap->bencana : null;
-        return view('forms.form4.format1.show-format1', compact('format1Form4', 'bencana'));
+        
+        $formulir = $this->loadFormulir($formulirId);
+
+        $bencana = $formulir->laporan?->bencana;
+
+        $items = $this->buildItemRows($formulir, $nomorInput);
+
+        $totals = $this->computeTotals($formulir, $nomorInput);
+
+        $reports = Formulir::with([
+                'laporan.bencana',
+                'items'
+            ]);
+
+        return view(
+            'forms.form4.format1.show-format1',
+            compact(
+                'formulir',
+                'bencana',
+                'items',
+                'totals',
+                'nomorInput'
+            )
+        );
     }
 
     /**
@@ -155,22 +250,30 @@ class Format1Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
-        // Redirect to bencana selection if no bencana_id is provided
+
         if (!$bencana_id) {
-            return redirect()->route('bencana.index', ['source' => 'forms']);
+            return redirect()->route('bencana.index', [
+                'source' => 'forms'
+            ]);
         }
-        
-        // Get bencana details
+
         $bencana = Bencana::findOrFail($bencana_id);
-        // Ambil data Format1Form4 yang terkait dengan bencana_id melalui relasi rekap
-        $reports = Formulir::whereHas('laporan', function ($q) use ($bencana_id) {
-            $q->where('bencana_id', $bencana_id);
-        })
-        ->where('format_id', 1)
-        ->get();
-        
-        return view('forms.form4.format1.list-format1', compact('bencana', 'reports'));
+
+        $reports = Formulir::with([
+                'laporan.bencana',
+                'items'
+            ])
+            ->where('format_id', 1)
+            ->whereHas('laporan', function ($q) use ($bencana_id) {
+                $q->where('bencana_id', $bencana_id);
+            })
+            ->latest()
+            ->get();            
+
+        return view(
+            'forms.form4.format1.list-format1',
+            compact('bencana', 'reports')
+        );
     }
 
     /**
@@ -181,25 +284,37 @@ class Format1Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $format1Form4 = FormulirItem::with('bencana')->findOrFail($id);
-        $bencana = $format1Form4->bencana;
-        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('format1Form4', 'bencana'));
+        $formulir = $this->loadFormulir($id);
+        $bencana = $formulir->laporan?->bencana;
+        $items = $this->buildItemRows($formulir);
+        $totals = $this->computeTotals($formulir);
+
+        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('formulir', 'bencana', 'items', 'totals'));
         $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('Format1_Perumahan_' . $format1Form4->nama_kampung . '.pdf');
+        return $pdf->download('Format1_Perumahan_' . $formulir->id . '.pdf');
     }
 
     /**
      * Preview PDF for a specific form data
      */
-    public function previewPdf($id)
+    public function previewPdf($formulirId, $nomorInput)
     {
-        $format1Form4 = FormulirItem::with('bencana')->findOrFail($id);
-        $bencana = $format1Form4->bencana;
-        
-        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('format1Form4', 'bencana'));
+        $formulir = $this->loadFormulir($formulirId);
+
+        $bencana = $formulir->laporan?->bencana;
+
+        $items = $this->buildItemRows($formulir, $nomorInput);
+
+        $totals = $this->computeTotals($formulir, $nomorInput);
+
+        $pdf = Pdf::loadView(
+            'forms.form4.format1.pdf',
+            compact('formulir', 'bencana', 'items', 'totals', 'nomorInput')
+        );
+
         $pdf->setPaper('A4', 'landscape');
-        
-        return $pdf->stream('Format1_Perumahan_' . $format1Form4->nama_kampung . '.pdf');
+
+        return $pdf->stream('Format1_Perumahan.pdf');
     }
 
     /**
@@ -208,17 +323,20 @@ class Format1Controller extends Controller
     public function destroy($id)
     {
         try {
-            $format1Form4 = FormulirItem::findOrFail($id);
-            $bencana_id = $format1Form4->bencana_id;
-            
-            // Delete the record
-            $format1Form4->delete();
+            $formulir = $this->loadFormulir($id);
+            $bencana_id = $formulir->laporan?->bencana_id;
+
+            DB::beginTransaction();
+            $formulir->items()->delete();
+            $formulir->delete();
+            DB::commit();
             
             // Return success response
-            return redirect()->route('forms.form4.list-format1', ['bencana_id' => $bencana_id])
+            return redirect()->route('forms.form4.format1.list', ['bencana_id' => $bencana_id])
                            ->with('success', 'Data berhasil dihapus');
                            
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->back()
                 ->withErrors(['error' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()]);
         }
@@ -227,16 +345,47 @@ class Format1Controller extends Controller
     /**
      * Show the form for editing a specific format1 data
      */
-    public function edit($id)
+    public function edit($formulirId, $nomor_input)
     {
         try {
-            $format1Form4 = FormulirItem::with('bencana')->findOrFail($id);
-            $bencana = $format1Form4->bencana;
-            
-            return view('forms.form4.format1.edit', compact('format1Form4', 'bencana'));
+
+            $formulir = $this->loadFormulir($formulirId);
+
+            $detailMap = $formulir->items
+            ->where('nomor_input', $nomor_input)
+            ->keyBy(function ($item) {
+                return implode('|', [
+                    $item->kategori,
+                    $item->sub_kategori,
+                    $item->tingkat_kerusakan,
+                    $item->kriteria_id,
+                ]);
+            });
+
+            $bencana = $formulir->laporan?->bencana;
+
+            $items = $this->buildItemRows($formulir, $nomor_input);
+
+            $totals = $this->computeTotals($formulir, $nomor_input);
+
+            return view(
+                'forms.form4.format1.edit',
+                compact(
+                    'formulir',
+                    'bencana',
+                    'items',
+                    'totals',
+                    'nomor_input',
+                    'detailMap'
+                )
+            );
+
         } catch (\Exception $e) {
+
             return redirect()->back()
-                ->withErrors(['error' => 'Data tidak ditemukan: ' . $e->getMessage()]);
+                ->withErrors([
+                    'error' => 'Data tidak ditemukan: ' . $e->getMessage()
+                ]);
         }
     }
 
@@ -252,88 +401,45 @@ class Format1Controller extends Controller
         try {
             DB::beginTransaction();
 
-            // Find the existing record
-            $format1Form4 = FormulirItem::findOrFail($id);
-            // Validate the request
+            $formulir = $this->loadFormulir($id);
             $validated = $request->validate([
-                'nama_kampung' => 'required|string',
-                'nama_distrik' => 'required|string',
-                'rumah_hancur_total_permanen' => 'nullable|integer',
-                'rumah_hancur_total_non_permanen' => 'nullable|integer',
-                'rumah_rusak_berat_permanen' => 'nullable|integer',
-                'rumah_rusak_berat_non_permanen' => 'nullable|integer',
-                'rumah_rusak_sedang_permanen' => 'nullable|integer',
-                'rumah_rusak_sedang_non_permanen' => 'nullable|integer',
-                'rumah_rusak_ringan_permanen' => 'nullable|integer',
-                'rumah_rusak_ringan_non_permanen' => 'nullable|integer',
-                // Individual harga satuan for each category
-                'harga_satuan_hancur_total_permanen' => 'nullable|numeric',
-                'harga_satuan_hancur_total_non_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_berat_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_berat_non_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_sedang_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_sedang_non_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_ringan_permanen' => 'nullable|numeric',
-                'harga_satuan_rusak_ringan_non_permanen' => 'nullable|numeric',
-                'jalan_rusak_berat' => 'nullable|numeric',
-                'jalan_rusak_sedang' => 'nullable|numeric',
-                'jalan_rusak_ringan' => 'nullable|numeric',
-                'harga_satuan_jalan' => 'nullable|numeric',
-                'saluran_rusak_berat' => 'nullable|numeric',
-                'saluran_rusak_sedang' => 'nullable|numeric',
-                'saluran_rusak_ringan' => 'nullable|numeric',
-                'harga_satuan_saluran' => 'nullable|numeric',
-                'balai_rusak_berat' => 'nullable|integer',
-                'balai_rusak_sedang' => 'nullable|integer',
-                'balai_rusak_ringan' => 'nullable|integer',
-                'harga_satuan_balai' => 'nullable|numeric',
-                'tenaga_kerja_hok' => 'nullable|integer',
-                'upah_harian' => 'nullable|numeric',
-                'alat_berat_hari' => 'nullable|integer',
-                'biaya_per_hari' => 'nullable|numeric',
-                'jumlah_rumah_disewa' => 'nullable|integer',
-                'harga_sewa_per_bulan' => 'nullable|numeric',
-                'durasi_sewa_bulan' => 'nullable|integer',
-                'jumlah_tenda' => 'nullable|integer',
-                'harga_tenda' => 'nullable|numeric',
-                'jumlah_barak' => 'nullable|integer',
-                'harga_barak' => 'nullable|numeric',
-                'jumlah_rumah_sementara' => 'nullable|integer',
-                'harga_rumah_sementara' => 'nullable|numeric',
+                'bencana_id' => 'required|exists:bencanas,id',
+                'items' => 'required|array|min:1',
+                'items.*.id' => 'required|exists:formulir_items,id',
+                'items.*.jumlah' => 'nullable|numeric|min:0',
+                'items.*.harga_satuan' => 'nullable|numeric|min:0',
             ]);
 
-            // Hitung total kerusakan otomatis (termasuk semua item yang dipindahkan dari kerugian)
-            $total_kerusakan =
-                // 1. Kerusakan rumah
-                ($validated['rumah_hancur_total_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_permanen'] ?? 0) +
-                ($validated['rumah_hancur_total_non_permanen'] ?? 0) * ($validated['harga_satuan_hancur_total_non_permanen'] ?? 0) +
-                ($validated['rumah_rusak_berat_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_permanen'] ?? 0) +
-                ($validated['rumah_rusak_berat_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_berat_non_permanen'] ?? 0) +
-                ($validated['rumah_rusak_sedang_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_permanen'] ?? 0) +
-                ($validated['rumah_rusak_sedang_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_sedang_non_permanen'] ?? 0) +
-                ($validated['rumah_rusak_ringan_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_permanen'] ?? 0) +
-                ($validated['rumah_rusak_ringan_non_permanen'] ?? 0) * ($validated['harga_satuan_rusak_ringan_non_permanen'] ?? 0) +
-                // 2. Kerusakan prasarana lingkungan
-                (($validated['jalan_rusak_berat'] ?? 0) + ($validated['jalan_rusak_sedang'] ?? 0) + ($validated['jalan_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_jalan'] ?? 0) +
-                (($validated['saluran_rusak_berat'] ?? 0) + ($validated['saluran_rusak_sedang'] ?? 0) + ($validated['saluran_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_saluran'] ?? 0) +
-                (($validated['balai_rusak_berat'] ?? 0) + ($validated['balai_rusak_sedang'] ?? 0) + ($validated['balai_rusak_ringan'] ?? 0)) * ($validated['harga_satuan_balai'] ?? 0) +
-                // Biaya pembersihan puing (dipindahkan dari kerugian ke kerusakan)
-                ($validated['tenaga_kerja_hok'] ?? 0) * ($validated['upah_harian'] ?? 0) +
-                ($validated['alat_berat_hari'] ?? 0) * ($validated['biaya_per_hari'] ?? 0) +
-                // Biaya sewa rumah (dipindahkan dari kerugian ke kerusakan)
-                ($validated['jumlah_rumah_disewa'] ?? 0) * ($validated['harga_sewa_per_bulan'] ?? 0) * ($validated['durasi_sewa_bulan'] ?? 0) +
-                // Biaya hunian sementara (dipindahkan dari kerugian ke kerusakan)
-                ($validated['jumlah_tenda'] ?? 0) * ($validated['harga_tenda'] ?? 0) +
-                ($validated['jumlah_barak'] ?? 0) * ($validated['harga_barak'] ?? 0) +
-                ($validated['jumlah_rumah_sementara'] ?? 0) * ($validated['harga_rumah_sementara'] ?? 0);
-            $validated['total_kerusakan'] = $total_kerusakan;
+            $formulir->items()
+            ->where('nomor_input', $nomor_input)
+            ->delete();
 
-            // Update the record
-            $format1Form4->update($validated);
+            foreach ($validated['items'] as $detail) {
+                FormulirItem::create([
+                    'formulir_id' => $formulir->id,
+                    'kriteria_id' => null,
+                    'kategori' => $detail['kategori'] ?? 'rumah',
+                    'sub_kategori' => $detail['sub_kategori'] ?? null,
+                    'dimensi' => $detail['dimensi'] ?? null,
+                    'tingkat_kerusakan' => $detail['tingkat_kerusakan'] ?? null,
+                    'jumlah' => $detail['jumlah'] ?? 0,
+                    'harga_satuan' => $detail['harga_satuan'] ?? 0,
+                    'satuan' => $detail['satuan'] ?? null,
+                ]);
+            }
+
+            $totals = $this->computeTotals($formulir->fresh(['items']));
+            if ($formulir->laporan) {
+                $formulir->laporan->update([
+                    'bencana_id' => $validated['bencana_id'],
+                    'total_kerusakan' => $totals['total_kerusakan'],
+                    'total_kerugian' => $totals['total_kerugian'],
+                ]);
+            }
 
             DB::commit();
 
-            return redirect()->route('forms.form4.list-format1', ['bencana_id' => $format1Form4->bencana_id])
+            return redirect()->route('forms.form4.list-format1', ['bencana_id' => $validated['bencana_id']])
                            ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {

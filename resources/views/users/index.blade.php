@@ -1,4 +1,3 @@
-// ...existing code...
 @extends('layouts.main')
 
 @section('content')
@@ -36,9 +35,25 @@
     .table tbody td{ padding:.75rem; vertical-align:middle; color:#374151; border-bottom:1px solid #f1f1f1; }
     .table tbody tr:hover{ background:#fbfbfb; }
 
-    .badge-role-admin{ background:#f87171; color:#fff; }
-    .badge-role-super{ background:#fbbf24; color:#fff; }
-    .badge-role-user{ background:#60a5fa; color:#fff; }
+    .badge-role-operator{
+        background:#dc3545;
+        color:white;
+    }
+
+    .badge-role-pelapor{
+        background:#0d6efd;
+        color:white;
+    }
+
+    .badge-role-pengkaji{
+        background:#ffc107;
+        color:black;
+    }
+
+    .badge-role-pimpinan{
+        background:#198754;
+        color:white;
+    }
 
     @media (max-width:720px){
         .card-header-gradient{ flex-direction:column; align-items:flex-start; gap:.5rem; }
@@ -67,20 +82,14 @@
         <div class="card main-card">
             <div class="card-header card-header-gradient">
                 <h4 class="card-title">
-                    @if(auth()->user()->role === 'operator')
-                        Admin Accounts
-                    @else
-                        Users
-                    @endif
+                    User Management
                 </h4>
 
                 <div class="header-actions">
-                    @if(auth()->user()->role === 'operator')
-                        <a href="{{ url('/admins/create') }}" class="btn btn-light-secondary">
-                            <i data-feather="plus"></i> Create user
-                        </a>
-                        </a>
-                    @endif
+                    <a href="{{ route('users.create') }}" class="btn btn-light-secondary">
+                        <i data-feather="plus"></i>
+                        Tambah User
+                    </a>
                 </div>
             </div>
 
@@ -99,29 +108,10 @@
                         <tbody>
                             @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->getKey() }}</td>
+                                <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>
-                                    @foreach($user->roles as $role)
-                                        @php
-                                            $cls = $role->name == 'admin' ? 'badge-role-admin' : ($role->name == 'super-admin' ? 'badge-role-super' : 'badge-role-user');
-                                        @endphp
-                                        <span class="badge {{ $cls }}">{{ ucfirst($role->name) }}</span>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-orange">
-                                        <i data-feather="edit"></i> Edit
-                                    </a>
-                                    <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-light-secondary" onclick="return confirm('Are you sure you want to delete this user?')">
-                                            <i data-feather="trash-2"></i> Delete
-                                        </button>
-                                    </form>
-                                </td>
+                                <td>{{ ucfirst($user->role) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -155,4 +145,3 @@
     });
 </script>
 @endpush
-// ...existing code...

@@ -79,6 +79,44 @@
                          @error('password') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+
+                        <div class="input-group">
+                            <span class="input-group-text input-icon">
+                                <i data-feather="users"></i>
+                            </span>
+
+                            <select
+                                class="form-select @error('role') is-invalid @enderror"
+                                id="role"
+                                name="role"
+                                required
+                            >
+                                <option value="">-- Pilih Role --</option>
+
+                                <option value="pelapor"
+                                    {{ old('role') == 'pelapor' ? 'selected' : '' }}>
+                                    Pelapor
+                                </option>
+
+                                <option value="pengkaji"
+                                    {{ old('role') == 'pengkaji' ? 'selected' : '' }}>
+                                    Pengkaji
+                                </option>
+
+                                <option value="pimpinan"
+                                    {{ old('role') == 'pimpinan' ? 'selected' : '' }}>
+                                    Pimpinan
+                                </option>
+                            </select>
+                        </div>
+
+                        @error('role')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="d-flex justify-content-end gap-2 mt-3">
                         <button type="submit" class="btn btn-orange">Simpan</button>
                         <a href="{{ route('users.index') }}" class="btn btn-light-secondary">Batal</a>

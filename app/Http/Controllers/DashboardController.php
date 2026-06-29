@@ -28,15 +28,15 @@ class DashboardController extends Controller
             $kejadianDalamSetahun = $bencanas->count();
 
             // Menghitung estimasi kebutuhan total
-            $estimasiKebutuhanTotal = $bencanas->flatMap(function ($bencana) {
-                return $bencana->kerugian->pluck('BiayaKeseluruhan')
-                    ->merge($bencana->kerusakan->pluck('BiayaKeseluruhan'));
-            })->sum();
+            // $estimasiKebutuhanTotal = $bencanas->flatMap(function ($bencana) {
+            //     return $bencana->kerugian->pluck('BiayaKeseluruhan')
+            //         ->merge($bencana->kerusakan->pluck('BiayaKeseluruhan'));
+            // })->sum();
 
             return [
                 'jenis_bencana' => $jenis_bencana,
                 'kejadian_dalam_setahun' => $kejadianDalamSetahun,
-                'estimasi_kebutuhan_total' => $estimasiKebutuhanTotal,
+                // 'estimasi_kebutuhan_total' => $estimasiKebutuhanTotal,
             ];
         });
 

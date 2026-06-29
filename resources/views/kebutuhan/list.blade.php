@@ -253,433 +253,130 @@
 
 @section('content')
 <div class="page-container">
+
     <div class="page-header">
         <h2>
-            <i data-feather="bar-chart-2" style="width: 28px; height: 28px; margin-right: 8px;"></i>
-            Ringkasan Tabel Berdasarkan Form
+            <i data-feather="clipboard" class="me-2"></i>
+            Ringkasan Formulir Pendataan
         </h2>
-        <p>Daftar tabel kerusakan dan kerugian pada setiap form</p>
+        <p>
+            Daftar formulir pendataan yang telah diisi beserta total nilai
+            kerusakan dan kerugian.
+        </p>
     </div>
 
-    <!-- Summary Card -->
-    <div class="main-card mb-4">
-        <div class="card-header-gradient">
-            <h4>
-                <i data-feather="pie-chart" style="width: 20px; height: 20px; margin-right: 8px;"></i>
-                Rekap Total Nilai Kerusakan & Kerugian
-            </h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                @php
-                $grandTotal = 0;
-                $totalByForm = [];
-                
-                // Calculate grand total and totals by form
-                foreach ($tableTotals as $tableName => $columnTotals) {
-                    foreach ($columnTotals as $column => $total) {
-                        $grandTotal += $total;
-                        
-                        // Determine which form this table belongs to
-                        $formKey = null;
-                        foreach ($tables as $key => $form) {
-                            foreach ($form['tables'] as $tableInfo) {
-                                if ($tableInfo['name'] === $tableName) {
-                                    $formKey = $key;
-                                    break 2;
-                                }
-                            }
-                        }
-                        
-                        if ($formKey) {
-                            if (!isset($totalByForm[$formKey])) {
-                                $totalByForm[$formKey] = 0;
-                            }
-                            $totalByForm[$formKey] += $total;
-                        }
-                    }
-                }
-                @endphp
-                
-                <div class="col-md-6 mb-3">
-                    <div class="summary-card">
-                        <h5>
-                            <i data-feather="dollar-sign" style="width: 18px; height: 18px; margin-right: 6px;"></i>
-                            Total Kerusakan & Kerugian
-                        </h5>
-                        <div class="total">Rp {{ number_format($grandTotal, 0, ',', '.') }}</div>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 mb-3">
-                    <div class="summary-card">
-                        <h5>
-                            <i data-feather="trending-up" style="width: 18px; height: 18px; margin-right: 6px;"></i>
-                            Distribusi per Form
-                        </h5>
-                        <div class="table-container">
-                            <table class="table table-striped mb-0">
-                                <tbody>
-                                    @foreach($totalByForm as $formKey => $total)
-                                        <tr>
-                                            <td>{{ $tables[$formKey]['name'] }}</td>
-                                            <td class="text-end fw-bold">Rp {{ number_format($total, 0, ',', '.') }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Form Tables Summary -->
     <div class="main-card">
+
         <div class="card-header-gradient">
             <h4>
-                <i data-feather="grid" style="width: 20px; height: 20px; margin-right: 8px;"></i>
-                Ringkasan Tabel Berdasarkan Form
+                <i data-feather="list"></i>
+                Daftar Formulir
             </h4>
         </div>
+
         <div class="card-body">
-            <div class="table-container">
-                <table class="table table-bordered mb-0">
-                    <thead>
-                        <tr>
-                            <th>Form</th>
-                            <th>Tabel</th>
-                            <th>Deskripsi</th>
-                            <th>Jumlah Data</th>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th width="5%">No</th>
+                            <th width="10%">Nama Kampung</th>
+                            <th width="10%">Nama Distrik</th>
+                            <th>Nama Formulir</th>
+                            <th width="18%">Kerusakan (Rp)</th>
+                            <th width="18%">Kerugian (Rp)</th>
+                            <th width="12%">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($tables as $formKey => $form)
-                            @php
-                                $isFirstRow = true;
-                                $rowCount = count($form['tables']);
-                                $rowCount = $rowCount > 0 ? $rowCount : 1;
-                            @endphp
-                            
-                            @if(empty($form['tables']))
-                                <tr>
-                                    <td>{{ $form['name'] }}</td>
-                                    <td>-</td>
-                                    <td>{{ $form['description'] }}</td>
-                                    <td>-</td>
-                                </tr>
-                            @else
-                                @foreach($form['tables'] as $index => $table)
-                                    <tr>
-                                        @if($isFirstRow)
-                                            <td rowspan="{{ $rowCount }}">{{ $form['name'] }}</td>
-                                            @php $isFirstRow = false; @endphp
-                                        @endif
-                                        <td>{{ $table['name'] }}</td>
-                                        <td>{{ $table['description'] }}</td>
-                                        <td>{{ $table['count'] }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
-    <!-- Table Columns Accordion -->
-    <div class="main-card mt-4">
-        <div class="card-header-gradient">
-            <h4>
-                <i data-feather="columns" style="width: 20px; height: 20px; margin-right: 8px;"></i>
-                Kolom-kolom Terkait Kerusakan dan Kerugian
-            </h4>
-        </div>
-        <div class="card-body">
-            <div class="accordion" id="tableColumnsAccordion">
-                @foreach($columns as $tableName => $tableColumns)
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading{{ str_replace('_', '', $tableName) }}">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse{{ str_replace('_', '', $tableName) }}" aria-expanded="false"
-                                aria-controls="collapse{{ str_replace('_', '', $tableName) }}">
-                                <i data-feather="database" style="width: 18px; height: 18px; margin-right: 8px;"></i>
-                                Tabel: {{ $tableName }}
-                            </button>
-                        </h2>
-                        <div id="collapse{{ str_replace('_', '', $tableName) }}" class="accordion-collapse collapse"
-                            aria-labelledby="heading{{ str_replace('_', '', $tableName) }}"
-                            data-bs-parent="#tableColumnsAccordion">
-                            <div class="accordion-body">
-                                <h5>
-                                    <i data-feather="list" style="width: 16px; height: 16px; margin-right: 6px;"></i>
-                                    Kolom Terkait
+                    <tbody>
+
+                        @forelse($summaries as $index => $summary)
+
+                            <tr>
+
+                                <td class="text-center">
+                                    {{ $index + 1 }}
+                                </td>
+
+                                <td class="text-center fw-bold">
+                                    {{ $summary['nama_kampung'] }}
+                                </td>
+
+                                <td class="text-center fw-bold">
+                                    {{ $summary['nama_distrik'] }}
+                                </td>
+
+                                <td>
+                                    {{ $summary['format'] }}
+                                </td>
+
+                                <td class="text-end">
+                                    {{ number_format($summary['total_kerusakan'],0,',','.') }}
+                                </td>
+
+                                <td class="text-end">
+                                    {{ number_format($summary['total_kerugian'],0,',','.') }}
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a
+                                        href="{{ route('kebutuhan.show',$summary['id']) }}"
+                                        class="btn btn-primary btn-sm">
+
+                                        Detail
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="6" class="text-center">
+
+                                    Belum ada formulir yang telah diisi.
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                        <div class="card shadow mb-4">
+
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    Grafik Kerusakan & Kerugian
                                 </h5>
-                                <ul class="list-group mb-4">
-                                    @foreach($tableColumns as $column)
-                                        <li class="list-group-item">
-                                            {{ $column }}
-                                            @if(isset($numericColumns[$tableName]) && in_array($column, $numericColumns[$tableName]))
-                                                <span class="badge bg-info">Nilai Numerik</span>
-                                            @endif
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                
-                                @if(isset($tableTotals[$tableName]) && count($tableTotals[$tableName]) > 0)
-                                <div class="inner-card mb-4">
-                                    <div class="inner-card-header">
-                                        <h5>
-                                            <i data-feather="dollar-sign" style="width: 16px; height: 16px; margin-right: 6px;"></i>
-                                            Total Nilai Kerusakan/Kerugian
-                                        </h5>
-                                    </div>
-                                    <div class="inner-card-body">
-                                        <div class="table-container">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Kolom</th>
-                                                        <th>Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($tableTotals[$tableName] as $column => $total)
-                                                        <tr>
-                                                            <td>{{ $column }}</td>
-                                                            <td class="text-end fw-bold">{{ number_format($total, 0, ',', '.') }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                                
-                                @if(isset($sampleData[$tableName]) && $sampleData[$tableName]->count() > 0)
-                                    <h5>
-                                        <i data-feather="file-text" style="width: 16px; height: 16px; margin-right: 6px;"></i>
-                                        Data Sampel (5 entri teratas)
-                                    </h5>
-                                    <div class="table-container">
-                                        <table class="table table-striped table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    @foreach($tableColumns as $column)
-                                                        <th>{{ $column }}</th>
-                                                    @endforeach
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($sampleData[$tableName] as $item)
-                                                    <tr>
-                                                        @foreach($tableColumns as $column)
-                                                            <td @if(isset($numericColumns[$tableName]) && in_array($column, $numericColumns[$tableName])) class="text-end fw-bold" @endif>
-                                                                @if(property_exists($item, $column) || isset($item->$column))
-                                                                    @if(isset($numericColumns[$tableName]) && in_array($column, $numericColumns[$tableName]) && is_numeric($item->$column))
-                                                                        {{ number_format($item->$column, 0, ',', '.') }}
-                                                                    @else
-                                                                        {{ $item->$column }}
-                                                                    @endif
-                                                                @else
-                                                                    -
-                                                                @endif
-                                                            </td>
-                                                        @endforeach
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    
-                                    @if(isset($relationshipData[$tableName]) && count($relationshipData[$tableName]) > 0)
-                                        <h5 class="mt-4">
-                                            <i data-feather="link" style="width: 16px; height: 16px; margin-right: 6px;"></i>
-                                            Data Relasi
-                                        </h5>
-                                        <div class="accordion mt-2" id="relationAccordion{{ str_replace('_', '', $tableName) }}">
-                                            @foreach($sampleData[$tableName] as $index => $item)
-                                                <div class="accordion-item">
-                                                    <h2 class="accordion-header" id="relationHeading{{ str_replace('_', '', $tableName) }}{{ $index }}">
-                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                            data-bs-target="#relationCollapse{{ str_replace('_', '', $tableName) }}{{ $index }}" aria-expanded="false"
-                                                            aria-controls="relationCollapse{{ str_replace('_', '', $tableName) }}{{ $index }}">
-                                                            Data #{{ $index + 1 }} - Relasi
-                                                        </button>
-                                                    </h2>
-                                                    <div id="relationCollapse{{ str_replace('_', '', $tableName) }}{{ $index }}" class="accordion-collapse collapse"
-                                                        aria-labelledby="relationHeading{{ str_replace('_', '', $tableName) }}{{ $index }}"
-                                                        data-bs-parent="#relationAccordion{{ str_replace('_', '', $tableName) }}">
-                                                        <div class="accordion-body">
-                                                            @foreach($relationshipData[$tableName] as $relation)
-                                                                @if(isset($item->$relation) && $item->$relation)
-                                                                    <div class="inner-card mb-3">
-                                                                        <div class="inner-card-header">
-                                                                            <h6>Relasi: {{ ucfirst($relation) }}</h6>
-                                                                        </div>
-                                                                        <div class="inner-card-body">
-                                                                            @if(is_object($item->$relation))
-                                                                                @if(method_exists($item->$relation, 'toArray'))
-                                                                                    @php $relationData = $item->$relation->toArray(); @endphp
-                                                                                    @if(is_array($relationData))
-                                                                                        <ul class="list-group">
-                                                                                            @foreach($relationData as $key => $value)
-                                                                                                @if(!is_array($value) && !is_object($value))
-                                                                                                    <li class="list-group-item">
-                                                                                                        <strong>{{ $key }}:</strong> 
-                                                                                                        @if(is_numeric($value) && 
-                                                                                                            (strpos(strtolower($key), 'biaya') !== false || 
-                                                                                                             strpos(strtolower($key), 'harga') !== false || 
-                                                                                                             strpos(strtolower($key), 'nilai') !== false || 
-                                                                                                             strpos(strtolower($key), 'kerugian') !== false || 
-                                                                                                             strpos(strtolower($key), 'kerusakan') !== false))
-                                                                                                            <span class="fw-bold text-primary">Rp {{ number_format($value, 0, ',', '.') }}</span>
-                                                                                                        @else
-                                                                                                            {{ $value }}
-                                                                                                        @endif
-                                                                                                    </li>
-                                                                                                @endif
-                                                                                            @endforeach
-                                                                                        </ul>
-                                                                                    @else
-                                                                                        <p>{{ $relationData }}</p>
-                                                                                    @endif
-                                                                                @else
-                                                                                    <p>{{ $item->$relation }}</p>
-                                                                                @endif
-                                                                            @elseif(is_array($item->$relation))
-                                                                                @if(count($item->$relation) > 0)
-                                                                                    <ul class="list-group">
-                                                                                        @foreach($item->$relation as $relItem)
-                                                                                            @if(is_object($relItem) && method_exists($relItem, 'toArray'))
-                                                                                                @php $relItemData = $relItem->toArray(); @endphp
-                                                                                                <li class="list-group-item">
-                                                                                                    <ul>
-                                                                                                        @foreach($relItemData as $relKey => $relValue)
-                                                                                                            @if(!is_array($relValue) && !is_object($relValue))
-                                                                                                                <li><strong>{{ $relKey }}:</strong> 
-                                                                                                                @if(is_numeric($relValue) && 
-                                                                                                                    (strpos(strtolower($relKey), 'biaya') !== false || 
-                                                                                                                     strpos(strtolower($relKey), 'harga') !== false || 
-                                                                                                                     strpos(strtolower($relKey), 'nilai') !== false || 
-                                                                                                                     strpos(strtolower($relKey), 'kerugian') !== false || 
-                                                                                                                     strpos(strtolower($relKey), 'kerusakan') !== false))
-                                                                                                                    <span class="fw-bold text-primary">Rp {{ number_format($relValue, 0, ',', '.') }}</span>
-                                                                                                                @else
-                                                                                                                    {{ $relValue }}
-                                                                                                                @endif
-                                                                                                                </li>
-                                                                                                            @endif
-                                                                                                        @endforeach
-                                                                                                    </ul>
-                                                                                                </li>
-                                                                                            @else
-                                                                                                <li class="list-group-item">{{ $relItem }}</li>
-                                                                                            @endif
-                                                                                        @endforeach
-                                                                                    </ul>
-                                                                                @else
-                                                                                    <p>Tidak ada data relasi</p>
-                                                                                @endif
-                                                                            @else
-                                                                                <p>{{ $item->$relation }}</p>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                @else
-                                                                    <p>Tidak ada data untuk relasi {{ $relation }}</p>
-                                                                @endif
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                @else
-                                    <div class="alert-info">
-                                        <i data-feather="alert-circle" style="width: 18px; height: 18px; margin-right: 6px;"></i>
-                                        Tidak ada data sampel untuk ditampilkan
-                                    </div>
-                                @endif
                             </div>
+
+                            <div class="card-body">
+
+                                <canvas id="summaryChart"
+                                        height="120">
+                                </canvas>
+                            </div>
+
                         </div>
-                    </div>
-                @endforeach
+
+                    </tbody>
+
+                </table>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- Relationships Table -->
-    <div class="main-card mt-4">
-        <div class="card-header-gradient">
-            <h4>
-                <i data-feather="share-2" style="width: 20px; height: 20px; margin-right: 8px;"></i>
-                Hubungan Antar Tabel
-            </h4>
-        </div>
-        <div class="card-body">
-            <div class="table-container">
-                <table class="table table-bordered mb-0">
-                    <thead>
-                        <tr>
-                            <th>Tabel</th>
-                            <th>Relasi</th>
-                            <th>Tabel Terkait</th>
-                            <th>Jenis Relasi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>kerusakan</td>
-                            <td>detail</td>
-                            <td>detail_kerusakan</td>
-                            <td><span class="badge bg-success">hasMany</span></td>
-                        </tr>
-                        <tr>
-                            <td>kerusakan</td>
-                            <td>bencana</td>
-                            <td>bencanas</td>
-                            <td><span class="badge bg-primary">belongsTo</span></td>
-                        </tr>
-                        <tr>
-                            <td>kerusakan</td>
-                            <td>kategori_bangunan</td>
-                            <td>kategori_bangunan</td>
-                            <td><span class="badge bg-primary">belongsTo</span></td>
-                        </tr>
-                        <tr>
-                            <td>detail_kerusakan</td>
-                            <td>satuan</td>
-                            <td>satuan</td>
-                            <td><span class="badge bg-primary">belongsTo</span></td>
-                        </tr>
-                        <tr>
-                            <td>detail_kerusakan</td>
-                            <td>hsd</td>
-                            <td>hsd</td>
-                            <td><span class="badge bg-primary">belongsTo</span></td>
-                        </tr>
-                        <tr>
-                            <td>kerugian</td>
-                            <td>bencana</td>
-                            <td>bencanas</td>
-                            <td><span class="badge bg-primary">belongsTo</span></td>
-                        </tr>
-                        <tr>
-                            <td>pendataan</td>
-                            <td>bencana</td>
-                            <td>bencanas</td>
-                            <td><span class="badge bg-primary">belongsTo</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -687,5 +384,78 @@
     if (typeof feather !== 'undefined') {
         feather.replace();
     }
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const labels = @json(
+    collect($summaries)
+        ->pluck('nama_kampung')
+);
+
+const kerusakan = @json(
+    collect($summaries)
+        ->pluck('total_kerusakan')
+);
+
+const kerugian = @json(
+    collect($summaries)
+        ->pluck('total_kerugian')
+);
+
+</script>
+
+<script>
+const ctx = document
+    .getElementById('summaryChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Kerusakan',
+                data: kerusakan
+            },
+            {
+                label: 'Kerugian',
+                data: kerugian
+            }
+        ]
+    },
+
+    options: {
+
+        responsive: true,
+
+        scales: {
+
+            y: {
+
+                ticks: {
+
+                    callback: function(value){
+                        return (value/1000000) + ' Jt';
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+console.log(labels);
+console.log(kerusakan);
+console.log(kerugian);
 </script>
 @endsection

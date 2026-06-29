@@ -13,6 +13,10 @@ class FormulirItem extends Model
         'formulir_id',
         'kriteria_id',
 
+        'nama_kampung',
+        
+        'nama_distrik',
+
         'kategori',
         'sub_kategori',
 

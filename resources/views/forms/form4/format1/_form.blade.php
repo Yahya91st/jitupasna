@@ -26,12 +26,13 @@
         <h5 class="text-center fw-bold main-title">Formulir 04<br>Pengumpulan Data Sektor</h5>
         <p class="fw-bold">Format 1a: Pengumpulan Data Sektor Perumahan</p>
 
-        <form action="{{ route('forms.form4.format1.store') }}" method="POST">
-            {{-- <form action="{{ isset($edit) && $edit ? route('forms.form4.format1.update', $data->id) : route('forms.form4.format1.store') }}" method="POST"> --}}
+        <form action="{{ $action }}" method="POST">
             @csrf
-            @if (isset($edit) && $edit)
-                @method('PATCH')
+
+            @if($edit)
+                @method($method)
             @endif
+
             <input type="hidden" name="bencana_id" value="{{ request('bencana_id') ?? ($data->bencana_id ?? '') }}">
             {{-- <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}"> --}}
 
@@ -70,71 +71,94 @@
                     @php $index = 0; @endphp
 
                     @foreach($tingkat_rusak as $tingkat => $label)
+                        @php
+                        $permanen = null;
+                        $nonPermanen = null;
 
+                        if (isset($formulir)) {
+                            $permanen = $formulir->items->first(function ($item) use ($tingkat, $nomor_input) {
+                                return $item->nomor_input == $nomor_input
+                                    && $item->kategori == 'rumah'
+                                    && $item->sub_kategori == 'permanen'
+                                    && $item->tingkat_kerusakan == $tingkat;
+                            });
+
+                            $nonPermanen = $formulir->items->first(function ($item) use ($tingkat, $nomor_input) {
+                                return $item->nomor_input == $nomor_input
+                                    && $item->kategori == 'rumah'
+                                    && $item->sub_kategori == 'non_permanen'
+                                    && $item->tingkat_kerusakan == $tingkat;
+                            });
+                        }
+                        @endphp
                     <tr>
                         <td>{{ $label }}</td>
 
-                        {{-- Rumah Permanen --}}
+                        @php
+                            $permanenIndex = $index;
+                            $index++;
+                        @endphp
+
                         <td>
-                            <input type="number"
+                            <input
+                                type="number"
                                 class="form-control"
-                                name="details[{{ $index }}][jumlah]"
-                                value="{{ old("details.$index.jumlah") }}">
-                                
+                                name="details[{{ $permanenIndex }}][jumlah]"
+                                value="{{ old("details.$permanenIndex.jumlah", $permanen->jumlah ?? '') }}">
+
                             <input type="hidden"
-                                name="details[{{ $index }}][kategori]"
+                                name="details[{{ $permanenIndex }}][kategori]"
                                 value="rumah">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][sub_kategori]"
+                                name="details[{{ $permanenIndex }}][sub_kategori]"
                                 value="permanen">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                name="details[{{ $permanenIndex }}][tingkat_kerusakan]"
                                 value="{{ $tingkat }}">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][kriteria_id]"
+                                name="details[{{ $permanenIndex }}][kriteria_id]"
                                 value="1">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][satuan]"
+                                name="details[{{ $permanenIndex }}][satuan]"
                                 value="unit">
-
                         </td>
 
-                        @php $permanenIndex = $index; $index++; @endphp
+                        @php
+                            $nonPermanenIndex = $index;
+                            $index++;
+                        @endphp
 
-                        {{-- Rumah Non Permanen --}}
                         <td>
-                            <input type="number"
+                            <input
+                                type="number"
                                 class="form-control"
-                                name="details[{{ $index }}][jumlah]"
-                                value="{{ old("details.$index.jumlah")}}">
+                                name="details[{{ $nonPermanenIndex }}][jumlah]"
+                                value="{{ old("details.$nonPermanenIndex.jumlah", $nonPermanen->jumlah ?? '') }}">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][kategori]"
+                                name="details[{{ $nonPermanenIndex }}][kategori]"
                                 value="rumah">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][sub_kategori]"
+                                name="details[{{ $nonPermanenIndex }}][sub_kategori]"
                                 value="non_permanen">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][tingkat_kerusakan]"
+                                name="details[{{ $nonPermanenIndex }}][tingkat_kerusakan]"
                                 value="{{ $tingkat }}">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][kriteria_id]"
+                                name="details[{{ $nonPermanenIndex }}][kriteria_id]"
                                 value="1">
 
                             <input type="hidden"
-                                name="details[{{ $index }}][satuan]"
+                                name="details[{{ $nonPermanenIndex }}][satuan]"
                                 value="unit">
-
                         </td>
-
-                        @php $nonPermanenIndex = $index; $index++; @endphp
 
                         {{-- Total --}}
                         <td>
@@ -147,14 +171,16 @@
                         <td>
                             <input type="number"
                                 class="form-control"
-                                name="details[{{ $permanenIndex }}][harga_satuan]">
+                                name="details[{{ $permanenIndex }}][harga_satuan]"
+                                value="{{ old("details.$permanenIndex.harga_satuan", $permanen->harga_satuan ?? '') }}">
                         </td>
 
                         {{-- Harga Satuan Non Permanen --}}
                         <td>
                             <input type="number"
                                 class="form-control"
-                                name="details[{{ $nonPermanenIndex }}][harga_satuan]">
+                                name="details[{{ $nonPermanenIndex }}][harga_satuan]"
+                                value="{{ old("details.$nonPermanenIndex.harga_satuan", $nonPermanen->harga_satuan ?? '') }}">>
                         </td>
 
                     </tr>

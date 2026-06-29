@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {    /**
@@ -16,30 +15,41 @@ class UserController extends Controller
     public function index()
     {
         $currentUser = auth()->user();
+
         $roles = [
             'operator',
             'pelapor',
             'pengkaji',
-            'pimpinan'
+            'pimpinan',
         ];
-        
+
+        $users = collect();
+        $availableRoles = [];
+
         if ($currentUser->role === 'operator') {
 
-        $users = User::whereIn('role', [
-            'pelapor',
-            'pengkaji',
-            'pimpinan'
-        ])->paginate(15);
+            $users = User::whereIn('role', [
+                'pelapor',
+                'pengkaji',
+                'pimpinan',
+            ])->paginate(15);
 
-        $availableRoles = [
-            'pelapor',
-            'pengkaji',
-            'pimpinan'
-        ];
-    }
-        
-        return view('users.index', compact('users', 'roles', 'availableRoles', 'currentUser'));
-    }    /**
+            $availableRoles = [
+                'pelapor',
+                'pengkaji',
+                'pimpinan',
+            ];
+        }
+
+        return view('users.index', compact(
+            'users',
+            'roles',
+            'availableRoles',
+            'currentUser'
+        ));
+    } 
+    
+    /**
      * Store a newly created user in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -47,25 +57,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $currentUser = auth()->user();
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:superadmin,admin,pelapor,pengkaji,pimpinan',
+            'role' => 'required|in:operator,pelapor,pengkaji,pimpinan',
         ]);
 
-        // Set role selalu 'user' untuk admin
-        $role = 'user';
-
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
-
-        $user->assignRole($role);
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
@@ -76,19 +80,14 @@ class UserController extends Controller
      */
     public function create()
     {
-        $role = 'user';
-        return view('users.create', compact('role'));
-    }
+        $roles = [
+            'pelapor',
+            'pengkaji',
+            'pimpinan'
+        ];
 
-    /**
-     * Show the form for creating a new admin (super-admin).
-     */
-    public function createAdmin()
-    {
-        $role = 'admin';
-        return view('admins.create', compact('role'));
+        return view('users.create', compact('roles'));
     }
-
 
     /**
      * Show the form for editing the specified user.
@@ -98,9 +97,17 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
+        $roles = [
+            'operator',
+            'pelapor',
+            'pengkaji',
+            'pimpinan'
+        ];
+
         return view('users.edit', compact('user', 'roles'));
-    }    /**
+    }   
+    
+    /**
      * Update the specified user in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -119,7 +126,7 @@ class UserController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->getKey(),
-            'role' => 'required|exists:roles,name',
+            'role' => 'required|in:operator,pelapor,pengkaji,pimpinan',
         ];
         
         // Only validate password if it's provided
@@ -137,6 +144,7 @@ class UserController extends Controller
         $userData = [
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
+            'role' => $validatedData['role'],
         ];
         
         // Update password only if provided
@@ -146,9 +154,6 @@ class UserController extends Controller
         
         // Update user information
         $user->update($userData);
-        
-        // Update user role
-        $user->syncRoles([$validatedData['role']]);
         
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');
@@ -163,12 +168,8 @@ class UserController extends Controller
         $currentUser = auth()->user();
         
         // Prevent deleting users that the current user doesn't have permission for
-        if ($currentUser->role === 'super-admin') {
-            abort(403, 'Super Admin can only manage admin accounts');
-        }
-        
-        if ($currentUser->role === 'admin') {
-            abort(403, 'Admin can only manage user accounts');
+        if ($currentUser->role !== 'operator') {
+            abort(403);
         }
         
         // Prevent self-deletion

@@ -42,6 +42,10 @@ class StoreFormat1Request extends FormRequest
     public function rules(): array
     {
         return [
+            'nama_kampung' => 'required|string|max:255',
+
+            'nama_distrik' => 'required|string|max:255',
+
             'bencana_id' => 'required|exists:bencanas,id',
 
             'details' => 'required|array|min:1',

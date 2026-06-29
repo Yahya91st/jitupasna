@@ -385,7 +385,7 @@
                 </li>
 
                 <!-- Kategori -->
-                <li class="sidebar-item has-sub {{ Request::is('kategori-*') || Request::is('satuan*') || Request::is('hsd*') ? 'active' : '' }}">
+                <!-- <li class="sidebar-item has-sub {{ Request::is('kategori-*') || Request::is('satuan*') || Request::is('hsd*') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i data-feather="layers"></i>
                         <span>Kategori</span>
@@ -404,72 +404,71 @@
                             <a href="{{ route('hsd.index') }}">Harga Satuan Dasar</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
 
                 <!-- Jitupasna -->
-                <li class="has-sub sidebar-item {{ Request::is('bencana*') || Request::is('kerusakan*') || Request::is('kerugian*') || Request::is('kebutuhan*') ? 'active' : '' }}">
+                @if(in_array(auth()->user()->role, ['pelapor', 'pengkaji', 'pimpinan']))
+                <li class="has-sub sidebar-item
+                    {{ Request::is('bencana*')
+                        || Request::is('forms*')
+                        || Request::is('kajian*')
+                        || Request::is('kebutuhan*')
+                        ? 'active' : '' }}">
+
                     <a href="#" class="sidebar-link">
-                        <i data-feather="triangle"></i>           
-                        <span>Jitupasna</span>
-                    </a>                    
+                        <i data-feather="triangle"></i>
+                        <span>JITUPASNA</span>
+                    </a>
+
                     <ul class="submenu">
-                        <li>
-                            <a href="{{ route('bencana.index') }}" class="sidebar-link">
-                                <i data-feather="circle"></i>
-                                <span>Bencana</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="submenu">
-                        <li class="has-sub {{ Request::is('akibat*') ? 'active' : '' }}">
-                            <a href="#" class="sidebar-link">
-                                <i data-feather="circle"></i>
-                                <span>Akibat</span>
-                            </a>
-                            <ul class="submenu">
-                                <li>
-                                    <a href="{{ route('kerusakan.list', ['source' => 'forms']) }}">
-                                        <i data-feather="circle"></i>
-                                        <span>Kerusakan</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('kerugian.list', ['source' => 'forms']) }}">
-                                        <i data-feather="circle"></i>
-                                        <span>Kerugian</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('forms.form-list', ['source' => 'forms']) }}">
-                                        <i data-feather="circle"></i>
-                                        <span>Formulir</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="submenu">
-                        <li>
-                            <a href="{{ route('bencana.index', ['source' => 'kebutuhan']) }}" class="sidebar-link">
-                                <i data-feather="circle"></i>
-                                <span>Kebutuhan</span>
-                            </a>
-                        </li>
+
+                        {{-- Pelapor --}}
+                        @if(auth()->user()->role === 'pelapor')
+                            <li class="{{ Request::is('bencana*') ? 'active' : '' }}">
+                                <a href="{{ route('bencana.index') }}">
+                                    <i data-feather="circle"></i>
+                                    <span>Bencana</span>
+                                </a>
+                            </li>
+
+                            <li class="{{ Request::is('forms*') ? 'active' : '' }}">
+                                <a href="{{ route('forms.form-list', ['source'=>'forms']) }}">
+                                    <i data-feather="circle"></i>
+                                    <span>Formulir</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        {{-- Pengkaji --}}
+                        @if(auth()->user()->role === 'pengkaji')
+                            <li class="{{ Request::is('kajian*') ? 'active' : '' }}">
+                                <a href="{{ route('kajian.list') }}">
+                                    <i data-feather="circle"></i>
+                                    <span>Kajian</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        {{-- Pimpinan --}}
+                        @if(auth()->user()->role === 'pimpinan')
+                            <li class="{{ Request::is('kebutuhan*') ? 'active' : '' }}">
+                                <a href="{{ route('bencana.index', ['source'=>'kebutuhan']) }}">
+                                    <i data-feather="circle"></i>
+                                    <span>Kebutuhan</span>
+                                </a>
+                            </li>
+                        @endif
+
                     </ul>
                 </li>
+                @endif
                     
                 <!-- User Management -->
-                @if (auth()->user()->role === ['admin', 'super-admin'])
+                @if(auth()->user()->role === 'operator')
                     <li class="sidebar-item {{ Request::is('users*') ? 'active' : '' }}">
                         <a href="{{ route('users.index') }}" class="sidebar-link">
                             <i data-feather="users"></i>
-                            <span>
-                                @if (auth()->user()->role ==='super-admin')
-                                    Manajemen Admin
-                                @else
-                                    Manajemen Pengguna
-                                @endif
-                            </span>
+                            <span>Manajemen Pengguna</span>
                         </a>
                     </li>
                 @endif
