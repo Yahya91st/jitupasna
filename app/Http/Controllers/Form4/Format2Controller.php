@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Form4;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFormat2Request;
 use App\Models\Bencana;
-use App\Models\LaporanBencana;
-use App\Models\Format2Form4;
 use App\Models\Formulir;
 use App\Models\FormulirItem;
 use App\Models\KriteriaKerusakan;
-use App\Models\Rekap;
+use App\Models\LaporanBencana;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -49,6 +48,7 @@ class Format2Controller extends Controller
             'satuan' => $satuan,
         ]);
     }
+
     /**
      * Display Format 2 form for Education sector data collection
      */
@@ -63,7 +63,7 @@ class Format2Controller extends Controller
           // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.format2.format2form4', compact('bencana'));
+        return view('forms.form4.format2.create', compact('bencana'));
     }
 
     /**
@@ -78,7 +78,6 @@ class Format2Controller extends Controller
             $laporan = LaporanBencana::firstOrCreate(
                 [
                     'bencana_id' => $request->bencana_id,
-                    'user_id' => auth()->id(),
                 ],
                 [
                     'tanggal_lapor' => now()->toDateString(),
@@ -226,10 +225,10 @@ class Format2Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $format1Form4
+                    'data' => $formulir
                 ]);
             }            
-            return redirect()->route('forms.form4.format1.list')
+            return redirect()->route('forms.form4.format2.list')
             ->with('success', 'Data berhasil disimpan');
 
         } catch (\Exception $e) {
@@ -251,10 +250,16 @@ class Format2Controller extends Controller
     /**
      * Show a specific form data
      */
-    public function show($id)
+    public function show($formulirId, $nomorInput)
     {
-        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPendidikan->bencana;
+        $formulir = $this->loadFormulir($formulirId);
+
+        $bencana = $formulir->laporan?->bencana;
+
+        $items = $this->buildItemRows($formulir, $nomorInput);
+
+        $totals = $this->computeTotals($formulir, $nomorInput);
+
         return view('forms.form4.format2.show-format2', compact('formPendidikan', 'bencana'));
     }
 
@@ -268,9 +273,16 @@ class Format2Controller extends Controller
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
         $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        $educationReports = Format2Form4::whereHas('rekap', function($q) use ($bencana_id) {
+        $reports = Formulir::with([
+            'laporan.bencana',
+            'items'
+        ])
+        ->where('format_id', 2)
+        ->whereHas('laporan', function ($q) use ($bencana_id) {
             $q->where('bencana_id', $bencana_id);
-        })->get();
+        })
+        ->latest()
+        ->get();
 
         return view('forms.form4.format2.list', compact('bencana', 'educationReports'));
     }
@@ -280,11 +292,17 @@ class Format2Controller extends Controller
      */
     public function generatePdf($id)
     {
-        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPendidikan->bencana;
+        $formulir = $this->loadFormulir($id);
+
+        $bencana = $formulir->laporan?->bencana;
+
+        $items = $this->buildItemRows($formulir);
+
+        $totals = $this->computeTotals($formulir);
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('forms.form4.format2.pdf', compact('formPendidikan', 'bencana'));
         $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('Format2_Pendidikan_' . $formPendidikan->nama_kampung . '.pdf');
+        return $pdf->download('Format2_Pendidikan_' . $formulir->nama_kampung . '.pdf');
     }
 
     /**
@@ -298,10 +316,20 @@ class Format2Controller extends Controller
     /**
      * Show the form for editing the specified resource (Format 2)
      */
-    public function edit($id)
+    public function edit($formulirId, $nomor_input)
     {
-        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPendidikan->bencana;
+        $formulir = $this->loadFormulir($formulirId);
+        $detailMap = $formulir->items
+        ->where('nomor_input', $nomor_input)
+        ->keyBy(function ($item) {
+            return implode('|', [
+                $item->kategori,
+                $item->sub_kategori,
+                $item->tingkat_kerusakan,
+                $item->kriteria_id,
+            ]);
+        });
+        $bencana = $formulir->bencana;
         return view('forms.form4.format2.edit', compact('formPendidikan', 'bencana'));
     }
 
@@ -312,7 +340,7 @@ class Format2Controller extends Controller
     {
         try {
             DB::beginTransaction();
-            $formPendidikan = Format2Form4::findOrFail($id);
+            $formulir = $this->loadFormulir($id);
             $validated = $request->validate([
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
@@ -407,16 +435,16 @@ class Format2Controller extends Controller
             $totalKerugian = 0;
             $validated['total_kerugian'] = $totalKerugian;
 
-            $formPendidikan->update($validated);
+            $formulir->update($validated);
             DB::commit();
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil diupdate',
-                    'data' => $formPendidikan
+                    'data' => $formulir
                 ]);
             }
-            return redirect()->route('format2.list', ['bencana_id' => $validated['bencana_id']])
+            return redirect()->route('forms.form4.format2.list', ['bencana_id' => $validated['bencana_id']])
                 ->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -435,9 +463,14 @@ class Format2Controller extends Controller
      */
     public function destroy($id)
     {
-        $formPendidikan = Format2Form4::findOrFail($id);
-        $bencana_id = $formPendidikan->bencana_id;
-        $formPendidikan->delete();
+        $formulir = $this->loadFormulir($id);
+
+        $bencana_id = $formulir->laporan?->bencana_id;
+
+        $formulir->items()->delete();
+
+        $formulir->delete();
+
         return redirect()->route('format2.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
     }

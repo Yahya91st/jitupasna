@@ -65,7 +65,7 @@ class Format15Controller extends Controller
           // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.format15.format15form4', compact('bencana'));
+        return view('forms.form4.format15.create', compact('bencana'));
     }
 
     private function hitungOperasional($op, $durasi)

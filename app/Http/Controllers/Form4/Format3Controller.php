@@ -63,7 +63,7 @@ class Format3Controller extends Controller
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
         
-        return view('forms.form4.format3.format3form4', compact('bencana'));
+        return view('forms.form4.format3.create', compact('bencana'));
     }
 
     /**
