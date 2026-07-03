@@ -76,15 +76,13 @@ class Format1Controller extends Controller
                 ]
             );
 
-            $formulir = Formulir::create(
-                [
-                    'laporan_id' => $laporan->id,
-                    'format_id' => 1,
-                ],
-                [
-                    'status' => 'draft',
-                ]
-            );            
+            $formulir = Formulir::create([
+                'laporan_id'   => $laporan->id,
+                'format_id'    => 1,
+                'nama_kampung' => $request->nama_kampung,
+                'nama_distrik' => $request->nama_distrik,
+                'status'       => 'draft',
+            ]);
 
             $details = $request->details;
 

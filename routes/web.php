@@ -29,6 +29,7 @@ use App\Http\Controllers\KajianController;
 use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\FormulirController;
 use App\Http\Controllers\FormatFormulirController;
+use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\Form4\Format1Controller;
 use App\Http\Controllers\Form4\Format2Controller;
 use App\Http\Controllers\Form4\Format3Controller;
@@ -58,6 +59,61 @@ use App\Http\Controllers\Form4\Format17Controller;
 //         Route::get('/jalan', [VerifikasiController::class, 'jalan'])->name('jalan');
 //         Route::get('/jembatan', [VerifikasiController::class, 'jembatan'])->name('jembatan');
 //     });
+
+Route::prefix('verifikasi')
+    ->name('verifikasi.')
+    ->group(function () {
+
+        // Daftar laporan bencana
+        Route::get(
+            '/',
+            [VerificationController::class, 'index']
+        )->name('index');
+
+        // Detail laporan -> menampilkan daftar format/sektor
+        Route::get(
+            '/{laporan}',
+            [VerificationController::class, 'show']
+        )->name('show');
+
+        // Daftar formulir (kampung) berdasarkan format
+        Route::get(
+            '/{laporan}/format/{format}',
+            [VerificationController::class, 'format']
+        )->name('format');
+
+        // Detail formulir kampung
+        Route::get(
+            '/{laporan}/format/{format}/formulir/{formulir}',
+            [VerificationController::class, 'formulir']
+        )->name('formulir');
+
+        // Verifikasi formulir
+        Route::patch(
+            '/formulir/{formulir}/verify',
+            [VerificationController::class, 'verifyFormulir']
+        )->name('formulir.verify');
+
+        // Revisi formulir
+        Route::patch(
+            '/formulir/{formulir}/revision',
+            [VerificationController::class, 'revisionFormulir']
+        )->name('formulir.revision');
+
+        // Verifikasi laporan bencana
+        Route::patch(
+            '/{laporan}/verify',
+            [VerificationController::class, 'verifyBencana']
+        )->name('verify');
+
+        // Revisi laporan bencana
+        Route::patch(
+            '/{laporan}/revision',
+            [VerificationController::class, 'revisionBencana']
+        )->name('revision');
+
+});
+
 
 Route::prefix('/kajian')
     ->middleware(['auth', 'verified'])

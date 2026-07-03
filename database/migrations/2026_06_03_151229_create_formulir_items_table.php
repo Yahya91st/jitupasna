@@ -18,9 +18,6 @@ return new class extends Migration
 
         $table->foreignId('kriteria_id')->nullable();
 
-        $table->string('nama_kampung')->nullable();
-        $table->string('nama_distrik')->nullable();
-
         $table->string('kategori');
 
         $table->string('sub_kategori')->nullable();

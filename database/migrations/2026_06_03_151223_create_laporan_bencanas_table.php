@@ -17,7 +17,21 @@ return new class extends Migration
             $table->foreignId('bencana_id');
             $table->unique('bencana_id');
             $table->date('tanggal_lapor');
-            $table->enum('status_laporan',['draft', 'diproses', 'selesai', 'ditolak']);
+            $table->enum('status_laporan', [
+                'draft',
+                'submitted',
+                'verified',
+                'revision'
+            ])->default('draft');
+            $table->foreignId('verified_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
+
+            $table->timestamp('verified_at')->nullable();
+
+            $table->text('catatan_revisi')->nullable();
+            
             $table->integer('total_kerusakan');
             $table->integer('total_kerugian');
             $table->timestamps();

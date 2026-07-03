@@ -3,7 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\FormulirItem;
+use App\Models\Formulir;
+use App\Models\Kajian;
+use App\Models\LaporanBencana;
+use App\Models\Bencana;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,7 +17,17 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Formulir::truncate();
+        FormulirItem::truncate();
+        Kajian::truncate();
+        LaporanBencana::truncate();
+        Bencana::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+
+
+
 
         User::create([
             'name' => 'Admin',

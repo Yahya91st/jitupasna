@@ -19,8 +19,8 @@ class KebutuhanController extends Controller
         private FormulirService $formulirService
     ) {}
 
-   public function show($id)
-{
+    public function show($id)
+    {
         $formulir = $this->formulirService->loadFormulir($id);
 
         return view(

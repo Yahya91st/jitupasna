@@ -11,10 +11,19 @@ class Formulir extends Model
 
     protected $fillable = [
         'laporan_id',
-        'user_id',
         'format_id',
+        'nama_kampung',
+        'nama_distrik',
         'status',
+        'verified_by',
+        'verified_at',
+        'catatan_revisi',
     ];
+
+    public function verifier()
+    {
+        return $this->belongsTo(User::class, 'verified_by');
+    }
 
     public function laporan()
     {

@@ -16,8 +16,10 @@ class LaporanBencana extends Model
         'bencana_id',
         'tanggal_lapor',
         'status_laporan',
+        'catatan_revisi',
         'total_kerusakan',
         'total_kerugian',
+        
     ];
 
     protected $casts = [
