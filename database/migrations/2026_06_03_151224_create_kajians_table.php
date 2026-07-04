@@ -18,14 +18,14 @@ return new class extends Migration
             ->constrained('laporan_bencanas')
             ->cascadeOnDelete();
             $table->text('peningkatan_resiko');
-            $table->text('gangguan_akses');
+            $table->text('gangguan_fungsi');
             $table->text('kehilangan_akses');
             $table->enum('status_kajian',[
                 'draft', 
                 'revisi', 
                 'final'
                 ])->default('draft');
-            $table->string('catatan_revisi');
+            $table->string('catatan_revisi')->nullable();
             $table->timestamps();
         });
     }

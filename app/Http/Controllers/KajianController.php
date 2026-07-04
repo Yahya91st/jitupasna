@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Bencana;
-use App\Models\KategoriBencana;
+use App\Models\LaporanBencana;
+use App\Models\Formulir;
+use App\Models\Kajian;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use App\Services\FormulirService;
+use Log;
 
 class KajianController extends Controller
 {
@@ -23,19 +31,25 @@ class KajianController extends Controller
         return view('kajian.index', compact('bencana'));
         
     }
-    public function show(Request $request, $id)
+
+    public function show(LaporanBencana $laporan)
     {
-        $kajian = Kajian::with(['bencana', 'kategori_bangunan', 'detail.satuan', 'detail.hsd'])
-            ->findOrFail($id);
-        // Cari bencana berdasarkan $id dari URL
-        $bencana = Bencana::findOrFail($id);
-        // TODO: tambahkan data kajian jika sudah ada tabel/model Kajian
-        return view('kajian.show', compact('bencana'));
+        
     }
-    public function createAkses()
+    
+    public function createAkses(LaporanBencana $laporan)
     {
-        return view('kajian.form.akses');
+        $summaries = app(FormulirService::class)
+            ->getSummaries($laporan->bencana);
+
+        // dd($summaries);
+
+        return view('kajian.form.akses', [
+            'laporan' => $laporan,
+            'summaries' => $summaries,
+        ]);
     }
+
     public function createFungsi()
     {
         return view('kajian.form.fungsi');
@@ -43,7 +57,9 @@ class KajianController extends Controller
     public function createResiko()
     {
         return view('kajian.form.resiko');
-    }    // public function store(Request $request)
+    }   
+    
+    // public function store(Request $request)
     // {
     //     // Validasi data
     //     $validated = $request->validate([
@@ -54,6 +70,27 @@ class KajianController extends Controller
     //         'file' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
     //     ]);
     // }
+
+    public function store(Request $request, LaporanBencana $laporan)
+    {
+        $validated = $request->validate([
+            'kehilangan_akses'   => ['required', 'string'],
+            'gangguan_fungsi'  => ['required', 'string'],
+            'peningkatan_resiko' => ['required', 'string'],
+        ]);        
+
+        Kajian::create([
+            'laporan_id' => $laporan->id,
+            'kehilangan_akses' => $validated['kehilangan_akses'],
+            'gangguan_fungsi' => $validated['gangguan_fungsi'],
+            'peningkatan_resiko' => $validated['peningkatan_resiko'],
+        ]);
+
+        return redirect()
+            ->route('kajian.show', $laporan)
+            ->with('success', 'Kajian berhasil disimpan.');
+    }
+
     public function list(Request $request)
     {
         $kategoriBencana = KategoriBencana::query()->get();

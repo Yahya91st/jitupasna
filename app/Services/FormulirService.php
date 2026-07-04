@@ -15,7 +15,6 @@ class FormulirService
     {
         $laporan = LaporanBencana::where('bencana_id', $bencana->id)
             ->first();
-        // dd($laporan);
 
         if (!$laporan) {
             return [];
@@ -29,14 +28,12 @@ class FormulirService
 
         foreach ($formats as $formulir) {
 
-            $totals = $this->computeTotals($formulir, 1);
-
-            $item = $formulir->items->first();
+            $totals = $this->computeTotals($formulir);
 
             $summaries[] = [
                 'id' => $formulir->id,
-                'nama_kampung' => $item?->nama_kampung,
-                'nama_distrik' => $item?->nama_distrik,
+                'nama_kampung' => $formulir->nama_kampung,
+                'nama_distrik' => $formulir->nama_distrik,
                 'format' => sprintf('Format/Sektor %02d', $formulir->format_id),
                 'total_kerusakan' => $totals['total_kerusakan'],
                 'total_kerugian' => $totals['total_kerugian'],

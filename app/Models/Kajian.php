@@ -12,7 +12,7 @@ class Kajian extends Model
     protected $fillable = [
         'laporan_id',
         'peningkatan_resiko',
-        'gangguan_akses',
+        'gangguan_fungsi',
         'kehilangan_akses',
         'status_kajian',
         'catatan_revisi',

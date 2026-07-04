@@ -114,19 +114,41 @@ Route::prefix('verifikasi')
 
 });
 
-
 Route::prefix('/kajian')
     ->middleware(['auth', 'verified'])
     ->name('kajian.')
     ->group(function () {
-    Route::get('/', [KajianController::class, 'index'])->name('index');
-    Route::get('/show/{id}', [KajianController::class, 'show'])->name('show');
-    Route::get('/create/akses', [KajianController::class, 'createAkses'])->name('createAkses');
-    Route::get('/create/fungsi', [KajianController::class, 'createFungsi'])->name('createFungsi');
-    Route::get('/create/resiko', [KajianController::class, 'createResiko'])->name('createResiko');
-    Route::post('/store', [KajianController::class, 'store'])->name('store');
-    Route::get('/list', [KajianController::class, 'list'])->name('list');
-});
+
+        Route::get('/', [KajianController::class, 'index'])
+            ->name('index');
+
+        Route::get('/show/{id}', [KajianController::class, 'show'])
+            ->name('show');
+
+        Route::get(
+            '/{laporan}/create/akses',
+            [KajianController::class, 'createAkses']
+        )->name('createAkses');
+
+        Route::get(
+            '/{laporan}/create/fungsi',
+            [KajianController::class, 'createFungsi']
+        )->name('createFungsi');
+
+        Route::get(
+            '/{laporan}/create/resiko',
+            [KajianController::class, 'createResiko']
+        )->name('createResiko');
+
+        Route::post(
+            '/{laporan}/store',
+            [KajianController::class, 'store']
+        )->name('store');
+
+        Route::get('/list', [KajianController::class, 'list'])
+            ->name('list');
+
+    });
 
 // Proxy routes for wilayah.id
 Route::get('/proxy/wilayah/provinces', [WilayahProxyController::class, 'provinces']);
