@@ -384,16 +384,16 @@
     <div class="col-12">
         <div class="main-card">
             <div class="card-header-gradient">
-                <h4>Data Kejadian Bencana</h4>
+                <h4>Pilih Kejadian Bencana</h4>
                 <div class="header-buttons">
-                    <button class="btn-filter" type="button" data-toggle="modal" data-target="#inlineForm">
-                        <i data-feather="filter" style="width: 16px; height: 16px; margin-right: 6px;"></i>
+                    <button class="btn-filter"
+                        type="button"
+                        data-toggle="modal"
+                        data-target="#inlineForm">
+                        <i data-feather="filter"
+                            style="width:16px;height:16px;margin-right:6px;"></i>
                         Filter
                     </button>
-                    <a href="{{ route('bencana.create') }}" class="btn-add">
-                        <i data-feather="plus" style="width: 16px; height: 16px; margin-right: 6px;"></i>
-                        Tambah Data Bencana
-                    </a>
                 </div>
             </div>
             <div class="card-content">
@@ -417,7 +417,7 @@
                                             <h6 class="bencana-name">{{ config('bencana')[$item->jenis_bencana] }}</h6>
                                         </div>
                                     </td>
-                                    <td>{{\Carbon\Carbon::parse($item->tanggal)->format('Y-m-d')}}</td>
+                                    <td>{{ $item->tanggal }}</td>
                                     <td>
                                         <ul class="location-list">
                                         @foreach ($item->villages as $village)
@@ -429,10 +429,12 @@
                                     <td>
                                         <div class="btn-group">
                                             <div class="dropdown">
-                                                <button class="dropdown-toggle" type="button" id="dropdownMenu{{ $item->id }}"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Aksi
-                                                </button>
+                                                <a href="{{ route('kajian.show', ['bencana_id' => $item->id]) }}"
+                                                    class="btn-add">
+                                                    <i data-feather="check-circle"
+                                                        style="width:16px;height:16px;margin-right:6px;"></i>
+                                                    Pilih Bencana
+                                                </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu{{ $item->id }}">
                                                     <a href="{{ route('bencana.edit', $item->id) }}" class="dropdown-item">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
@@ -485,6 +487,10 @@
                 <div class="pagination-container">
                     {{ $bencana->links() }}
                 </div>
+            </div>
+            <div class="alert alert-info mb-3">
+                <strong>Informasi:</strong>
+                Pilih bencana untuk melihat dan mengisi formulir kerusakan maupun kerugian.
             </div>
 
             <!-- Filter Modal -->

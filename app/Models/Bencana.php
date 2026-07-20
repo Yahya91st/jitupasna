@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 
 class Bencana extends Model
 {
@@ -29,9 +32,9 @@ class Bencana extends Model
 
     protected $fillable = [
         'jenis_bencana',
-        'tanggal', 
-        'province_code', 
-        'regency_code', 
+        'tanggal',
+        'province_code',
+        'regency_code',
         'district_code',
         'village_codes',
         'deskripsi',
@@ -50,9 +53,9 @@ class Bencana extends Model
         return self::JENIS_BENCANA_OPTIONS;
     }
 
-    public function laporanBencanas()
+    public function laporan()
     {
-        return $this->hasMany(LaporanBencana::class, 'bencana_id');
+        return $this->hasOne(LaporanBencana::class, 'bencana_id');
     }
 
     protected function villageNames(): Attribute
@@ -73,5 +76,4 @@ class Bencana extends Model
             }
         );
     }
-
 }

@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahProxyController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\KajianController;
-use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\KeputusanController;
 use App\Http\Controllers\FormulirController;
 use App\Http\Controllers\FormatFormulirController;
 use App\Http\Controllers\VerificationController;
@@ -111,8 +111,7 @@ Route::prefix('verifikasi')
             '/{laporan}/revision',
             [VerificationController::class, 'revisionBencana']
         )->name('revision');
-
-});
+    });
 
 Route::prefix('/kajian')
     ->middleware(['auth', 'verified'])
@@ -125,29 +124,32 @@ Route::prefix('/kajian')
         Route::get('/show/{id}', [KajianController::class, 'show'])
             ->name('show');
 
-        Route::get(
-            '/{laporan}/create/akses',
-            [KajianController::class, 'createAkses']
-        )->name('createAkses');
-
-        Route::get(
-            '/{laporan}/create/fungsi',
-            [KajianController::class, 'createFungsi']
-        )->name('createFungsi');
-
-        Route::get(
-            '/{laporan}/create/resiko',
-            [KajianController::class, 'createResiko']
-        )->name('createResiko');
+        Route::get('/{bencana}/create', [KajianController::class, 'create'])
+            ->name('create');
+        // Route::get(
+        //     '/{laporan}/create/',
+        //     [KajianController::class, 'create']
+        // )->name('create');
 
         Route::post(
             '/{laporan}/store',
             [KajianController::class, 'store']
         )->name('store');
 
-        Route::get('/list', [KajianController::class, 'list'])
-            ->name('list');
+        Route::get('/show', [KajianController::class, 'show'])
+            ->name('show');
 
+        Route::get('/kajian/{kajian}/preview', [KajianController::class, 'previewPdf'])
+            ->name('preview');
+
+        Route::get('/kajian/{kajian}/pdf', [KajianController::class, 'generatePdf'])
+            ->name('pdf');
+
+        Route::get('/kajian/{kajian}/edit', [KajianController::class, 'edit'])
+            ->name('edit');
+
+        Route::put('/kajian/{kajian}', [KajianController::class, 'update'])
+            ->name('update');
     });
 
 // Proxy routes for wilayah.id
@@ -185,9 +187,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
-
     });
-
 });
 
 Route::prefix('/bencana')
@@ -241,17 +241,95 @@ Route::prefix('/kerugian')
         Route::patch('update/{id}', [KerugianController::class, 'update'])->name('update');
     });
 
-Route::prefix('/kebutuhan')
+// Route::prefix('/kebutuhan')
+//     ->middleware(['auth', 'verified'])
+//     ->name('kebutuhan.')
+//     ->group(function () {
+
+
+//         // daftar bencana
+//         Route::get(
+//             '/',
+//             [KebutuhanController::class, 'index']
+//         )->name('index');
+
+
+//         // halaman kebutuhan + keputusan
+//         Route::get(
+//             '/list/{bencana}',
+//             [KebutuhanController::class, 'listFormat']
+//         )->name('list');
+
+
+//         // simpan kebutuhan
+//         Route::post(
+//             '/store/{laporan}',
+//             [KebutuhanController::class, 'store']
+//         )->name('store');
+
+
+//         // simpan keputusan pimpinan
+//         Route::post(
+//             '/keputusan/{laporan}',
+//             [KebutuhanController::class, 'storeKeputusan']
+//         )->name('keputusan.store');
+
+
+//         // update keputusan
+//         Route::put(
+//             '/keputusan/{keputusan}',
+//             [KebutuhanController::class, 'updateKeputusan']
+//         )->name('keputusan.update');
+//     });
+
+Route::prefix('/keputusan')
     ->middleware(['auth', 'verified'])
-    ->name('kebutuhan.')
+    ->name('keputusan.')
     ->group(function () {
-        Route::get('', [KebutuhanController::class, 'index'])->name('index'); // Shows list of disasters
-        Route::get('list', [KebutuhanController::class, 'listFormat'])->name('list');
-        Route::post('store/{id}', [KebutuhanController::class, 'store'])->name('store');
-        Route::get('show/{id}', [KebutuhanController::class, 'show'])->name('show'); // Shows damage & loss data for specific disaster
-        Route::get('edit/{id}', [KebutuhanController::class, 'edit'])->name('edit');
-        Route::patch('update/{id}', [KebutuhanController::class, 'update'])->name('update');
-        Route::get('detail-bencana/{id}', [KebutuhanController::class, 'showDetailBencana'])->name('detail-bencana');
+
+        // daftar bencana
+        Route::get(
+            '/',
+            [KeputusanController::class, 'index']
+        )->name('index');
+
+        // halaman kebutuhan + keputusan
+        Route::get(
+            '/list/{bencana}',
+            [KeputusanController::class, 'listFormat']
+        )->name('list');
+
+
+        // halaman detail + kebutuhan + kajian + form keputusan
+        Route::get(
+            '/{bencana}',
+            [KeputusanController::class, 'create']
+        )->name('create');
+
+
+        // simpan keputusan pimpinan
+        Route::post(
+            '/{laporan}/store',
+            [KeputusanController::class, 'store']
+        )->name('store');
+
+
+        // edit keputusan
+        Route::get(
+            '/edit/{keputusan}',
+            [KeputusanController::class, 'edit']
+        )->name('edit');
+
+
+        Route::put(
+            '/update/{keputusan}',
+            [KeputusanController::class, 'update']
+        )->name('update');
+
+        Route::get(
+            '/preview/{keputusan}',
+            [KeputusanController::class, 'preview']
+        )->name('preview');
     });
 
 Route::prefix('/kategori-bangunan')
@@ -290,15 +368,15 @@ Route::prefix('/hsd')
         Route::post('store', [HargaSatuanDasarController::class, 'store'])->name('store');
     });
 
-Route::get('/get-nama-by-tipe/{tipe}', function ($tipe) {
-    $namaList = HSD::where('tipe', $tipe)->get(['id', 'nama', 'satuan', 'harga']);
-    // Format harga ke format Rupiah dengan "Rp" di depan
-    $namaList = $namaList->map(function ($item) {
-        $item->harga = 'Rp ' . number_format($item->harga, 2, ',', '.');
-        return $item;
-    });
-    return response()->json($namaList);
-})->middleware(['auth', 'verified']);
+// Route::get('/get-nama-by-tipe/{tipe}', function ($tipe) {
+//     $namaList = HSD::where('tipe', $tipe)->get(['id', 'nama', 'satuan', 'harga']);
+//     // Format harga ke format Rupiah dengan "Rp" di depan
+//     $namaList = $namaList->map(function ($item) {
+//         $item->harga = 'Rp ' . number_format($item->harga, 2, ',', '.');
+//         return $item;
+//     });
+//     return response()->json($namaList);
+// })->middleware(['auth', 'verified']);
 
 // Route::post('/upload-cropped-image', 'ImageController@uploadCroppedImage')->middleware(['auth', 'verified']);
 
@@ -378,7 +456,7 @@ Route::prefix('/forms')
 
                 Route::get('/pdf/{formulir}', [Format1Controller::class, 'generatePdf'])
                     ->name('pdf');
-                });
+            });
 
             // Format 2 - Education sector
             Route::prefix('format2')->name('format2.')->group(function () {
@@ -417,7 +495,6 @@ Route::prefix('/forms')
                 Route::get('/edit/{id}', [Format4Controller::class, 'edit'])->name('edit');
                 Route::patch('/update/{id}', [Format4Controller::class, 'update'])->name('update');
                 Route::delete('/destroy/{id}', [Format4Controller::class, 'destroy'])->name('destroy');
-
             });
 
             // Format 5 - Religious sector (IMPLEMENTED)
@@ -590,7 +667,7 @@ Route::prefix('/forms')
             Route::get('/pdf/{id}', [Form6Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form6Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/get-rumahtangga/{id}', [Form6Controller::class, 'getRumahtangga'])->name('get-rumahtangga');
-            
+
             // Route untuk contoh PDF (dengan data dummy dari controller)
             Route::get('/contoh-pdf', [Form6Controller::class, 'contohPdf'])->name('contoh-pdf');
         });
@@ -607,7 +684,6 @@ Route::prefix('/forms')
             Route::get('/pdf/{id}', [Form7Controller::class, 'generatePdf'])->name('pdf');
             Route::get('/preview-pdf/{id}', [Form7Controller::class, 'previewPdf'])->name('preview-pdf');
             Route::get('/contoh-pdf', [Form7Controller::class, 'contohPdf'])->name('contoh-pdf');
-
         });
 
         // Form 8 (Pengolahan dan Analisis Data Penilaian Kerusakan dan Kerugian)
@@ -629,7 +705,7 @@ Route::prefix('/forms')
             Route::get('/table-ringkas', [Form8Controller::class, 'tableRingkas'])->name('table-ringkas');
             Route::get('/form8-per-baris-pdf', [Form8Controller::class, 'perBarisPdf'])->name('form8-per-baris-pdf');
             Route::get('/analisis-komprehensif', [Form8Controller::class, 'analisisKomprehensif'])->name('analisis-komprehensif');
-            
+
             // Route untuk edit dan delete per row
             Route::get('/row/edit/{id}', [Form8Controller::class, 'editRow'])->name('row.edit');
             Route::patch('/row/update/{id}', [Form8Controller::class, 'updateRow'])->name('row.update');
@@ -649,7 +725,7 @@ Route::prefix('/forms')
             Route::delete('/delete/{id}', [Form9Controller::class, 'destroy'])->name('destroy');
             Route::get('/contoh-pdf', [Form9Controller::class, 'contohPdf'])->name('contoh-pdf');
             Route::get('/form9Row', [Form9Controller::class, 'perBaris'])->name('form9Row');
-});
+        });
 
         // Form10 (Analisa Data Akibat terhadap Akses, Fungsi, dan Resiko)
         Route::prefix('form10')->name('form10.')->group(function () {
@@ -726,6 +802,3 @@ Route::prefix('/forms')
 
 
 require __DIR__ . '/auth.php';
-
-
-        

@@ -11,13 +11,11 @@ class Keputusan extends Model
 
     protected $fillable = [
         'laporan_id',
-        'hasil_keputusan',
-        'tindak_lanjut',
-        'status_keputusan',
-        'catatan_pimpinan',
+        'prioritas',
+        'keputusan',
     ];
 
-    public function laporanBencana()
+    public function laporan()
     {
         return $this->belongsTo(LaporanBencana::class, 'laporan_id');
     }

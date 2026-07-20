@@ -417,7 +417,7 @@
                                             <h6 class="bencana-name">{{ config('bencana')[$item->jenis_bencana] }}</h6>
                                         </div>
                                     </td>
-                                    <td>{{ $item->tanggal }}</td>
+                                    <td>{{\Carbon\Carbon::parse($item->tanggal)->format('Y-m-d')}}</td>
                                     <td>
                                         <ul class="location-list">
                                         @foreach ($item->villages as $village)

@@ -172,18 +172,18 @@
         color: var(--orange-primary) !important;
     }
 
-    .sidebar-item.has-sub.active > .sidebar-link {
+    .sidebar-item.has-sub.active>.sidebar-link {
         background: var(--orange-medium) !important;
         color: var(--orange-primary) !important;
     }
 
-    .sidebar-item.has-sub.active > .sidebar-link span,
-    .sidebar-item.has-sub.active > .sidebar-link i {
+    .sidebar-item.has-sub.active>.sidebar-link span,
+    .sidebar-item.has-sub.active>.sidebar-link i {
         color: var(--orange-primary) !important;
     }
 
     /* Toggle Arrow */
-    .sidebar-item.has-sub > .sidebar-link::after {
+    .sidebar-item.has-sub>.sidebar-link::after {
         content: '▼';
         position: absolute;
         right: 1rem;
@@ -194,11 +194,11 @@
         z-index: 1;
     }
 
-    .sidebar-item.has-sub > .sidebar-link:hover::after {
+    .sidebar-item.has-sub>.sidebar-link:hover::after {
         opacity: 1;
     }
 
-    .sidebar-item.has-sub.active > .sidebar-link::after {
+    .sidebar-item.has-sub.active>.sidebar-link::after {
         transform: rotate(180deg);
     }
 
@@ -295,11 +295,25 @@
         transform: translateX(0);
     }
 
-    .has-sub.active .submenu li:nth-child(1) { transition-delay: 0.05s; }
-    .has-sub.active .submenu li:nth-child(2) { transition-delay: 0.1s; }
-    .has-sub.active .submenu li:nth-child(3) { transition-delay: 0.15s; }
-    .has-sub.active .submenu li:nth-child(4) { transition-delay: 0.2s; }
-    .has-sub.active .submenu li:nth-child(5) { transition-delay: 0.25s; }
+    .has-sub.active .submenu li:nth-child(1) {
+        transition-delay: 0.05s;
+    }
+
+    .has-sub.active .submenu li:nth-child(2) {
+        transition-delay: 0.1s;
+    }
+
+    .has-sub.active .submenu li:nth-child(3) {
+        transition-delay: 0.15s;
+    }
+
+    .has-sub.active .submenu li:nth-child(4) {
+        transition-delay: 0.2s;
+    }
+
+    .has-sub.active .submenu li:nth-child(5) {
+        transition-delay: 0.25s;
+    }
 
     /* Toggle Button */
     .sidebar-toggler {
@@ -358,9 +372,9 @@
     }
 
     /* Remove conflicting styles */
-    .sidebar-wrapper.sidebar-orange .sidebar-item:hover > .sidebar-link,
-    .sidebar-wrapper.sidebar-orange .sidebar-item.active > .sidebar-link,
-    .sidebar-wrapper.sidebar-orange .submenu li:hover > a {
+    .sidebar-wrapper.sidebar-orange .sidebar-item:hover>.sidebar-link,
+    .sidebar-wrapper.sidebar-orange .sidebar-item.active>.sidebar-link,
+    .sidebar-wrapper.sidebar-orange .submenu li:hover>a {
         border-left: none !important;
     }
 </style>
@@ -407,70 +421,78 @@
                 </li> -->
 
                 <!-- Jitupasna -->
-                @if(in_array(auth()->user()->role, ['pelapor', 'pengkaji', 'pimpinan']))
-                <li class="has-sub sidebar-item
-                    {{ Request::is('bencana*')
-                        || Request::is('forms*')
-                        || Request::is('kajian*')
-                        || Request::is('kebutuhan*')
-                        ? 'active' : '' }}">
+                @if (in_array(auth()->user()->role, ['pelapor', 'pengkaji', 'pimpinan']))
+                    <li class="has-sub sidebar-item
+                    {{ Request::is('bencana*') || Request::is('forms*') || Request::is('kajian*') || Request::is('kebutuhan*') ? 'active' : '' }}">
 
-                    <a href="#" class="sidebar-link">
-                        <i data-feather="triangle"></i>
-                        <span>JITUPASNA</span>
-                    </a>
+                        <a href="#" class="sidebar-link">
+                            <i data-feather="triangle"></i>
+                            <span>JITUPASNA</span>
+                        </a>
 
-                    <ul class="submenu">
+                        <ul class="submenu">
 
-                        {{-- Pelapor --}}
-                        @if(auth()->user()->role === 'pelapor')
-                            <li class="{{ Request::is('bencana*') ? 'active' : '' }}">
-                                <a href="{{ route('bencana.index') }}">
-                                    <i data-feather="circle"></i>
-                                    <span>Bencana</span>
-                                </a>
-                            </li>
+                            {{-- Pelapor --}}
+                            @if (auth()->user()->role === 'pelapor')
+                                <li class="{{ Request::is('bencana*') ? 'active' : '' }}">
+                                    <a href="{{ route('bencana.index') }}">
+                                        <i data-feather="circle"></i>
+                                        <span>Bencana</span>
+                                    </a>
+                                </li>
 
-                            <li class="{{ Request::is('forms*') ? 'active' : '' }}">
-                                <a href="{{ route('forms.form-list', ['source'=>'forms']) }}">
-                                    <i data-feather="circle"></i>
-                                    <span>Formulir</span>
-                                </a>
-                            </li>
-                        @endif
+                                <li class="{{ Request::is('forms*') ? 'active' : '' }}">
+                                    <a href="{{ route('forms.form-list', ['source' => 'forms']) }}">
+                                        <i data-feather="circle"></i>
+                                        <span>Formulir</span>
+                                    </a>
+                                </li>
+                            @endif
 
-                        {{-- Pengkaji --}}
-                        @if(auth()->user()->role === 'pengkaji')
-                            <li class="{{ Request::is('kajian*') ? 'active' : '' }}">
-                                <a href="{{ route('kajian.list') }}">
-                                    <i data-feather="circle"></i>
-                                    <span>Kajian</span>
-                                </a>
-                            </li>
-                        @endif
+                            {{-- Pengkaji --}}
+                            @if (auth()->user()->role === 'pengkaji')
+                                <li class="{{ Request::is('kajian*') ? 'active' : '' }}">
+                                    <a href="{{ route('kajian.index') }}">
+                                        <i data-feather="circle"></i>
+                                        <span>Kajian</span>
+                                    </a>
+                                </li>
+                            @endif
 
-                        {{-- Pimpinan --}}
-                        @if(auth()->user()->role === 'pimpinan')
-                            <li class="{{ Request::is('kebutuhan*') ? 'active' : '' }}">
-                                <a href="{{ route('bencana.index', ['source'=>'kebutuhan']) }}">
-                                    <i data-feather="circle"></i>
-                                    <span>Kebutuhan</span>
-                                </a>
-                            </li>
-                        @endif
+                            {{-- Pimpinan --}}
+                            @if (auth()->user()->role === 'pimpinan')
+                                <li class="{{ Request::is('keputusan*') ? 'active' : '' }}">
+                                    <a href="{{ route('keputusan.index') }}">
+                                        <i data-feather="circle"></i>
+                                        <span>Keputusan</span>
+                                    </a>
+                                </li>
+                            @endif
 
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
                 @endif
-                    
+
                 <!-- User Management -->
-                @if(auth()->user()->role === 'operator')
+                @if (auth()->user()->role === 'operator')
+                    <li class="sidebar-item {{ Request::is('verifikasi*') ? 'active' : '' }}">
+                        <a href="{{ route('verifikasi.index') }}" class="sidebar-link">
+                            <i data-feather="check-square"></i>
+                            <span>Verifikasi</span>
+                        </a>
+                    </li>
                     <li class="sidebar-item {{ Request::is('users*') ? 'active' : '' }}">
                         <a href="{{ route('users.index') }}" class="sidebar-link">
                             <i data-feather="users"></i>
                             <span>Manajemen Pengguna</span>
                         </a>
                     </li>
+                    <!-- <li class="sidebar-item {{ Request::is('akses*') ? 'active' : '' }}">
+                        <a href="{{ route('verifikasi.index') }}" class="sidebar-link">
+                            <i data-feather="clipboard"></i>
+                            <span>Manajemen Akses</span>
+                        </a>
+                    </li> -->
                 @endif
             </ul>
         </div>
@@ -488,7 +510,7 @@
         document.querySelectorAll('.has-sub').forEach(function(item) {
             const submenu = item.querySelector('.submenu');
             const hasActiveChild = submenu && submenu.querySelector('li.active');
-            
+
             // Only keep open if submenu has an active child
             if (!hasActiveChild) {
                 item.classList.remove('active');
@@ -570,14 +592,14 @@
         // Handle sidebar toggle button (burger)
         const sidebarToggler = document.querySelector('.sidebar-toggler');
         const sidebar = document.getElementById('sidebar');
-        
+
         if (sidebarToggler && sidebar) {
             sidebarToggler.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 sidebar.classList.toggle('active');
-                
+
                 // Also toggle the wrapper
                 const wrapper = sidebar.querySelector('.sidebar-wrapper');
                 if (wrapper) {

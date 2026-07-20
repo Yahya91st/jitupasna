@@ -30,37 +30,80 @@ class KebutuhanController extends Controller
     }
     /**
      * Display a listing of the resource.
-     */    
+     */
     public function index(Request $request)
     {
-        $bencana_id = $request->input('bencana_id');
-        $bencana = null;
-        
-        // Redirect to bencana selection page if no bencana_id is provided
-        if (!$bencana_id) {
-            return redirect()->route('bencana.index', ['source' => 'kebutuhan']);
-        }
-        
-        // Get bencana details if ID is provided
-        $bencana = Bencana::findOrFail($bencana_id);
+        $jenis_bencana = config('bencana');
 
-        return view('kebutuhan.index', compact('bencana'));
+
+        $query = Bencana::with([
+            'laporan.keputusan',
+            'laporan.kajian'
+        ])
+            ->latest('id');
+
+
+        if ($request->filled('jenis_bencana')) {
+
+            $query->where(
+                'jenis_bencana',
+                $request->jenis_bencana
+            );
+        }
+
+
+        $bencana = $query
+            ->paginate(
+                $request->input('limit', 5)
+            )
+            ->appends(
+                $request->except('page')
+            );
+
+
+
+        return view(
+            'kebutuhan.index',
+            compact(
+                'bencana',
+                'jenis_bencana'
+            )
+        );
     }
 
     /**
      * Display a summary of tables by form.
-     */    
+     */
     public function listFormat(Request $request)
     {
-        $bencana = Bencana::findOrFail($request->bencana_id);
+        $bencana = Bencana::findOrFail(
+            $request->bencana
+        );
+
+        $laporan = LaporanBencana::firstOrCreate(
+            [
+                'bencana_id' => $bencana->id
+            ],
+            [
+                'tanggal_lapor' => now(),
+                'status' => 'draft'
+            ]
+        );
 
         $summaries = $this->formulirService
-        ->getSummaries($bencana);
+            ->getSummaries($bencana);
 
-        return view('kebutuhan.list', compact(
+        $kajian = $laporan->kajian;
+
+        $keputusan = $laporan->keputusan;
+
+
+        return view('kebutuhan.index', compact(
             'bencana',
-            'summaries'
+            'laporan',
+            'summaries',
+            'kajian',
+            'keputusan'
         ));
     }
-
 }

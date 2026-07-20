@@ -157,8 +157,6 @@ class VerificationController extends Controller
             ->where('format_id', $format->id)
             ->latest()
             ->get();
-            
-        
         // dd(
         //     $laporan->id,
         //     $format->id

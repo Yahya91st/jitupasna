@@ -4,380 +4,221 @@ namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFormat1Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Bencana;
 use App\Models\LaporanBencana;
 use App\Models\Formulir;
 use App\Models\FormulirItem;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\FormulirService;
 
 class Format1Controller extends Controller
 {
-    public function summary($bencanaId)
+    protected FormulirService $formulirService;
+
+    public function __construct(FormulirService $formulirService)
     {
-        $laporan = LaporanBencana::where('bencana_id', $bencanaId)
-            ->first();
-
-        if (!$laporan) {
-            return collect();
-        }
-
-        $formulir = Formulir::where([
-            'laporan_id' => $laporan->id,
-            'format_id' => 1,
-        ])->first();
-
-        if (!$formulir) {
-            return collect();
-        }
-
-        return FormulirItem::where('formulir_id', $formulir->id)
-            ->get();
+        $this->formulirService = $formulirService;
     }
 
-    /**
-     * Display Format 1 form for Housing sector data collection
-     */
     public function index(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
+
         // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
+
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
+
         return view('forms.form4.format1.create', compact('bencana'));
     }
 
-    /**
-     * Store format1 form data for Housing sector
-     */
-    public function store(StoreFormat1Request $request)
-    {        
-
-        try {
-            DB::beginTransaction();
-
-            $laporan = LaporanBencana::firstOrCreate(
-                [
-                    'bencana_id' => $request->bencana_id,
-                ],
-                [
-                    'user_id' => auth()->id(),
-                    'tanggal_lapor' => now()->toDateString(),
-                    'status' => 'draft',
-                    'total_kerusakan' => 0,
-                    'total_kerugian' => 0,
-                ]
-            );
-
-            $formulir = Formulir::create([
-                'laporan_id'   => $laporan->id,
-                'format_id'    => 1,
-                'nama_kampung' => $request->nama_kampung,
-                'nama_distrik' => $request->nama_distrik,
-                'status'       => 'draft',
-            ]);
-
-            $details = $request->details;
-
-            $nama_kampung = $request->nama_kampung;
-
-            $nama_distrik = $request->nama_distrik;
-
-            $validated = $request->validated();
-
-            foreach ($details as $detail) {
-
-                FormulirItem::create([
-                    'formulir_id' => $formulir->id,
-                    'nama_kampung' => $nama_kampung,
-                    'nama_distrik' => $nama_distrik,
-
-                    'kriteria_id' => $detail['kriteria_id'],
-
-                    'kategori' => $detail['kategori'],
-                    'sub_kategori' => $detail['sub_kategori'] ?? null,
-
-                    'dimensi' => $detail['dimensi'] ?? null,
-
-                    'tingkat_kerusakan' => $detail['tingkat_kerusakan'],
-
-                    'jumlah' => $detail['jumlah'],
-                    'harga_satuan' => $detail['harga_satuan'],
-
-                    'satuan' => $detail['satuan'] ?? null,
-                ]);
-            }
-
-            DB::commit();
-            // Return success response for AJAX or redirect for regular form
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Data berhasil disimpan',
-                    'data' => $format1Form4
-                ]);
-            }            
-            return redirect()->route('forms.form4.format1.list', [
-                'bencana_id' => $request->bencana_id
-            ])->with('success', 'Data berhasil disimpan');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-                ], 500);
-            }
-
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
-        }
-    }
-
-    /**
-     * Show a specific form data
-     */
-    public function show($formulirId, $nomorInput)
+    public function show($id)
     {
-        
-        $formulir = $this->loadFormulir($formulirId);
+        $formulir = $this->formulirService->loadFormulir($id);
 
-        $bencana = $formulir->laporan?->bencana;
+        $bencana = $formulir->laporan->bencana;
 
-        $items = $this->buildItemRows($formulir, $nomorInput);
+        $this->formulirService->loadVillages($bencana);
 
-        $totals = $this->computeTotals($formulir, $nomorInput);
-
-        $reports = Formulir::with([
-                'laporan.bencana',
-                'items'
-            ]);
-
-        return view(
-            'forms.form4.format1.show-format1',
-            compact(
-                'formulir',
-                'bencana',
-                'items',
-                'totals',
-                'nomorInput'
-            )
-        );
+        return view('forms.form4.format1.show-format1', [
+            'formulir' => $formulir,
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
+        ]);
     }
 
-    /**
-     * List all entries for this format
-     */
     public function list(Request $request)
     {
-        $bencana_id = $request->input('bencana_id');
+        $bencana = Bencana::findOrFail($request->bencana_id);
 
-        if (!$bencana_id) {
-            return redirect()->route('bencana.index', [
-                'source' => 'forms'
-            ]);
-        }
-
-        $bencana = Bencana::findOrFail($bencana_id);
-
-        $reports = Formulir::with([
-                'laporan.bencana',
-                'items'
-            ])
+        $reports = Formulir::with(['laporan.bencana', 'items'])
             ->where('format_id', 1)
-            ->whereHas('laporan', function ($q) use ($bencana_id) {
-                $q->where('bencana_id', $bencana_id);
+            ->whereHas('laporan', function ($q) use ($bencana) {
+                $q->where('bencana_id', $bencana->id);
             })
             ->latest()
-            ->get();            
+            ->get();
 
-        return view(
-            'forms.form4.format1.list-format1',
-            compact('bencana', 'reports')
-        );
+        $reports->each(function ($report) {
+            $bencana = $report->laporan->bencana;
+
+            $codes = is_array($bencana->village_codes) ? $bencana->village_codes : json_decode($bencana->village_codes, true);
+
+            $bencana->villages = collect($codes)
+                ->map(function ($code) {
+                    $code = trim($code);
+
+                    return Cache::remember("village_name_{$code}", 86400, function () use ($code) {
+                        $parts = explode('.', $code);
+                        $districtCode = implode('.', array_slice($parts, 0, 3));
+
+                        $response = Http::get("https://wilayah.id/api/villages/{$districtCode}.json");
+
+                        if (!$response->ok()) {
+                            return [
+                                'code' => $code,
+                                'name' => null,
+                            ];
+                        }
+
+                        $village = collect($response->json('data'))->firstWhere('code', $code);
+
+                        return [
+                            'code' => $code,
+                            'name' => $village['name'] ?? null,
+                        ];
+                    });
+                })
+                ->toArray();
+        });
+
+        return view('forms.form4.format1.list-format1', compact('bencana', 'reports'));
     }
 
-    /**
-     * Generate PDF for a specific form data (Format1/Perumahan)
-     *
-     * @param  int  $id
-     * @return mixed
-     */
+    public function previewPdf($id)
+    {
+        $formulir = $this->formulirService->loadFormulir($id);
+
+        $bencana = $formulir->laporan->bencana;
+
+        $this->formulirService->loadVillages($bencana);
+
+        $pdf = Pdf::loadView('forms.form4.format1.pdf', [
+            'formulir' => $formulir,
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
+        ]);
+
+        return $pdf->setPaper('A4', 'landscape')
+            ->stream('Format1.pdf');
+    }
+
     public function generatePdf($id)
     {
-        $formulir = $this->loadFormulir($id);
-        $bencana = $formulir->laporan?->bencana;
-        $items = $this->buildItemRows($formulir);
-        $totals = $this->computeTotals($formulir);
+        $formulir = $this->formulirService->loadFormulir($id);
 
-        $pdf = Pdf::loadView('forms.form4.format1.pdf', compact('formulir', 'bencana', 'items', 'totals'));
-        $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('Format1_Perumahan_' . $formulir->id . '.pdf');
-    }
+        $bencana = $formulir->laporan->bencana;
 
-    /**
-     * Preview PDF for a specific form data
-     */
-    public function previewPdf($formulirId, $nomorInput)
-    {
-        $formulir = $this->loadFormulir($formulirId);
+        $this->formulirService->loadVillages($bencana);
 
-        $bencana = $formulir->laporan?->bencana;
+        $summary = $this->formulirService->getSummary($formulir);
 
-        $items = $this->buildItemRows($formulir, $nomorInput);
-
-        $totals = $this->computeTotals($formulir, $nomorInput);
-
-        $pdf = Pdf::loadView(
-            'forms.form4.format1.pdf',
-            compact('formulir', 'bencana', 'items', 'totals', 'nomorInput')
-        );
+        $pdf = Pdf::loadView('forms.form4.format1.pdf', [
+            'formulir' => $formulir,
+            'bencana' => $formulir->laporan->bencana,
+            'items' => $summary['rows'],
+            'totals' => $summary['totals'],
+        ]);
 
         $pdf->setPaper('A4', 'landscape');
 
-        return $pdf->stream('Format1_Perumahan.pdf');
+        return $pdf->download("Format1_{$formulir->id}.pdf");
     }
-
-    /**
-     * Delete a specific form data
-     */
     public function destroy($id)
     {
-        try {
-            $formulir = $this->loadFormulir($id);
-            $bencana_id = $formulir->laporan?->bencana_id;
+        DB::transaction(function () use ($id) {
+            $formulir = $this->formulirService->loadFormulir($id);
 
-            DB::beginTransaction();
             $formulir->items()->delete();
+
             $formulir->delete();
-            DB::commit();
-            
-            // Return success response
-            return redirect()->route('forms.form4.format1.list', ['bencana_id' => $bencana_id])
-                           ->with('success', 'Data berhasil dihapus');
-                           
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()
-                ->withErrors(['error' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()]);
-        }
+        });
+
+        return back()->with('success', 'Data berhasil dihapus.');
     }
 
-    /**
-     * Show the form for editing a specific format1 data
-     */
-    public function edit($formulirId, $nomor_input)
+    public function edit($id)
     {
-        try {
+        $formulir = $this->formulirService->loadFormulir($id);
 
-            $formulir = $this->loadFormulir($formulirId);
+        $summary = $this->formulirService->getSummary($formulir);
 
-            $detailMap = $formulir->items
-            ->where('nomor_input', $nomor_input)
-            ->keyBy(function ($item) {
-                return implode('|', [
-                    $item->kategori,
-                    $item->sub_kategori,
-                    $item->tingkat_kerusakan,
-                    $item->kriteria_id,
-                ]);
-            });
-
-            $bencana = $formulir->laporan?->bencana;
-
-            $items = $this->buildItemRows($formulir, $nomor_input);
-
-            $totals = $this->computeTotals($formulir, $nomor_input);
-
-            return view(
-                'forms.form4.format1.edit',
-                compact(
-                    'formulir',
-                    'bencana',
-                    'items',
-                    'totals',
-                    'nomor_input',
-                    'detailMap'
-                )
-            );
-
-        } catch (\Exception $e) {
-
-            return redirect()->back()
-                ->withErrors([
-                    'error' => 'Data tidak ditemukan: ' . $e->getMessage()
-                ]);
-        }
+        return view('forms.form4.format1.edit', [
+            'formulir' => $formulir,
+            'bencana' => $formulir->laporan->bencana,
+            'rows' => $summary['rows'],
+            'totals' => $summary['totals'],
+        ]);
     }
-
-    /**
-     * Update the specified format1 data
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, $id)
+    public function update(StoreFormat1Request $request, $id)
     {
-        try {
-            DB::beginTransaction();
+        DB::beginTransaction();
 
-            $formulir = $this->loadFormulir($id);
-            $validated = $request->validate([
-                'bencana_id' => 'required|exists:bencanas,id',
-                'items' => 'required|array|min:1',
-                'items.*.id' => 'required|exists:formulir_items,id',
-                'items.*.jumlah' => 'nullable|numeric|min:0',
-                'items.*.harga_satuan' => 'nullable|numeric|min:0',
+        try {
+            $formulir = $this->formulirService->loadFormulir($id);
+
+            // Update data formulir
+            $formulir->update([
+                'nama_kampung' => $request->nama_kampung,
+                'nama_distrik' => $request->nama_distrik,
             ]);
 
-            $formulir->items()
-            ->where('nomor_input', $nomor_input)
-            ->delete();
-
-            foreach ($validated['items'] as $detail) {
-                FormulirItem::create([
-                    'formulir_id' => $formulir->id,
-                    'kriteria_id' => null,
-                    'kategori' => $detail['kategori'] ?? 'rumah',
+            foreach ($request->details as $detail) {
+                FormulirItem::where('id', $detail['id'])->update([
+                    'nama_kampung' => $request->nama_kampung,
+                    'nama_distrik' => $request->nama_distrik,
+                    'kriteria_id' => $detail['kriteria_id'],
+                    'kategori' => $detail['kategori'],
                     'sub_kategori' => $detail['sub_kategori'] ?? null,
                     'dimensi' => $detail['dimensi'] ?? null,
-                    'tingkat_kerusakan' => $detail['tingkat_kerusakan'] ?? null,
-                    'jumlah' => $detail['jumlah'] ?? 0,
-                    'harga_satuan' => $detail['harga_satuan'] ?? 0,
+                    'tingkat_kerusakan' => $detail['tingkat_kerusakan'],
+                    'jumlah' => $detail['jumlah'],
+                    'harga_satuan' => $detail['harga_satuan'],
                     'satuan' => $detail['satuan'] ?? null,
                 ]);
             }
 
-            $totals = $this->computeTotals($formulir->fresh(['items']));
-            if ($formulir->laporan) {
-                $formulir->laporan->update([
-                    'bencana_id' => $validated['bencana_id'],
-                    'total_kerusakan' => $totals['total_kerusakan'],
-                    'total_kerugian' => $totals['total_kerugian'],
-                ]);
-            }
+            // Hitung ulang total
+            $totals = $this->formulirService->computeTotals($formulir->fresh('items'));
+
+            // Update laporan
+            $formulir->laporan->update([
+                'total_kerusakan' => $totals['total_kerusakan'],
+                'total_kerugian' => $totals['total_kerugian'],
+            ]);
 
             DB::commit();
 
-            return redirect()->route('forms.form4.list-format1', ['bencana_id' => $validated['bencana_id']])
-                           ->with('success', 'Data berhasil disimpan');
-
+            return redirect()
+                ->route('forms.form4.format1.list', [
+                    'bencana_id' => $formulir->laporan->bencana_id,
+                ])
+                ->with('success', 'Data berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()
+
+            return back()
                 ->withInput()
-                ->withErrors(['error' => 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage()]);
+                ->withErrors([
+                    'error' => $e->getMessage(),
+                ]);
         }
     }
 }

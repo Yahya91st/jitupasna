@@ -1,47 +1,109 @@
-exclude@extends('layouts.main')
+@extends('layouts.main')
 
 @section('content')
-    <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Pengkajian Akibat Bencana</h4>
-                    </div>
-                    @if ($bencana)
-                        <p class="text-subtitle text-muted">
-                            Bencana: {{ $bencana->kategori_bencana->nama }} - Ref: {{ $bencana->Ref }} - Tanggal: {{ $bencana->tanggal }}
-                            <a href="{{ route('bencana.index', ['source' => 'kajian']) }}" class="btn btn-sm" style="background-color: #6c757d; color: white; border: none;">
-                                Ganti Bencana
-                            </a>
-                        </p>
-                    @endif
-                    <div class="card-content">
-                        <div class="card-body">
-                            <form class="form" action="{{ route('kajian.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                                <div>
-                                    <div>
-                                        <div class="form-group">
-                                            <label for="gangguan_fungsi">Gangguan Fungsi</label>
-                                            <textarea type="text" id="gangguan_fungsi" class="form-control"placeholder="Tulis di sini" name="gangguan_fungsi"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="kehilangan_akses">Kehilangan Akses</label>
-                                            <textarea type="text" id="kehilangan_akses" class="form-control"placeholder="Tulis di sini" name="kehilangan_akses"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="peningkatan_resiko">Peningkatan Resiko</label>
-                                            <textarea type="text" id="peningkatan_resiko" class="form-control"placeholder="Tulis di sini" name="peningkatan_resiko"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+    <div class="container">
 
-                </div>
+        <h3 class="mb-4">Daftar Kajian</h3>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
+        @endif
+
+        <div class="card">
+
+            <div class="card-header">
+                Daftar Laporan Siap Dikaji
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead>
+
+                        <tr>
+                            <th width="60">Bencana ID</th>
+                            <th>Jenis Bencana</th>
+                            <th>Tanggal Kejadian</th>
+                            <th>Status Kajian</th>
+                            <th width="280">Aksi</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($bencana as $item)
+                            <tr>
+
+                                <td>{{ $item->id }}</td>
+
+                                <td>
+                                    {{ config('bencana')[$item->jenis_bencana] ?? $item->jenis_bencana }}
+                                </td>
+
+                                <td>
+                                    {{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}
+                                </td>
+
+                                <td>
+                                    @if (optional($item->laporan)->kajian)
+                                        <span class="badge bg-success">
+                                            Sudah Dibuat
+                                        </span>
+                                    @else
+                                        <span class="badge bg-warning text-dark">
+                                            Belum Dibuat
+                                        </span>
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if (optional($item->laporan)->kajian)
+                                        <a href="{{ route('kajian.preview', $item->laporan->kajian) }}" class="btn btn-info btn-sm">
+                                            <i data-feather="eye"></i>
+                                            Preview
+                                        </a>
+
+                                        <a href="{{ route('kajian.pdf', $item->laporan->kajian) }}" class="btn btn-success btn-sm">
+                                            <i data-feather="download"></i>
+                                            PDF
+                                        </a>
+
+                                        <a href="{{ route('kajian.edit', $item->laporan->kajian) }}" class="btn btn-warning btn-sm">
+                                            <i data-feather="edit"></i>
+                                            Edit
+                                        </a>
+                                    @else
+                                        <a href="{{ route('kajian.create', $item) }}" class="btn btn-primary btn-sm">
+                                            <i data-feather="plus"></i>
+                                            Tambah
+                                        </a>
+                                    @endif
+                                </td>
+
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    Belum ada data bencana.
+                                </td>
+                            </tr>
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    {{ $bencana->links() }}
+                </div>
+
+            </div>
+
         </div>
-    </section>   
+
+    </div>
 @endsection

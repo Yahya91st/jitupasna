@@ -72,6 +72,13 @@ class BencanaController extends Controller
             ]);
         }
 
+        if ($source === 'kajian') {
+            return view('bencana.kajian-select', [
+                'bencana' => $bencana,
+                'jenis_bencana' => $jenis_bencana,
+            ]);
+        }
+
         return view('bencana.index', [
             'bencana' => $bencana,
             'jenis_bencana' => $jenis_bencana,
