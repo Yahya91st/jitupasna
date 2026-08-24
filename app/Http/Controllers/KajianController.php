@@ -115,10 +115,8 @@ class KajianController extends Controller
         $summaries = app(FormulirService::class)
             ->getSummaries($laporan->bencana);
 
-        // dd($summaries);
-
         return view('kajian.create', [
-            'laporan' => $laporan,
+            'laporan'   => $laporan,
             'summaries' => $summaries,
         ]);
     }

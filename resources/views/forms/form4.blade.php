@@ -57,11 +57,13 @@
             @if ($bencana)
                 <div class="alert mt-2" style="background-color: rgba(108, 117, 125, 0.1); border: 1px solid rgba(108, 117, 125, 0.2); color: #495057;">
                     <p>Bencana: {{ config('bencana')[$bencana->jenis_bencana] ?? $bencana->jenis_bencana }}</p>
-                    <p>Tanggal: {{ $bencana->tanggal }}</p>
+                    <p>Tanggal: {{ \Carbon\Carbon::parse($bencana->tanggal)->format('Y-m-d') }}</p>
                     <p>Lokasi:
                         @foreach ($bencana->villages as $village)
                             {{ $village['name'] ?? $village['code'] }}
-                            @if (!$loop->last), @endif
+                            @if (!$loop->last)
+                                ,
+                            @endif
                         @endforeach
                     </p>
                 </div>

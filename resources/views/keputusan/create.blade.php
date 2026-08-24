@@ -289,7 +289,7 @@
                                 <th>Nama Formulir</th>
                                 <th width="18%">Kerusakan (Rp)</th>
                                 <th width="18%">Kerugian (Rp)</th>
-                                <th width="12%">Aksi</th>
+                                {{-- <th width="12%">Aksi</th> --}}
                             </tr>
                         </thead>
 
@@ -318,11 +318,8 @@
                                         Rp {{ number_format($summary['total_kerugian'], 0, ',', '.') }}
                                     </td>
 
-                                    <td class="text-center">
-                                        <a href="{{ route('kebutuhan.show', $summary['id']) }}" class="btn btn-primary btn-sm">
-                                            Detail
-                                        </a>
-                                    </td>
+                                    {{-- <td class="text-center">
+                                    </td> --}}
 
                                 </tr>
 
@@ -360,6 +357,35 @@
                 <canvas id="summaryChart" height="110"></canvas>
 
             </div>
+
+            @if ($kajian)
+                <div class="main-card mb-4">
+
+                    <div class="card-header-gradient">
+                        <h4>
+                            <i data-feather="file-text"></i>
+                            Hasil Kajian
+                        </h4>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label class="fw-bold">Ringkasan Kajian</label>
+
+                            <div class="border rounded p-3">
+                                {{ $kajian->peningkatan_resiko }}
+                                <br>
+                                {{ $kajian->gangguan_fungsi }}
+                                <br>
+                                {{ $kajian->kehilangan_akses }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            @endif
 
             @if ($keputusan)
                 <form action="{{ route('keputusan.update', $keputusan) }}" method="POST">

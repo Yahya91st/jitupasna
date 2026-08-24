@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
-{    /**
+{
+    /**
      * Display a listing of the users.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        $currentUser = auth()->user();
-
+        $currentUser = Auth::user();
         $roles = [
             'operator',
             'pelapor',
@@ -47,8 +48,8 @@ class UserController extends Controller
             'availableRoles',
             'currentUser'
         ));
-    } 
-    
+    }
+
     /**
      * Store a newly created user in storage.
      *
@@ -97,16 +98,19 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if (Auth::user()->role !== 'operator') {
+            abort(403);
+        }
+
         $roles = [
-            'operator',
             'pelapor',
             'pengkaji',
-            'pimpinan'
+            'pimpinan',
         ];
 
         return view('users.edit', compact('user', 'roles'));
-    }   
-    
+    }
+
     /**
      * Update the specified user in storage.
      *
@@ -116,48 +120,34 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $currentUser = auth()->user();
-        
-        if ($currentUser->role === 'operator') {
-            abort(403, 'Operator can only manage user accounts');
+        if (Auth::user()->role !== 'operator') {
+            abort(403);
         }
-        
-        // Validate request data
-        $rules = [
+
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->getKey(),
-            'role' => 'required|in:operator,pelapor,pengkaji,pimpinan',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'role' => 'required|in:pelapor,pengkaji,pimpinan',
+            'password' => 'nullable|min:8',
+        ]);
+
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'role' => $validated['role'],
         ];
-        
-        // Only validate password if it's provided
-        if ($request->filled('password')) {
-            $rules['password'] = 'string|min:8';
+
+        if (!empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
         }
-        
-        $validatedData = $request->validate($rules);
-        
-        if ($currentUser->role === 'operator' && $validatedData['role'] !== 'user') {
-            return redirect()->back()->with('error', 'Operator can only assign user role');
-        }
-        
-        // Prepare user data for update
-        $userData = [
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'role' => $validatedData['role'],
-        ];
-        
-        // Update password only if provided
-        if (isset($validatedData['password'])) {
-            $userData['password'] = Hash::make($validatedData['password']);
-        }
-        
-        // Update user information
-        $user->update($userData);
-        
+
+        $user->update($data);
+
         return redirect()->route('users.index')
-            ->with('success', 'User updated successfully');
-    }    /**
+            ->with('success', 'User berhasil diperbarui.');
+    }
+
+    /**
      * Remove the specified user from storage.
      *
      * @param  \App\Models\User  $user
@@ -165,21 +155,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $currentUser = auth()->user();
-        
-        // Prevent deleting users that the current user doesn't have permission for
+        $currentUser = Auth::user();
+
         if ($currentUser->role !== 'operator') {
             abort(403);
         }
-        
-        // Prevent self-deletion
-        if ($user->id === $currentUser->id) {
-            return redirect()->back()->with('error', 'You cannot delete your own account');
+
+        if ($currentUser->id == $user->id) {
+            return back()->with('error', 'Tidak dapat menghapus akun sendiri.');
         }
-        
+
         $user->delete();
 
-        return redirect()->route('users.index')
-            ->with('success', 'User deleted successfully');
+        return back()->with('success', 'User berhasil dihapus.');
     }
 }

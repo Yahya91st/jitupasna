@@ -17,7 +17,7 @@ class StoreFormat1Request extends FormRequest
     protected function prepareForValidation()
     {
         // dd($this->input('harga_satuan')); 
-        
+
         $details = $this->input('details', []);
         $hargaSatuan = $this->input('harga_satuan', []);
 
@@ -33,7 +33,6 @@ class StoreFormat1Request extends FormRequest
         $this->merge([
             'details' => $details
         ]);
-
     }
 
     /**
@@ -50,7 +49,7 @@ class StoreFormat1Request extends FormRequest
 
             'details' => 'required|array|min:1',
 
-            // 'details.*.kriteria_id' => 'required|exists:kriteria_kerusakans,id',
+            'details.*.kriteria_id' => 'required|exists:kriteria_kerusakans,id',
 
             'details.*.kategori' => 'required|string|max:255',
 
@@ -59,16 +58,16 @@ class StoreFormat1Request extends FormRequest
             'details.*.dimensi' => 'nullable|numeric|min:0',
 
             'details.*.tingkat_kerusakan' =>
-                'required|in:ringan,sedang,berat,hancur_total',
+            'required|in:ringan,sedang,berat,hancur_total',
 
             'details.*.jumlah' =>
-                'required|numeric|min:0',
+            'required|numeric|min:0',
 
             'details.*.harga_satuan' =>
-                'required|numeric|min:0',
+            'required|numeric|min:0',
 
             'details.*.satuan' =>
-                'nullable|string|max:50',
+            'nullable|string|max:50',
         ];
     }
 
@@ -85,13 +84,13 @@ class StoreFormat1Request extends FormRequest
             'details.*.kriteria_id.exists' => 'Kriteria kerusakan tidak valid.',
 
             'details.*.tingkat_kerusakan.in' =>
-                'Tingkat kerusakan tidak valid.',
+            'Tingkat kerusakan tidak valid.',
 
             'details.*.jumlah.required' =>
-                'Jumlah wajib diisi.',
+            'Jumlah wajib diisi.',
 
             'details.*.harga_satuan.required' =>
-                'Harga satuan wajib diisi.',
+            'Harga satuan wajib diisi.',
         ];
     }
 }

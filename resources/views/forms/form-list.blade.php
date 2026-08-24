@@ -35,7 +35,7 @@
                     </h5>
 
                     <small class="text-muted">
-                        Tanggal: {{ $bencana->tanggal }}
+                        Tanggal: {{ \Carbon\Carbon::parse($bencana->tanggal)->format('Y-m-d') }}
                     </small>
                 </div>
             @endif

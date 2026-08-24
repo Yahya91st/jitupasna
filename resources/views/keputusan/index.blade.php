@@ -120,26 +120,19 @@
                                 </td>
 
                                 <td>
-
-                                    <a href="{{ route('keputusan.create', ['bencana' => $item->id]) }}" class="btn btn-primary btn-sm">
-
-                                        @if (optional($item->laporan)->keputusan)
-                                            Edit Keputusan
-                                        @else
-                                            Tambah Keputusan
-                                        @endif
-
-                                    </a>
                                     @if ($item->laporan?->keputusan)
-                                        <a href="{{ route('keputusan.preview', [
-                                            'keputusan' => $item->laporan->keputusan->id,
-                                        ]) }}" class="btn btn-info btn-sm" target="_blank">
+                                        <a href="{{ route('keputusan.edit', $item->laporan->keputusan) }}" class="btn btn-warning btn-sm">
+                                            Edit Keputusan
+                                        </a>
 
+                                        <a href="{{ route('keputusan.preview', $item->laporan->keputusan) }}" class="btn btn-info btn-sm" target="_blank">
                                             Preview
-
+                                        </a>
+                                    @else
+                                        <a href="{{ route('keputusan.create', $item->laporan) }}" class="btn btn-primary btn-sm">
+                                            Tambah Keputusan
                                         </a>
                                     @endif
-
                                 </td>
 
                             </tr>

@@ -24,6 +24,35 @@ class Format1Controller extends Controller
         $this->formulirService = $formulirService;
     }
 
+    private function saveItem(
+        $formulirId,
+        $kategori,
+        $subKategori = null,
+        $jumlah = null,
+        $hargaSatuan = null,
+        $dimensi = null,
+        $satuan = null,
+        $kriteriaId = null,
+        $tingkatKerusakan = null
+    ) {
+        FormulirItem::create([
+            'formulir_id' => $formulirId,
+            'kriteria_id' => $kriteriaId,
+
+            'kategori' => $kategori,
+            'sub_kategori' => $subKategori,
+
+            'dimensi' => $dimensi,
+
+            'tingkat_kerusakan' => $tingkatKerusakan ?? null,
+
+            'jumlah' => $jumlah,
+            'harga_satuan' => $hargaSatuan,
+
+            'satuan' => $satuan,
+        ]);
+    }
+
     public function index(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
@@ -37,6 +66,82 @@ class Format1Controller extends Controller
         $bencana = Bencana::findOrFail($bencana_id);
 
         return view('forms.form4.format1.create', compact('bencana'));
+    }
+
+    public function store(StoreFormat1Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $laporan = LaporanBencana::firstOrCreate(
+                [
+                    'bencana_id' => $request->bencana_id,
+                ],
+                [
+                    'user_id' => $request->user()->id,
+                    'tanggal_lapor' => now()->toDateString(),
+                    'status' => 'draft',
+                    'total_kerusakan' => 0,
+                    'total_kerugian' => 0,
+                ]
+            );
+
+            $formulir = Formulir::firstOrCreate(
+                [
+                    'laporan_id' => $laporan->id,
+                    'format_id'  => 1,
+                ],
+                [
+                    'nama_kampung' => $request->nama_kampung,
+                    'nama_distrik' => $request->nama_distrik,
+                    'status'       => 'draft',
+                ]
+            );
+
+            $validated = $request->validated();
+            $details = $validated['details'];
+
+            foreach ($details as $detail) {
+                $this->saveItem(
+                    $formulir->id,
+                    $detail['kategori'],
+                    $detail['sub_kategori'] ?? null,
+                    $detail['jumlah'],
+                    $detail['harga_satuan'], // hargaSatuan
+                    $detail['dimensi'] ?? null,
+                    $detail['satuan'] ?? null, // satuan
+                    $detail['kriteria_id'], // kriteriaId (dari view, per-detail)
+                    $detail['tingkat_kerusakan'] ?? null
+                );
+            }
+
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data berhasil disimpan',
+                    'data' => $formulir,
+                ]);
+            }
+
+            return redirect()->route('forms.form4.format1.list', [
+                'bencana_id' => $request->bencana_id
+            ])->with('success', 'Data berhasil disimpan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. ' . $e->getMessage()]);
+        }
     }
 
     public function show($id)
@@ -54,7 +159,7 @@ class Format1Controller extends Controller
         ]);
     }
 
-    public function list(Request $request)
+    public function list(Request $request) //format1
     {
         $bencana = Bencana::findOrFail($request->bencana_id);
 
@@ -141,6 +246,7 @@ class Format1Controller extends Controller
 
         return $pdf->download("Format1_{$formulir->id}.pdf");
     }
+
     public function destroy($id)
     {
         DB::transaction(function () use ($id) {

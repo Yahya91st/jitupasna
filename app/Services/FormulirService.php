@@ -73,16 +73,16 @@ class FormulirService
         return $summaries;
     }
 
-    public function getSummary(Formulir $formulir): array
-    {
-        $rows = $this->buildItemRows($formulir);
-        $totals = $this->computeTotals($formulir);
+    // public function getSummary(Formulir $formulir): array
+    // {
+    //     $rows = $this->buildItemRows($formulir);
+    //     $totals = $this->computeTotals($formulir);
 
-        return [
-            'rows' => $rows,
-            'totals' => $totals,
-        ];
-    }
+    //     return [
+    //         'rows' => $rows,
+    //         'totals' => $totals,
+    //     ];
+    // }
 
     public function loadFormulir(int $id): Formulir
     {

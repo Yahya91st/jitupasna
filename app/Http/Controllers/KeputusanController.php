@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bencana;
 use App\Models\Keputusan;
 use App\Models\LaporanBencana;
+use App\Models\Formulir;
 use App\Services\FormulirService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -14,6 +15,7 @@ class KeputusanController extends Controller
     public function __construct(
         private FormulirService $formulirService
     ) {}
+
 
     public function index(Request $request)
     {
@@ -50,6 +52,34 @@ class KeputusanController extends Controller
                 'jenis_bencana'
             )
         );
+    }
+
+    public function create(LaporanBencana $laporan)
+    {
+        $laporan->load([
+            'bencana',
+            'kajian',
+            'keputusan',
+        ]);
+
+        $bencana = $laporan->bencana;
+
+        $jenis_bencana = config('bencana');
+
+        $summaries = $this->formulirService
+            ->getSummaries($bencana);
+
+        $kajian = $laporan->kajian;
+        $keputusan = $laporan->keputusan;
+
+        return view('keputusan.create', compact(
+            'laporan',
+            'bencana',
+            'kajian',
+            'keputusan',
+            'summaries',
+            'jenis_bencana'
+        ));
     }
 
     /**
@@ -93,6 +123,32 @@ class KeputusanController extends Controller
             );
     }
 
+    public function edit(Keputusan $keputusan)
+    {
+        $keputusan->load([
+            'laporan.bencana',
+            'laporan.kajian',
+        ]);
+
+        $laporan = $keputusan->laporan;
+        $bencana = $laporan->bencana;
+        $kajian = $laporan->kajian;
+
+        $summaries = $this->formulirService
+            ->getSummaries($bencana);
+
+        $jenis_bencana = config('bencana');
+
+        return view('keputusan.create', compact(
+            'keputusan',
+            'laporan',
+            'bencana',
+            'kajian',
+            'summaries',
+            'jenis_bencana'
+        ));
+    }
+
     /**
      * Update keputusan
      */
@@ -102,64 +158,29 @@ class KeputusanController extends Controller
     ) {
 
         $validated = $request->validate([
-
-            'prioritas' => [
-                'required',
-                'in:rendah,sedang,tinggi'
-            ],
-
-            'hasil_keputusan' => [
-                'required'
-            ]
-
+            'prioritas' => 'required|in:rendah,sedang,tinggi',
+            'keputusan' => 'required',
         ]);
 
-
-        $keputusan->update(
-            $validated
-        );
-
+        $keputusan->update($validated);
 
         return redirect()
             ->route('keputusan.index')
-            ->with(
-                'success',
-                'Keputusan berhasil diperbarui.'
-            );
+            ->with('success', 'Keputusan berhasil diperbarui.');
     }
 
-    public function create(Request $request)
+    public function listFormat(LaporanBencana $laporan)
     {
-        $jenis_bencana = config('bencana');
-        $bencana = Bencana::findOrFail(
-            $request->bencana
-        );
+        $bencana = $laporan->bencana;
 
-        $laporan = LaporanBencana::firstOrCreate(
-            [
-                'bencana_id' => $bencana->id
-            ],
-            [
-                'tanggal_lapor' => now(),
-                'status' => 'draft'
-            ]
-        );
+        $formulirs = Formulir::where('laporan_id', $laporan->id)
+            ->latest()
+            ->paginate(10);
 
-        $summaries = $this->formulirService
-            ->getSummaries($bencana);
-
-        $kajian = $laporan->kajian;
-
-        $keputusan = $laporan->keputusan;
-
-
-        return view('keputusan.create', compact(
-            'bencana',
+        return view('keputusan.list', compact(
             'laporan',
-            'summaries',
-            'kajian',
-            'keputusan',
-            'jenis_bencana'
+            'bencana',
+            'formulirs'
         ));
     }
 

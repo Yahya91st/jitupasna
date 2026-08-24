@@ -1,69 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Sektor Pendidikan - {{ $report->nama_kampung }}</title>
+    <title>Form Sektor Pendidikan - {{ $formulir->nama_kampung }}</title>
     <style>
         @page {
             size: landscape;
         }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
             line-height: 1.5;
             color: #333;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .header h1 {
             font-size: 16px;
             margin-bottom: 5px;
         }
+
         .header h2 {
             font-size: 14px;
             margin-top: 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #333;
         }
-        th, td {
+
+        th,
+        td {
             padding: 5px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         .text-center {
             text-align: center;
         }
+
         .text-right {
             text-align: right;
         }
-        .info-table td, .info-table th {
+
+        .info-table td,
+        .info-table th {
             width: 25%;
         }
+
         .footer {
             margin-top: 30px;
             text-align: right;
         }
+
         .footer-sign {
             display: inline-block;
             width: 200px;
             text-align: center;
         }
+
         .page-break {
             page-break-after: always;
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>FORMULIR 04 - PENGUMPULAN DATA SEKTOR</h1>
@@ -73,15 +93,15 @@
     <table class="info-table">
         <tr>
             <th>Bencana</th>
-            <td>{{ $bencana->kategori_bencana->nama }}</td>
+            <td>{{ $bencana->jenis_bencana }}</td>
             <th>Tanggal</th>
             <td>{{ $bencana->tanggal }}</td>
         </tr>
         <tr>
             <th>Kampung</th>
-            <td>{{ $report->nama_kampung }}</td>
+            <td>{{ $formulir->nama_kampung }}</td>
             <th>Distrik</th>
-            <td>{{ $report->nama_distrik }}</td>
+            <td>{{ $formulir->nama_distrik }}</td>
         </tr>
     </table>
 
@@ -106,71 +126,71 @@
             <!-- TK/PAUD -->
             <tr>
                 <td>TK/PAUD</td>
-                <td class="text-center">Negeri: {{ $report->tk_berat_negeri }}<br>Swasta: {{ $report->tk_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->tk_sedang_negeri }}<br>Swasta: {{ $report->tk_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->tk_ringan_negeri }}<br>Swasta: {{ $report->tk_ringan_swasta }}</td>
-                <td class="text-center">{{ $report->tk_ukuran }}</td>
-                <td class="text-right">{{ number_format($report->tk_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $report->tk_harga_peralatan }}</td>
-                <td class="text-right">{{ $report->tk_harga_meubelair }}</td>
+                <td class="text-center">Negeri: {{ $formulir->tk_berat_negeri }}<br>Swasta: {{ $formulir->tk_berat_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->tk_sedang_negeri }}<br>Swasta: {{ $formulir->tk_sedang_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->tk_ringan_negeri }}<br>Swasta: {{ $formulir->tk_ringan_swasta }}</td>
+                <td class="text-center">{{ $formulir->tk_ukuran }}</td>
+                <td class="text-right">{{ number_format($formulir->tk_harga_bangunan, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $formulir->tk_harga_peralatan }}</td>
+                <td class="text-right">{{ $formulir->tk_harga_meubelair }}</td>
             </tr>
-            
+
             <!-- SD/MI -->
             <tr>
                 <td>SD/MI</td>
-                <td class="text-center">Negeri: {{ $report->sd_berat_negeri }}<br>Swasta: {{ $report->sd_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->sd_sedang_negeri }}<br>Swasta: {{ $report->sd_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->sd_ringan_negeri }}<br>Swasta: {{ $report->sd_ringan_swasta }}</td>
-                <td class="text-center">{{ $report->sd_ukuran }}</td>
-                <td class="text-right">{{ number_format($report->sd_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $report->sd_harga_peralatan }}</td>
-                <td class="text-right">{{ $report->sd_harga_meubelair }}</td>
+                <td class="text-center">Negeri: {{ $formulir->sd_berat_negeri }}<br>Swasta: {{ $formulir->sd_berat_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->sd_sedang_negeri }}<br>Swasta: {{ $formulir->sd_sedang_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->sd_ringan_negeri }}<br>Swasta: {{ $formulir->sd_ringan_swasta }}</td>
+                <td class="text-center">{{ $formulir->sd_ukuran }}</td>
+                <td class="text-right">{{ number_format($formulir->sd_harga_bangunan, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $formulir->sd_harga_peralatan }}</td>
+                <td class="text-right">{{ $formulir->sd_harga_meubelair }}</td>
             </tr>
-            
+
             <!-- SMP/MTs -->
             <tr>
                 <td>SMP/MTs</td>
-                <td class="text-center">Negeri: {{ $report->smp_berat_negeri }}<br>Swasta: {{ $report->smp_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->smp_sedang_negeri }}<br>Swasta: {{ $report->smp_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->smp_ringan_negeri }}<br>Swasta: {{ $report->smp_ringan_swasta }}</td>
-                <td class="text-center">{{ $report->smp_ukuran }}</td>
-                <td class="text-right">{{ number_format($report->smp_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $report->smp_harga_peralatan }}</td>
-                <td class="text-right">{{ $report->smp_harga_meubelair }}</td>
+                <td class="text-center">Negeri: {{ $formulir->smp_berat_negeri }}<br>Swasta: {{ $formulir->smp_berat_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->smp_sedang_negeri }}<br>Swasta: {{ $formulir->smp_sedang_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->smp_ringan_negeri }}<br>Swasta: {{ $formulir->smp_ringan_swasta }}</td>
+                <td class="text-center">{{ $formulir->smp_ukuran }}</td>
+                <td class="text-right">{{ number_format($formulir->smp_harga_bangunan, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $formulir->smp_harga_peralatan }}</td>
+                <td class="text-right">{{ $formulir->smp_harga_meubelair }}</td>
             </tr>
-            
+
             <!-- SMA/SMK/MA -->
             <tr>
                 <td>SMA/MA</td>
-                <td class="text-center">Negeri: {{ $report->sma_berat_negeri }}<br>Swasta: {{ $report->sma_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->sma_sedang_negeri }}<br>Swasta: {{ $report->sma_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->sma_ringan_negeri }}<br>Swasta: {{ $report->sma_ringan_swasta }}</td>
-                <td class="text-center">{{ $report->sma_ukuran }}</td>
-                <td class="text-right">{{ number_format($report->sma_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $report->sma_harga_peralatan }}</td>
-                <td class="text-right">{{ $report->sma_harga_meubelair }}</td>
+                <td class="text-center">Negeri: {{ $formulir->sma_berat_negeri }}<br>Swasta: {{ $formulir->sma_berat_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->sma_sedang_negeri }}<br>Swasta: {{ $formulir->sma_sedang_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->sma_ringan_negeri }}<br>Swasta: {{ $formulir->sma_ringan_swasta }}</td>
+                <td class="text-center">{{ $formulir->sma_ukuran }}</td>
+                <td class="text-right">{{ number_format($formulir->sma_harga_bangunan, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $formulir->sma_harga_peralatan }}</td>
+                <td class="text-right">{{ $formulir->sma_harga_meubelair }}</td>
             </tr>
-            
+
             <tr>
                 <td>SMK</td>
-                <td class="text-center">Negeri: {{ $report->smk_berat_negeri }}<br>Swasta: {{ $report->smk_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->smk_sedang_negeri }}<br>Swasta: {{ $report->smk_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->smk_ringan_negeri }}<br>Swasta: {{ $report->smk_ringan_swasta }}</td>
-                <td class="text-center">{{ $report->smk_ukuran }}</td>
-                <td class="text-right">{{ number_format($report->smk_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $report->smk_harga_peralatan }}</td>
-                <td class="text-right">{{ $report->smk_harga_meubelair }}</td>
+                <td class="text-center">Negeri: {{ $formulir->smk_berat_negeri }}<br>Swasta: {{ $formulir->smk_berat_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->smk_sedang_negeri }}<br>Swasta: {{ $formulir->smk_sedang_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->smk_ringan_negeri }}<br>Swasta: {{ $formulir->smk_ringan_swasta }}</td>
+                <td class="text-center">{{ $formulir->smk_ukuran }}</td>
+                <td class="text-right">{{ number_format($formulir->smk_harga_bangunan, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $formulir->smk_harga_peralatan }}</td>
+                <td class="text-right">{{ $formulir->smk_harga_meubelair }}</td>
             </tr>
-            
+
             <tr>
                 <td>Universitas/Akademi</td>
-                <td class="text-center">Negeri: {{ $report->universitas_berat_negeri }}<br>Swasta: {{ $report->universitas_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->universitas_sedang_negeri }}<br>Swasta: {{ $report->universitas_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $report->universitas_ringan_negeri }}<br>Swasta: {{ $report->universitas_ringan_swasta }}</td>
-                <td class="text-center">{{ $report->universitas_ukuran }}</td>
-                <td class="text-right">{{ number_format($report->universitas_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $report->universitas_harga_peralatan }}</td>
-                <td class="text-right">{{ $report->universitas_harga_meubelair }}</td>
+                <td class="text-center">Negeri: {{ $formulir->universitas_berat_negeri }}<br>Swasta: {{ $formulir->universitas_berat_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->universitas_sedang_negeri }}<br>Swasta: {{ $formulir->universitas_sedang_swasta }}</td>
+                <td class="text-center">Negeri: {{ $formulir->universitas_ringan_negeri }}<br>Swasta: {{ $formulir->universitas_ringan_swasta }}</td>
+                <td class="text-center">{{ $formulir->universitas_ukuran }}</td>
+                <td class="text-right">{{ number_format($formulir->universitas_harga_bangunan, 0, ',', '.') }}</td>
+                <td class="text-right">{{ $formulir->universitas_harga_peralatan }}</td>
+                <td class="text-right">{{ $formulir->universitas_harga_meubelair }}</td>
             </tr>
         </tbody>
     </table>
@@ -179,20 +199,20 @@
     <table>
         <tr>
             <th class="text-center">Biaya Bersih Sekolah (Hari)</th>
-            <td class="text-center">{{ $report->biaya_bersih_sekolah_hari }}</td>
+            <td class="text-center">{{ $formulir->biaya_bersih_sekolah_hari }}</td>
             <th class="text-center">Biaya Per Hari (Rp)</th>
-            <td class="text-center">{{ number_format($report->biaya_per_hari, 0, ',', '.') }}</td>
+            <td class="text-center">{{ number_format($formulir->biaya_per_hari, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <th class="text-center">Biaya Sewa Gedung (Bulan)</th>
-            <td class="text-center">{{ $report->biaya_sewa_gedung_bulan }}</td>
+            <td class="text-center">{{ $formulir->biaya_sewa_gedung_bulan }}</td>
             <th class="text-center">Biaya Per Bulan (Rp)</th>
-            <td class="text-center">{{ number_format($report->biaya_sewa_per_bulan, 0, ',', '.') }}</td>
+            <td class="text-center">{{ number_format($formulir->biaya_sewa_per_bulan, 0, ',', '.') }}</td>
         </tr>
     </table>
 
     <div class="footer">
-        <p>{{ $report->nama_distrik }}, {{ now()->format('d F Y') }}</p>
+        <p>{{ $formulir->nama_distrik }}, {{ now()->format('d F Y') }}</p>
         <div class="footer-sign">
             <p>Petugas</p>
             <br><br><br>
@@ -201,4 +221,5 @@
         </div>
     </div>
 </body>
+
 </html>

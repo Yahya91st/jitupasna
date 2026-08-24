@@ -1,5 +1,4 @@
 ﻿<style>
-    /* ===== PROFESSIONAL SIDEBAR WITH SMOOTH ANIMATIONS ===== */
     :root {
         --orange-primary: #F28705;
         --orange-gradient: linear-gradient(135deg, #F28705 0%, #ff9800 100%);
@@ -121,261 +120,79 @@
         z-index: 1;
     }
 
-    /* Hover States */
-    .sidebar-item:not(.active):not(.has-sub) .sidebar-link:hover {
+    /* ===================== */
+    /* MENU BIASA            */
+    /* ===================== */
+    /* Hover */
+    .sidebar-item:not(.active):not(.has-sub)>.sidebar-link:hover,
+    .sidebar-item:not(.active):not(.has-sub)>.sidebar-link:focus {
         background: var(--orange-light) !important;
+        color: var(--orange-primary) !important;
         transform: translateX(4px);
     }
 
-    .sidebar-item:not(.active):not(.has-sub) .sidebar-link:hover::before {
+    .sidebar-item:not(.active):not(.has-sub)>.sidebar-link:hover::before {
         width: 3px;
     }
 
-    .sidebar-item:not(.active):not(.has-sub) .sidebar-link:hover span,
-    .sidebar-item:not(.active):not(.has-sub) .sidebar-link:hover i {
+    .sidebar-item:not(.active):not(.has-sub)>.sidebar-link:hover span,
+    .sidebar-item:not(.active):not(.has-sub)>.sidebar-link:hover i {
         color: var(--orange-primary) !important;
     }
 
-    .sidebar-item:not(.active):not(.has-sub) .sidebar-link:hover i {
-        transform: scale(1.1);
-    }
-
-    /* Active States */
-    .sidebar-item.active:not(.has-sub) .sidebar-link {
+    /* Active */
+    .sidebar-item.active:not(.has-sub)>.sidebar-link,
+    .sidebar-item.active:not(.has-sub)>.sidebar-link:hover,
+    .sidebar-item.active:not(.has-sub)>.sidebar-link:focus {
         background: var(--orange-gradient) !important;
-        color: var(--white) !important;
-        box-shadow: 0 4px 12px rgba(242, 135, 5, 0.3);
+        color: #fff !important;
+        border-left: none !important;
+        box-shadow: 0 4px 12px rgba(242, 135, 5, .3);
     }
 
-    .sidebar-item.active:not(.has-sub) .sidebar-link span,
-    .sidebar-item.active:not(.has-sub) .sidebar-link i {
-        color: var(--white) !important;
+    .sidebar-item.active:not(.has-sub)>.sidebar-link span,
+    .sidebar-item.active:not(.has-sub)>.sidebar-link i {
+        color: #fff !important;
     }
 
-    /* Has-sub Parent */
-    .sidebar-item.has-sub .sidebar-link {
+    /* ===================== */
+    /* MENU DENGAN SUBMENU   */
+    /* ===================== */
+    .sidebar-item.has-sub>.sidebar-link {
         font-weight: 600;
         cursor: pointer;
     }
 
-    .sidebar-item.has-sub:not(.active) .sidebar-link:hover {
+    /* Hover */
+    .sidebar-item.has-sub:not(.active)>.sidebar-link:hover,
+    .sidebar-item.has-sub:not(.active)>.sidebar-link:focus {
         background: var(--orange-light) !important;
+        color: var(--orange-primary) !important;
         transform: translateX(4px);
     }
 
-    .sidebar-item.has-sub:not(.active) .sidebar-link:hover::before {
+    .sidebar-item.has-sub:not(.active)>.sidebar-link:hover::before {
         width: 3px;
     }
 
-    .sidebar-item.has-sub:not(.active) .sidebar-link:hover span,
-    .sidebar-item.has-sub:not(.active) .sidebar-link:hover i {
+    .sidebar-item.has-sub:not(.active)>.sidebar-link:hover span,
+    .sidebar-item.has-sub:not(.active)>.sidebar-link:hover i {
         color: var(--orange-primary) !important;
     }
 
-    .sidebar-item.has-sub.active>.sidebar-link {
+    /* Active */
+    .sidebar-item.has-sub.active>.sidebar-link,
+    .sidebar-item.has-sub.active>.sidebar-link:hover,
+    .sidebar-item.has-sub.active>.sidebar-link:focus {
         background: var(--orange-medium) !important;
         color: var(--orange-primary) !important;
+        border-left: none !important;
     }
 
     .sidebar-item.has-sub.active>.sidebar-link span,
-    .sidebar-item.has-sub.active>.sidebar-link i {
-        color: var(--orange-primary) !important;
-    }
-
-    /* Toggle Arrow */
-    .sidebar-item.has-sub>.sidebar-link::after {
-        content: '▼';
-        position: absolute;
-        right: 1rem;
-        font-size: 0.7rem;
-        color: inherit;
-        transition: transform 0.3s ease;
-        opacity: 0.7;
-        z-index: 1;
-    }
-
-    .sidebar-item.has-sub>.sidebar-link:hover::after {
-        opacity: 1;
-    }
-
+    .sidebar-item.has-sub.active>.sidebar-link i,
     .sidebar-item.has-sub.active>.sidebar-link::after {
-        transform: rotate(180deg);
-    }
-
-    /* Submenu */
-    .submenu {
-        background: var(--submenu-bg) !important;
-        border-radius: 8px;
-        margin: 0.5rem 0 0.5rem 1rem;
-        padding: 0.5rem;
-        border-left: 3px solid var(--orange-primary);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .submenu li {
-        margin: 0.25rem 0;
-    }
-
-    .submenu a {
-        display: flex;
-        align-items: center;
-        padding: 0.6rem 1rem;
-        padding-left: 1.5rem;
-        border-radius: 6px;
-        text-decoration: none !important;
-        transition: var(--transition);
-        color: var(--text-secondary) !important;
-        background: transparent !important;
-        font-weight: 400;
-        font-size: 0.9rem;
-        position: relative;
-    }
-
-    .submenu a::before {
-        content: '';
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: var(--text-secondary);
-        transition: var(--transition);
-    }
-
-    .submenu li.active a::before {
-        background: var(--white);
-        width: 6px;
-        height: 6px;
-        box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-    }
-
-    .submenu li:not(.active) a:hover {
-        background: var(--white) !important;
         color: var(--orange-primary) !important;
-        transform: translateX(4px);
-        box-shadow: 0 2px 6px rgba(242, 135, 5, 0.15);
-    }
-
-    .submenu li:not(.active) a:hover::before {
-        background: var(--orange-primary);
-        width: 6px;
-        height: 6px;
-    }
-
-    /* Submenu Visibility Animation */
-    .has-sub .submenu {
-        display: block;
-        opacity: 0;
-        max-height: 0;
-        overflow: hidden;
-        transform: translateY(-10px);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        margin-top: 0;
-    }
-
-    .has-sub.active .submenu {
-        opacity: 1;
-        max-height: 500px;
-        transform: translateY(0);
-        margin-top: 0.5rem;
-    }
-
-    /* Submenu Item Staggered Animation */
-    .submenu li {
-        opacity: 0;
-        transform: translateX(-15px);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        transition-delay: 0s;
-    }
-
-    .has-sub.active .submenu li {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    .has-sub.active .submenu li:nth-child(1) {
-        transition-delay: 0.05s;
-    }
-
-    .has-sub.active .submenu li:nth-child(2) {
-        transition-delay: 0.1s;
-    }
-
-    .has-sub.active .submenu li:nth-child(3) {
-        transition-delay: 0.15s;
-    }
-
-    .has-sub.active .submenu li:nth-child(4) {
-        transition-delay: 0.2s;
-    }
-
-    .has-sub.active .submenu li:nth-child(5) {
-        transition-delay: 0.25s;
-    }
-
-    /* Toggle Button */
-    .sidebar-toggler {
-        background: var(--orange-gradient) !important;
-        border: none !important;
-        color: var(--white) !important;
-        border-radius: 8px;
-        padding: 0.6rem;
-        margin: 0.75rem;
-        box-shadow: 0 2px 8px rgba(242, 135, 5, 0.3);
-        transition: var(--transition);
-        cursor: pointer;
-    }
-
-    .sidebar-toggler:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(242, 135, 5, 0.4);
-    }
-
-    .sidebar-toggler:active {
-        transform: scale(0.95);
-    }
-
-    /* Reset Defaults */
-    #sidebar ul {
-        list-style: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    /* Spacing */
-    .sidebar-item:nth-child(1) {
-        margin-bottom: 0.75rem;
-    }
-
-    .sidebar-item:nth-child(4) {
-        margin-top: 0.75rem;
-    }
-
-    /* Scrollbar */
-    .sidebar-menu::-webkit-scrollbar {
-        width: 5px;
-    }
-
-    .sidebar-menu::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    .sidebar-menu::-webkit-scrollbar-thumb {
-        background: #dee2e6;
-        border-radius: 10px;
-    }
-
-    .sidebar-menu::-webkit-scrollbar-thumb:hover {
-        background: var(--text-secondary);
-    }
-
-    /* Remove conflicting styles */
-    .sidebar-wrapper.sidebar-orange .sidebar-item:hover>.sidebar-link,
-    .sidebar-wrapper.sidebar-orange .sidebar-item.active>.sidebar-link,
-    .sidebar-wrapper.sidebar-orange .submenu li:hover>a {
-        border-left: none !important;
     }
 </style>
 
@@ -443,7 +260,7 @@
 
                                 <li class="{{ Request::is('forms*') ? 'active' : '' }}">
                                     <a href="{{ route('forms.form-list', ['source' => 'forms']) }}">
-                                        <i data-feather="circle"></i>
+                                        <i data-feather="airplay"></i>
                                         <span>Formulir</span>
                                     </a>
                                 </li>
@@ -453,7 +270,7 @@
                             @if (auth()->user()->role === 'pengkaji')
                                 <li class="{{ Request::is('kajian*') ? 'active' : '' }}">
                                     <a href="{{ route('kajian.index') }}">
-                                        <i data-feather="circle"></i>
+                                        <i data-feather="pen-tool"></i>
                                         <span>Kajian</span>
                                     </a>
                                 </li>
@@ -463,7 +280,7 @@
                             @if (auth()->user()->role === 'pimpinan')
                                 <li class="{{ Request::is('keputusan*') ? 'active' : '' }}">
                                     <a href="{{ route('keputusan.index') }}">
-                                        <i data-feather="circle"></i>
+                                        <i data-feather="compass"></i>
                                         <span>Keputusan</span>
                                     </a>
                                 </li>

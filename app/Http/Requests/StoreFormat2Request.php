@@ -16,9 +16,7 @@ class StoreFormat2Request extends FormRequest
 
     protected function prepareForValidation()
     {
-        dd($this->all());
-        // dd($this->input('details')); 
-        // dd($this->dimensi);
+        // dd($this->all());
 
         $details = $this->input('details', []);
 
@@ -27,8 +25,15 @@ class StoreFormat2Request extends FormRequest
             $kategori = $detail['kategori'];
 
             if (in_array($kategori, [
-                'tk','sd','smp','sma','smk',
-                'pt','perpus','lab','lainnya'
+                'tk',
+                'sd',
+                'smp',
+                'sma',
+                'smk',
+                'pt',
+                'perpus',
+                'lab',
+                'lainnya'
             ])) {
 
                 $details[$key]['harga_satuan'] =
@@ -36,8 +41,13 @@ class StoreFormat2Request extends FormRequest
                     + ($this->input("harga_peralatan.$kategori", 0))
                     + ($this->input("harga_meubelair.$kategori", 0));
             }
-
         }
+
+        $this->merge([
+            'details' => $details,
+        ]);
+
+        // dd($this->all());
 
         // dd($details);
     }
@@ -61,16 +71,16 @@ class StoreFormat2Request extends FormRequest
             'details.*.dimensi' => 'nullable|numeric|min:0',
 
             'details.*.tingkat_kerusakan' =>
-                'nullable|in:ringan,sedang,berat,hancur_total',
+            'nullable|in:ringan,sedang,berat,hancur_total',
 
             'details.*.jumlah' =>
-                'required|numeric|min:0',
+            'required|numeric|min:0',
 
             'details.*.harga_satuan' =>
-                'nullable|numeric|min:0',
+            'required|numeric',
 
             'details.*.satuan' =>
-                'nullable|string|max:50',
+            'nullable|string|max:50',
         ];
     }
 
@@ -87,13 +97,13 @@ class StoreFormat2Request extends FormRequest
             'details.*.kriteria_id.exists' => 'Kriteria kerusakan tidak valid.',
 
             'details.*.tingkat_kerusakan.in' =>
-                'Tingkat kerusakan tidak valid.',
+            'Tingkat kerusakan tidak valid.',
 
             'details.*.jumlah.required' =>
-                'Jumlah wajib diisi.',
+            'Jumlah wajib diisi.',
 
             'details.*.harga_satuan.required' =>
-                'Harga satuan wajib diisi.',
+            'Harga satuan wajib diisi.',
         ];
     }
 }

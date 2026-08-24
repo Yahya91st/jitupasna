@@ -124,12 +124,8 @@ Route::prefix('/kajian')
         Route::get('/show/{id}', [KajianController::class, 'show'])
             ->name('show');
 
-        Route::get('/{bencana}/create', [KajianController::class, 'create'])
+        Route::get('/{laporan}/create', [KajianController::class, 'create'])
             ->name('create');
-        // Route::get(
-        //     '/{laporan}/create/',
-        //     [KajianController::class, 'create']
-        // )->name('create');
 
         Route::post(
             '/{laporan}/store',
@@ -287,49 +283,33 @@ Route::prefix('/keputusan')
     ->name('keputusan.')
     ->group(function () {
 
-        // daftar bencana
-        Route::get(
-            '/',
-            [KeputusanController::class, 'index']
-        )->name('index');
+        // Daftar laporan
+        Route::get('/', [KeputusanController::class, 'index'])
+            ->name('index');
 
-        // halaman kebutuhan + keputusan
-        Route::get(
-            '/list/{bencana}',
-            [KeputusanController::class, 'listFormat']
-        )->name('list');
+        // Daftar format dalam satu laporan
+        Route::get('/list/{laporan}', [KeputusanController::class, 'listFormat'])
+            ->name('list');
 
+        // Halaman keputusan
+        Route::get('/create/{laporan}', [KeputusanController::class, 'create'])
+            ->name('create');
 
-        // halaman detail + kebutuhan + kajian + form keputusan
-        Route::get(
-            '/{bencana}',
-            [KeputusanController::class, 'create']
-        )->name('create');
+        // Simpan keputusan
+        Route::post('/store/{laporan}', [KeputusanController::class, 'store'])
+            ->name('store');
 
+        // Edit keputusan
+        Route::get('/edit/{keputusan}', [KeputusanController::class, 'edit'])
+            ->name('edit');
 
-        // simpan keputusan pimpinan
-        Route::post(
-            '/{laporan}/store',
-            [KeputusanController::class, 'store']
-        )->name('store');
+        // Update keputusan
+        Route::put('/update/{keputusan}', [KeputusanController::class, 'update'])
+            ->name('update');
 
-
-        // edit keputusan
-        Route::get(
-            '/edit/{keputusan}',
-            [KeputusanController::class, 'edit']
-        )->name('edit');
-
-
-        Route::put(
-            '/update/{keputusan}',
-            [KeputusanController::class, 'update']
-        )->name('update');
-
-        Route::get(
-            '/preview/{keputusan}',
-            [KeputusanController::class, 'preview']
-        )->name('preview');
+        // Preview PDF
+        Route::get('/preview/{keputusan}', [KeputusanController::class, 'preview'])
+            ->name('preview');
     });
 
 Route::prefix('/kategori-bangunan')
@@ -462,12 +442,27 @@ Route::prefix('/forms')
             Route::prefix('format2')->name('format2.')->group(function () {
                 Route::get('/', [Format2Controller::class, 'index'])->name('index');
                 Route::post('/store', [Format2Controller::class, 'store'])->name('store');
-                Route::get('/show/{id}', [Format2Controller::class, 'show'])->name('show');
                 Route::get('/list', [Format2Controller::class, 'list'])->name('list');
-                Route::get('/pdf/{id}', [Format2Controller::class, 'generatePdf'])->name('pdf');
-                Route::get('/preview-pdf/{id}', [Format2Controller::class, 'previewPdf'])->name('preview-pdf');
-                Route::get('/edit/{id}', [Format2Controller::class, 'edit'])->name('edit');
-                Route::patch('/update/{id}', [Format2Controller::class, 'update'])->name('update');
+
+                Route::get(
+                    '/form4/format2/{formulir}/preview',
+                    [Format2Controller::class, 'previewPdf']
+                )->name('preview');
+
+                Route::get('/show/{formulir}', [Format2Controller::class, 'show'])
+                    ->name('show');
+
+                Route::get('/edit/{formulir}', [Format2Controller::class, 'edit'])
+                    ->name('edit');
+
+                Route::patch('/update/{formulir}', [Format2Controller::class, 'update'])
+                    ->name('update');
+
+                Route::delete('/destroy/{formulir}', [Format2Controller::class, 'destroy'])
+                    ->name('destroy');
+
+                Route::get('/pdf/{formulir}', [Format2Controller::class, 'generatePdf'])
+                    ->name('pdf');
             });
 
             // Format 3 - Health sector (IMPLEMENTED)
