@@ -233,7 +233,7 @@ class Format1Controller extends Controller
 
         $this->formulirService->loadVillages($bencana);
 
-        $summary = $this->formulirService->getSummary($formulir);
+        $summary = $this->formulirService->getSummaries($bencana);
 
         $pdf = Pdf::loadView('forms.form4.format1.pdf', [
             'formulir' => $formulir,
@@ -247,24 +247,13 @@ class Format1Controller extends Controller
         return $pdf->download("Format1_{$formulir->id}.pdf");
     }
 
-    public function destroy($id)
-    {
-        DB::transaction(function () use ($id) {
-            $formulir = $this->formulirService->loadFormulir($id);
-
-            $formulir->items()->delete();
-
-            $formulir->delete();
-        });
-
-        return back()->with('success', 'Data berhasil dihapus.');
-    }
-
     public function edit($id)
     {
         $formulir = $this->formulirService->loadFormulir($id);
 
-        $summary = $this->formulirService->getSummary($formulir);
+        $bencana = $formulir->laporan->bencana;
+
+        $summary = $this->formulirService->getSummaries($bencana);
 
         return view('forms.form4.format1.edit', [
             'formulir' => $formulir,
@@ -273,6 +262,7 @@ class Format1Controller extends Controller
             'totals' => $summary['totals'],
         ]);
     }
+
     public function update(StoreFormat1Request $request, $id)
     {
         DB::beginTransaction();
@@ -326,5 +316,18 @@ class Format1Controller extends Controller
                     'error' => $e->getMessage(),
                 ]);
         }
+    }
+
+    public function destroy($id)
+    {
+        DB::transaction(function () use ($id) {
+            $formulir = $this->formulirService->loadFormulir($id);
+
+            $formulir->items()->delete();
+
+            $formulir->delete();
+        });
+
+        return back()->with('success', 'Data berhasil dihapus.');
     }
 }

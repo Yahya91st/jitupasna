@@ -126,11 +126,11 @@ class KajianController extends Controller
         $kajian->load('laporanBencana.bencana');
 
         $summaries = $this->formulirService
-            ->getSummaries($kajian->laporan->bencana);
+            ->getSummaries($kajian->laporanBencana->bencana);
 
         return view('kajian.edit', [
             'kajian' => $kajian,
-            'laporan' => $kajian->laporan,
+            'laporan' => $kajian->laporanBencana,
             'summaries' => $summaries,
         ]);
     }
@@ -152,7 +152,7 @@ class KajianController extends Controller
 
     public function previewPdf(Kajian $kajian)
     {
-        $laporan = $kajian->laporan;
+        $laporan = $kajian->laporanBencana;
 
         $summaries = $this->formulirService
             ->getSummaries($laporan->bencana);
@@ -168,11 +168,11 @@ class KajianController extends Controller
 
     public function generatePdf(Kajian $kajian)
     {
-        $laporan = $kajian->laporan;
+        $laporan = $kajian->laporanBencana;
         $kajian->load('laporanBencana.bencana');
 
         $summaries = $this->formulirService
-            ->getSummaries($kajian->laporan->bencana);
+            ->getSummaries($kajian->laporanBencana->bencana);
 
         $pdf = Pdf::loadView('kajian.pdf', [
             'kajian' => $kajian,
@@ -181,7 +181,7 @@ class KajianController extends Controller
         ]);
 
         return $pdf->download(
-            'Kajian-' . $kajian->laporan->bencana->jenis_bencana . '.pdf'
+            'Kajian-' . $kajian->laporanBencana->bencana->jenis_bencana . '.pdf'
         );
     }
 

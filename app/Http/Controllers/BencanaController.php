@@ -14,12 +14,13 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class BencanaController extends Controller
 {
-        
+
     public function index(Request $request)
     {
         $jenis_bencana = config('bencana');
 
         $bencanaQuery = Bencana::query()->latest('id');
+
         if ($request->filled('jenis_bencana')) {
             $bencanaQuery->where('jenis_bencana', '=', $request->input('jenis_bencana'));
         }
@@ -52,7 +53,7 @@ class BencanaController extends Controller
                 });
             })->toArray();
 
-            return $item; 
+            return $item;
         });
 
         // Check source setelah $bencana sudah siap
@@ -84,13 +85,13 @@ class BencanaController extends Controller
             'jenis_bencana' => $jenis_bencana,
         ]);
     }
-    
+
     public function create()
     {
         $villages = Cache::rememberForever('village_map', function () {
             return Http::get('https://wilayah.id/api/villages')->json();
         });
-        
+
         $jenis_bencana = config('bencana');
 
         return view('bencana.create', [
@@ -127,8 +128,8 @@ class BencanaController extends Controller
             } else {
                 $filename = 'no-image.png';
             }
-                $villageCodes = $bencaRules['village_codes'];
-                $bencana = Bencana::create([
+            $villageCodes = $bencaRules['village_codes'];
+            $bencana = Bencana::create([
                 'jenis_bencana' => $bencaRules['jenis_bencana'],
                 'tanggal' => $bencaRules['tanggal'],
                 'province_code' => $bencaRules['province_code'],
@@ -137,13 +138,13 @@ class BencanaController extends Controller
                 'village_codes' => $villageCodes,
                 'deskripsi' => $bencaRules['deskripsi'],
                 'gambar' => $filename,
-            ]);            
-            
+            ]);
+
             // dd($request->all());
             DB::commit();
 
             return redirect()->route('bencana.index')->with('success', 'Bencana Sukses Ditambahkan');
-            
+
             return redirect()->back()->with('error', $th->getMessage());
             // }
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -162,7 +163,6 @@ class BencanaController extends Controller
                 'status' => 'draft',
             ]
         );
-
     }
 
     public function show(string $id)
@@ -182,9 +182,8 @@ class BencanaController extends Controller
             'totalKerugian' => $totalKerugian,
             'kebutuhan' => $kebutuhan,
         ]);
-        
+
         dd($request->latitude, $request->longitude);
-        
     }
 
     public function edit($id)
@@ -210,9 +209,10 @@ class BencanaController extends Controller
         return view('bencana.edit', [
             'bencana'        => $bencana,
             'jenis_bencana'  => config('bencana'),
-            'selectedDesaIds' => is_array($bencana->village_codes) 
-                ? $bencana->village_codes 
-                : json_decode($bencana->village_codes, true) ?? [],            'kecamatan'      => $kecamatan,
+            'selectedDesaIds' => is_array($bencana->village_codes)
+                ? $bencana->village_codes
+                : json_decode($bencana->village_codes, true) ?? [],
+            'kecamatan'      => $kecamatan,
             'kabupaten'      => $kabupaten,
             'provinsi'       => $provinsi,
         ]);
@@ -275,7 +275,6 @@ class BencanaController extends Controller
             Log::error('Error updating bencana: ' . $th->getMessage());
             return redirect()->back()->withErrors('Terjadi kesalahan, silakan coba lagi.');
         }
-
     }
 
     public function formLanjutan($id)

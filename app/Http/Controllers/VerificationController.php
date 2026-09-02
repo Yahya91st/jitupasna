@@ -17,11 +17,53 @@ class VerificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $laporan = LaporanBencana::with(['bencana', 'user'])->latest()->get();
+        $jenis_bencana = config('bencana');
 
-        return view('verifikasi.index', compact('laporan'));
+        $laporanQuery = LaporanBencana::query()->latest('id');
+
+        if ($request->filled('jenis_bencana')) {
+            $laporanQuery->where('jenis_bencana', '=', $request->input('jenis_bencana'));
+        }
+
+        $laporan = $laporanQuery->paginate($request->input('limit', 5))->appends($request->except('page'));
+
+        // Transform: resolve village codes → names
+        $laporan->getCollection()->transform(function ($item) {
+            $codes = is_array($item->village_codes)
+                ? $item->village_codes
+                : json_decode($item->village_codes, true);
+
+            $item->villages = collect($codes)->map(function ($code) {
+                $code = trim($code);
+
+                return Cache::remember("village_name_{$code}", 86400, function () use ($code) {
+                    $parts = explode('.', $code);
+                    $districtCode = implode('.', array_slice($parts, 0, 3));
+
+                    $response = Http::get("https://wilayah.id/api/villages/{$districtCode}.json");
+
+                    if (!$response->ok()) return ['code' => $code, 'name' => null];
+
+                    $village = collect($response->json('data'))->firstWhere('code', $code);
+
+                    return [
+                        'code' => $code,
+                        'name' => $village['name'] ?? null,
+                    ];
+                });
+            })->toArray();
+
+            return $item;
+        });
+
+        return view('verifikasi.index', compact(
+            [
+                'laporan',
+                'jenis_bencana'
+            ]
+        ));
     }
 
     /**
@@ -68,7 +110,7 @@ class VerificationController extends Controller
 
         // Nama jenis bencana
         $jenisBencana = config('bencana')[$bencana->jenis_bencana] ?? $bencana->jenis_bencana;
-        
+
         // Nama desa
         $codes = is_array($bencana->village_codes)
             ? $bencana->village_codes
@@ -105,7 +147,7 @@ class VerificationController extends Controller
         $validated = $request->validate([
             'catatan_revisi' => ['required', 'string', 'max:1000'],
         ]);
-        
+
         // dd($validated);
 
         $laporan->update([
@@ -125,7 +167,7 @@ class VerificationController extends Controller
             'verified_by' => auth()->id(),
             'verified_at' => now(),
             'catatan_revisi' => null,
-        ]);   
+        ]);
         return redirect()
             ->route('verifikasi.index')
             ->with('success', 'Formulir berhasil diverifikasi.');
@@ -136,7 +178,7 @@ class VerificationController extends Controller
         $validated = $request->validate([
             'catatan_revisi' => ['required', 'string', 'max:1000'],
         ]);
-        
+
         // dd($validated);
 
         $formulir->update([

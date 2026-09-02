@@ -27,21 +27,24 @@
 
                     <tbody>
 
-                        @forelse($laporan as $item)
+                        @foreach ($laporan as $item)
                             <tr>
-
-                                <td>{{ $loop->iteration }}</td>
-
-                                <td>{{ $jenisBencana = config('bencana')[$item->bencana->jenis_bencana] ?? $item->bencana->jenis_bencana }}</td>
-
-                                <td>{{ \Carbon\Carbon::parse($item->bencana->tanggal)->format('Y-m-d') ?? '-' }}</td>
-
+                                <td>{{ $item->id }}</td>
                                 <td>
-
-                                    <span class="badge bg-secondary">
-                                        {{ ucfirst($item->status_laporan) }}
-                                    </span>
-
+                                    <div class="bencana-info">
+                                        <h6 class="bencana-name">{{ config('bencana')[$item->bencana->jenis_bencana] }}</h6>
+                                    </div>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}</td>
+                                <td>
+                                    <ul class="location-list">
+                                        @foreach ($item->villages as $village)
+                                            {{ $village['name'] ?? $village['code'] }}
+                                            @if (!$loop->last)
+                                                ,
+                                            @endif
+                                        @endforeach
+                                    </ul>
                                 </td>
 
                                 <td>
@@ -55,15 +58,7 @@
                                 </td>
 
                             </tr>
-
-                        @empty
-
-                            <tr>
-                                <td colspan="5" class="text-center">
-                                    Belum ada laporan.
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
 
                     </tbody>
 
