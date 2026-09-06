@@ -382,7 +382,7 @@ class Format3Controller extends Controller
 
         $this->formulirService->loadVillages($bencana);
 
-        return view('forms.form4.format3.show-format3', [
+        return view('forms.form4.format3.show', [
             'formulir' => $formulir,
             'bencana'  => $formulir->laporan->bencana,
             'totals'   => $this->formulirService->computeTotals($formulir),

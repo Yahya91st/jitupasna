@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFormat6Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Bencana;
 use App\Models\LaporanBencana;
 use App\Models\Formulir;
 use App\Models\FormulirItem;
-use App\Models\KriteriaKerusakan;
-use App\Models\Rekap;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\FormulirService;
 
 class Format6Controller extends Controller
 {
@@ -54,15 +56,15 @@ class Format6Controller extends Controller
     public function index(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
+
         // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
+
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
+
         return view('forms.form4.Format6.create', compact('bencana'));
     }
 
@@ -70,7 +72,7 @@ class Format6Controller extends Controller
      * Store format3 form data for Health sector
      */
     public function store(StoreFormat6Request $request)
-    {        
+    {
 
         try {
             DB::beginTransaction();
@@ -78,11 +80,13 @@ class Format6Controller extends Controller
             $laporan = LaporanBencana::firstOrCreate(
                 [
                     'bencana_id' => $request->bencana_id,
-                    'user_id' => auth()->id(),
                 ],
                 [
+                    'user_id' => $request->user()->id,
                     'tanggal_lapor' => now()->toDateString(),
                     'status' => 'draft',
+                    'total_kerusakan' => 0,
+                    'total_kerugian' => 0,
                 ]
             );
 
@@ -117,20 +121,15 @@ class Format6Controller extends Controller
             //             $hargaMaster[$kategori] ?? 0;
             //     }
             // }
-            
+
             // $request->merge([
             //     'details' => $details
             // ]);       
-            
+
             $validated = $request->validated();
 
-            $kriteriaId = KriteriaKerusakan::where(
-                'tingkat',
-                'berat'
-            )->value('id');
-            
             foreach ($details as $detail) {
-                
+
                 $this->saveItem(
                     $formulir->id,
                     $detail['kategori'],
@@ -139,7 +138,6 @@ class Format6Controller extends Controller
                     $detail['harga_satuan'] ?? 0, // hargaSatuan
                     $detail['dimensi'] ?? null,
                     $detail['satuan'] ?? null, // satuan
-                    $kriteriaId, // kriteriaId
                     $detail['tingkat_kerusakan'] ?? null
                 );
             }
@@ -233,22 +231,21 @@ class Format6Controller extends Controller
                 null,
                 null
             );
-            
+
             DB::commit();
             // Return success response for AJAX or redirect for regular form
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $format6Form4
+                    'data' => $formulir
                 ]);
-            }            
+            }
             return redirect()->route('forms.form4.format1.list')
-            ->with('success', 'Data berhasil disimpan');
-
+                ->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
@@ -267,10 +264,17 @@ class Format6Controller extends Controller
      */
     public function show($id)
     {
-        $format3form4 = Format3Form4::with('bencana')->findOrFail($id);
-        $bencana = $format3form4->bencana;
-        
-        return view('forms.form4.format3.show', compact('format3form4', 'bencana'));
+        $formulir = $this->formulirService->loadFormulir($id);
+
+        $bencana = $formulir->laporan->bencana;
+
+        $this->formulirService->loadVillages($bencana);
+
+        return view('forms.form4.format3.show', [
+            'formulir' => $formulir,
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
+        ]);
     }
 
     /**
@@ -279,27 +283,27 @@ class Format6Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
+
         // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
+
         // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
+
         // Get form data for this disaster
         $form = Format3Form4::where('rekap_id', $bencana_id)->get();
-        
+
         return view('forms.form4.format3.list', compact('bencana', 'form'));
     }
 
-        public function edit($id)
+    public function edit($id)
     {
         try {
             $format3form4 = Format3Form4::with('bencana')->findOrFail($id);
             $bencana = $format3form4->bencana;
-            
+
             return view('forms.form4.format3.edit', compact('format3form4', 'bencana'));
         } catch (\Exception $e) {
             return redirect()->back()
@@ -329,81 +333,81 @@ class Format6Controller extends Controller
                 'nama_distrik' => 'required|string',
                 // Validasi untuk field harga yang diubah ke string
 
-                'rs_rb_negeri'=>'nullable|integer', 
-                'rs_rb_swasta'=>'nullable|integer',
-                'rs_rs_negeri'=>'nullable|integer',
-                'rs_rs_swasta'=>'nullable|integer',
-                'rs_rr_negeri'=>'nullable|integer',
-                'rs_rr_swasta'=>'nullable|integer',
+                'rs_rb_negeri' => 'nullable|integer',
+                'rs_rb_swasta' => 'nullable|integer',
+                'rs_rs_negeri' => 'nullable|integer',
+                'rs_rs_swasta' => 'nullable|integer',
+                'rs_rr_negeri' => 'nullable|integer',
+                'rs_rr_swasta' => 'nullable|integer',
 
-                'rs_luas'=>'nullable|integer',
-                'rs_harga_bangunan'=>'nullable|integer',
-                'rs_harga_obat'=>'nullable|integer',
-                'rs_harga_meubelair'=>'nullable|integer',
-                'rs_harga_peralatan'=>'nullable|integer',
+                'rs_luas' => 'nullable|integer',
+                'rs_harga_bangunan' => 'nullable|integer',
+                'rs_harga_obat' => 'nullable|integer',
+                'rs_harga_meubelair' => 'nullable|integer',
+                'rs_harga_peralatan' => 'nullable|integer',
 
-                
-                'puskesmas_rb_negeri'=>'nullable|integer',
-                'puskesmas_rb_swasta'=>'nullable|integer',
-                'puskesmas_rs_negeri'=>'nullable|integer',
-                'puskesmas_rs_swasta'=>'nullable|integer',
-                'puskesmas_rr_negeri'=>'nullable|integer',
-                'puskesmas_rr_swasta'=>'nullable|integer',
-                'puskesmas_luas'=>'nullable|integer',
-                'puskesmas_harga_bangunan'=>'nullable|integer',
-                'puskesmas_harga_obat'=>'nullable|integer',
-                'puskesmas_harga_meubelair'=>'nullable|integer',
-                'puskesmas_harga_peralatan'=>'nullable|integer',
 
-                'poliklinik_rb_negeri'=>'nullable|integer',
-                'poliklinik_rb_swasta'=>'nullable|integer',
-                'poliklinik_rs_negeri'=>'nullable|integer',
-                'poliklinik_rs_swasta'=>'nullable|integer',
-                'poliklinik_rr_negeri'=>'nullable|integer',
-                'poliklinik_rr_swasta'=>'nullable|integer',
-                'poliklinik_luas'=>'nullable|integer',
-                'poliklinik_harga_bangunan'=>'nullable|integer',
-                'poliklinik_harga_obat'=>'nullable|integer',
-                'poliklinik_harga_meubelair'=>'nullable|integer',
-                'poliklinik_harga_peralatan'=>'nullable|integer',
+                'puskesmas_rb_negeri' => 'nullable|integer',
+                'puskesmas_rb_swasta' => 'nullable|integer',
+                'puskesmas_rs_negeri' => 'nullable|integer',
+                'puskesmas_rs_swasta' => 'nullable|integer',
+                'puskesmas_rr_negeri' => 'nullable|integer',
+                'puskesmas_rr_swasta' => 'nullable|integer',
+                'puskesmas_luas' => 'nullable|integer',
+                'puskesmas_harga_bangunan' => 'nullable|integer',
+                'puskesmas_harga_obat' => 'nullable|integer',
+                'puskesmas_harga_meubelair' => 'nullable|integer',
+                'puskesmas_harga_peralatan' => 'nullable|integer',
 
-                'pustu_rb_negeri'=>'nullable|integer',
-                'pustu_rb_swasta'=>'nullable|integer',
-                'pustu_rs_negeri'=>'nullable|integer',
-                'pustu_rs_swasta'=>'nullable|integer',
-                'pustu_rr_negeri'=>'nullable|integer',
-                'pustu_rr_swasta'=>'nullable|integer',
-                'pustu_luas'=>'nullable|integer',
-                'pustu_harga_bangunan'=>'nullable|integer',
-                'pustu_harga_obat'=>'nullable|integer',
-                'pustu_harga_meubelair'=>'nullable|integer',
-                'pustu_harga_peralatan'=>'nullable|integer',
+                'poliklinik_rb_negeri' => 'nullable|integer',
+                'poliklinik_rb_swasta' => 'nullable|integer',
+                'poliklinik_rs_negeri' => 'nullable|integer',
+                'poliklinik_rs_swasta' => 'nullable|integer',
+                'poliklinik_rr_negeri' => 'nullable|integer',
+                'poliklinik_rr_swasta' => 'nullable|integer',
+                'poliklinik_luas' => 'nullable|integer',
+                'poliklinik_harga_bangunan' => 'nullable|integer',
+                'poliklinik_harga_obat' => 'nullable|integer',
+                'poliklinik_harga_meubelair' => 'nullable|integer',
+                'poliklinik_harga_peralatan' => 'nullable|integer',
 
-                'polindes_rb_negeri'=>'nullable|integer', 
-                'polindes_rb_swasta'=>'nullable|integer',
-                'polindes_rs_negeri'=>'nullable|integer',
-                'polindes_rs_swasta'=>'nullable|integer',
-                'polindes_rr_negeri'=>'nullable|integer',
-                'polindes_rr_swasta'=>'nullable|integer',
-                'polindes_luas'=>'nullable|integer',
-                'polindes_harga_bangunan'=>'nullable|integer',
-                'polindes_harga_obat'=>'nullable|integer',
-                'polindes_harga_meubelair'=>'nullable|integer',
-                'polindes_harga_peralatan'=>'nullable|integer',
+                'pustu_rb_negeri' => 'nullable|integer',
+                'pustu_rb_swasta' => 'nullable|integer',
+                'pustu_rs_negeri' => 'nullable|integer',
+                'pustu_rs_swasta' => 'nullable|integer',
+                'pustu_rr_negeri' => 'nullable|integer',
+                'pustu_rr_swasta' => 'nullable|integer',
+                'pustu_luas' => 'nullable|integer',
+                'pustu_harga_bangunan' => 'nullable|integer',
+                'pustu_harga_obat' => 'nullable|integer',
+                'pustu_harga_meubelair' => 'nullable|integer',
+                'pustu_harga_peralatan' => 'nullable|integer',
 
-                'posyandu_rb_negeri'=>'nullable|integer',
-                'posyandu_rb_swasta'=>'nullable|integer',
-                'posyandu_rs_negeri'=>'nullable|integer',
-                'posyandu_rs_swasta'=>'nullable|integer',
-                'posyandu_rr_negeri'=>'nullable|integer',
-                'posyandu_rr_swasta'=>'nullable|integer',
-                'posyandu_luas'=>'nullable|integer',
-                'posyandu_harga_bangunan'=>'nullable|integer',
-                'posyandu_harga_obat'=>'nullable|integer',
-                'posyandu_harga_meubelair'=>'nullable|integer',
-                'posyandu_harga_peralatan'=>'nullable|integer',
+                'polindes_rb_negeri' => 'nullable|integer',
+                'polindes_rb_swasta' => 'nullable|integer',
+                'polindes_rs_negeri' => 'nullable|integer',
+                'polindes_rs_swasta' => 'nullable|integer',
+                'polindes_rr_negeri' => 'nullable|integer',
+                'polindes_rr_swasta' => 'nullable|integer',
+                'polindes_luas' => 'nullable|integer',
+                'polindes_harga_bangunan' => 'nullable|integer',
+                'polindes_harga_obat' => 'nullable|integer',
+                'polindes_harga_meubelair' => 'nullable|integer',
+                'polindes_harga_peralatan' => 'nullable|integer',
+
+                'posyandu_rb_negeri' => 'nullable|integer',
+                'posyandu_rb_swasta' => 'nullable|integer',
+                'posyandu_rs_negeri' => 'nullable|integer',
+                'posyandu_rs_swasta' => 'nullable|integer',
+                'posyandu_rr_negeri' => 'nullable|integer',
+                'posyandu_rr_swasta' => 'nullable|integer',
+                'posyandu_luas' => 'nullable|integer',
+                'posyandu_harga_bangunan' => 'nullable|integer',
+                'posyandu_harga_obat' => 'nullable|integer',
+                'posyandu_harga_meubelair' => 'nullable|integer',
+                'posyandu_harga_peralatan' => 'nullable|integer',
             ]);
-            
+
             // baru: hitung kerusakan untuk setiap fasilitas secara dinamis menggunakan field yang tersedia
             $faskes = ['rs', 'puskesmas', 'poliklinik', 'pustu', 'polindes', 'posyandu'];
             $weights = [
@@ -449,8 +453,7 @@ class Format6Controller extends Controller
             DB::commit();
 
             return redirect()->route('forms.form4.format3.list', ['bencana_id' => $format3form4->bencana_id])
-                             ->with('success', 'Data berhasil disimpan');
-
+                ->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
@@ -458,7 +461,7 @@ class Format6Controller extends Controller
                 ->withErrors(['error' => 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage()]);
         }
     }
-        public function destroy($id)
+    public function destroy($id)
     {
         $format3form4 = Format3Form4::findOrFail($id);
         $bencana_id = $format3form4->bencana_id;
@@ -466,6 +469,4 @@ class Format6Controller extends Controller
         return redirect()->route('forms.form4.format3.list', ['bencana_id' => $bencana_id])
             ->with('success', 'Data berhasil dihapus');
     }
-
-
 }

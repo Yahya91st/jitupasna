@@ -4,17 +4,54 @@ namespace App\Http\Controllers\Form4;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFormat15Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Bencana;
 use App\Models\LaporanBencana;
 use App\Models\Formulir;
 use App\Models\FormulirItem;
-use App\Models\KriteriaKerusakan;
-use App\Models\Rekap;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\FormulirService;
 
 class Format15Controller extends Controller
 {
+    protected FormulirService $formulirService;
+
+    public function __construct(FormulirService $formulirService)
+    {
+        $this->formulirService = $formulirService;
+    }
+
+    private function updateItem(
+        $formulirId,
+        $kategori,
+        $subKategori = null,
+        $jumlah = 0,
+        $hargaSatuan = 0,
+        $dimensi = null,
+        $satuan = null,
+        $kriteriaId = null,
+        $tingkatKerusakan = null
+    ) {
+        FormulirItem::updateOrCreate(
+            [
+                'formulir_id' => $formulirId,
+                'kategori' => $kategori,
+                'sub_kategori' => $subKategori,
+            ],
+            [
+                'jumlah' => $jumlah,
+                'harga_satuan' => $hargaSatuan,
+                'dimensi' => $dimensi,
+                'satuan' => $satuan,
+                'kriteria_id' => $kriteriaId,
+                'tingkat_kerusakan' => $tingkatKerusakan,
+            ]
+        );
+    }
+
     private function saveItem(
         $formulirId,
         $kategori,
@@ -46,8 +83,8 @@ class Format15Controller extends Controller
 
             'satuan' => $satuan,
 
-            'durasi' => $durasi,                
-            'durasi_satuan' => $durasiSatuan,  
+            'durasi' => $durasi,
+            'durasi_satuan' => $durasiSatuan,
         ]);
     }
 
@@ -57,14 +94,14 @@ class Format15Controller extends Controller
     public function index(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
+
         // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-          // Get bencana details
+        // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
+
         return view('forms.form4.format15.create', compact('bencana'));
     }
 
@@ -81,7 +118,7 @@ class Format15Controller extends Controller
      * Store format15 form data for Education sector
      */
     public function store(StoreFormat15Request $request)
-    {        
+    {
 
         try {
             DB::beginTransaction();
@@ -89,11 +126,13 @@ class Format15Controller extends Controller
             $laporan = LaporanBencana::firstOrCreate(
                 [
                     'bencana_id' => $request->bencana_id,
-                    'user_id' => auth()->id(),
                 ],
                 [
+                    'user_id' => $request->user()->id,
                     'tanggal_lapor' => now()->toDateString(),
                     'status' => 'draft',
+                    'total_kerusakan' => 0,
+                    'total_kerugian' => 0,
                 ]
             );
 
@@ -108,8 +147,8 @@ class Format15Controller extends Controller
             );
 
             $validated = $request->validated();
-            
-            foreach ($request->details as $item) {               
+
+            foreach ($request->details as $item) {
 
                 $this->saveItem(
                     $formulir->id,
@@ -124,7 +163,7 @@ class Format15Controller extends Controller
                     $item['tingkat_kerusakan'] ?? null,
                     $item['durasi'] ?? null,
                     $item['durasi_satuan'] ?? null,
-                );        
+                );
             }
 
             DB::commit();
@@ -133,15 +172,14 @@ class Format15Controller extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Data berhasil disimpan',
-                    'data' => $format1Form4
+                    'data' => $formulir
                 ]);
-            }            
+            }
             return redirect()->route('forms.form4.format1.list')
-            ->with('success', 'Data berhasil disimpan');
-
+                ->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
@@ -160,9 +198,17 @@ class Format15Controller extends Controller
      */
     public function show($id)
     {
-        $formPendidikan = Format2Form4::with('bencana')->findOrFail($id);
-        $bencana = $formPendidikan->bencana;
-        return view('forms.form4.format2.show-format2', compact('formPendidikan', 'bencana'));
+        $formulir = $this->formulirService->loadFormulir($id);
+
+        $bencana = $formulir->laporan->bencana;
+
+        $this->formulirService->loadVillages($bencana);
+
+        return view('forms.form4.format3.show', [
+            'formulir' => $formulir,
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
+        ]);
     }
 
     /**
@@ -175,7 +221,7 @@ class Format15Controller extends Controller
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
         $bencana = Bencana::with(['kategori_bencana', 'desa'])->findOrFail($bencana_id);
-        $educationReports = Format2Form4::whereHas('rekap', function($q) use ($bencana_id) {
+        $educationReports = Format2Form4::whereHas('rekap', function ($q) use ($bencana_id) {
             $q->where('bencana_id', $bencana_id);
         })->get();
 
@@ -225,59 +271,104 @@ class Format15Controller extends Controller
                 'nama_kampung' => 'required|string',
                 'nama_distrik' => 'required|string',
                 // TK/RA
-                'tk_berat_negeri' => 'nullable|integer', 'tk_berat_swasta' => 'nullable|integer',
-                'tk_sedang_negeri' => 'nullable|integer', 'tk_sedang_swasta' => 'nullable|integer',
-                'tk_ringan_negeri' => 'nullable|integer', 'tk_ringan_swasta' => 'nullable|integer',
+                'tk_berat_negeri' => 'nullable|integer',
+                'tk_berat_swasta' => 'nullable|integer',
+                'tk_sedang_negeri' => 'nullable|integer',
+                'tk_sedang_swasta' => 'nullable|integer',
+                'tk_ringan_negeri' => 'nullable|integer',
+                'tk_ringan_swasta' => 'nullable|integer',
                 'tk_ukuran' => 'nullable|integer',
-                'tk_harga_bangunan' => 'nullable|numeric', 'tk_harga_peralatan' => 'nullable|string', 'tk_harga_meubelair' => 'nullable|string',
+                'tk_harga_bangunan' => 'nullable|numeric',
+                'tk_harga_peralatan' => 'nullable|string',
+                'tk_harga_meubelair' => 'nullable|string',
                 // SD/MI
-                'sd_berat_negeri' => 'nullable|integer', 'sd_berat_swasta' => 'nullable|integer',
-                'sd_sedang_negeri' => 'nullable|integer', 'sd_sedang_swasta' => 'nullable|integer',
-                'sd_ringan_negeri' => 'nullable|integer', 'sd_ringan_swasta' => 'nullable|integer',
+                'sd_berat_negeri' => 'nullable|integer',
+                'sd_berat_swasta' => 'nullable|integer',
+                'sd_sedang_negeri' => 'nullable|integer',
+                'sd_sedang_swasta' => 'nullable|integer',
+                'sd_ringan_negeri' => 'nullable|integer',
+                'sd_ringan_swasta' => 'nullable|integer',
                 'sd_ukuran' => 'nullable|integer',
-                'sd_harga_bangunan' => 'nullable|numeric', 'sd_harga_peralatan' => 'nullable|string', 'sd_harga_meubelair' => 'nullable|string',
+                'sd_harga_bangunan' => 'nullable|numeric',
+                'sd_harga_peralatan' => 'nullable|string',
+                'sd_harga_meubelair' => 'nullable|string',
                 // SMP/MTS
-                'smp_berat_negeri' => 'nullable|integer', 'smp_berat_swasta' => 'nullable|integer',
-                'smp_sedang_negeri' => 'nullable|integer', 'smp_sedang_swasta' => 'nullable|integer',
-                'smp_ringan_negeri' => 'nullable|integer', 'smp_ringan_swasta' => 'nullable|integer',
+                'smp_berat_negeri' => 'nullable|integer',
+                'smp_berat_swasta' => 'nullable|integer',
+                'smp_sedang_negeri' => 'nullable|integer',
+                'smp_sedang_swasta' => 'nullable|integer',
+                'smp_ringan_negeri' => 'nullable|integer',
+                'smp_ringan_swasta' => 'nullable|integer',
                 'smp_ukuran' => 'nullable|integer',
-                'smp_harga_bangunan' => 'nullable|numeric', 'smp_harga_peralatan' => 'nullable|string', 'smp_harga_meubelair' => 'nullable|string',
+                'smp_harga_bangunan' => 'nullable|numeric',
+                'smp_harga_peralatan' => 'nullable|string',
+                'smp_harga_meubelair' => 'nullable|string',
                 // SMA/MA
-                'sma_berat_negeri' => 'nullable|integer', 'sma_berat_swasta' => 'nullable|integer',
-                'sma_sedang_negeri' => 'nullable|integer', 'sma_sedang_swasta' => 'nullable|integer',
-                'sma_ringan_negeri' => 'nullable|integer', 'sma_ringan_swasta' => 'nullable|integer',
+                'sma_berat_negeri' => 'nullable|integer',
+                'sma_berat_swasta' => 'nullable|integer',
+                'sma_sedang_negeri' => 'nullable|integer',
+                'sma_sedang_swasta' => 'nullable|integer',
+                'sma_ringan_negeri' => 'nullable|integer',
+                'sma_ringan_swasta' => 'nullable|integer',
                 'sma_ukuran' => 'nullable|integer',
-                'sma_harga_bangunan' => 'nullable|numeric', 'sma_harga_peralatan' => 'nullable|string', 'sma_harga_meubelair' => 'nullable|string',
+                'sma_harga_bangunan' => 'nullable|numeric',
+                'sma_harga_peralatan' => 'nullable|string',
+                'sma_harga_meubelair' => 'nullable|string',
                 // SMK
-                'smk_berat_negeri' => 'nullable|integer', 'smk_berat_swasta' => 'nullable|integer',
-                'smk_sedang_negeri' => 'nullable|integer', 'smk_sedang_swasta' => 'nullable|integer',
-                'smk_ringan_negeri' => 'nullable|integer', 'smk_ringan_swasta' => 'nullable|integer',
+                'smk_berat_negeri' => 'nullable|integer',
+                'smk_berat_swasta' => 'nullable|integer',
+                'smk_sedang_negeri' => 'nullable|integer',
+                'smk_sedang_swasta' => 'nullable|integer',
+                'smk_ringan_negeri' => 'nullable|integer',
+                'smk_ringan_swasta' => 'nullable|integer',
                 'smk_ukuran' => 'nullable|integer',
-                'smk_harga_bangunan' => 'nullable|numeric', 'smk_harga_peralatan' => 'nullable|string', 'smk_harga_meubelair' => 'nullable|string',
+                'smk_harga_bangunan' => 'nullable|numeric',
+                'smk_harga_peralatan' => 'nullable|string',
+                'smk_harga_meubelair' => 'nullable|string',
                 // Perguruan Tinggi
-                'pt_berat_negeri' => 'nullable|integer', 'pt_berat_swasta' => 'nullable|integer',
-                'pt_sedang_negeri' => 'nullable|integer', 'pt_sedang_swasta' => 'nullable|integer',
-                'pt_ringan_negeri' => 'nullable|integer', 'pt_ringan_swasta' => 'nullable|integer',
+                'pt_berat_negeri' => 'nullable|integer',
+                'pt_berat_swasta' => 'nullable|integer',
+                'pt_sedang_negeri' => 'nullable|integer',
+                'pt_sedang_swasta' => 'nullable|integer',
+                'pt_ringan_negeri' => 'nullable|integer',
+                'pt_ringan_swasta' => 'nullable|integer',
                 'pt_ukuran' => 'nullable|integer',
-                'pt_harga_bangunan' => 'nullable|numeric', 'pt_harga_peralatan' => 'nullable|string', 'pt_harga_meubelair' => 'nullable|string',
+                'pt_harga_bangunan' => 'nullable|numeric',
+                'pt_harga_peralatan' => 'nullable|string',
+                'pt_harga_meubelair' => 'nullable|string',
                 // Perpustakaan
-                'perpus_berat_negeri' => 'nullable|integer', 'perpus_berat_swasta' => 'nullable|integer',
-                'perpus_sedang_negeri' => 'nullable|integer', 'perpus_sedang_swasta' => 'nullable|integer',
-                'perpus_ringan_negeri' => 'nullable|integer', 'perpus_ringan_swasta' => 'nullable|integer',
+                'perpus_berat_negeri' => 'nullable|integer',
+                'perpus_berat_swasta' => 'nullable|integer',
+                'perpus_sedang_negeri' => 'nullable|integer',
+                'perpus_sedang_swasta' => 'nullable|integer',
+                'perpus_ringan_negeri' => 'nullable|integer',
+                'perpus_ringan_swasta' => 'nullable|integer',
                 'perpus_ukuran' => 'nullable|integer',
-                'perpus_harga_bangunan' => 'nullable|numeric', 'perpus_harga_peralatan' => 'nullable|string', 'perpus_harga_meubelair' => 'nullable|string',
+                'perpus_harga_bangunan' => 'nullable|numeric',
+                'perpus_harga_peralatan' => 'nullable|string',
+                'perpus_harga_meubelair' => 'nullable|string',
                 // Laboratorium
-                'lab_berat_negeri' => 'nullable|integer', 'lab_berat_swasta' => 'nullable|integer',
-                'lab_sedang_negeri' => 'nullable|integer', 'lab_sedang_swasta' => 'nullable|integer',
-                'lab_ringan_negeri' => 'nullable|integer', 'lab_ringan_swasta' => 'nullable|integer',
+                'lab_berat_negeri' => 'nullable|integer',
+                'lab_berat_swasta' => 'nullable|integer',
+                'lab_sedang_negeri' => 'nullable|integer',
+                'lab_sedang_swasta' => 'nullable|integer',
+                'lab_ringan_negeri' => 'nullable|integer',
+                'lab_ringan_swasta' => 'nullable|integer',
                 'lab_ukuran' => 'nullable|integer',
-                'lab_harga_bangunan' => 'nullable|numeric', 'lab_harga_peralatan' => 'nullable|string', 'lab_harga_meubelair' => 'nullable|string',
+                'lab_harga_bangunan' => 'nullable|numeric',
+                'lab_harga_peralatan' => 'nullable|string',
+                'lab_harga_meubelair' => 'nullable|string',
                 // Lainnya
-                'lainnya_berat_negeri' => 'nullable|integer', 'lainnya_berat_swasta' => 'nullable|integer',
-                'lainnya_sedang_negeri' => 'nullable|integer', 'lainnya_sedang_swasta' => 'nullable|integer',
-                'lainnya_ringan_negeri' => 'nullable|integer', 'lainnya_ringan_swasta' => 'nullable|integer',
+                'lainnya_berat_negeri' => 'nullable|integer',
+                'lainnya_berat_swasta' => 'nullable|integer',
+                'lainnya_sedang_negeri' => 'nullable|integer',
+                'lainnya_sedang_swasta' => 'nullable|integer',
+                'lainnya_ringan_negeri' => 'nullable|integer',
+                'lainnya_ringan_swasta' => 'nullable|integer',
                 'lainnya_ukuran' => 'nullable|integer',
-                'lainnya_harga_bangunan' => 'nullable|numeric', 'lainnya_harga_peralatan' => 'nullable|string', 'lainnya_harga_meubelair' => 'nullable|string',
+                'lainnya_harga_bangunan' => 'nullable|numeric',
+                'lainnya_harga_peralatan' => 'nullable|string',
+                'lainnya_harga_meubelair' => 'nullable|string',
                 // Kerugian & info sekolah
                 'biaya_tenaga_kerja_hok' => 'nullable|integer',
                 'biaya_tenaga_kerja_upah' => 'nullable|numeric',
@@ -291,23 +382,23 @@ class Format15Controller extends Controller
             ]);
 
             // Hitung total kerusakan (termasuk semua item yang dipindahkan dari kerugian)
-            $bangunan = ['tk','sd','smp','sma','smk','pt','perpus','lab','lainnya'];
+            $bangunan = ['tk', 'sd', 'smp', 'sma', 'smk', 'pt', 'perpus', 'lab', 'lainnya'];
             $totalKerusakan = 0;
-            
+
             // 1. Kerusakan bangunan pendidikan
             foreach ($bangunan as $b) {
-                $totalKerusakan += (($validated[$b.'_berat_negeri'] ?? 0) + ($validated[$b.'_berat_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
-                $totalKerusakan += (($validated[$b.'_sedang_negeri'] ?? 0) + ($validated[$b.'_sedang_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
-                $totalKerusakan += (($validated[$b.'_ringan_negeri'] ?? 0) + ($validated[$b.'_ringan_swasta'] ?? 0)) * ($validated[$b.'_harga_bangunan'] ?? 0);
+                $totalKerusakan += (($validated[$b . '_berat_negeri'] ?? 0) + ($validated[$b . '_berat_swasta'] ?? 0)) * ($validated[$b . '_harga_bangunan'] ?? 0);
+                $totalKerusakan += (($validated[$b . '_sedang_negeri'] ?? 0) + ($validated[$b . '_sedang_swasta'] ?? 0)) * ($validated[$b . '_harga_bangunan'] ?? 0);
+                $totalKerusakan += (($validated[$b . '_ringan_negeri'] ?? 0) + ($validated[$b . '_ringan_swasta'] ?? 0)) * ($validated[$b . '_harga_bangunan'] ?? 0);
             }
-            
+
             // 2. Biaya tenaga kerja dan alat berat (dipindahkan dari kerugian ke kerusakan)
             $totalKerusakan += ($validated['biaya_tenaga_kerja_hok'] ?? 0) * ($validated['biaya_tenaga_kerja_upah'] ?? 0);
             $totalKerusakan += ($validated['biaya_alat_berat_hari'] ?? 0) * ($validated['biaya_alat_berat_harga'] ?? 0);
-            
+
             // 3. Biaya sekolah sementara (dipindahkan dari kerugian ke kerusakan)
             $totalKerusakan += ($validated['jumlah_sekolah_sementara'] ?? 0) * ($validated['harga_sekolah_sementara'] ?? 0);
-            
+
             $validated['total_kerusakan'] = $totalKerusakan;
 
             // Hitung total kerugian (sekarang 0 karena semua dipindahkan ke kerusakan)

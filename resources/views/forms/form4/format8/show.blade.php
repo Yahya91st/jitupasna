@@ -1,31 +1,15 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mt-4">
-    <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
-    <h4 class="mb-3">Format 8. Data Sektor Listrik</h4>
+<style>
+    .table th, .table td { padding: 0.5rem; }
+    .btn { margin: 0.25rem; }
+    h5 { text-align: center; margin-bottom: 1rem; }
+</style>
 
-    <div class="mb-3 d-flex justify-content-between">
-        <div>
-            <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali ke Daftar Format
-            </a>            <a href="{{ route('forms.form4.list-format8', ['bencana_id' => $bencana->id]) }}" class="btn btn-outline-info">
-                <i class="bi bi-list"></i> Daftar Data Listrik
-            </a>
-            <a href="{{ route('forms.form4.format8form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-info">
-                <i class="bi bi-plus-circle"></i> Tambah Data Baru
-            </a>
-        </div>
-        <div>
-            <a href="{{ route('forms.form4.preview-pdf-format8', $formListrik->id) }}" class="btn btn-info" target="_blank">
-                <i class="bi bi-eye"></i> Pratinjau PDF
-            </a>
-            <a href="{{ route('forms.form4.pdf-format8', $formListrik->id) }}" class="btn btn-primary" target="_blank">
-                <i class="bi bi-download"></i> Unduh PDF
-            </a>
-        </div>
-    </div>
-
+<div class="container-fluid">
+    <h5>Data Format 8 - Sektor Listrik</h5>
+    
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -33,221 +17,212 @@
     </div>
     @endif
 
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Informasi Lokasi</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Nama Kampung:</label>
-                    <p>{{ $formListrik->nama_kampung }}</p>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Nama Distrik:</label>
-                    <p>{{ $formListrik->nama_distrik }}</p>
-                </div>
-            </div>
-        </div>
+    <!-- Informasi Bencana -->
+    @if($bencana)
+    <div class="alert alert-light-primary color-primary mb-4">
+        <strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama ?? $bencana->nama }}<br>
+        <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($bencana->tanggal)->format('d F Y') }}<br>
+        <strong>Lokasi:</strong> 
+        @if($bencana->desa && count($bencana->desa) > 0)
+            @foreach($bencana->desa as $desa)
+                {{ $desa->nama }}@if(!$loop->last), @endif
+            @endforeach
+        @else
+            -
+        @endif
     </div>
 
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Kerusakan Infrastruktur Listrik</h5>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Informasi Sektor Listrik</h6>
+            <div class="btn-group">
+                <a href="{{ route('forms.form4.format8.edit', $formListrik->id) }}" class="btn btn-sm btn-warning">
+                    <i class="fa fa-edit mr-1"></i> Edit
+                </a>
+                <a href="{{ route('forms.form4.format8.pdf', $formListrik->id) }}" target="_blank" class="btn btn-sm btn-danger">
+                    <i class="fa fa-file-pdf mr-1"></i> PDF
+                </a>
+            </div>
         </div>
+        
         <div class="card-body">
-            <h6 class="mb-3">Sistem Transmisi dan Distribusi</h6>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
                         <tr>
-                            <th>Komponen</th>
-                            <th>Rusak Berat</th>
-                            <th>Rusak Sedang</th>
-                            <th>Rusak Ringan</th>
-                            <th>Kapasitas</th>
-                            <th>Harga Satuan</th>
-                            <th>Estimasi Kerusakan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Kabel</td>
-                            <td>{{ $formListrik->kabel_rb ?? 0 }} meter</td>
-                            <td>{{ $formListrik->kabel_rs ?? 0 }} meter</td>
-                            <td>{{ $formListrik->kabel_rr ?? 0 }} meter</td>
-                            <td>-</td>
-                            <td>Rp {{ number_format($formListrik->kabel_harga_meter ?? 0, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($formListrik->getTotalCableDamage() ?? 0, 0, ',', '.') }}</td>
+                            <th class="bg-light" style="width: 30%">Bencana</th>
+                            <td>{{ $bencana->kategori_bencana->nama }}</td>
                         </tr>
                         <tr>
-                            <td>Tiang</td>
-                            <td>{{ $formListrik->tiang_rb ?? 0 }} unit</td>
-                            <td>{{ $formListrik->tiang_rs ?? 0 }} unit</td>
-                            <td>{{ $formListrik->tiang_rr ?? 0 }} unit</td>
-                            <td>-</td>
-                            <td>Rp {{ number_format($formListrik->tiang_harga_unit ?? 0, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($formListrik->getTotalPolesDamage() ?? 0, 0, ',', '.') }}</td>
+                            <th class="bg-light">Tanggal</th>
+                            <td>{{ $bencana->tanggal }}</td>
                         </tr>
                         <tr>
-                            <td>Gardu/Trafo</td>
-                            <td>{{ $formListrik->trafo_rb ?? 0 }} unit</td>
-                            <td>{{ $formListrik->trafo_rs ?? 0 }} unit</td>
-                            <td>{{ $formListrik->trafo_rr ?? 0 }} unit</td>
-                            <td>{{ $formListrik->trafo_kapasitas ?? '-' }}</td>
-                            <td>Rp {{ number_format($formListrik->trafo_harga_unit ?? 0, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($formListrik->getTotalTransformerDamage() ?? 0, 0, ',', '.') }}</td>
+                            <th class="bg-light">Kampung</th>
+                            <td>{{ $formListrik->nama_kampung }}</td>
                         </tr>
-                    </tbody>
-                </table>
+                        <tr>
+                            <th class="bg-light">Distrik</th>
+                            <td>{{ $formListrik->nama_distrik }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="font-weight-bold">Rekapitulasi:</h6>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <p class="mb-1">Total Kerusakan:</p>
+                                    <h4 class="text-primary">Rp {{ number_format($formListrik->total_kerusakan, 0, ',', '.') }}</h4>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <p class="mb-1">Total Kerugian (Penurunan Pendapatan + Kenaikan Biaya):</p>
+                                    <h4 class="text-danger">Rp {{ number_format(($formListrik->penurunan_pendapatan ?? 0) + ($formListrik->kenaikan_biaya_operasional ?? 0), 0, ',', '.') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <h6 class="mb-3 mt-4">Sistem Pembangkitan</h6>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Komponen</th>
-                            <th>Rusak Berat</th>
-                            <th>Rusak Sedang</th>
-                            <th>Rusak Ringan</th>
-                            <th>Kapasitas</th>
-                            <th>Harga Satuan</th>
-                            <th>Estimasi Kerusakan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Pembangkit (PLTA/PLTU/PLTD)</td>
-                            <td>{{ $formListrik->pembangkit_rb ?? 0 }} unit</td>
-                            <td>{{ $formListrik->pembangkit_rs ?? 0 }} unit</td>
-                            <td>{{ $formListrik->pembangkit_rr ?? 0 }} unit</td>
-                            <td>{{ $formListrik->pembangkit_kapasitas ?? '-' }}</td>
-                            <td>Rp {{ number_format($formListrik->pembangkit_harga_unit ?? 0, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($formListrik->getTotalPowerPlantDamage() ?? 0, 0, ',', '.') }}</td>
-                        </tr>
-                        @if($formListrik->lainnya_jenis)
-                        <tr>
-                            <td>{{ $formListrik->lainnya_jenis }}</td>
-                            <td>{{ $formListrik->lainnya_rb ?? 0 }} unit</td>
-                            <td>{{ $formListrik->lainnya_rs ?? 0 }} unit</td>
-                            <td>{{ $formListrik->lainnya_rr ?? 0 }} unit</td>
-                            <td>{{ $formListrik->lainnya_kapasitas ?? '-' }}</td>
-                            <td>Rp {{ number_format($formListrik->lainnya_harga_unit ?? 0, 0, ',', '.') }}</td>
-                            <td>-</td>
-                        </tr>
+            <!-- Detail Sektor Listrik -->
+            <h5 class="font-weight-bold mt-4 mb-3">Detail Kerusakan dan Kerugian Sektor Listrik</h5>
+
+            <!-- Sistem Transmisi dan Distribusi -->
+            <div class="card mt-3">
+                <div class="card-header bg-info text-white">
+                    <h6 class="m-0">Sistem Transmisi dan Distribusi</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th>Jenis</th>
+                                    <th>Unit</th>
+                                    <th>Harga Satuan (Rp)</th>
+                                    <th>Total Kerusakan (Rp)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Kabel</td>
+                                    <td class="text-center">{{ number_format($formListrik->kabel_unit ?? 0) }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->kabel_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->kabel_jumlah ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tiang</td>
+                                    <td class="text-center">{{ number_format($formListrik->tiang_unit ?? 0) }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->tiang_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->tiang_jumlah ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Trafo</td>
+                                    <td class="text-center">{{ number_format($formListrik->trafo_unit ?? 0) }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->trafo_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->trafo_jumlah ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sistem Pembangkitan -->
+            <div class="card mt-3">
+                <div class="card-header bg-warning text-dark">
+                    <h6 class="m-0">Sistem Pembangkitan</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th>Jenis Pembangkit</th>
+                                    <th>Unit</th>
+                                    <th>Harga Satuan (Rp)</th>
+                                    <th>Total Kerusakan (Rp)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PLTA</td>
+                                    <td class="text-center">{{ number_format($formListrik->plta_unit ?? 0) }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->plta_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->plta_jumlah ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>PLTU</td>
+                                    <td class="text-center">{{ number_format($formListrik->pltu_unit ?? 0) }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->pltu_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->pltu_jumlah ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>PLTD</td>
+                                    <td class="text-center">{{ number_format($formListrik->pltd_unit ?? 0) }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->pltd_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->pltd_jumlah ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pembangkit Lain</td>
+                                    <td class="text-center">{{ number_format($formListrik->pembangkit_lain_unit ?? 0) }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->pembangkit_lain_harga_satuan ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($formListrik->pembangkit_lain_jumlah ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @if($formListrik->pembangkit_lain_keterangan)
+                        <p class="mt-2"><strong>Keterangan Pembangkit Lain:</strong> {{ $formListrik->pembangkit_lain_keterangan }}</p>
                         @endif
-                    </tbody>
-                </table>
+                    </div>
+                </div>
             </div>
 
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <p><strong>Perkiraan Jangka Waktu Pemulihan:</strong> {{ $formListrik->durasi_gangguan_hari ?? 0 }} hari</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Pembangkit Listrik Darurat</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <p><strong>Jumlah Genset:</strong> {{ $formListrik->genset_jumlah ?? 0 }} unit</p>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <p><strong>Kapasitas Genset:</strong> {{ $formListrik->genset_kapasitas ?? 0 }} kVA</p>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <p><strong>Biaya Sewa per Unit per Hari:</strong> Rp {{ number_format($formListrik->genset_harga_sewa ?? 0, 0, ',', '.') }}</p>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <p><strong>Durasi Pemakaian:</strong> {{ $formListrik->genset_durasi_hari ?? 0 }} hari</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <p><strong>Total Biaya Pembangkit Darurat:</strong> Rp {{ number_format($formListrik->getTotalEmergencyPowerCosts() ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Perkiraan Kehilangan Pendapatan</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <p><strong>Jumlah Pelanggan Terdampak:</strong> {{ $formListrik->jumlah_pelanggan_terdampak ?? 0 }}</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <p><strong>Rata-rata Penggunaan per Pelanggan:</strong> {{ $formListrik->rata_rata_penggunaan_per_pelanggan ?? 0 }} kWh/hari</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <p><strong>Tarif Listrik per kWh:</strong> Rp {{ number_format($formListrik->tarif_listrik_per_kwh ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <p><strong>Total Kehilangan Pendapatan:</strong> Rp {{ number_format($formListrik->getTotalRevenueLoss() ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-5">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Biaya Pembersihan dan Pemulihan</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <p><strong>Jumlah Tenaga Kerja:</strong> {{ $formListrik->biaya_tenaga_kerja_hok ?? 0 }} HOK</p>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <p><strong>Upah per HOK:</strong> Rp {{ number_format($formListrik->biaya_tenaga_kerja_upah ?? 0, 0, ',', '.') }}</p>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <p><strong>Jumlah Hari Alat Berat:</strong> {{ $formListrik->biaya_alat_berat_hari ?? 0 }} hari</p>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <p><strong>Biaya Sewa Alat Berat:</strong> Rp {{ number_format($formListrik->biaya_alat_berat_sewa ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <p><strong>Total Biaya Pembersihan:</strong> Rp {{ number_format($formListrik->getTotalCleaningCosts() ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-5">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Rekapitulasi Kerusakan dan Kerugian</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <h6>Total Kerusakan:</h6>
-                    <p class="fs-4">Rp {{ number_format($formListrik->getTotalDamage() ?? 0, 0, ',', '.') }}</p>
-                </div>
-                <div class="col-md-6">
-                    <h6>Total Kerugian:</h6>
-                    <p class="fs-4">Rp {{ number_format($formListrik->getTotalLoss() ?? 0, 0, ',', '.') }}</p>
-                </div>
-            </div>
+            <!-- Informasi Tambahan -->
             <div class="row mt-3">
-                <div class="col-md-12">
-                    <h6>Total Kerusakan dan Kerugian:</h6>
-                    <p class="fs-3 fw-bold">Rp {{ number_format(($formListrik->getTotalDamage() + $formListrik->getTotalLoss()) ?? 0, 0, ',', '.') }}</p>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="m-0">Perkiraan Jangka Waktu Pemulihan</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-1"><strong>Jangka Waktu:</strong></p>
+                            <h5>{{ $formListrik->jangka_waktu_pemulihan_bulan ?? 0 }} Bulan</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            <h6 class="m-0">Pembangkit Listrik Darurat</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-1"><strong>Genset Unit:</strong> {{ number_format($formListrik->genset_unit ?? 0) }}</p>
+                            <p class="mb-1"><strong>Biaya Pengadaan:</strong> Rp {{ number_format($formListrik->genset_biaya_pengadaan ?? 0, 0, ',', '.') }}</p>
+                            <p class="mb-1"><strong>Total Biaya Genset:</strong></p>
+                            <h5>Rp {{ number_format($formListrik->biaya_genset_total ?? 0, 0, ',', '.') }}</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+    <!-- Navigation -->
+    <div class="d-flex justify-content-between mt-4 mb-4">
+        <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-secondary">
+            Kembali
+        </a>
+        <div>
+            <a href="{{ route('forms.form4.format8.list', ['bencana_id' => $bencana->id]) }}" class="btn btn-info me-2">
+                Daftar Laporan
+            </a>
+            <a href="{{ route('forms.form4.format8.edit', $formListrik->id) }}" class="btn btn-warning me-2">
+                Edit Data
+            </a>
+            <a href="{{ route('forms.form4.format8.pdf', $formListrik->id) }}" class="btn btn-primary" target="_blank">
+                Unduh PDF
+            </a>
         </div>
     </div>
 </div>
