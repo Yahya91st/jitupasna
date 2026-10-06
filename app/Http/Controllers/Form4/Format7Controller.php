@@ -28,12 +28,15 @@ class Format7Controller extends Controller
         $formulirId,
         $kategori,
         $subKategori = null,
-        $jumlah = 0,
-        $hargaSatuan = 0,
+        $jumlah = null,
+        $jumlah2 = null,
+        $hargaSatuan = null,
         $dimensi = null,
         $satuan = null,
         $kriteriaId = null,
-        $tingkatKerusakan = null
+        $tingkatKerusakan = null,
+        $durasi = null,
+        $durasiSatuan = null
     ) {
         FormulirItem::updateOrCreate(
             [
@@ -43,11 +46,14 @@ class Format7Controller extends Controller
             ],
             [
                 'jumlah' => $jumlah,
+                'jumlah2' => $jumlah2,
                 'harga_satuan' => $hargaSatuan,
                 'dimensi' => $dimensi,
                 'satuan' => $satuan,
                 'kriteria_id' => $kriteriaId,
                 'tingkat_kerusakan' => $tingkatKerusakan,
+                'durasi' => $durasi,
+                'durasi_satuan' => $durasiSatuan,
             ]
         );
     }
@@ -57,14 +63,14 @@ class Format7Controller extends Controller
         $kategori,
         $subKategori = null,
         $jumlah = null,
+        $jumlah2 = null,
         $hargaSatuan = null,
         $dimensi = null,
         $satuan = null,
         $kriteriaId = null,
         $tingkatKerusakan = null,
-        $nama = null,
-        $jenis = null,
-        $tipe = null
+        $durasi = null,
+        $durasiSatuan = null
     ) {
         FormulirItem::create([
             'formulir_id' => $formulirId,
@@ -73,18 +79,17 @@ class Format7Controller extends Controller
             'kategori' => $kategori,
             'sub_kategori' => $subKategori,
 
-            // 'nama' => $nama,
-            'jenis' => $jenis,
-            'tipe' => $tipe,
-
             'dimensi' => $dimensi,
 
             'tingkat_kerusakan' => $tingkatKerusakan,
 
             'jumlah' => $jumlah,
+            'jumlah2' => $jumlah2,
             'harga_satuan' => $hargaSatuan,
 
             'satuan' => $satuan,
+            'durasi' => $durasi,
+            'durasi_satuan' => $durasiSatuan,
         ]);
     }
     /**
@@ -127,15 +132,13 @@ class Format7Controller extends Controller
                 ]
             );
 
-            $formulir = Formulir::firstOrCreate(
-                [
-                    'laporan_id' => $laporan->id,
-                    'format_id' => 7,
-                ],
-                [
-                    'status' => 'draft',
-                ]
-            );
+            $formulir = Formulir::create([
+                'laporan_id' => $laporan->id,
+                'format_id' => 7,
+                'nama_kampung' => $request->nama_kampung,
+                'nama_distrik' => $request->nama_distrik,
+                'status' => 'draft',
+            ]);
 
             $details = $request->details;
 
@@ -174,15 +177,18 @@ class Format7Controller extends Controller
                     }
 
                     $this->saveItem(
-                        formulirId: $formulir->id,
-                        kategori: $item['kategori'], // <-- ambil dari form
-                        subKategori: $item['nama'],
-                        jumlah: $item[$tingkat],
-                        hargaSatuan: $item['harga_satuan'] ?? 0,
-                        satuan: $item['satuan'] ?? 0,
-                        jenis: $item['jenis'],
-                        tipe: $item['tipe'],
-                        tingkatKerusakan: $tingkat
+                        $formulir->id,
+                        $item['kategori'],
+                        $item['nama'],
+                        $item[$tingkat],
+                        null,
+                        $item['harga_satuan'] ?? 0,
+                        null,
+                        $item['satuan'] ?? null,
+                        null,
+                        $tingkat,
+                        null,
+                        null
                     );
                 }
             }
@@ -194,11 +200,14 @@ class Format7Controller extends Controller
                     $detail['kategori'],
                     $detail['sub_kategori'] ?? null,
                     $detail['jumlah'] ?? 0,
+                    $detail['jumlah2'] ?? null,
                     $detail['harga_satuan'] ?? null,
                     $detail['dimensi'] ?? null,
                     $detail['satuan'] ?? null,
                     $detail['kriteria_id'] ?? null,
-                    $detail['tingkat_kerusakan'] ?? null
+                    $detail['tingkat_kerusakan'] ?? null,
+                    $detail['durasi'] ?? null,
+                    $detail['durasi_satuan'] ?? null
                 );
             }
 
@@ -211,9 +220,9 @@ class Format7Controller extends Controller
                     'data' => $formulir
                 ]);
             }
-            return redirect()->route('forms.form4.format1.list')
+            return redirect()->route('forms.form4.format7.list')
                 ->with('success', 'Data berhasil disimpan');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             if ($request->ajax()) {
@@ -240,7 +249,7 @@ class Format7Controller extends Controller
 
         $this->formulirService->loadVillages($bencana);
 
-        return view('forms.form4.format3.show', [
+        return view('forms.form4.format7.show', [
             'formulir' => $formulir,
             'bencana'  => $formulir->laporan->bencana,
             'totals'   => $this->formulirService->computeTotals($formulir),
@@ -252,51 +261,120 @@ class Format7Controller extends Controller
      */
     public function list(Request $request)
     {
-        $bencana_id = $request->input('bencana_id');
+        $bencana = Bencana::findOrFail($request->bencana_id);
 
-        // Redirect to bencana selection if no bencana_id is provided
-        if (!$bencana_id) {
-            return redirect()->route('bencana.index', ['source' => 'forms']);
-        }
+        $reports = Formulir::with(['laporan.bencana', 'items'])
+            ->where('format_id', 7)
+            ->whereHas('laporan', function ($q) use ($bencana) {
+                $q->where('bencana_id', $bencana->id);
+            })
+            ->latest()
+            ->get();
 
-        // Get bencana details
-        $bencana = Bencana::findOrFail($bencana_id);
+        $reports->each(function ($report) {
+            $bencana = $report->laporan->bencana;
 
-        // Get form data for this disaster
-        $form = Format3Form4::where('rekap_id', $bencana_id)->get();
+            $codes = is_array($bencana->village_codes) ? $bencana->village_codes : json_decode($bencana->village_codes, true);
 
-        return view('forms.form4.format3.list', compact('bencana', 'form'));
+            $bencana->villages = collect($codes)
+                ->map(function ($code) {
+                    $code = trim($code);
+
+                    return Cache::remember("village_name_{$code}", 86400, function () use ($code) {
+                        $parts = explode('.', $code);
+                        $districtCode = implode('.', array_slice($parts, 0, 3));
+
+                        $response = Http::get("https://wilayah.id/api/villages/{$districtCode}.json");
+
+                        if (!$response->ok()) {
+                            return [
+                                'code' => $code,
+                                'name' => null,
+                            ];
+                        }
+
+                        $village = collect($response->json('data'))->firstWhere('code', $code);
+
+                        return [
+                            'code' => $code,
+                            'name' => $village['name'] ?? null,
+                        ];
+                    });
+                })
+                ->toArray();
+        });
+
+        return view('forms.form4.format7.list', compact('bencana', 'reports'));
+    }
+
+    public function previewPdf($id)
+    {
+        $formulir = $this->formulirService->loadFormulir($id);
+
+        $bencana = $formulir->laporan->bencana;
+
+        $this->formulirService->loadVillages($bencana);
+
+        $pdf = Pdf::loadView('forms.form4.format7.pdf', [
+            'formulir' => $formulir,
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
+        ]);
+
+        return $pdf->setPaper('A4', 'landscape')
+            ->stream('Format7.pdf');
+    }
+
+    public function generatePdf($id)
+    {
+        $formulir = $this->formulirService->loadFormulir($id);
+
+        $bencana = $formulir->laporan->bencana;
+
+        $this->formulirService->loadVillages($bencana);
+
+        $pdf = Pdf::loadView('forms.form4.format7.pdf', [
+            'formulir' => $formulir,
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
+        ]);
+
+        return $pdf->download("Format7_{$formulir->id}.pdf");
     }
 
     public function edit($id)
     {
-        try {
-            $format3form4 = Format3Form4::with('bencana')->findOrFail($id);
-            $bencana = $format3form4->bencana;
+        $formulir = $this->formulirService->loadFormulir($id);
 
-            return view('forms.form4.format3.edit', compact('format3form4', 'bencana'));
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withErrors(['error' => 'Data tidak ditemukan: ' . $e->getMessage()]);
-        }
+        $summary = $this->formulirService->getSummary($formulir);
+
+        return view('forms.form4.format7.edit', [
+            'formulir' => $formulir,
+            'bencana' => $formulir->laporan->bencana,
+            'rows' => $summary['rows'],
+            'totals' => $summary['totals'],
+        ]);
     }
 
     /**
-     * Update the specified format3 data
+     * Update the specified format7 data
      *
      * @param  Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(StoreFormat7Request $request, $id)
     {
         try {
             DB::beginTransaction();
 
             // Find the existing record
-            $format3form4 = Format3Form4::findOrFail($id);
+            $laporan = LaporanBencana::where('bencana_id', $request->bencana_id)->firstOrFail();
+            $formulir = Formulir::where('laporan_id', $laporan->id)
+                ->where('format_id', 7)
+                ->firstOrFail();
             // Validate the request
-            $validated = $request->validate([
+            $validated = $request->validated(); /*
 
                 'bencana_id' => 'required|exists:bencana,id',
                 'nama_kampung' => 'required|string',
@@ -376,7 +454,7 @@ class Format7Controller extends Controller
                 'posyandu_harga_obat' => 'nullable|integer',
                 'posyandu_harga_meubelair' => 'nullable|integer',
                 'posyandu_harga_peralatan' => 'nullable|integer',
-            ]);
+            ]); */
 
             // baru: hitung kerusakan untuk setiap fasilitas secara dinamis menggunakan field yang tersedia
             $faskes = ['rs', 'puskesmas', 'poliklinik', 'pustu', 'polindes', 'posyandu'];
@@ -417,14 +495,22 @@ class Format7Controller extends Controller
             $validated['total_kerugian'] = 0;
 
             // Update the record (pastikan variabel model sama seperti yang ditemukan sebelumnya)
-            $format3form4 = Format3Form4::findOrFail($id);
-            $format3form4->update($validated);
+            $formulir = Formulir::where('laporan_id', $laporan->id)
+                ->where('format_id', 7)
+                ->firstOrFail();
+            $formulir->update([
+                'nama_kampung' => $request->nama_kampung,
+                'nama_distrik' => $request->nama_distrik,
+            ]);
+            foreach ($validated['details'] ?? [] as $detail) {
+                $this->updateItem($formulir->id, $detail['kategori'] ?? null, $detail['sub_kategori'] ?? null, $detail['jumlah'] ?? null, $detail['jumlah2'] ?? null, $detail['harga_satuan'] ?? null, $detail['dimensi'] ?? null, $detail['satuan'] ?? null, $detail['kriteria_id'] ?? null, $detail['tingkat_kerusakan'] ?? null, $detail['durasi'] ?? null, $detail['durasi_satuan'] ?? null);
+            }
 
             DB::commit();
 
-            return redirect()->route('forms.form4.format3.list', ['bencana_id' => $format3form4->bencana_id])
+            return redirect()->route('forms.form4.format7.list', ['bencana_id' => $request->bencana_id])
                 ->with('success', 'Data berhasil disimpan');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
             return redirect()->back()
                 ->withInput()
@@ -433,10 +519,14 @@ class Format7Controller extends Controller
     }
     public function destroy($id)
     {
-        $format3form4 = Format3Form4::findOrFail($id);
-        $bencana_id = $format3form4->bencana_id;
-        $format3form4->delete();
-        return redirect()->route('forms.form4.format3.list', ['bencana_id' => $bencana_id])
-            ->with('success', 'Data berhasil dihapus');
+        DB::transaction(function () use ($id) {
+            $formulir = $this->formulirService->loadFormulir($id);
+
+            $formulir->items()->delete();
+
+            $formulir->delete();
+        });
+
+        return back()->with('success', 'Data berhasil dihapus.');
     }
 }

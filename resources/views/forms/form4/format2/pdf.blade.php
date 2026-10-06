@@ -1,57 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Sektor Pendidikan - {{ $formulir->nama_kampung }}</title>
+    <title>Formulir 04 - Format 2</title>
+
     <style>
         @page {
-            size: landscape;
+            size: A4 landscape;
+            margin: 15mm;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #333;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .header h2 {
-            font-size: 14px;
-            margin-top: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+            color: #000;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #333;
         }
 
         th,
         td {
-            padding: 5px;
-            text-align: left;
+            border: 1px solid #000;
+            padding: 4px;
+            vertical-align: middle;
         }
 
         th {
-            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        .no-border,
+        .no-border td {
+            border: none;
         }
 
         .text-center {
@@ -62,164 +46,298 @@
             text-align: right;
         }
 
-        .info-table td,
-        .info-table th {
-            width: 25%;
-        }
-
-        .footer {
-            margin-top: 30px;
-            text-align: right;
-        }
-
-        .footer-sign {
-            display: inline-block;
-            width: 200px;
+        .header {
             text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header h3,
+        .header h4 {
+            margin: 2px 0;
+        }
+
+        .info {
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 5px;
         }
 
         .page-break {
-            page-break-after: always;
+            page-break-before: always;
         }
     </style>
 </head>
 
 <body>
+
+    @php
+        $items = $formulir->items;
+
+        /*
+    |--------------------------------------------------------------------------
+    | Helper mengambil item
+    |--------------------------------------------------------------------------
+    */
+        $getItem = function ($kategori, $subKategori = null, $tingkatKerusakan = null) use ($items) {
+            return $items->first(function ($item) use ($kategori, $subKategori, $tingkatKerusakan) {
+                return $item->kategori === $kategori && $item->sub_kategori === $subKategori && $item->tingkat_kerusakan === $tingkatKerusakan;
+            });
+        };
+
+        $getValue = function ($kategori, $subKategori = null, $tingkatKerusakan = null, $field = 'jumlah') use ($getItem) {
+            $item = $getItem($kategori, $subKategori, $tingkatKerusakan);
+
+            return $item?->{$field} ?? 0;
+        };
+
+        /*
+    |--------------------------------------------------------------------------
+    | Daftar kategori pendidikan
+    |--------------------------------------------------------------------------
+    */
+        $pendidikan = [
+            'tk' => 'TK/RA',
+            'sd' => 'SD/MI',
+            'smp' => 'SMP/MTS',
+            'sma' => 'SMA/MA',
+            'smk' => 'SMK',
+            'pt' => 'Perguruan Tinggi',
+            'perpus' => 'Perpustakaan',
+            'lab' => 'Laboratorium',
+            'lainnya' => 'Lainnya',
+        ];
+    @endphp
+
     <div class="header">
-        <h1>FORMULIR 04 - PENGUMPULAN DATA SEKTOR</h1>
-        <h2>FORMAT 2: PENGUMPULAN DATA SEKTOR PENDIDIKAN</h2>
+        <h3>FORMULIR 04</h3>
+        <h4>FORMAT 2 - SEKTOR PENDIDIKAN</h4>
     </div>
 
-    <table class="info-table">
+    <table class="no-border info">
         <tr>
-            <th>Bencana</th>
-            <td>{{ $bencana->jenis_bencana }}</td>
-            <th>Tanggal</th>
-            <td>{{ $bencana->tanggal }}</td>
-        </tr>
-        <tr>
-            <th>Kampung</th>
-            <td>{{ $formulir->nama_kampung }}</td>
-            <th>Distrik</th>
-            <td>{{ $formulir->nama_distrik }}</td>
+            <td width="15%">Nama Kampung</td>
+            <td width="35%">: {{ $formulir->nama_kampung }}</td>
+
+            <td width="15%">Nama Distrik</td>
+            <td width="35%">: {{ $formulir->nama_distrik }}</td>
         </tr>
     </table>
 
-    <h3>A. Data Kerusakan Bangunan Pendidikan</h3>
+    <div class="section-title">
+        A. DATA KERUSAKAN SARANA PENDIDIKAN
+    </div>
+
     <table>
         <thead>
             <tr>
-                <th rowspan="2" class="text-center">Jenis Fasilitas Pendidikan</th>
-                <th colspan="3" class="text-center">Jumlah Kerusakan</th>
-                <th rowspan="2" class="text-center">Ukuran Rata-rata (m²)</th>
-                <th rowspan="2" class="text-center">Harga Bangunan<br>(Rp/m²)</th>
-                <th rowspan="2" class="text-center">Harga Peralatan<br>(Rp/unit)</th>
-                <th rowspan="2" class="text-center">Harga Meubelair<br>(Rp/unit)</th>
+                <th rowspan="3" width="15%">Jenis Bangunan</th>
+                <th colspan="6">Tingkat Kerusakan</th>
+                <th rowspan="3" width="12%">Dimensi</th>
+                <th rowspan="3" width="12%">Harga Satuan</th>
             </tr>
+
             <tr>
-                <th class="text-center">Rusak Berat</th>
-                <th class="text-center">Rusak Sedang</th>
-                <th class="text-center">Rusak Ringan</th>
+                <th colspan="2">Berat</th>
+                <th colspan="2">Sedang</th>
+                <th colspan="2">Ringan</th>
+            </tr>
+
+            <tr>
+                <th>Negeri</th>
+                <th>Swasta</th>
+                <th>Negeri</th>
+                <th>Swasta</th>
+                <th>Negeri</th>
+                <th>Swasta</th>
             </tr>
         </thead>
+
         <tbody>
-            <!-- TK/PAUD -->
-            <tr>
-                <td>TK/PAUD</td>
-                <td class="text-center">Negeri: {{ $formulir->tk_berat_negeri }}<br>Swasta: {{ $formulir->tk_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->tk_sedang_negeri }}<br>Swasta: {{ $formulir->tk_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->tk_ringan_negeri }}<br>Swasta: {{ $formulir->tk_ringan_swasta }}</td>
-                <td class="text-center">{{ $formulir->tk_ukuran }}</td>
-                <td class="text-right">{{ number_format($formulir->tk_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $formulir->tk_harga_peralatan }}</td>
-                <td class="text-right">{{ $formulir->tk_harga_meubelair }}</td>
-            </tr>
 
-            <!-- SD/MI -->
-            <tr>
-                <td>SD/MI</td>
-                <td class="text-center">Negeri: {{ $formulir->sd_berat_negeri }}<br>Swasta: {{ $formulir->sd_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->sd_sedang_negeri }}<br>Swasta: {{ $formulir->sd_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->sd_ringan_negeri }}<br>Swasta: {{ $formulir->sd_ringan_swasta }}</td>
-                <td class="text-center">{{ $formulir->sd_ukuran }}</td>
-                <td class="text-right">{{ number_format($formulir->sd_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $formulir->sd_harga_peralatan }}</td>
-                <td class="text-right">{{ $formulir->sd_harga_meubelair }}</td>
-            </tr>
+            @foreach ($pendidikan as $kategori => $nama)
+                @php
+                    /*
+                | Ambil dimensi dan harga satuan dari salah satu item
+                | kategori tersebut.
+                */
+                    $referensiItem = $items->first(function ($item) use ($kategori) {
+                        return $item->kategori === $kategori;
+                    });
 
-            <!-- SMP/MTs -->
-            <tr>
-                <td>SMP/MTs</td>
-                <td class="text-center">Negeri: {{ $formulir->smp_berat_negeri }}<br>Swasta: {{ $formulir->smp_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->smp_sedang_negeri }}<br>Swasta: {{ $formulir->smp_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->smp_ringan_negeri }}<br>Swasta: {{ $formulir->smp_ringan_swasta }}</td>
-                <td class="text-center">{{ $formulir->smp_ukuran }}</td>
-                <td class="text-right">{{ number_format($formulir->smp_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $formulir->smp_harga_peralatan }}</td>
-                <td class="text-right">{{ $formulir->smp_harga_meubelair }}</td>
-            </tr>
+                    $dimensi = $referensiItem?->dimensi ?? 0;
+                    $hargaSatuan = $referensiItem?->harga_satuan ?? 0;
+                @endphp
 
-            <!-- SMA/SMK/MA -->
-            <tr>
-                <td>SMA/MA</td>
-                <td class="text-center">Negeri: {{ $formulir->sma_berat_negeri }}<br>Swasta: {{ $formulir->sma_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->sma_sedang_negeri }}<br>Swasta: {{ $formulir->sma_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->sma_ringan_negeri }}<br>Swasta: {{ $formulir->sma_ringan_swasta }}</td>
-                <td class="text-center">{{ $formulir->sma_ukuran }}</td>
-                <td class="text-right">{{ number_format($formulir->sma_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $formulir->sma_harga_peralatan }}</td>
-                <td class="text-right">{{ $formulir->sma_harga_meubelair }}</td>
-            </tr>
+                <tr>
+                    <td>
+                        {{ $nama }}
+                    </td>
 
-            <tr>
-                <td>SMK</td>
-                <td class="text-center">Negeri: {{ $formulir->smk_berat_negeri }}<br>Swasta: {{ $formulir->smk_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->smk_sedang_negeri }}<br>Swasta: {{ $formulir->smk_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->smk_ringan_negeri }}<br>Swasta: {{ $formulir->smk_ringan_swasta }}</td>
-                <td class="text-center">{{ $formulir->smk_ukuran }}</td>
-                <td class="text-right">{{ number_format($formulir->smk_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $formulir->smk_harga_peralatan }}</td>
-                <td class="text-right">{{ $formulir->smk_harga_meubelair }}</td>
-            </tr>
+                    {{-- Berat Negeri --}}
+                    <td class="text-center">
+                        {{ $getValue($kategori, 'negeri', 'berat', 'jumlah') }}
+                    </td>
 
-            <tr>
-                <td>Universitas/Akademi</td>
-                <td class="text-center">Negeri: {{ $formulir->universitas_berat_negeri }}<br>Swasta: {{ $formulir->universitas_berat_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->universitas_sedang_negeri }}<br>Swasta: {{ $formulir->universitas_sedang_swasta }}</td>
-                <td class="text-center">Negeri: {{ $formulir->universitas_ringan_negeri }}<br>Swasta: {{ $formulir->universitas_ringan_swasta }}</td>
-                <td class="text-center">{{ $formulir->universitas_ukuran }}</td>
-                <td class="text-right">{{ number_format($formulir->universitas_harga_bangunan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ $formulir->universitas_harga_peralatan }}</td>
-                <td class="text-right">{{ $formulir->universitas_harga_meubelair }}</td>
-            </tr>
+                    {{-- Berat Swasta --}}
+                    <td class="text-center">
+                        {{ $getValue($kategori, 'swasta', 'berat', 'jumlah') }}
+                    </td>
+
+                    {{-- Sedang Negeri --}}
+                    <td class="text-center">
+                        {{ $getValue($kategori, 'negeri', 'sedang', 'jumlah') }}
+                    </td>
+
+                    {{-- Sedang Swasta --}}
+                    <td class="text-center">
+                        {{ $getValue($kategori, 'swasta', 'sedang', 'jumlah') }}
+                    </td>
+
+                    {{-- Ringan Negeri --}}
+                    <td class="text-center">
+                        {{ $getValue($kategori, 'negeri', 'ringan', 'jumlah') }}
+                    </td>
+
+                    {{-- Ringan Swasta --}}
+                    <td class="text-center">
+                        {{ $getValue($kategori, 'swasta', 'ringan', 'jumlah') }}
+                    </td>
+
+                    {{-- Dimensi --}}
+                    <td class="text-center">
+                        {{ $dimensi }}
+                    </td>
+
+                    {{-- Harga Satuan --}}
+                    <td class="text-right">
+                        Rp {{ number_format((float) $hargaSatuan, 0, ',', '.') }}
+                    </td>
+                </tr>
+            @endforeach
+
         </tbody>
     </table>
 
-    <h3>B. Data Kerugian Sektor Pendidikan</h3>
+    <div class="section-title">
+        B. DATA BIAYA LAINNYA
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="40%">Jenis</th>
+                <th width="20%">Jumlah</th>
+                <th width="20%">Satuan</th>
+                <th width="20%">Harga Satuan</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @php
+                $sekolahPengungsian = $items->first(function ($item) {
+                    return $item->kategori === 'sekolah_pengungsian';
+                });
+
+                $guruKorban = $items->first(function ($item) {
+                    return $item->kategori === 'guru_korban';
+                });
+
+                $iuranSekolah = $items->first(function ($item) {
+                    return $item->kategori === 'iuran_sekolah';
+                });
+
+                $biayaTenagaKerja = $items->first(function ($item) {
+                    return $item->kategori === 'biaya_tenaga_kerja_hok';
+                });
+
+                $biayaAlatBerat = $items->first(function ($item) {
+                    return $item->kategori === 'biaya_alat_berat_hari';
+                });
+            @endphp
+
+            <tr>
+                <td>Sekolah untuk Pengungsian</td>
+                <td class="text-center">
+                    {{ $sekolahPengungsian?->jumlah ?? 0 }}
+                </td>
+                <td class="text-center">
+                    {{ $sekolahPengungsian?->satuan ?? 'unit' }}
+                </td>
+                <td class="text-right">
+                    Rp {{ number_format((float) ($sekolahPengungsian?->harga_satuan ?? 0), 0, ',', '.') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Guru Korban Bencana</td>
+                <td class="text-center">
+                    {{ $guruKorban?->jumlah ?? 0 }}
+                </td>
+                <td class="text-center">
+                    {{ $guruKorban?->satuan ?? 'jiwa' }}
+                </td>
+                <td class="text-right">
+                    Rp {{ number_format((float) ($guruKorban?->harga_satuan ?? 0), 0, ',', '.') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Iuran Sekolah Swasta</td>
+                <td class="text-center">
+                    {{ $iuranSekolah?->jumlah ?? 0 }}
+                </td>
+                <td class="text-center">
+                    {{ $iuranSekolah?->satuan ?? 'rp' }}
+                </td>
+                <td class="text-right">
+                    Rp {{ number_format((float) ($iuranSekolah?->harga_satuan ?? 0), 0, ',', '.') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Biaya Tenaga Kerja</td>
+                <td class="text-center">
+                    {{ $biayaTenagaKerja?->jumlah ?? 0 }}
+                </td>
+                <td class="text-center">
+                    {{ $biayaTenagaKerja?->satuan ?? 'HOK' }}
+                </td>
+                <td class="text-right">
+                    Rp {{ number_format((float) ($biayaTenagaKerja?->harga_satuan ?? 0), 0, ',', '.') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Biaya Alat Berat</td>
+                <td class="text-center">
+                    {{ $biayaAlatBerat?->jumlah ?? 0 }}
+                </td>
+                <td class="text-center">
+                    {{ $biayaAlatBerat?->satuan ?? 'Hari' }}
+                </td>
+                <td class="text-right">
+                    Rp {{ number_format((float) ($biayaAlatBerat?->harga_satuan ?? 0), 0, ',', '.') }}
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="section-title">
+        C. KETERANGAN
+    </div>
+
     <table>
         <tr>
-            <th class="text-center">Biaya Bersih Sekolah (Hari)</th>
-            <td class="text-center">{{ $formulir->biaya_bersih_sekolah_hari }}</td>
-            <th class="text-center">Biaya Per Hari (Rp)</th>
-            <td class="text-center">{{ number_format($formulir->biaya_per_hari, 0, ',', '.') }}</td>
-        </tr>
-        <tr>
-            <th class="text-center">Biaya Sewa Gedung (Bulan)</th>
-            <td class="text-center">{{ $formulir->biaya_sewa_gedung_bulan }}</td>
-            <th class="text-center">Biaya Per Bulan (Rp)</th>
-            <td class="text-center">{{ number_format($formulir->biaya_sewa_per_bulan, 0, ',', '.') }}</td>
+            <td height="60"></td>
         </tr>
     </table>
 
-    <div class="footer">
-        <p>{{ $formulir->nama_distrik }}, {{ now()->format('d F Y') }}</p>
-        <div class="footer-sign">
-            <p>Petugas</p>
-            <br><br><br>
-            <p>___________________________</p>
-            <p>NIP.</p>
-        </div>
-    </div>
 </body>
 
 </html>

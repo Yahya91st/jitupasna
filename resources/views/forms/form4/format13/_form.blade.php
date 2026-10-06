@@ -1,18 +1,18 @@
-@extends('layouts.main')
+@php
+    $data = $formulir ?? null;
+@endphp
+    <style>
+        /* Kurangi padding pada tabel dan input agar lebih kompak */
+        .table th,
+        .table td {
+            padding: 0.25rem 0.3rem !important;
+        }
 
-@section('content')
-<style>
-    /* Kurangi padding pada tabel dan input agar lebih kompak */
-    .table th, .table td {
-        padding: 0.25rem 0.3rem !important;
-    }
-    .table input.form-control {
-        padding: 0.15rem 0.3rem !important;
-        font-size: 0.95rem;
-    }
-
-</style>
-
+        .table input.form-control {
+            padding: 0.15rem 0.3rem !important;
+            font-size: 0.95rem;
+        }
+    </style>
 
     <div class="container mt-4">
         <h5 class="text-center fw-bold"style="color: #F28705;">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
@@ -30,14 +30,14 @@
             </table>
 
             @php
-            $kerusakan = [
-                'pabrik' => 'Pabrik / Tempat Usaha',
-                'mesin' => 'Mesin dan Peralatan',
-                'bahan_baku' => 'Bahan Baku',
-                'bahan_jadi' => 'Bahan Jadi',
-            ];
+                $kerusakan = [
+                    'pabrik' => 'Pabrik / Tempat Usaha',
+                    'mesin' => 'Mesin dan Peralatan',
+                    'bahan_baku' => 'Bahan Baku',
+                    'bahan_jadi' => 'Bahan Jadi',
+                ];
 
-            $index = 0;
+                $index = 0;
             @endphp
             <div class="table-responsive">
                 <table class="table table-bordered text-center align-middle small">
@@ -81,68 +81,46 @@
 
                     <tbody>
 
-                        @foreach($kerusakan as $kategori => $label)
+                        @foreach ($kerusakan as $kategori => $label)
+                            <tr>
 
-                        <tr>
+                                <td>
+                                    {{ $label }}
+                                </td>
 
-                            <td>
-                                {{ $label }}
-                            </td>
+                                @foreach (['berat', 'sedang', 'ringan'] as $tingkat)
+                                    <td>
 
-                            @foreach(['berat','sedang','ringan'] as $tingkat)
+                                        <input type="number" class="form-control" name="details[{{ $index }}][jumlah]">
 
-                            <td>
+                                        <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $kategori }}">
 
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="details[{{ $index }}][jumlah]">
+                                        <input type="hidden" name="details[{{ $index }}][tingkat_kerusakan]" value="{{ $tingkat }}">
 
-                                <input
-                                    type="hidden"
-                                    name="details[{{ $index }}][kategori]"
-                                    value="{{ $kategori }}">
+                                        <input type="hidden" name="details[{{ $index }}][sub_kategori]" value="unit">
 
-                                <input
-                                    type="hidden"
-                                    name="details[{{ $index }}][tingkat_kerusakan]"
-                                    value="{{ $tingkat }}">
+                                        <input type="hidden" name="details[{{ $index }}][satuan]" value="unit">
 
-                                <input
-                                    type="hidden"
-                                    name="details[{{ $index }}][sub_kategori]"
-                                    value="unit">
+                                    </td>
 
-                                <input
-                                    type="hidden"
-                                    name="details[{{ $index }}][satuan]"
-                                    value="unit">
+                                    <td>
 
-                            </td>
+                                        <div class="input-group">
 
-                            <td>
+                                            <span class="input-group-text">
+                                                Rp
+                                            </span>
 
-                                <div class="input-group">
+                                            <input type="number" class="form-control" name="details[{{ $index }}][harga_satuan]">
 
-                                    <span class="input-group-text">
-                                        Rp
-                                    </span>
+                                        </div>
 
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        name="details[{{ $index }}][harga_satuan]">
+                                    </td>
 
-                                </div>
+                                    @php $index++; @endphp
+                                @endforeach
 
-                            </td>
-
-                            @php $index++; @endphp
-
-                            @endforeach
-
-                        </tr>
-
+                            </tr>
                         @endforeach
 
                         @php $detailIndex = 100; @endphp
@@ -153,7 +131,7 @@
             </div>
 
             @php
-            $kehilanganProduksiRows = range(1, 3);
+                $kehilanganProduksiRows = range(1, 3);
             @endphp
 
             <div class="table-responsive">
@@ -185,59 +163,42 @@
 
                     <tbody>
 
-                        @foreach($kehilanganProduksiRows as $row)
+                        @foreach ($kehilanganProduksiRows as $row)
+                            <tr>
 
-                        <tr>
+                                <td>
 
-                            <td>
+                                    <input type="text" class="form-control" name="details[{{ $detailIndex }}][sub_kategori]">
 
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    name="details[{{ $detailIndex }}][sub_kategori]">
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
+                                    <input type="number" class="form-control" name="details[{{ $detailIndex }}][jumlah]">
 
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="details[{{ $detailIndex }}][jumlah]">
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
+                                    <div class="input-group">
 
-                                <div class="input-group">
+                                        <span class="input-group-text">
+                                            Rp
+                                        </span>
 
-                                    <span class="input-group-text">
-                                        Rp
-                                    </span>
+                                        <input type="number" class="form-control" name="details[{{ $detailIndex }}][harga_satuan]">
 
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        name="details[{{ $detailIndex }}][harga_satuan]">
+                                    </div>
 
-                                </div>
+                                </td>
 
-                            </td>
+                                <input type="hidden" name="details[{{ $detailIndex }}][kategori]" value="kehilangan_total_produksi">
 
-                            <input
-                                type="hidden"
-                                name="details[{{ $detailIndex }}][kategori]"
-                                value="kehilangan_total_produksi">
+                                <input type="hidden" name="details[{{ $detailIndex }}][satuan]" value="unit">
 
-                            <input
-                                type="hidden"
-                                name="details[{{ $detailIndex }}][satuan]"
-                                value="unit">
+                            </tr>
 
-                        </tr>
-
-                        @php $detailIndex++; @endphp
-
+                            @php $detailIndex++; @endphp
                         @endforeach
 
                     </tbody>
@@ -246,7 +207,7 @@
             </div>
 
             @php
-            $penurunanProduksiRows = range(1, 3);
+                $penurunanProduksiRows = range(1, 3);
             @endphp
 
             <div class="table-responsive">
@@ -281,67 +242,47 @@
 
                     <tbody>
 
-                        @foreach($penurunanProduksiRows as $row)
+                        @foreach ($penurunanProduksiRows as $row)
+                            <tr>
 
-                        <tr>
+                                <td>
 
-                            <td>
+                                    <input type="text" class="form-control" name="details[{{ $detailIndex }}][sub_kategori]">
 
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    name="details[{{ $detailIndex }}][sub_kategori]">
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
+                                    <input type="number" class="form-control" name="details[{{ $detailIndex }}][jumlah]">
 
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="details[{{ $detailIndex }}][jumlah]">
+                                </td>
+                                <td>
 
-                            </td>
-                            <td>
+                                    <input type="number" class="form-control" name="details[{{ $detailIndex }}][jumlah2]">
 
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="details[{{ $detailIndex }}][jumlah2]">
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
+                                    <div class="input-group">
 
-                                <div class="input-group">
+                                        <span class="input-group-text">
+                                            Rp
+                                        </span>
 
-                                    <span class="input-group-text">
-                                        Rp
-                                    </span>
+                                        <input type="number" class="form-control" name="details[{{ $detailIndex }}][harga_satuan]">
 
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        name="details[{{ $detailIndex }}][harga_satuan]">
+                                    </div>
 
-                                </div>
+                                </td>
 
-                            </td>
+                                <input type="hidden" name="details[{{ $detailIndex }}][kategori]" value="penurunan_produktivitas">
 
-                            <input
-                                type="hidden"
-                                name="details[{{ $detailIndex }}][kategori]"
-                                value="penurunan_produktivitas">
+                                <input type="hidden" name="details[{{ $detailIndex }}][satuan]" value="unit">
 
-                            <input
-                                type="hidden"
-                                name="details[{{ $detailIndex }}][satuan]"
-                                value="unit">
+                            </tr>
 
-                        </tr>
-
-                        @php $detailIndex++; @endphp
-
+                            @php $detailIndex++; @endphp
                         @endforeach
 
                     </tbody>
@@ -381,37 +322,26 @@
 
                     <tbody>
 
-                        @foreach($kategoriOngkos as $kategori => $label)
-
-                            @for($i = 1; $i <= $jumlahBaris; $i++)
-
+                        @foreach ($kategoriOngkos as $kategori => $label)
+                            @for ($i = 1; $i <= $jumlahBaris; $i++)
                                 <tr>
 
-                                    @if($i == 1)
+                                    @if ($i == 1)
                                         <td rowspan="{{ $jumlahBaris }}">
                                             {{ $label }}
                                         </td>
                                     @endif
 
                                     <td>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            name="details[{{ $detailIndex }}][sub_kategori]">
+                                        <input type="text" class="form-control" name="details[{{ $detailIndex }}][sub_kategori]">
                                     </td>
 
                                     <td>
-                                        <input
-                                            type="number"
-                                            class="form-control"
-                                            name="details[{{ $detailIndex }}][jumlah]">
+                                        <input type="number" class="form-control" name="details[{{ $detailIndex }}][jumlah]">
                                     </td>
 
                                     <td>
-                                        <input
-                                            type="number"
-                                            class="form-control"
-                                            name="details[{{ $detailIndex }}][jumlah2]">
+                                        <input type="number" class="form-control" name="details[{{ $detailIndex }}][jumlah2]">
                                     </td>
 
                                     <td>
@@ -420,91 +350,73 @@
                                                 Rp
                                             </span>
 
-                                            <input
-                                                type="number"
-                                                class="form-control"
-                                                name="details[{{ $detailIndex }}][harga_satuan]">
+                                            <input type="number" class="form-control" name="details[{{ $detailIndex }}][harga_satuan]">
                                         </div>
 
-                                        <input
-                                            type="hidden"
-                                            name="details[{{ $detailIndex }}][kategori]"
-                                            value="{{ $kategori }}">
+                                        <input type="hidden" name="details[{{ $detailIndex }}][kategori]" value="{{ $kategori }}">
 
-                                        <input
-                                            type="hidden"
-                                            name="details[{{ $detailIndex }}][satuan]"
-                                            value="unit">
+                                        <input type="hidden" name="details[{{ $detailIndex }}][satuan]" value="unit">
                                     </td>
 
                                 </tr>
 
                                 @php $detailIndex++; @endphp
-
                             @endfor
-
                         @endforeach
 
                     </tbody>
 
                 </table>
             </div>
-            
 
-        
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
             </div>
-        @endif
 
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="col-12 text-center">
+                <button type="button" class="btn btn-warning" id="fillDummy">
+                    Isi Data Dummy
+                </button>
             </div>
-        @endif
+        </form>
+    </div>
+    <script>
+        document.getElementById('fillDummy').addEventListener('click', function() {
 
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+            document.querySelectorAll('input[type="number"]:not([readonly]), input[type="text"]:not([readonly])')
+                .forEach(function(input) {
 
-        <div class="col-12 text-center">
-            <button type="submit" class="btn btn-primary">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
-        </div>
-        
-        <div class="col-12 text-center">
-            <button type="button"
-                    class="btn btn-warning"
-                    id="fillDummy">
-                Isi Data Dummy
-            </button>
-        </div>
-    </form>
-</div>
-<script>
+                    if (input.value === '') {
+                        input.value = 1;
+                    }
 
-document.getElementById('fillDummy').addEventListener('click', function () {
-
-    document.querySelectorAll('input[type="number"]:not([readonly]), input[type="text"]:not([readonly])')
-        .forEach(function(input) {
-
-            if (input.value === '') {
-                input.value = 1;
-            }
+                });
 
         });
+    </script>
 
-});
-</script>
-
-@endsection

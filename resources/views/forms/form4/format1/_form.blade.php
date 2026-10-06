@@ -1,6 +1,6 @@
-@extends('layouts.main')
-
-@section('content')
+@php
+    $data = $formulir ?? null;
+@endphp
 
     <style>
         .table th,
@@ -39,7 +39,7 @@
                 @method($method)
             @endif
 
-            <input type="hidden" name="bencana_id" value="{{ request('bencana_id') ?? ($data->bencana_id ?? '') }}">
+            <input type="hidden" name="bencana_id" value="{{ request('bencana_id') ?? ($data->bencana_id ?? ($formulir->laporan->bencana_id ?? '')) }}">
 
             <table class="table table-bordered">
 
@@ -49,7 +49,7 @@
 
                         NAMA KAMPUNG
 
-                        <input type="text" class="form-control" name="nama_kampung" required value="{{ old('nama_kampung', $data->nama_kampung ?? '') }}">
+                        <input type="text" class="form-control" name="nama_kampung" required value="{{ old('nama_kampung', $data->nama_kampung ?? ($formulir->nama_kampung ?? '')) }}">
 
                     </td>
 
@@ -57,7 +57,7 @@
 
                         NAMA DISTRIK
 
-                        <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? '') }}">
+                        <input type="text" class="form-control" name="nama_distrik" required value="{{ old('nama_distrik', $data->nama_distrik ?? ($formulir->nama_distrik ?? '')) }}">
 
                     </td>
 
@@ -73,6 +73,24 @@
                     'sedang' => '1c) JUMLAH RUMAH RUSAK SEDANG',
                     'ringan' => '1d) JUMLAH RUMAH RUSAK RINGAN',
                 ];
+
+                /*
+                 * $rows berasal dari getSummary()
+                 * dan setiap item berbentuk array:
+                 *
+                 * [
+                 *     'id',
+                 *     'kategori',
+                 *     'sub_kategori',
+                 *     'tingkat_kerusakan',
+                 *     'jumlah',
+                 *     'harga_satuan',
+                 *     'satuan',
+                 *     'subtotal'
+                 * ]
+                 */
+
+                $rowsCollection = collect($rows ?? []);
 
             @endphp
 
@@ -110,24 +128,20 @@
 
                 <tbody>
 
-                    @php
-                        $index = 0;
-                    @endphp
+                    <?php
+                    $index = 0;
+                    ?>
 
                     @foreach ($tingkatRusak as $tingkat => $label)
                         @php
 
-                            $permanen = isset($formulir)
-                                ? $formulir->items->first(function ($item) use ($tingkat) {
-                                    return $item->kategori == 'rumah' && $item->sub_kategori == 'permanen' && $item->tingkat_kerusakan == $tingkat;
-                                })
-                                : null;
+                            $permanen = $rowsCollection->first(function ($item) use ($tingkat) {
+                                return ($item['kategori'] ?? null) == 'rumah' && ($item['sub_kategori'] ?? null) == 'permanen' && ($item['tingkat_kerusakan'] ?? null) == $tingkat;
+                            });
 
-                            $nonPermanen = isset($formulir)
-                                ? $formulir->items->first(function ($item) use ($tingkat) {
-                                    return $item->kategori == 'rumah' && $item->sub_kategori == 'non_permanen' && $item->tingkat_kerusakan == $tingkat;
-                                })
-                                : null;
+                            $nonPermanen = $rowsCollection->first(function ($item) use ($tingkat) {
+                                return ($item['kategori'] ?? null) == 'rumah' && ($item['sub_kategori'] ?? null) == 'non_permanen' && ($item['tingkat_kerusakan'] ?? null) == $tingkat;
+                            });
 
                             $permanenIndex = $index++;
                             $nonIndex = $index++;
@@ -142,7 +156,7 @@
 
                             <td>
 
-                                <input type="number" class="form-control rumah" name="details[{{ $permanenIndex }}][jumlah]" value="{{ old("details.$permanenIndex.jumlah", $permanen->jumlah ?? '') }}">
+                                <input type="number" class="form-control rumah" name="details[{{ $permanenIndex }}][jumlah]" value="{{ old("details.$permanenIndex.jumlah", $permanen['jumlah'] ?? '') }}">
 
                                 <input type="hidden" name="details[{{ $permanenIndex }}][kategori]" value="rumah">
 
@@ -158,7 +172,7 @@
 
                             <td>
 
-                                <input type="number" class="form-control rumah" name="details[{{ $nonIndex }}][jumlah]" value="{{ old("details.$nonIndex.jumlah", $nonPermanen->jumlah ?? '') }}">
+                                <input type="number" class="form-control rumah" name="details[{{ $nonIndex }}][jumlah]" value="{{ old("details.$nonIndex.jumlah", $nonPermanen['jumlah'] ?? '') }}">
 
                                 <input type="hidden" name="details[{{ $nonIndex }}][kategori]" value="rumah">
 
@@ -180,13 +194,13 @@
 
                             <td>
 
-                                <input type="number" class="form-control" name="details[{{ $permanenIndex }}][harga_satuan]" value="{{ old("details.$permanenIndex.harga_satuan", $permanen->harga_satuan ?? '') }}">
+                                <input type="number" class="form-control" name="details[{{ $permanenIndex }}][harga_satuan]" value="{{ old("details.$permanenIndex.harga_satuan", $permanen['harga_satuan'] ?? '') }}">
 
                             </td>
 
                             <td>
 
-                                <input type="number" class="form-control" name="details[{{ $nonIndex }}][harga_satuan]" value="{{ old("details.$nonIndex.harga_satuan", $nonPermanen->harga_satuan ?? '') }}">
+                                <input type="number" class="form-control" name="details[{{ $nonIndex }}][harga_satuan]" value="{{ old("details.$nonIndex.harga_satuan", $nonPermanen['harga_satuan'] ?? '') }}">
 
                             </td>
 
@@ -233,12 +247,6 @@
             @endphp
 
             @foreach ($kerusakanPrasarana as $prasarana)
-                @php
-
-                    $harga = isset($formulir) ? $formulir->items->where('kategori', $prasarana['kategori'])->first() : null;
-
-                @endphp
-
                 <table class="table table-bordered mt-4">
 
                     <thead>
@@ -278,11 +286,9 @@
                         @foreach ($tingkatKerusakan as $tingkat => $label)
                             @php
 
-                                $detail = isset($formulir)
-                                    ? $formulir->items->first(function ($item) use ($prasarana, $tingkat) {
-                                        return $item->kategori == $prasarana['kategori'] && $item->tingkat_kerusakan == $tingkat;
-                                    })
-                                    : null;
+                                $detail = $rowsCollection->first(function ($item) use ($prasarana, $tingkat) {
+                                    return ($item['kategori'] ?? null) == $prasarana['kategori'] && ($item['tingkat_kerusakan'] ?? null) == $tingkat;
+                                });
 
                             @endphp
 
@@ -296,7 +302,7 @@
 
                                 <td>
 
-                                    <input type="number" class="form-control" name="details[{{ $index }}][jumlah]" value="{{ old("details.$index.jumlah", $detail->jumlah ?? '') }}">
+                                    <input type="number" class="form-control" name="details[{{ $index }}][jumlah]" value="{{ old("details.$index.jumlah", $detail['jumlah'] ?? '') }}">
 
                                     <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $prasarana['kategori'] }}">
 
@@ -316,7 +322,7 @@
 
                                 <td>
 
-                                    <input type="number" class="form-control" name="details[{{ $index }}][harga_satuan]" value="{{ old("details.$index.harga_satuan", $detail->harga_satuan ?? ($harga->harga_satuan ?? '')) }}">
+                                    <input type="number" class="form-control" name="details[{{ $index }}][harga_satuan]" value="{{ old("details.$index.harga_satuan", $detail['harga_satuan'] ?? '') }}">
 
                                 </td>
 
@@ -347,17 +353,13 @@
 
             @if (session('success'))
                 <div class="alert alert-success mt-3">
-
                     {{ session('success') }}
-
                 </div>
             @endif
 
             @if (session('error'))
                 <div class="alert alert-danger mt-3">
-
                     {{ session('error') }}
-
                 </div>
             @endif
 
@@ -434,4 +436,3 @@
         });
     </script>
 
-@endsection

@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@php
+    $bencana_id = $bencana_id ?? request()->query('bencana_id');
+@endphp
+
 @section('content')
     <div class="container mt-4">
         <h5 class="text-center fw-bold">Formulir 04<br>Pengumpulan Data Sektor</h5>
@@ -9,12 +13,12 @@
             <div class="col-md-6">
                 <a href="{{ route('forms.form4.index', ['bencana_id' => $bencana_id]) }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left"></i> Kembali ke Daftar Format
-                </a> <a href="{{ route('forms.form4.format8form4', ['bencana_id' => $bencana_id]) }}" class="btn btn-primary">
+                </a> <a href="{{ route('forms.form4.format8.index', ['bencana_id' => $bencana_id]) }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> Tambah Data Baru
                 </a>
             </div>
             <div class="col-md-6">
-                <form action="{{ route('forms.form4.list-format8') }}" method="GET" class="d-flex">
+                <form action="{{ route('forms.form4.format8.list') }}" method="GET" class="d-flex">
                     <select name="bencana_id" class="form-select me-2" onchange="this.form.submit()">
                         <option value="">Pilih Bencana</option>
                         @foreach (\App\Models\Bencana::orderBy('tanggal', 'desc')->get() as $bencana)

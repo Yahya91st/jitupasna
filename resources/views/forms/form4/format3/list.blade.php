@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
                     <h3>Daftar Laporan Format 3 - Sektor Kesehatan</h3>
-                    <p class="text-subtitle text-muted">Daftar laporan untuk bencana {{ $bencana->kategori_bencana->nama ?? '-' }}</p>
+                    <p class="text-subtitle text-muted">Daftar laporan untuk bencana {{ $bencana->jenis_bencana ?? '-' }}</p>
                 </div>
             </div>
         </div>
@@ -18,15 +18,17 @@
         @endif
 
         <div class="alert alert-light-primary color-primary">
-            <p>Bencana: {{ $bencana->kategori_bencana->nama ?? '-' }}</p>
+            <p>Bencana: {{ $bencana->jenis_bencana ?? '-' }}</p>
             <p>Tanggal: {{ $bencana->tanggal ?? '-' }}</p>
             <p>Lokasi:
                 @if (isset($bencana->desa))
-                    @foreach ($bencana->desa as $desa)
-                        {{ $desa->nama }}@if (!$loop->last)
-                            ,
-                        @endif
-                    @endforeach
+                    @if (isset($bencana->desa))
+                        @foreach ($bencana->desa as $desa)
+                            {{ $desa->nama }}@if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
+                    @endif
                 @endif
             </p>
         </div>
@@ -40,7 +42,7 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    @if ($form->isEmpty())
+                    @if ($reports->isEmpty())
                         <div class="alert alert-info">
                             Belum ada data laporan kesehatan untuk bencana ini.
                         </div>
@@ -57,21 +59,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($form as $report)
+                                    @foreach ($reports as $report)
                                         <tr>
                                             <td>{{ $report->nama_kampung }}</td>
                                             <td>{{ $report->nama_distrik }}</td>
                                             <td>Rp. {{ number_format($report->total_kerusakan ?? 0, 0, ',', '.') }}</td>
                                             <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
                                             <td>
-                                                <a href="{{ route('forms.form4.format3.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                                                {{-- <a href="{{ route('forms.form4.format3.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a> --}}
                                                 <a href="{{ route('forms.form4.format3.edit', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                                 <form action="{{ route('forms.form4.format3.destroy', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
-                                                <a href="{{ route('forms.form4.generatePdf-format3', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
+                                                <a href="{{ route('forms.form4.format3.preview', [
+                                                    'formulir' => $report->id,
+                                                ]) }}" class="btn btn-secondary btn-sm">
+                                                    Preview PDF
+                                                </a>
+
+                                                <a href="{{ route('forms.form4.format3.pdf', [
+                                                    'formulir' => $report->id,
+                                                ]) }}" class="btn btn-primary btn-sm">
+                                                    Generate PDF
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

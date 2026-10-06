@@ -19,31 +19,52 @@
             font-size: 0.9rem;
         }
     </style>
+
+    @php
+        $items = isset($formulir) ? $formulir->items : collect();
+    @endphp
+
     <div class="container mt-4">
-        <h5 class="text-center fw-bold" style="color: #F28705;">Formulir 04<br>Pengkajian Kebutuhan Pasca Bencana</h5>
+
+        <h5 class="text-center fw-bold" style="color: #F28705;">
+            Formulir 04<br>
+            Pengkajian Kebutuhan Pasca Bencana
+        </h5>
+
         <p class="fw-bold">Format 2: Sektor Pendidikan</p>
-        <form action="{{ isset($edit) && $edit ? route('forms.form4.format2.update', $data['id'] ?? '') : route('forms.form4.format2.store') }}" method="POST">
+
+        <form action="{{ isset($edit) && $edit ? route('forms.form4.format2.update', $formulir->id) : route('forms.form4.format2.store') }}" method="POST">
+
             @csrf
+
             @if (isset($edit) && $edit)
                 @method('PATCH')
             @endif
+
             <input type="hidden" name="bencana_id" value="{{ $bencana->id ?? request()->query('bencana_id') }}">
+
             <table class="table table-bordered mb-2">
                 <tr>
                     <td style="width: 50%">
-                        NAMA KAMPUNG: <input type="text" class="form-control" name="nama_kampung" value="{{ old('nama_kampung', $data['nama_kampung'] ?? '') }}" required>
+                        NAMA KAMPUNG:
+                        <input type="text" class="form-control" name="nama_kampung" value="{{ old('nama_kampung', $formulir->nama_kampung ?? '') }}" required>
+
                         @error('nama_kampung')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </td>
+
                     <td>
-                        NAMA DISTRIK: <input type="text" class="form-control" name="nama_distrik" value="{{ old('nama_distrik', $data['nama_distrik'] ?? '') }}" required>
+                        NAMA DISTRIK:
+                        <input type="text" class="form-control" name="nama_distrik" value="{{ old('nama_distrik', $formulir->nama_distrik ?? '') }}" required>
+
                         @error('nama_distrik')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </td>
                 </tr>
             </table>
+
             <div class="table-responsive">
                 <table class="table table-bordered text-center align-middle small">
                     <thead>
@@ -55,6 +76,7 @@
                             <th rowspan="2" style="width: 8%;">Ukuran Ruang</th>
                             <th colspan="3">Harga Satuan (Rp)</th>
                         </tr>
+
                         <tr>
                             <th>Negeri</th>
                             <th>Swasta</th>
@@ -67,7 +89,9 @@
                             <th>Meubelair</th>
                         </tr>
                     </thead>
+
                     <tbody>
+
                         @php
                             $bangunan = [
                                 'tk' => 'TK/RA',
@@ -80,17 +104,60 @@
                                 'lab' => 'Laboratorium',
                                 'lainnya' => 'Lainnya',
                             ];
+
+                            $index = 0;
                         @endphp
 
-                        @php $index = 0; @endphp
-
                         @foreach ($bangunan as $kategori => $label)
+                            @php
+                                $beratNegeri = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'negeri' && $item->tingkat_kerusakan === 'berat';
+                                });
+
+                                $beratSwasta = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'swasta' && $item->tingkat_kerusakan === 'berat';
+                                });
+
+                                $sedangNegeri = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'negeri' && $item->tingkat_kerusakan === 'sedang';
+                                });
+
+                                $sedangSwasta = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'swasta' && $item->tingkat_kerusakan === 'sedang';
+                                });
+
+                                $ringanNegeri = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'negeri' && $item->tingkat_kerusakan === 'ringan';
+                                });
+
+                                $ringanSwasta = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'swasta' && $item->tingkat_kerusakan === 'ringan';
+                                });
+
+                                $dimensi = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->dimensi !== null;
+                                });
+
+                                $hargaBangunan = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'bangunan';
+                                });
+
+                                $hargaPeralatan = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'peralatan';
+                                });
+
+                                $hargaMeubelair = $items->first(function ($item) use ($kategori) {
+                                    return $item->kategori === $kategori && $item->sub_kategori === 'meubelair';
+                                });
+                            @endphp
+
                             <tr>
+
                                 <td>{{ $label }}</td>
 
                                 {{-- Berat Negeri --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row " name="details[{{ $index }}][jumlah]">
+                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]" value="{{ old('details.' . $index . '.jumlah', $beratNegeri->jumlah ?? '') }}">
 
                                     <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $kategori }}">
 
@@ -107,7 +174,7 @@
 
                                 {{-- Berat Swasta --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]">
+                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]" value="{{ old('details.' . $index . '.jumlah', $beratSwasta->jumlah ?? '') }}">
 
                                     <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $kategori }}">
 
@@ -124,7 +191,7 @@
 
                                 {{-- Sedang Negeri --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]">
+                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]" value="{{ old('details.' . $index . '.jumlah', $sedangNegeri->jumlah ?? '') }}">
 
                                     <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $kategori }}">
 
@@ -141,7 +208,7 @@
 
                                 {{-- Sedang Swasta --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]">
+                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]" value="{{ old('details.' . $index . '.jumlah', $sedangSwasta->jumlah ?? '') }}">
 
                                     <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $kategori }}">
 
@@ -158,7 +225,7 @@
 
                                 {{-- Ringan Negeri --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]">
+                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]" value="{{ old('details.' . $index . '.jumlah', $ringanNegeri->jumlah ?? '') }}">
 
                                     <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $kategori }}">
 
@@ -175,7 +242,7 @@
 
                                 {{-- Ringan Swasta --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]">
+                                    <input type="number" class="form-control auto-row" name="details[{{ $index }}][jumlah]" value="{{ old('details.' . $index . '.jumlah', $ringanSwasta->jumlah ?? '') }}">
 
                                     <input type="hidden" name="details[{{ $index }}][kategori]" value="{{ $kategori }}">
 
@@ -190,31 +257,33 @@
 
                                 {{-- Ukuran Ruang --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="dimensi[{{ $kategori }}]" placeholder="m²">
+                                    <input type="number" class="form-control auto-row" name="dimensi[{{ $kategori }}]" placeholder="m²" value="{{ old('dimensi.' . $kategori, $dimensi->dimensi ?? '') }}">
                                 </td>
 
                                 {{-- Harga Bangunan --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="harga_bangunan[{{ $kategori }}]">
+                                    <input type="number" class="form-control auto-row" name="harga_bangunan[{{ $kategori }}]" value="{{ old('harga_bangunan.' . $kategori, $hargaBangunan->harga_satuan ?? '') }}">
                                 </td>
 
                                 {{-- Harga Peralatan --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="harga_peralatan[{{ $kategori }}]">
+                                    <input type="number" class="form-control auto-row" name="harga_peralatan[{{ $kategori }}]" value="{{ old('harga_peralatan.' . $kategori, $hargaPeralatan->harga_satuan ?? '') }}">
                                 </td>
 
                                 {{-- Harga Meubelair --}}
                                 <td>
-                                    <input type="number" class="form-control auto-row" name="harga_meubelair[{{ $kategori }}]">
+                                    <input type="number" class="form-control auto-row" name="harga_meubelair[{{ $kategori }}]" value="{{ old('harga_meubelair.' . $kategori, $hargaMeubelair->harga_satuan ?? '') }}">
                                 </td>
 
                                 @php $index++; @endphp
+
                             </tr>
                         @endforeach
 
                     </tbody>
                 </table>
             </div>
+
             @php
                 $biayaPuing = [
                     [
@@ -236,16 +305,26 @@
 
             <div class="table-responsive">
                 <table class="table table-bordered text-center align-middle">
+
                     <thead>
                         <tr class="bg-secondary text-white">
                             <th colspan="4">1. BIAYA PEMBERSIHAN PUING</th>
                         </tr>
                     </thead>
+
                     <tbody>
+
                         @php $detailIndex = 100; @endphp
 
                         @foreach ($biayaPuing as $item)
+                            @php
+                                $jumlahItem = $items->first(function ($row) use ($item) {
+                                    return $row->kategori === $item['jumlah_name'] && $row->sub_kategori === 'jumlah';
+                                });
+                            @endphp
+
                             <tr>
+
                                 <td style="width:15%">
                                     {{ $item['label'] }}
                                 </td>
@@ -253,7 +332,7 @@
                                 <td style="width:35%">
                                     <div class="input-group">
 
-                                        <input type="number" name="details[{{ $detailIndex }}][jumlah]" class="form-control" placeholder="0" value="">
+                                        <input type="number" name="details[{{ $detailIndex }}][jumlah]" class="form-control" placeholder="0" value="{{ old('details.' . $detailIndex . '.jumlah', $jumlahItem->jumlah ?? '') }}">
 
                                         <span class="input-group-text">
                                             {{ $item['jumlah_suffix'] }}
@@ -273,16 +352,22 @@
 
                                 <td style="width:35%">
                                     <div class="input-group">
+
                                         <span class="input-group-text">Rp</span>
-                                        <input type="number" name="details[{{ $detailIndex }}][harga_satuan]" class="form-control" placeholder="0" value="">
+
+                                        <input type="number" name="details[{{ $detailIndex }}][harga_satuan]" class="form-control" placeholder="0" value="{{ old('details.' . $detailIndex . '.harga_satuan', $jumlahItem->harga_satuan ?? '') }}">
                                     </div>
                                 </td>
-                                @php $detailIndex++; @endphp
+
                             </tr>
+
+                            @php $detailIndex++; @endphp
                         @endforeach
+
                     </tbody>
                 </table>
             </div>
+
             @php
                 $lainnya = [
                     [
@@ -306,46 +391,76 @@
 
             <div class="table-responsive">
                 <table class="table table-bordered text-center align-middle">
+
                     <thead>
                         <tr class="bg-secondary text-white">
+
                             @foreach ($lainnya as $item)
                                 <th>{{ $item['label'] }}</th>
                             @endforeach
+
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr>
+
                             @foreach ($lainnya as $item)
+                                @php
+                                    $lainnyaItem = $items->first(function ($row) use ($item) {
+                                        return $row->kategori === $item['name'];
+                                    });
+                                @endphp
+
                                 <td>
+
                                     @if (!empty($item['rupiah']))
                                         <div class="input-group">
+
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="{{ $item['name'] }}" value="{{ old($item['name']) }}" placeholder="{{ $item['placeholder'] }}">
+
+                                            <input type="number" class="form-control" name="{{ $item['name'] }}" value="{{ old($item['name'], $lainnyaItem->jumlah ?? '') }}" placeholder="{{ $item['placeholder'] }}">
+
                                         </div>
                                     @else
-                                        <input type="number" class="form-control" name="{{ $item['name'] }}" value="{{ old($item['name']) }}" placeholder="{{ $item['placeholder'] }}">
+                                        <input type="number" class="form-control" name="{{ $item['name'] }}" value="{{ old($item['name'], $lainnyaItem->jumlah ?? '') }}" placeholder="{{ $item['placeholder'] }}">
                                     @endif
+
                                 </td>
                             @endforeach
+
                         </tr>
                     </tbody>
+
                 </table>
             </div>
+
             <div class="row mb-4">
+
                 <div class="col-12 text-center">
-                    <button type="submit" class="btn" style="background-color: #F28705; color: white; border: none;">{{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}</button>
+
+                    <button type="submit" class="btn" style="background-color: #F28705; color: white; border: none;">
+
+                        {{ isset($edit) && $edit ? 'Update Data' : 'Simpan Data' }}
+
+                    </button>
+
                 </div>
+
                 <button type="button" class="btn btn-warning" id="fillDummy">
+
                     Isi Data Dummy
+
                 </button>
+
             </div>
+
         </form>
     </div>
 
     <script>
         document.getElementById('fillDummy').addEventListener('click', function() {
 
-            // Semua input number yang kosong
             document.querySelectorAll('input[type="number"]').forEach(function(input) {
 
                 if (input.value === '') {

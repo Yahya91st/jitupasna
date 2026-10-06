@@ -1,69 +1,95 @@
+﻿@php
+    $items = $formulir->items ?? collect();
+    $getItem = fn($kategori, $subKategori = null, $tingkatKerusakan = null) => $items->first(fn($item) => $item->kategori === $kategori && ($subKategori === null || $item->sub_kategori === $subKategori) && ($tingkatKerusakan === null || $item->tingkat_kerusakan === $tingkatKerusakan));
+    $getCategoryItem = fn($kategori, $subKategori = null) => $items->first(fn($item) => $item->kategori === $kategori && ($subKategori === null || $item->sub_kategori === $subKategori));
+    $getDimensi = fn($item) => $item->dimensi ?? ($item->jumlah2 ?? ($item->jumlah ?? 0));
+@endphp
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Sektor Perdagangan - {{ $report->nama_kampung }}</title>
+    <title>Form Sektor Perdagangan - {{ $formulir->nama_kampung }}</title>
     <style>
         @page {
             size: landscape;
         }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
             line-height: 1.5;
             color: #333;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .header h1 {
             font-size: 16px;
             margin-bottom: 5px;
         }
+
         .header h2 {
             font-size: 14px;
             margin-top: 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #333;
         }
-        th, td {
+
+        th,
+        td {
             padding: 5px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         .text-center {
             text-align: center;
         }
+
         .text-right {
             text-align: right;
         }
-        .info-table td, .info-table th {
+
+        .info-table td,
+        .info-table th {
             width: 25%;
         }
+
         .footer {
             margin-top: 30px;
             text-align: right;
         }
+
         .footer-sign {
             display: inline-block;
             width: 200px;
             text-align: center;
         }
+
         .page-break {
             page-break-after: always;
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>FORMULIR 04 - PENGUMPULAN DATA SEKTOR</h1>
@@ -73,15 +99,15 @@
     <table class="info-table">
         <tr>
             <th>Bencana</th>
-            <td>{{ $bencana->kategori_bencana->nama }}</td>
+            <td>{{ $bencana->jenis_bencana }}</td>
             <th>Tanggal</th>
             <td>{{ $bencana->tanggal }}</td>
         </tr>
         <tr>
             <th>Kampung</th>
-            <td>{{ $report->nama_kampung }}</td>
+            <td>{{ $formulir->nama_kampung }}</td>
             <th>Distrik</th>
-            <td>{{ $report->nama_distrik }}</td>
+            <td>{{ $formulir->nama_distrik }}</td>
         </tr>
     </table>
 
@@ -91,8 +117,8 @@
             <tr>
                 <th class="text-center" rowspan="2">Jenis Bangunan</th>
                 <th class="text-center" colspan="3">Jumlah (Unit)</th>
-                <th class="text-center" rowspan="2">Luas per Unit (m²)</th>
-                <th class="text-center" rowspan="2">Harga per m² (Rp)</th>
+                <th class="text-center" rowspan="2">Luas per Unit (mâ”¬â–“)</th>
+                <th class="text-center" rowspan="2">Harga per mâ”¬â–“ (Rp)</th>
                 <th class="text-center" rowspan="2">Nilai Kerusakan (Rp)</th>
             </tr>
             <tr>
@@ -104,54 +130,54 @@
         <tbody>
             <tr>
                 <td>Toko</td>
-                <td class="text-center">{{ $report->toko_rb }}</td>
-                <td class="text-center">{{ $report->toko_rs }}</td>
-                <td class="text-center">{{ $report->toko_rr }}</td>
-                <td class="text-center">{{ number_format($report->toko_luas, 2, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->toko_harga_m2, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->getShopDamage(), 0, ',', '.') }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'berat')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'sedang')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'ringan')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ number_format($getDimensi($getCategoryItem('tempat_usaha', 'kerusakan')), 2, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('tempat_usaha', 'kerusakan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td>Kios</td>
-                <td class="text-center">{{ $report->kios_rb }}</td>
-                <td class="text-center">{{ $report->kios_rs }}</td>
-                <td class="text-center">{{ $report->kios_rr }}</td>
-                <td class="text-center">{{ number_format($report->kios_luas, 2, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->kios_harga_m2, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->getKioskDamage(), 0, ',', '.') }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'berat')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'sedang')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'ringan')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ number_format($getDimensi($getCategoryItem('tempat_usaha', 'kerusakan')), 2, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('tempat_usaha', 'kerusakan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td>Pasar</td>
-                <td class="text-center">{{ $report->pasar_rb }}</td>
-                <td class="text-center">{{ $report->pasar_rs }}</td>
-                <td class="text-center">{{ $report->pasar_rr }}</td>
-                <td class="text-center">{{ number_format($report->pasar_luas, 2, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pasar_harga_m2, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->getMarketDamage(), 0, ',', '.') }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'berat')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'sedang')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'ringan')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ number_format($getDimensi($getCategoryItem('tempat_usaha', 'kerusakan')), 2, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('tempat_usaha', 'kerusakan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td>Gudang</td>
-                <td class="text-center">{{ $report->gudang_rb }}</td>
-                <td class="text-center">{{ $report->gudang_rs }}</td>
-                <td class="text-center">{{ $report->gudang_rr }}</td>
-                <td class="text-center">{{ number_format($report->gudang_luas, 2, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->gudang_harga_m2, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->getWarehouseDamage(), 0, ',', '.') }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'berat')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'sedang')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ $getItem('tempat_usaha', 'kerusakan', 'ringan')?->jumlah ?? 0 }}</td>
+                <td class="text-center">{{ number_format($getDimensi($getCategoryItem('tempat_usaha', 'kerusakan')), 2, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('tempat_usaha', 'kerusakan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
-            @if($report->lainnya_jenis_bangunan)
-            <tr>
-                <td>{{ $report->lainnya_jenis_bangunan }}</td>
-                <td class="text-center">{{ $report->lainnya_rb }}</td>
-                <td class="text-center">{{ $report->lainnya_rs }}</td>
-                <td class="text-center">{{ $report->lainnya_rr }}</td>
-                <td class="text-center">{{ number_format($report->lainnya_luas, 2, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->lainnya_harga_m2, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->getOtherBuildingDamage(), 0, ',', '.') }}</td>
-            </tr>
+            @if ($getCategoryItem('lainnya_jenis_bangunan')?->jumlah ?? 0)
+                <tr>
+                    <td>{{ $getCategoryItem('lainnya_jenis_bangunan')?->jumlah ?? 0 }}</td>
+                    <td class="text-center">{{ $getItem('lainnya', null, 'berat')?->jumlah ?? 0 }}</td>
+                    <td class="text-center">{{ $getItem('lainnya', null, 'sedang')?->jumlah ?? 0 }}</td>
+                    <td class="text-center">{{ $getItem('lainnya', null, 'ringan')?->jumlah ?? 0 }}</td>
+                    <td class="text-center">{{ number_format($getDimensi($getCategoryItem('lainnya')), 2, ',', '.') }}</td>
+                    <td class="text-right">{{ number_format($getCategoryItem('lainnya')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                    <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
+                </tr>
             @endif
             <tr style="background-color: #f2f2f2; font-weight: bold;">
                 <td colspan="6">Total Kerusakan Bangunan</td>
-                <td class="text-right">{{ number_format($report->getTotalBuildingDamage(), 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
         </tbody>
     </table>
@@ -167,15 +193,15 @@
         <tbody>
             <tr>
                 <td>Barang Dagangan Rusak</td>
-                <td class="text-right">{{ number_format($report->barang_dagangan_rusak, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('kehilangan_penjualan')?->jumlah ?? 0, 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td>Stok Barang Rusak</td>
-                <td class="text-right">{{ number_format($report->stok_barang_rusak, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('kehilangan_penjualan')?->jumlah ?? 0, 0, ',', '.') }}</td>
             </tr>
             <tr style="background-color: #f2f2f2; font-weight: bold;">
                 <td>Total Kerugian Barang</td>
-                <td class="text-right">{{ number_format($report->getMerchandiseLoss(), 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
         </tbody>
     </table>
@@ -192,26 +218,26 @@
         <tbody>
             <tr>
                 <td>Gangguan Usaha</td>
-                <td>{{ $report->gangguan_usaha_hari }} hari @ Rp {{ number_format($report->pendapatan_per_hari, 0, ',', '.') }}/hari</td>
-                <td class="text-right">{{ number_format($report->getBusinessInterruptionLoss(), 0, ',', '.') }}</td>
+                <td>{{ $getCategoryItem('kehilangan_penjualan')?->durasi ?? 0 }} hari @ Rp {{ number_format($getCategoryItem('pendapatan_per')?->durasi ?? 0, 0, ',', '.') }}/hari</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td rowspan="2">Biaya Pembersihan</td>
-                <td>Tenaga Kerja: {{ $report->biaya_tenaga_kerja_hok }} HOK @ Rp {{ number_format($report->biaya_tenaga_kerja_upah, 0, ',', '.') }}/HOK</td>
-                <td class="text-right">{{ number_format($report->biaya_tenaga_kerja_hok * $report->biaya_tenaga_kerja_upah, 0, ',', '.') }}</td>
+                <td>Tenaga Kerja: {{ $getCategoryItem('biaya_tenaga_kerja')?->harga_satuan ?? 0 }} HOK @ Rp {{ number_format($getCategoryItem('biaya_tenaga_kerja_upah')?->jumlah ?? 0, 0, ',', '.') }}/HOK</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('biaya_tenaga_kerja')?->harga_satuan ?? 0) * ($getCategoryItem('biaya_tenaga_kerja_upah')?->jumlah ?? 0), 0, ',', '.') }}</td>
             </tr>
             <tr>
-                <td>Alat Berat: {{ $report->biaya_alat_berat_hari }} hari @ Rp {{ number_format($report->biaya_alat_berat_sewa, 0, ',', '.') }}/hari</td>
-                <td class="text-right">{{ number_format($report->biaya_alat_berat_hari * $report->biaya_alat_berat_sewa, 0, ',', '.') }}</td>
+                <td>Alat Berat: {{ $getCategoryItem('biaya_alat_berat')?->durasi ?? 0 }} hari @ Rp {{ number_format($getCategoryItem('biaya_alat_berat')?->harga_satuan ?? 0, 0, ',', '.') }}/hari</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('biaya_alat_berat')?->durasi ?? 0) * ($getCategoryItem('biaya_alat_berat')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td>Biaya Relokasi</td>
-                <td>{{ $report->relokasi_jumlah_bulan }} bulan @ Rp {{ number_format($report->relokasi_biaya_per_bulan, 0, ',', '.') }}/bulan</td>
-                <td class="text-right">{{ number_format($report->getRelocationCosts(), 0, ',', '.') }}</td>
+                <td>{{ $getCategoryItem('relokasi_jumlah_bulan')?->jumlah ?? 0 }} bulan @ Rp {{ number_format($getCategoryItem('relokasi_biaya_per_bulan')?->jumlah ?? 0, 0, ',', '.') }}/bulan</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
             <tr style="background-color: #f2f2f2; font-weight: bold;">
                 <td colspan="2">Total Kerugian Lainnya</td>
-                <td class="text-right">{{ number_format($report->getBusinessInterruptionLoss() + $report->getCleaningCosts() + $report->getRelocationCosts(), 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)) + $items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)) + $items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
         </tbody>
     </table>
@@ -227,21 +253,21 @@
         <tbody>
             <tr>
                 <td>Total Kerusakan</td>
-                <td class="text-right">{{ number_format($report->getTotalDamage(), 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <td>Total Kerugian</td>
-                <td class="text-right">{{ number_format($report->getTotalLoss(), 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
             <tr style="background-color: #f2f2f2; font-weight: bold;">
                 <td>TOTAL DAMPAK</td>
-                <td class="text-right">{{ number_format($report->getTotalDamage() + $report->getTotalLoss(), 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)) + $items->sum(fn($item) => (float) ($item->jumlah ?? 0) * (float) ($item->harga_satuan ?? 0)), 0, ',', '.') }}</td>
             </tr>
         </tbody>
     </table>
 
     <div class="footer">
-        <p>{{ $report->nama_distrik }}, {{ now()->format('d F Y') }}</p>
+        <p>{{ $formulir->nama_distrik }}, {{ now()->format('d F Y') }}</p>
         <div class="footer-sign">
             <p>Petugas</p>
             <br><br><br>
@@ -250,4 +276,5 @@
         </div>
     </div>
 </body>
+
 </html>

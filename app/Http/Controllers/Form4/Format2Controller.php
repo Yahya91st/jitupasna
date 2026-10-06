@@ -30,11 +30,14 @@ class Format2Controller extends Controller
         $kategori,
         $subKategori = null,
         $jumlah = null,
+        $jumlah2 = null,
         $hargaSatuan = null,
         $dimensi = null,
         $satuan = null,
         $kriteriaId = null,
-        $tingkatKerusakan = null
+        $tingkatKerusakan = null,
+        $durasi = null,
+        $durasiSatuan = null
     ) {
         FormulirItem::create([
             'formulir_id' => $formulirId,
@@ -45,12 +48,16 @@ class Format2Controller extends Controller
 
             'dimensi' => $dimensi,
 
-            'tingkat_kerusakan' => $tingkatKerusakan ?? null,
+            'tingkat_kerusakan' => $tingkatKerusakan,
 
             'jumlah' => $jumlah,
+            'jumlah2' => $jumlah2,
             'harga_satuan' => $hargaSatuan,
 
             'satuan' => $satuan,
+
+            'durasi' => $durasi,
+            'durasi_satuan' => $durasiSatuan,
         ]);
     }
 
@@ -58,26 +65,32 @@ class Format2Controller extends Controller
         $formulirId,
         $kategori,
         $subKategori = null,
-        $jumlah = 0,
-        $hargaSatuan = 0,
+        $jumlah = null,
+        $jumlah2 = null,
+        $hargaSatuan = null,
         $dimensi = null,
         $satuan = null,
         $kriteriaId = null,
-        $tingkatKerusakan = null
+        $tingkatKerusakan = null,
+        $durasi = null,
+        $durasiSatuan = null
     ) {
         FormulirItem::updateOrCreate(
             [
                 'formulir_id' => $formulirId,
                 'kategori' => $kategori,
                 'sub_kategori' => $subKategori,
+                'tingkat_kerusakan' => $tingkatKerusakan,
             ],
             [
-                'jumlah' => $jumlah,
-                'harga_satuan' => $hargaSatuan,
-                'dimensi' => $dimensi,
-                'satuan' => $satuan,
                 'kriteria_id' => $kriteriaId,
-                'tingkat_kerusakan' => $tingkatKerusakan,
+                'dimensi' => $dimensi,
+                'jumlah' => $jumlah,
+                'jumlah2' => $jumlah2,
+                'harga_satuan' => $hargaSatuan,
+                'satuan' => $satuan,
+                'durasi' => $durasi,
+                'durasi_satuan' => $durasiSatuan,
             ]
         );
     }
@@ -120,17 +133,13 @@ class Format2Controller extends Controller
                 ]
             );
 
-            $formulir = Formulir::firstOrCreate(
-                [
-                    'laporan_id' => $laporan->id,
-                    'format_id'  => 3,
-                ],
-                [
-                    'nama_kampung' => $request->nama_kampung,
-                    'nama_distrik' => $request->nama_distrik,
-                    'status'       => 'draft',
-                ]
-            );
+            $formulir = Formulir::create([
+                'laporan_id' => $laporan->id,
+                'format_id' => 2,
+                'nama_kampung' => $request->nama_kampung,
+                'nama_distrik' => $request->nama_distrik,
+                'status' => 'draft',
+            ]);
 
             $validated = $request->validated();
             $details = $validated['details'];
@@ -160,18 +169,6 @@ class Format2Controller extends Controller
                 'biaya_alat_berat_hari',
             ];
 
-            foreach ($details as $i => $detail) {
-                $kategori = $detail['kategori'];
-
-                $details[$i]['dimensi'] =
-                    $dimensiMaster[$kategori] ?? null;
-
-                if (!in_array($kategori, $biayaKategori)) {
-                    $details[$i]['harga_satuan'] =
-                        $hargaMaster[$kategori] ?? 0;
-                }
-            }
-
             $request->merge([
                 'details' => $details
             ]);
@@ -184,13 +181,24 @@ class Format2Controller extends Controller
                     $formulir->id,
                     $detail['kategori'],
                     $detail['sub_kategori'] ?? null,
-                    $detail['jumlah'],
-                    $detail['harga_satuan'], // hargaSatuan
+                    $detail['jumlah'] ?? null,
+                    $detail['jumlah2'] ?? null,
+                    $detail['harga_satuan'] ?? null,
                     $detail['dimensi'] ?? null,
-                    $detail['satuan'] ?? null, // satuan
-                    $detail['kriteria_id'] ?? null, // kriteriaId (dari view, per-detail)
-                    $detail['tingkat_kerusakan'] ?? null
+                    $detail['satuan'] ?? null,
+                    $detail['kriteria_id'] ?? null,
+                    $detail['tingkat_kerusakan'] ?? null,
+                    $detail['durasi'] ?? null,
+                    $detail['durasi_satuan'] ?? null
                 );
+            }
+
+            foreach ($request->dimensi ?? [] as $kategori => $dimensi) {
+                FormulirItem::where('formulir_id', $formulir->id)
+                    ->where('kategori', $kategori)
+                    ->update([
+                        'dimensi' => $dimensi,
+                    ]);
             }
 
             $this->saveItem(
@@ -198,9 +206,14 @@ class Format2Controller extends Controller
                 'sekolah_pengungsian',
                 'unit',
                 $request->sekolah_pengungsian,
+                null,
                 0,
                 null,
-                'unit'
+                'unit',
+                null,
+                null,
+                null,
+                null
             );
 
             $this->saveItem(
@@ -208,9 +221,14 @@ class Format2Controller extends Controller
                 'guru_korban',
                 'orang',
                 $request->guru_korban,
+                null,
                 0,
                 null,
-                'jiwa'
+                'jiwa',
+                null,
+                null,
+                null,
+                null
             );
 
             $this->saveItem(
@@ -218,10 +236,17 @@ class Format2Controller extends Controller
                 'iuran_sekolah',
                 'bulan',
                 $request->iuran_sekolah,
+                null,
                 0,
                 null,
-                'rp'
+                'rp',
+                null,
+                null,
+                null,
+                null
             );
+
+            // dd($request->all());
 
             DB::commit();
 
@@ -235,7 +260,7 @@ class Format2Controller extends Controller
             return redirect()->route('forms.form4.format2.list', [
                 'bencana_id' => $request->bencana_id
             ])->with('success', 'Data berhasil disimpan');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             if ($request->ajax()) {
@@ -270,7 +295,7 @@ class Format2Controller extends Controller
     }
 
     /**
-     * List all entries for this format (list-format2)
+     * List all entries for this format (format2)
      */
     public function list(Request $request)
     {
@@ -349,16 +374,11 @@ class Format2Controller extends Controller
 
         $this->formulirService->loadVillages($bencana);
 
-        $summary = $this->formulirService->getSummaries($bencana);
-
         $pdf = Pdf::loadView('forms.form4.format2.pdf', [
             'formulir' => $formulir,
-            'bencana' => $formulir->laporan->bencana,
-            'items' => $summary['rows'],
-            'totals' => $summary['totals'],
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
         ]);
-
-        $pdf->setPaper('A4', 'landscape');
 
         return $pdf->download("Format2_{$formulir->id}.pdf");
     }
@@ -370,11 +390,9 @@ class Format2Controller extends Controller
     {
         $formulir = $this->formulirService->loadFormulir($id);
 
-        $bencana = $formulir->laporan->bencana;
+        $summary = $this->formulirService->getSummary($formulir);
 
-        $summary = $this->formulirService->getSummaries($bencana);
-
-        return view('forms.form4.format1.edit', [
+        return view('forms.form4.format2.edit', [
             'formulir' => $formulir,
             'bencana' => $formulir->laporan->bencana,
             'rows' => $summary['rows'],
@@ -382,26 +400,16 @@ class Format2Controller extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage (Format 2)
-     */
-    public function update(Request $request, $id)
+    public function update(StoreFormat2Request $request, $id)
     {
         try {
             DB::beginTransaction();
 
-            // Cari laporan berdasarkan bencana
-            $laporan = LaporanBencana::where(
-                'bencana_id',
-                $request->bencana_id
-            )->firstOrFail();
-
-            // Cari formulir format 2
+            $laporan = LaporanBencana::where('bencana_id', $request->bencana_id)->firstOrFail();
             $formulir = Formulir::where('laporan_id', $laporan->id)
                 ->where('format_id', 2)
                 ->firstOrFail();
 
-            // Update data formulir
             $formulir->update([
                 'nama_kampung' => $request->nama_kampung,
                 'nama_distrik' => $request->nama_distrik,
@@ -435,99 +443,119 @@ class Format2Controller extends Controller
                 'biaya_alat_berat_hari',
             ];
 
-            foreach ($details as $i => $detail) {
+            foreach ($details as $detail) {
                 $kategori = $detail['kategori'];
 
-                $details[$i]['dimensi'] =
-                    $dimensiMaster[$kategori] ?? null;
+                $harga = $hargaMaster[$kategori] ?? 0;
 
-                if (!in_array($kategori, $biayaKategori)) {
-                    $details[$i]['harga_satuan'] =
-                        $hargaMaster[$kategori] ?? 0;
+                // Untuk kategori biaya, harga berasal langsung dari details
+                if (in_array($kategori, $biayaKategori)) {
+                    $harga = $detail['harga_satuan'] ?? 0;
                 }
-            }
 
-            $request->merge([
-                'details' => $details
-            ]);
-
-            $validated = $request->validated();
-            $details = $validated['details'];
-
-            foreach ($details as $detail) {
                 $this->updateItem(
                     $formulir->id,
                     $detail['kategori'],
                     $detail['sub_kategori'] ?? null,
-                    $detail['jumlah'],
-                    $detail['harga_satuan'],
+                    $detail['jumlah'] ?? null,
+                    $detail['jumlah2'] ?? null,
+                    $harga,
                     $detail['dimensi'] ?? null,
                     $detail['satuan'] ?? null,
                     $detail['kriteria_id'] ?? null,
-                    $detail['tingkat_kerusakan'] ?? null
+                    $detail['tingkat_kerusakan'] ?? null,
+                    $detail['durasi'] ?? null,
+                    $detail['durasi_satuan'] ?? null
                 );
             }
 
+            // Update dimensi berdasarkan kategori
+            foreach ($dimensi as $kategori => $nilaiDimensi) {
+                FormulirItem::where('formulir_id', $formulir->id)
+                    ->where('kategori', $kategori)
+                    ->update([
+                        'dimensi' => $nilaiDimensi,
+                    ]);
+            }
+
+            // Sekolah untuk pengungsian
             $this->updateItem(
                 $formulir->id,
                 'sekolah_pengungsian',
                 'unit',
                 $request->sekolah_pengungsian,
+                null,
                 0,
                 null,
-                'unit'
+                'unit',
+                null,
+                null,
+                null,
+                null
             );
 
+            // Guru korban bencana
             $this->updateItem(
                 $formulir->id,
                 'guru_korban',
                 'orang',
                 $request->guru_korban,
+                null,
                 0,
                 null,
-                'jiwa'
+                'jiwa',
+                null,
+                null,
+                null,
+                null
             );
 
+            // Iuran sekolah
             $this->updateItem(
                 $formulir->id,
                 'iuran_sekolah',
                 'bulan',
                 $request->iuran_sekolah,
+                null,
                 0,
                 null,
-                'rp'
+                'rp',
+                null,
+                null,
+                null,
+                null
             );
+
+            // Hitung ulang total
+            $totals = $this->formulirService->computeTotals(
+                $formulir->fresh('items')
+            );
+
+            // Update total laporan
+            $formulir->laporan->update([
+                'total_kerusakan' => $totals['total_kerusakan'],
+                'total_kerugian' => $totals['total_kerugian'],
+            ]);
 
             DB::commit();
 
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Data berhasil diperbarui',
-                    'data' => $formulir
-                ]);
-            }
-
-            return redirect()->route('forms.form4.format2.list', [
-                'bencana_id' => $request->bencana_id
-            ])->with('success', 'Data berhasil diperbarui');
+            return redirect()
+                ->route('forms.form4.format2.list', [
+                    'bencana_id' => $formulir->laporan->bencana_id,
+                ])
+                ->with('success', 'Data berhasil diperbarui.');
         } catch (\Throwable $e) {
 
             DB::rollBack();
 
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Data gagal diperbarui',
-                    'error' => $e->getMessage()
-                ], 500);
-            }
-
             return back()
                 ->withInput()
-                ->with('error', 'Data gagal diperbarui: ' . $e->getMessage());
+                ->withErrors([
+                    'error' => $e->getMessage(),
+                ]);
         }
     }
+
 
     /**
      * Remove the specified resource from storage (Format 2)

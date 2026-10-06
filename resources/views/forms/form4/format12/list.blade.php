@@ -5,8 +5,8 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Daftar Laporan Format 11 - Sektor Peternakan</h3>
-                    <p class="text-subtitle text-muted">Daftar laporan untuk bencana {{ $bencana->kategori_bencana->nama }}</p>
+                    <h3>Daftar Laporan Format 12 - Sektor Perikanan</h3>
+                    <p class="text-subtitle text-muted">Daftar laporan untuk bencana {{ $bencana->jenis_bencana }}</p>
                 </div>
             </div>
         </div>
@@ -18,29 +18,33 @@
         @endif
 
         <div class="alert alert-light-primary color-primary">
-            <p>Bencana: {{ $bencana->kategori_bencana->nama }}</p>
+            <p>Bencana: {{ $bencana->jenis_bencana }}</p>
             <p>Tanggal: {{ $bencana->tanggal }}</p>
             <p>Lokasi:
-                @foreach ($bencana->desa as $desa)
-                    {{ $desa->nama }}@if (!$loop->last)
-                        ,
+                @if (isset($bencana->desa))
+                    @if (isset($bencana->desa))
+                        @foreach ($bencana->desa as $desa)
+                            {{ $desa->nama }}@if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
                     @endif
-                @endforeach
+                @endif
             </p>
         </div>
 
         <section class="section">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title">Daftar Laporan Sektor Peternakan</h4>
-                    <a href="{{ route('forms.form4.format11form4', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
+                    <h4 class="card-title">Daftar Laporan Sektor Perikanan</h4>
+                    <a href="{{ route('forms.form4.format12.index', ['bencana_id' => $bencana->id]) }}" class="btn btn-primary">
                         <i class="bi bi-plus"></i> Tambah Data Baru
                     </a>
                 </div>
                 <div class="card-body">
                     @if ($reports->isEmpty())
                         <div class="alert alert-info">
-                            Belum ada data laporan sektor peternakan untuk bencana ini.
+                            Belum ada data laporan sektor perikanan untuk bencana ini.
                         </div>
                     @else
                         <div class="table-responsive">
@@ -64,15 +68,15 @@
                                             <td>Rp. {{ number_format($report->total_kerusakan ?? 0, 0, ',', '.') }}</td>
                                             <td>Rp. {{ number_format($report->total_kerugian ?? 0, 0, ',', '.') }}</td>
                                             <td>
-                                                <a href="{{ route('forms.form4.format11.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a>
-                                                <a href="{{ route('forms.form4.format11.edit', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="{{ route('forms.form4.format11.destroy', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                                {{-- <a href="{{ route('forms.form4.format12.show', $report->id) }}" class="btn btn-info btn-sm">Lihat</a> --}}
+                                                <a href="{{ route('forms.form4.format12.edit', $report->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('forms.form4.format12.destroy', $report->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
-                                                @if (Route::has('forms.form4.format11.pdf'))
-                                                    <a href="{{ route('forms.form4.format11.pdf', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
+                                                @if (Route::has('forms.form4.format12.pdf'))
+                                                    <a href="{{ route('forms.form4.format12.pdf', $report->id) }}" class="btn btn-secondary btn-sm">PDF</a>
                                                 @else
                                                     <a href="#" class="btn btn-secondary btn-sm disabled">PDF</a>
                                                 @endif

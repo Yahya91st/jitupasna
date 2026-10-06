@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Storeformat5Request extends FormRequest
+class StoreFormat5Request extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,11 @@ class Storeformat5Request extends FormRequest
             $kategori = $detail['kategori'];
 
             if (in_array($kategori, [
-                'gereja','kapel','masjid','musholla','pura',
+                'gereja',
+                'kapel',
+                'masjid',
+                'musholla',
+                'pura',
                 'vihara',
             ])) {
 
@@ -35,7 +39,6 @@ class Storeformat5Request extends FormRequest
                     ($this->input("harga_bangunan.$kategori", 0))
                     + ($this->input("harga_peralatan.$kategori", 0));
             }
-
         }
 
         // dd($details);
@@ -60,16 +63,16 @@ class Storeformat5Request extends FormRequest
             'details.*.dimensi' => 'nullable|numeric|min:0',
 
             'details.*.tingkat_kerusakan' =>
-                'nullable|in:ringan,sedang,berat,hancur_total',
+            'nullable|in:ringan,sedang,berat,hancur_total',
 
             'details.*.jumlah' =>
-                'required|numeric|min:0',
+            'required|numeric|min:0',
 
             'details.*.harga_satuan' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'details.*.satuan' =>
-                'nullable|string|max:50',
+            'nullable|string|max:50',
         ];
     }
 
@@ -86,13 +89,13 @@ class Storeformat5Request extends FormRequest
             'details.*.kriteria_id.exists' => 'Kriteria kerusakan tidak valid.',
 
             'details.*.tingkat_kerusakan.in' =>
-                'Tingkat kerusakan tidak valid.',
+            'Tingkat kerusakan tidak valid.',
 
             'details.*.jumlah.required' =>
-                'Jumlah wajib diisi.',
+            'Jumlah wajib diisi.',
 
             'details.*.harga_satuan.required' =>
-                'Harga satuan wajib diisi.',
+            'Harga satuan wajib diisi.',
         ];
     }
 }

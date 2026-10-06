@@ -22,15 +22,17 @@
         <!-- Informasi Bencana -->
         @if ($bencana)
             <div class="alert alert-light-primary color-primary mb-4">
-                <strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama ?? $bencana->nama }}<br>
+                <strong>Bencana:</strong> {{ $bencana->jenis_bencana ?? $bencana->nama }}<br>
                 <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($bencana->tanggal)->format('d F Y') }}<br>
                 <strong>Lokasi:</strong>
                 @if ($bencana->desa && count($bencana->desa) > 0)
-                    @foreach ($bencana->desa as $desa)
-                        {{ $desa->nama }}@if (!$loop->last)
-                            ,
-                        @endif
-                    @endforeach
+                    @if (isset($bencana->desa))
+                        @foreach ($bencana->desa as $desa)
+                            {{ $desa->nama }}@if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
+                    @endif
                 @else
                     -
                 @endif

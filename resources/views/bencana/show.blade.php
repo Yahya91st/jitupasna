@@ -26,7 +26,7 @@
                                             </tr>
                                             <tr>
                                                 <td>{{ __('Bencana') }}</td>
-                                                <th>{{ $bencana->kategori_bencana->nama }}</th>
+                                                <th>{{ $bencana->jenis_bencana }}</th>
                                             </tr>
                                             <tr>
                                                 <td>{{ __('Tanggal') }}</td>
@@ -57,8 +57,7 @@
                     <div class="pb-4 border-0 card-header">
                         <div class="p-4 border border-white rounded primary-gradient-card">
                             <div class="d-flex justify-content-between align-items-center">
-                                <img src="{{ asset('/frontend/dist/assets/images/avatar/' . $bencana['gambar']) }}"
-                                    alt="" style="width: 100%;height: 100%;">
+                                <img src="{{ asset('/frontend/dist/assets/images/avatar/' . $bencana['gambar']) }}" alt="" style="width: 100%;height: 100%;">
                             </div>
                         </div>
                     </div>

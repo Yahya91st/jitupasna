@@ -24,11 +24,46 @@ class Format1Controller extends Controller
         $this->formulirService = $formulirService;
     }
 
+    private function updateItem(
+        $formulirId,
+        $kategori,
+        $subKategori = null,
+        $jumlah = null,
+        $jumlah2 = null,
+        $hargaSatuan = null,
+        $dimensi = null,
+        $satuan = null,
+        $kriteriaId = null,
+        $tingkatKerusakan = null,
+        $durasi = null,
+        $durasiSatuan = null
+    ) {
+        FormulirItem::updateOrCreate(
+            [
+                'formulir_id' => $formulirId,
+                'kategori' => $kategori,
+                'sub_kategori' => $subKategori,
+                'tingkat_kerusakan' => $tingkatKerusakan,
+            ],
+            [
+                'kriteria_id' => $kriteriaId,
+                'dimensi' => $dimensi,
+                'jumlah' => $jumlah,
+                'jumlah2' => $jumlah2,
+                'harga_satuan' => $hargaSatuan,
+                'satuan' => $satuan,
+                'durasi' => $durasi,
+                'durasi_satuan' => $durasiSatuan,
+            ]
+        );
+    }
+
     private function saveItem(
         $formulirId,
         $kategori,
         $subKategori = null,
         $jumlah = null,
+        $jumlah2 = null,
         $hargaSatuan = null,
         $dimensi = null,
         $satuan = null,
@@ -47,6 +82,7 @@ class Format1Controller extends Controller
             'tingkat_kerusakan' => $tingkatKerusakan ?? null,
 
             'jumlah' => $jumlah,
+            'jumlah2' => $jumlah2,
             'harga_satuan' => $hargaSatuan,
 
             'satuan' => $satuan,
@@ -86,17 +122,13 @@ class Format1Controller extends Controller
                 ]
             );
 
-            $formulir = Formulir::firstOrCreate(
-                [
-                    'laporan_id' => $laporan->id,
-                    'format_id'  => 1,
-                ],
-                [
-                    'nama_kampung' => $request->nama_kampung,
-                    'nama_distrik' => $request->nama_distrik,
-                    'status'       => 'draft',
-                ]
-            );
+            $formulir = Formulir::create([
+                'laporan_id'    => $laporan->id,
+                'format_id'     => 1,
+                'nama_kampung'  => $request->nama_kampung,
+                'nama_distrik'  => $request->nama_distrik,
+                'status'        => 'draft',
+            ]);
 
             $validated = $request->validated();
             $details = $validated['details'];
@@ -107,6 +139,7 @@ class Format1Controller extends Controller
                     $detail['kategori'],
                     $detail['sub_kategori'] ?? null,
                     $detail['jumlah'],
+                    null,
                     $detail['harga_satuan'], // hargaSatuan
                     $detail['dimensi'] ?? null,
                     $detail['satuan'] ?? null, // satuan
@@ -128,7 +161,7 @@ class Format1Controller extends Controller
             return redirect()->route('forms.form4.format1.list', [
                 'bencana_id' => $request->bencana_id
             ])->with('success', 'Data berhasil disimpan');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             if ($request->ajax()) {
@@ -159,7 +192,7 @@ class Format1Controller extends Controller
         ]);
     }
 
-    public function list(Request $request) //format1
+    public function list(Request $request)
     {
         $bencana = Bencana::findOrFail($request->bencana_id);
 
@@ -204,7 +237,7 @@ class Format1Controller extends Controller
                 ->toArray();
         });
 
-        return view('forms.form4.format1.list-format1', compact('bencana', 'reports'));
+        return view('forms.form4.format1.list', compact('bencana', 'reports'));
     }
 
     public function previewPdf($id)
@@ -233,16 +266,11 @@ class Format1Controller extends Controller
 
         $this->formulirService->loadVillages($bencana);
 
-        $summary = $this->formulirService->getSummaries($bencana);
-
         $pdf = Pdf::loadView('forms.form4.format1.pdf', [
             'formulir' => $formulir,
-            'bencana' => $formulir->laporan->bencana,
-            'items' => $summary['rows'],
-            'totals' => $summary['totals'],
+            'bencana'  => $formulir->laporan->bencana,
+            'totals'   => $this->formulirService->computeTotals($formulir),
         ]);
-
-        $pdf->setPaper('A4', 'landscape');
 
         return $pdf->download("Format1_{$formulir->id}.pdf");
     }
@@ -251,9 +279,7 @@ class Format1Controller extends Controller
     {
         $formulir = $this->formulirService->loadFormulir($id);
 
-        $bencana = $formulir->laporan->bencana;
-
-        $summary = $this->formulirService->getSummaries($bencana);
+        $summary = $this->formulirService->getSummary($formulir);
 
         return view('forms.form4.format1.edit', [
             'formulir' => $formulir,
@@ -265,10 +291,13 @@ class Format1Controller extends Controller
 
     public function update(StoreFormat1Request $request, $id)
     {
-        DB::beginTransaction();
-
         try {
-            $formulir = $this->formulirService->loadFormulir($id);
+            DB::beginTransaction();
+
+            $laporan = LaporanBencana::where('bencana_id', $request->bencana_id)->firstOrFail();
+            $formulir = Formulir::where('laporan_id', $laporan->id)
+                ->where('format_id', 1)
+                ->firstOrFail();
 
             // Update data formulir
             $formulir->update([
@@ -276,25 +305,32 @@ class Format1Controller extends Controller
                 'nama_distrik' => $request->nama_distrik,
             ]);
 
-            foreach ($request->details as $detail) {
-                FormulirItem::where('id', $detail['id'])->update([
-                    'nama_kampung' => $request->nama_kampung,
-                    'nama_distrik' => $request->nama_distrik,
-                    'kriteria_id' => $detail['kriteria_id'],
-                    'kategori' => $detail['kategori'],
-                    'sub_kategori' => $detail['sub_kategori'] ?? null,
-                    'dimensi' => $detail['dimensi'] ?? null,
-                    'tingkat_kerusakan' => $detail['tingkat_kerusakan'],
-                    'jumlah' => $detail['jumlah'],
-                    'harga_satuan' => $detail['harga_satuan'],
-                    'satuan' => $detail['satuan'] ?? null,
-                ]);
+            $validated = $request->validated();
+            $details = $validated['details'];
+
+            foreach ($details as $detail) {
+                $this->updateItem(
+                    $formulir->id,
+                    $detail['kategori'],
+                    $detail['sub_kategori'] ?? null,
+                    $detail['jumlah'] ?? null,
+                    null,
+                    $detail['harga_satuan'] ?? null,
+                    $detail['dimensi'] ?? null,
+                    $detail['satuan'] ?? null,
+                    $detail['kriteria_id'] ?? null,
+                    $detail['tingkat_kerusakan'] ?? null,
+                    null,
+                    null
+                );
             }
 
             // Hitung ulang total
-            $totals = $this->formulirService->computeTotals($formulir->fresh('items'));
+            $totals = $this->formulirService->computeTotals(
+                $formulir->fresh('items')
+            );
 
-            // Update laporan
+            // Update total laporan
             $formulir->laporan->update([
                 'total_kerusakan' => $totals['total_kerusakan'],
                 'total_kerugian' => $totals['total_kerugian'],
@@ -302,21 +338,40 @@ class Format1Controller extends Controller
 
             DB::commit();
 
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data berhasil diperbarui',
+                    'data' => $formulir,
+                ]);
+            }
+
             return redirect()
                 ->route('forms.form4.format1.list', [
                     'bencana_id' => $formulir->laporan->bencana_id,
                 ])
-                ->with('success', 'Data berhasil diperbarui.');
-        } catch (\Exception $e) {
+                ->with('success', 'Data berhasil diperbarui');
+        } catch (\Throwable $e) {
+
             DB::rollBack();
 
-            return back()
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data gagal diperbarui',
+                    'error' => $e->getMessage(),
+                ], 500);
+            }
+
+            return redirect()
+                ->back()
                 ->withInput()
                 ->withErrors([
-                    'error' => $e->getMessage(),
+                    'error' => 'Data gagal diperbarui. ' . $e->getMessage(),
                 ]);
         }
     }
+
 
     public function destroy($id)
     {

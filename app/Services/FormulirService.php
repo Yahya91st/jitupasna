@@ -73,16 +73,16 @@ class FormulirService
         return $summaries;
     }
 
-    // public function getSummary(Formulir $formulir): array
-    // {
-    //     $rows = $this->buildItemRows($formulir);
-    //     $totals = $this->computeTotals($formulir);
+    public function getSummary(Formulir $formulir): array
+    {
+        $rows = $this->buildItemRows($formulir);
+        $totals = $this->computeTotals($formulir);
 
-    //     return [
-    //         'rows' => $rows,
-    //         'totals' => $totals,
-    //     ];
-    // }
+        return [
+            'rows' => $rows,
+            'totals' => $totals,
+        ];
+    }
 
     public function loadFormulir(int $id): Formulir
     {
@@ -128,15 +128,17 @@ class FormulirService
 
                 return [
                     'id' => $item->id,
+                    'kriteria_id' => $item->kriteria_id,
                     'kategori' => $item->kategori,
                     'sub_kategori' => $item->sub_kategori,
+                    'dimensi' => $item->dimensi,
                     'tingkat_kerusakan' => $item->tingkat_kerusakan,
                     'jumlah' => $item->jumlah,
                     'harga_satuan' => $item->harga_satuan,
                     'satuan' => $item->satuan,
                     'subtotal' =>
-                    (float)$item->jumlah *
-                        (float)$item->harga_satuan,
+                    (float) $item->jumlah *
+                        (float) $item->harga_satuan,
                 ];
             })
             ->values()

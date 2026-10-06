@@ -1,220 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Sektor Ekonomi - {{ $report->nama_kampung }}</title>
+    <meta charset="utf-8">
+    <title>Format 5 - {{ $formulir->nama_kampung }}</title>
     <style>
         @page {
-            size: landscape;
+            size: landscape
         }
+
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #333;
+            font-size: 11px
         }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        .header h2 {
-            font-size: 14px;
-            margin-top: 0;
-        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin-bottom: 15px
         }
-        table, th, td {
+
+        th,
+        td {
             border: 1px solid #333;
+            padding: 4px
         }
-        th, td {
-            padding: 5px;
-            text-align: left;
-        }
+
         th {
-            background-color: #f2f2f2;
+            background: #f2f2f2
         }
-        .text-center {
-            text-align: center;
+
+        .center {
+            text-align: center
         }
-        .text-right {
-            text-align: right;
-        }
-        .info-table td, .info-table th {
-            width: 25%;
-        }
-        .footer {
-            margin-top: 30px;
-            text-align: right;
-        }
-        .footer-sign {
-            display: inline-block;
-            width: 200px;
-            text-align: center;
-        }
-        .page-break {
-            page-break-after: always;
+
+        .right {
+            text-align: right
         }
     </style>
 </head>
-<body>
-    <div class="header">
-        <h1>FORMULIR 04 - PENGUMPULAN DATA SEKTOR</h1>
-        <h2>FORMAT 5: PENGUMPULAN DATA SEKTOR EKONOMI</h2>
-    </div>
 
-    <table class="info-table">
+<body>
+    @php
+        $items = $formulir->items ?? collect();
+        $getItem = function ($kategori, $subKategori = null, $tingkatKerusakan = null) use ($items) {
+            return $items->first(fn($item) => $item->kategori === $kategori && $item->sub_kategori === $subKategori && $item->tingkat_kerusakan === $tingkatKerusakan);
+        };
+        $getCategoryItem = fn($kategori) => $items->firstWhere('kategori', $kategori);
+        $getDimensi = fn($kategori) => $items->first(fn($item) => $item->kategori === $kategori && $item->dimensi !== null)?->dimensi ?? 0;
+        $bangunan = ['gereja' => 'Gereja', 'kapel' => 'Kapel', 'masjid' => 'Masjid', 'musholla' => 'Musholla', 'pura' => 'Pura', 'vihara' => 'Vihara'];
+        $rupiah = fn($value) => number_format((float) ($value ?? 0), 0, ',', '.');
+    @endphp
+    <h2 class="center">FORMULIR 04 - FORMAT 5: SEKTOR KEAGAMAAN</h2>
+    <table>
         <tr>
             <th>Bencana</th>
-            <td>{{ $bencana->kategori_bencana->nama }}</td>
+            <td>{{ $bencana->jenis_bencana ?? '-' }}</td>
             <th>Tanggal</th>
-            <td>{{ $bencana->tanggal }}</td>
+            <td>{{ $bencana->tanggal ?? '-' }}</td>
         </tr>
         <tr>
             <th>Kampung</th>
-            <td>{{ $report->nama_kampung }}</td>
+            <td>{{ $formulir->nama_kampung ?? '-' }}</td>
             <th>Distrik</th>
-            <td>{{ $report->nama_distrik }}</td>
+            <td>{{ $formulir->nama_distrik ?? '-' }}</td>
         </tr>
     </table>
-
-    <h3>A. Data Kerusakan Infrastruktur Ekonomi</h3>
+    <h3>A. Data Kerusakan Bangunan Keagamaan</h3>
     <table>
-        <thead>
-            <tr>
-                <th rowspan="2" class="text-center">Jenis Infrastruktur Ekonomi</th>
-                <th colspan="3" class="text-center">Jumlah Kerusakan</th>
-                <th rowspan="2" class="text-center">Ukuran Rata-rata (m²)</th>
-                <th rowspan="2" class="text-center">Harga Satuan<br>(Rp/m²)</th>
-                <th rowspan="2" class="text-center">Nilai Kerusakan (Rp)</th>
+        <tr>
+            <th rowspan="2">Jenis</th>
+            <th colspan="2">Berat</th>
+            <th colspan="2">Sedang</th>
+            <th colspan="2">Ringan</th>
+            <th rowspan="2">Luas</th>
+            <th rowspan="2">Harga Satuan</th>
+        </tr>
+        <tr>
+            <th>Negeri</th>
+            <th>Swasta</th>
+            <th>Negeri</th>
+            <th>Swasta</th>
+            <th>Negeri</th>
+            <th>Swasta</th>
+        </tr>
+        @foreach ($bangunan as $kategori => $label)
+            @php $categoryItem=$getCategoryItem($kategori); @endphp<tr>
+                <td>{{ $label }}</td>
+                @foreach ([['berat', 'negeri'], ['berat', 'swasta'], ['sedang', 'negeri'], ['sedang', 'swasta'], ['ringan', 'negeri'], ['ringan', 'swasta']] as [$tingkat, $status])
+                    <td class="center">{{ $getItem($kategori, $status, $tingkat)?->jumlah ?? 0 }}</td>
+                @endforeach
+                <td class="center">
+                    {{ $getDimensi($kategori) }}</td>
+                <td class="right">Rp {{ $rupiah($categoryItem?->harga_satuan) }}</td>
             </tr>
-            <tr>
-                <th class="text-center">Rusak Berat</th>
-                <th class="text-center">Rusak Sedang</th>
-                <th class="text-center">Rusak Ringan</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Toko/Kios/Ruko -->
-            <tr>
-                <td>Toko/Kios/Ruko</td>
-                <td class="text-center">{{ $report->toko_rb }}</td>
-                <td class="text-center">{{ $report->toko_rs }}</td>
-                <td class="text-center">{{ $report->toko_rr }}</td>
-                <td class="text-center">{{ $report->toko_luas }}</td>
-                <td class="text-right">{{ number_format($report->toko_harga, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format(
-                    ($report->toko_rb * $report->toko_luas * $report->toko_harga) +
-                    ($report->toko_rs * $report->toko_luas * $report->toko_harga * 0.3) +
-                    ($report->toko_rr * $report->toko_luas * $report->toko_harga * 0.1)
-                , 0, ',', '.') }}</td>
-            </tr>
-            
-            <!-- Pasar Tradisional -->
-            <tr>
-                <td>Pasar Tradisional</td>
-                <td class="text-center">{{ $report->pasar_rb }}</td>
-                <td class="text-center">{{ $report->pasar_rs }}</td>
-                <td class="text-center">{{ $report->pasar_rr }}</td>
-                <td class="text-center">{{ $report->pasar_luas }}</td>
-                <td class="text-right">{{ number_format($report->pasar_harga, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format(
-                    ($report->pasar_rb * $report->pasar_luas * $report->pasar_harga) +
-                    ($report->pasar_rs * $report->pasar_luas * $report->pasar_harga * 0.3) +
-                    ($report->pasar_rr * $report->pasar_luas * $report->pasar_harga * 0.1)
-                , 0, ',', '.') }}</td>
-            </tr>
-            
-            <!-- Hotel/Penginapan -->
-            <tr>
-                <td>Hotel/Penginapan</td>
-                <td class="text-center">{{ $report->hotel_rb }}</td>
-                <td class="text-center">{{ $report->hotel_rs }}</td>
-                <td class="text-center">{{ $report->hotel_rr }}</td>
-                <td class="text-center">{{ $report->hotel_luas }}</td>
-                <td class="text-right">{{ number_format($report->hotel_harga, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format(
-                    ($report->hotel_rb * $report->hotel_luas * $report->hotel_harga) +
-                    ($report->hotel_rs * $report->hotel_luas * $report->hotel_harga * 0.3) +
-                    ($report->hotel_rr * $report->hotel_luas * $report->hotel_harga * 0.1)
-                , 0, ',', '.') }}</td>
-            </tr>
-            
-            <!-- Gudang -->
-            <tr>
-                <td>Gudang</td>
-                <td class="text-center">{{ $report->gudang_rb }}</td>
-                <td class="text-center">{{ $report->gudang_rs }}</td>
-                <td class="text-center">{{ $report->gudang_rr }}</td>
-                <td class="text-center">{{ $report->gudang_luas }}</td>
-                <td class="text-right">{{ number_format($report->gudang_harga, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format(
-                    ($report->gudang_rb * $report->gudang_luas * $report->gudang_harga) +
-                    ($report->gudang_rs * $report->gudang_luas * $report->gudang_harga * 0.3) +
-                    ($report->gudang_rr * $report->gudang_luas * $report->gudang_harga * 0.1)
-                , 0, ',', '.') }}</td>
-            </tr>
-        </tbody>
+        @endforeach
     </table>
-
-    <h3>B. Data Kerugian Sektor Ekonomi</h3>
+    <h3>B. Data Kerugian</h3>
     <table>
-        <thead>
+        <tr>
+            <th>Kategori</th>
+            <th>Jumlah</th>
+            <th>Harga Satuan</th>
+            <th>Total</th>
+        </tr>
+        @foreach ([['tenaga_kerja', 'Tenaga Kerja', 'HOK'], ['alat_berat', 'Alat Berat', 'Hari']] as [$kategori, $label, $satuan])
+            @php $item=$getCategoryItem($kategori); @endphp
             <tr>
-                <th class="text-center">Jenis Usaha</th>
-                <th class="text-center">Pendapatan Per Hari (Rp)</th>
-                <th class="text-center">Jumlah Hari Kerugian</th>
-                <th class="text-center">Jumlah Unit Usaha</th>
-                <th class="text-center">Nilai Kerugian (Rp)</th>
+                <td>{{ $label }}</td>
+                <td>{{ $item?->jumlah ?? 0 }} {{ $satuan }}</td>
+                <td class="right">Rp {{ $rupiah($item?->harga_satuan) }}</td>
+                <td class="right">Rp {{ $rupiah(($item?->jumlah ?? 0) * ($item?->harga_satuan ?? 0)) }}</td>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Usaha Mikro</td>
-                <td class="text-right">{{ number_format($report->usaha_mikro_pendapatan, 0, ',', '.') }}</td>
-                <td class="text-center">{{ $report->usaha_mikro_hari }}</td>
-                <td class="text-center">{{ $report->usaha_mikro_jumlah }}</td>
-                <td class="text-right">{{ number_format($report->usaha_mikro_pendapatan * $report->usaha_mikro_hari * $report->usaha_mikro_jumlah, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td>Usaha Kecil</td>
-                <td class="text-right">{{ number_format($report->usaha_kecil_pendapatan, 0, ',', '.') }}</td>
-                <td class="text-center">{{ $report->usaha_kecil_hari }}</td>
-                <td class="text-center">{{ $report->usaha_kecil_jumlah }}</td>
-                <td class="text-right">{{ number_format($report->usaha_kecil_pendapatan * $report->usaha_kecil_hari * $report->usaha_kecil_jumlah, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td>Usaha Menengah</td>
-                <td class="text-right">{{ number_format($report->usaha_menengah_pendapatan, 0, ',', '.') }}</td>
-                <td class="text-center">{{ $report->usaha_menengah_hari }}</td>
-                <td class="text-center">{{ $report->usaha_menengah_jumlah }}</td>
-                <td class="text-right">{{ number_format($report->usaha_menengah_pendapatan * $report->usaha_menengah_hari * $report->usaha_menengah_jumlah, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td>Usaha Besar</td>
-                <td class="text-right">{{ number_format($report->usaha_besar_pendapatan, 0, ',', '.') }}</td>
-                <td class="text-center">{{ $report->usaha_besar_hari }}</td>
-                <td class="text-center">{{ $report->usaha_besar_jumlah }}</td>
-                <td class="text-right">{{ number_format($report->usaha_besar_pendapatan * $report->usaha_besar_hari * $report->usaha_besar_jumlah, 0, ',', '.') }}</td>
-            </tr>
-        </tbody>
+        @endforeach
     </table>
-
-    <div class="footer">
-        <p>{{ $report->nama_distrik }}, {{ now()->format('d F Y') }}</p>
-        <div class="footer-sign">
-            <p>Petugas</p>
-            <br><br><br>
-            <p>___________________________</p>
-            <p>NIP.</p>
-        </div>
-    </div>
 </body>
+
 </html>

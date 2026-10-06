@@ -6,14 +6,16 @@
 
         @if ($bencana ?? null)
             <div class="mb-4" style="background-color: rgba(108, 117, 125, 0.1); border-left: 4px solid #6c757d; padding: 15px; border-radius: 4px;">
-                <p><strong>Bencana:</strong> {{ $bencana->kategori_bencana->nama }}</p>
+                <p><strong>Bencana:</strong> {{ $bencana->jenis_bencana }}</p>
                 <p><strong>Tanggal:</strong> {{ $bencana->tanggal }}</p>
                 <p><strong>Lokasi:</strong>
-                    @foreach ($bencana->desa as $desa)
-                        {{ $desa->nama }}@if (!$loop->last)
-                            ,
-                        @endif
-                    @endforeach
+                    @if (isset($bencana->desa))
+                        @foreach ($bencana->desa as $desa)
+                            {{ $desa->nama }}@if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
+                    @endif
                 </p>
             </div>
         @endif

@@ -1,69 +1,95 @@
+﻿@php
+    $items = $formulir->items ?? collect();
+    $getItem = fn($kategori, $subKategori = null, $tingkatKerusakan = null) => $items->first(fn($item) => $item->kategori === $kategori && ($subKategori === null || $item->sub_kategori === $subKategori) && ($tingkatKerusakan === null || $item->tingkat_kerusakan === $tingkatKerusakan));
+    $getCategoryItem = fn($kategori, $subKategori = null) => $items->first(fn($item) => $item->kategori === $kategori && ($subKategori === null || $item->sub_kategori === $subKategori));
+    $getDimensi = fn($item) => $item->dimensi ?? ($item->jumlah2 ?? ($item->jumlah ?? 0));
+@endphp
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Lintas Sektor - {{ $report->nama_kampung }}</title>
+    <title>Form Lintas Sektor - {{ $formulir->nama_kampung }}</title>
     <style>
         @page {
             size: landscape;
         }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
             line-height: 1.5;
             color: #333;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .header h1 {
             font-size: 16px;
             margin-bottom: 5px;
         }
+
         .header h2 {
             font-size: 14px;
             margin-top: 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #333;
         }
-        th, td {
+
+        th,
+        td {
             padding: 5px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         .text-center {
             text-align: center;
         }
+
         .text-right {
             text-align: right;
         }
-        .info-table td, .info-table th {
+
+        .info-table td,
+        .info-table th {
             width: 25%;
         }
+
         .footer {
             margin-top: 30px;
             text-align: right;
         }
+
         .footer-sign {
             display: inline-block;
             width: 200px;
             text-align: center;
         }
+
         .page-break {
             page-break-after: always;
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>FORMULIR 04 - PENGUMPULAN DATA SEKTOR</h1>
@@ -73,15 +99,15 @@
     <table class="info-table">
         <tr>
             <th>Bencana</th>
-            <td>{{ $bencana->kategori_bencana->nama }}</td>
+            <td>{{ $bencana->jenis_bencana }}</td>
             <th>Tanggal</th>
             <td>{{ $bencana->tanggal }}</td>
         </tr>
         <tr>
             <th>Kampung</th>
-            <td>{{ $report->nama_kampung }}</td>
+            <td>{{ $formulir->nama_kampung }}</td>
             <th>Distrik</th>
-            <td>{{ $report->nama_distrik }}</td>
+            <td>{{ $formulir->nama_distrik }}</td>
         </tr>
     </table>
 
@@ -102,95 +128,95 @@
             <!-- Perumahan -->
             <tr>
                 <td>Perumahan</td>
-                <td class="text-right">{{ number_format($report->perumahan_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->perumahan_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->perumahan_kerusakan + $report->perumahan_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('perumahan_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('perumahan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('perumahan_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('perumahan')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Pendidikan -->
             <tr>
                 <td>Pendidikan</td>
-                <td class="text-right">{{ number_format($report->pendidikan_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pendidikan_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pendidikan_kerusakan + $report->pendidikan_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('pendidikan_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('pendidikan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('pendidikan_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('pendidikan')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Kesehatan -->
             <tr>
                 <td>Kesehatan</td>
-                <td class="text-right">{{ number_format($report->kesehatan_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->kesehatan_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->kesehatan_kerusakan + $report->kesehatan_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('kesehatan_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('kesehatan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('kesehatan_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('kesehatan')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Sosial -->
             <tr>
                 <td>Sosial</td>
-                <td class="text-right">{{ number_format($report->sosial_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->sosial_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->sosial_kerusakan + $report->sosial_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('sosial_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('sosial')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('sosial_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('sosial')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Ekonomi -->
             <tr>
                 <td>Ekonomi</td>
-                <td class="text-right">{{ number_format($report->ekonomi_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->ekonomi_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->ekonomi_kerusakan + $report->ekonomi_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('ekonomi_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('ekonomi')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('ekonomi_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('ekonomi')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Pertanian -->
             <tr>
                 <td>Pertanian</td>
-                <td class="text-right">{{ number_format($report->pertanian_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pertanian_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pertanian_kerusakan + $report->pertanian_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('pertanian_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('pertanian')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('pertanian_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('pertanian')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Transportasi -->
             <tr>
                 <td>Transportasi</td>
-                <td class="text-right">{{ number_format($report->transportasi_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->transportasi_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->transportasi_kerusakan + $report->transportasi_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('transportasi_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('transportasi')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('transportasi_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('transportasi')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Infrastruktur -->
             <tr>
                 <td>Infrastruktur</td>
-                <td class="text-right">{{ number_format($report->infrastruktur_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->infrastruktur_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->infrastruktur_kerusakan + $report->infrastruktur_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('infrastruktur_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('infrastruktur')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('infrastruktur_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('infrastruktur')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Pemerintahan -->
             <tr>
                 <td>Pemerintahan</td>
-                <td class="text-right">{{ number_format($report->pemerintahan_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pemerintahan_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->pemerintahan_kerusakan + $report->pemerintahan_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('pemerintahan_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('pemerintahan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('pemerintahan_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('pemerintahan')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
-            
+
             <!-- Lingkungan -->
             <tr>
                 <td>Lingkungan</td>
-                <td class="text-right">{{ number_format($report->lingkungan_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->lingkungan_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->lingkungan_kerusakan + $report->lingkungan_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('lingkungan_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('lingkungan')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('lingkungan_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('lingkungan')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
         </tbody>
         <tfoot>
             <tr style="background-color: #f2f2f2; font-weight: bold;">
                 <td>TOTAL</td>
-                <td class="text-right">{{ number_format($report->total_kerusakan, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->total_kerugian, 0, ',', '.') }}</td>
-                <td class="text-right">{{ number_format($report->total_kerusakan + $report->total_kerugian, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('total_kerusakan')?->jumlah ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format($getCategoryItem('total')?->harga_satuan ?? 0, 0, ',', '.') }}</td>
+                <td class="text-right">{{ number_format(($getCategoryItem('total_kerusakan')?->jumlah ?? 0) + ($getCategoryItem('total')?->harga_satuan ?? 0), 0, ',', '.') }}</td>
             </tr>
         </tfoot>
     </table>
 
     <div class="footer">
-        <p>{{ $report->nama_distrik }}, {{ now()->format('d F Y') }}</p>
+        <p>{{ $formulir->nama_distrik }}, {{ now()->format('d F Y') }}</p>
         <div class="footer-sign">
             <p>Petugas</p>
             <br><br><br>
@@ -199,4 +225,5 @@
         </div>
     </div>
 </body>
+
 </html>

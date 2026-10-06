@@ -12,19 +12,19 @@ class Form1Controller extends Controller
 {
     /**
      * Display the form
-     */    
+     */
     public function index(Request $request)
     {
 
         $bencana_id = $request->input('bencana_id');
-        
+
         // Redirect to bencana selection if no bencana_id is provided
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-          // Get bencana details
+        // Get bencana details
         $bencana = Bencana::findOrFail($bencana_id);
-        
+
         return view('forms.form1.form1', compact('bencana'));
     }
 
@@ -32,7 +32,8 @@ class Form1Controller extends Controller
      * Store a new form submission
      */
     public function store(Request $request)
-    {        $validator = Validator::make($request->all(), [
+    {
+        $validator = Validator::make($request->all(), [
             'bencana_id' => 'required|exists:bencana,id',
             'kop_surat' => 'nullable|string|max:255',
             'nomor_surat' => 'required|string|max:255',
@@ -62,7 +63,7 @@ class Form1Controller extends Controller
     }
 
     /**
-     * Display a specific form entry     */    
+     * Display a specific form entry     */
     public function show($id)
     {
         $form = Form1::with(['bencana'])->findOrFail($id);
@@ -75,39 +76,39 @@ class Form1Controller extends Controller
     public function list(Request $request)
     {
         $bencana_id = $request->input('bencana_id');
-        
+
         if (!$bencana_id) {
             return redirect()->route('bencana.index', ['source' => 'forms']);
         }
-        
+
         $bencana = Bencana::findOrFail($bencana_id);
-         $form = Form1::where('bencana_id', $bencana_id)->latest()->get();
-        
+        $form = Form1::where('bencana_id', $bencana_id)->latest()->get();
+
         return view('forms.form1.list', compact('bencana', 'form'));
     }
 
     /**
      * Generate PDF for form data
-     */    
+     */
     public function generatePdf($id)
     {
         $form = Form1::with(['bencana'])->findOrFail($id);
-        
+
         $pdf = Pdf::loadView('forms.form1.pdf', compact('form'));
         return $pdf->download('Formulir_01_PDNA_' . $form->id . '.pdf');
-    }   
+    }
 
     /**
      * Preview PDF without downloading
-     */    
+     */
     public function previewPdf($id)
     {
         $form = Form1::with(['bencana'])->findOrFail($id);
-        
+
         $pdf = Pdf::loadView('forms.form1.pdf', compact('form'));
         return $pdf->stream('Formulir_01_PDNA_' . $form->id . '.pdf');
     }
-    
+
     /**
      * Show the form for editing the specified form.
      */
@@ -116,13 +117,13 @@ class Form1Controller extends Controller
         try {
             $form = Form1::findOrFail($id);
             $bencana = Bencana::find($form->bencana_id);
-            
+
             return view('forms.form1.edit', compact('form', 'bencana'));
         } catch (\Exception $e) {
             return back()->with('error', 'Data formulir tidak ditemukan.');
         }
     }
-    
+
     /**
      * Update the specified form in database.
      */
@@ -130,7 +131,7 @@ class Form1Controller extends Controller
     {
         try {
             $form = Form1::findOrFail($id);
-            
+
             $validator = Validator::make($request->all(), [
                 'kop_surat' => 'nullable|string|max:255',
                 'nomor_surat' => 'required|string|max:255',
@@ -152,14 +153,14 @@ class Form1Controller extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }
-            
+
             $form->update($request->all());
-            
+
             return redirect()->route('forms.form1.show', $form->id)
                 ->with('success', 'Formulir berhasil diperbarui.');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }    
+        }
     }
     public function destroy($id)
     {
@@ -167,7 +168,7 @@ class Form1Controller extends Controller
             $form = Form1::findOrFail($id);
             $bencana_id = $form->bencana_id;
             $form->delete();
-            
+
             return redirect()->route('forms.form1.list', ['bencana_id' => $bencana_id])
                 ->with('success', 'Data Form 1 berhasil dihapus');
         } catch (\Exception $e) {
